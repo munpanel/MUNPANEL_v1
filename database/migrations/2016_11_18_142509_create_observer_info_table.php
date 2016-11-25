@@ -16,7 +16,7 @@ class CreateObserverInfoTable extends Migration
         Schema::create('observer_info', function (Blueprint $table) {
             $table->integer('user_id')->unsigned();
             $table->integer('school_id')->unsigned();
-            $table->enum('status', ['reg','sVerified', 'oVerified'])->default('reg');
+            $table->enum('status', ['reg','sVerified', 'oVerified', 'paid'])->default('reg');
             $table->enum('gender', ['male','female']);
             $table->string('sfz');
             $table->integer('grade');

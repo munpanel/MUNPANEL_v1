@@ -15,25 +15,25 @@ class CreateDelegateInfoTable extends Migration
     {
         Schema::create('delegate_info', function (Blueprint $table) {
             $table->integer('user_id')->unsigned();
-	    $table->integer('school_id')->unsigned();
-            $table->enum('status', ['reg','sVerified', 'oVerified'])->default('reg');
+	        $table->integer('school_id')->unsigned();
+            $table->enum('status', ['reg','sVerified', 'oVerified', 'paid'])->default('reg');
             $table->enum('gender', ['male','female']);
             $table->string('sfz');
-	    $table->integer('grade');
-	    $table->string('email');
-	    $table->string('qq');
-	    $table->string('wechat');
-	    $table->string('partnername');
-	    $table->string('parenttel');
-	    $table->string('tel');
-	    $table->integer('committee_id')->unsigned();
-	    $table->boolean('accomodate');
-	    $table->string('roommatename');
+            $table->integer('grade');
+            $table->string('email');
+            $table->string('qq');
+            $table->string('wechat');
+            $table->string('partnername');
+            $table->string('parenttel');
+            $table->string('tel');
+            $table->integer('committee_id')->unsigned();
+            $table->boolean('accomodate');
+            $table->string('roommatename');
             $table->timestamps();
             $table->primary('user_id');
-	    $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-	    $table->foreign('school_id')->references('id')->on('schools')->onDelete('cascade');
-	    $table->foreign('committee_id')->references('id')->on('committees')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('school_id')->references('id')->on('schools')->onDelete('cascade');
+            $table->foreign('committee_id')->references('id')->on('committees')->onDelete('cascade');
         });
     }
 

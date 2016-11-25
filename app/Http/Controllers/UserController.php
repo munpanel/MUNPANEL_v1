@@ -156,6 +156,7 @@ if (($handle = fopen("/var/www/munpanel/test.csv", "r")) !== FALSE) {
         $user->name = $data[0];
         $user->password = Hash::make($data[1]);
         $user->email = $data[0]. '@schools.bjmun.org';
+        $user->type = 'school';
         $user->save();
         $school = School::where('name', $data[0])->first();
         $school->user_id =$user->id;

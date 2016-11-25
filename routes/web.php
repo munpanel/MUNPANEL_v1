@@ -59,3 +59,8 @@ Route::get('/school/unverify/{id}', 'UserController@schoolUnverify');
 
 Route::get('/regschools', 'UserController@regSchool');
 Route::get('/test', 'UserController@test');
+
+Route::post('/pay/info', 'PayController@payInfo');
+Route::get('/pay/invoice', 'HomeController@invoice');
+Route::get('/pay/checkout.modal', 'HomeController@checkout');
+

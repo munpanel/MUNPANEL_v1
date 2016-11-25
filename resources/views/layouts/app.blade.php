@@ -11,12 +11,12 @@
     <title>MUNPANEL</title>
 
     <!-- Styles -->
-    <link rel="stylesheet" href="css/bootstrap.css" type="text/css" />
-    <link rel="stylesheet" href="css/animate.css" type="text/css" />
-    <link rel="stylesheet" href="css/font-awesome.min.css" type="text/css" />
-    <link rel="stylesheet" href="css/font.css" type="text/css" cache="false" />
-    <link rel="stylesheet" href="css/plugin.css" type="text/css" />
-    <link href="css/app.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{secure_url('/css/bootstrap.css')}}" type="text/css" />
+    <link rel="stylesheet" href="{{secure_url('/css/animate.css')}}" type="text/css" />
+    <link rel="stylesheet" href="{{secure_url('/css/font-awesome.min.css')}}" type="text/css" />
+    <link rel="stylesheet" href="{{secure_url('/css/font.css')}}" type="text/css" cache="false" />
+    <link rel="stylesheet" href="{{secure_url('/css/plugin.css')}}" type="text/css" />
+    <link href="{{secure_url('/css/app.css')}}" rel="stylesheet">
 
     <!-- Scripts -->
     <script>
@@ -25,10 +25,10 @@
         ]); ?>
     </script>
     <!--[if lt IE 9]>
-      <script src="js/ie/respond.min.js" cache="false"></script>
-      <script src="js/ie/html5.js" cache="false"></script>
-      <script src="js/ie/excanvas.js" cache="false"></script>
-      <script src="js/ie/fix.js" cache="false"></script>
+      <script src="{{secure_url('/js/ie/respond.min.js')}}" cache="false"></script>
+      <script src="{{secure_url('/js/ie/html5.js')}}" cache="false"></script>
+      <script src="{{secure_url('/js/ie/excanvas.js')}}" cache="false"></script>
+      <script src="{{secure_url('/js/ie/fix.js')}}" cache="false"></script>
     <![endif]-->
 </head>
 <body>
@@ -124,6 +124,12 @@
                   <span>Home</span>
                 </a>
               </li>
+              <li class="{{ isset($active['payment']) ? $active['payment'] : '' }}">
+                <a href="{{ secure_url('/pay/invoice') }}">
+                  <i class="fa fa-money"></i>
+                  <span>Invoice</span>
+                </a>
+              </li>
               <li class="dropdown-submenu {{ isset($active['assignments']) ? $active['assignments'] : '' }}">
                 <a href="{{ secure_url('/assignments') }}" class="dropdown-toggle" > <!-- data-toggle="dropdown"-->
                   <i class="fa fa-flask"></i>
@@ -208,15 +214,15 @@
     <!-- /.vbox -->
   </section>
   <form id="logout-form" action="{{ secure_url('/logout') }}" method="POST" style="display: none;"> {{ csrf_field() }} </form>
-	<script src="js/jquery.min.js"></script>
+	<script src="{{secure_url('/js/jquery.min.js')}}"></script>
   <!-- Bootstrap -->
-  <script src="js/bootstrap.js"></script>
+  <script src="{{secure_url('/js/bootstrap.js')}}"></script>
   <!-- Sparkline Chart -->
-  <script src="js/charts/sparkline/jquery.sparkline.min.js"></script>
+  <script src="{{secure_url('/js/charts/sparkline/jquery.sparkline.min.js')}}"></script>
   <!-- App -->
-  <script src="js/app.js"></script>
-  <script src="js/app.plugin.js"></script>
-  <script src="js/app.data.js"></script>
-  <script src="js/charts/easypiechart/jquery.easy-pie-chart.js"></script>
+  <script src="{{secure_url('/js/app.js')}}"></script>
+  <script src="{{secure_url('/js/app.plugin.js')}}"></script>
+  <script src="{{secure_url('/js/app.data.js')}}"></script>
+  <script src="{{secure_url('/js/charts/easypiechart/jquery.easy-pie-chart.js')}}"></script>
 </body>
 </html>

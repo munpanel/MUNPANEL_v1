@@ -45,6 +45,7 @@ class HomeController extends Controller
         else
         {
             $specific = Auth::user()->specific();
+            $changable = true;
             if (is_null($specific))
             {
                 $percent = 0;
@@ -52,20 +53,27 @@ class HomeController extends Controller
             }
             else if ($specific->status == 'reg')
             {
-                $percent = 33;
+                $percent = 25;
                 $status = '等待学校审核';
             }
             else if ($specific->status == 'sVerified')
             {
-                $percent = 67;
+                $percent = 50;
                 $status = '等待组织团队审核';
+            }
+            else  if ($specific->status == 'oVerified')
+            {
+                $percent = 75;
+                $status = '待缴费';
+                $changable = false;
             }
             else
             {
                 $percent = 100;
-                $status = '注册成功';
+                $status = "已缴费";
+                $changable = false;
             }
-            return view('home', ['percent' => $percent, 'status' => $status]);
+            return view('home', ['percent' => $percent, 'status' => $status, 'changable' => $changable]);
         }
     }
 
@@ -100,5 +108,19 @@ class HomeController extends Controller
         {
             return "Illegal Request";
         }
+    }
+
+    public function invoice()
+    {
+        if (Auth::user()->type == 'unregistered')
+            return view('error', ['msg' => 'Please register first.']);
+        if (Auth::user()->specific()->status != 'oVerified' && Auth::user()->specific()->status != 'paid')
+            return view('error', ['msg' =>'You have to be verified by the Organizing Team first.']);
+        return view('invoice');
+    }
+
+    public function checkout()
+    {
+        return view('checkoutModal');
     }
 }

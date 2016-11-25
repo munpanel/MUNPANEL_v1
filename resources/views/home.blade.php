@@ -96,8 +96,12 @@
                             <div class="progress progress-xs progress-striped active m-b-sm">
                               <div class="progress-bar progress-bar-warning" data-toggle="tooltip" data-original-title="{{ $percent }}%" style="width: {{ $percent }}%"></div>
                             </div>
-                            <div class="text-sm">点击下方按钮进入报名表单：</div>
-                            <a href="{{ secure_url('/reg.modal') }}" data-toggle="ajaxModal" class="btn btn-danger">报名</a>
+                            @if ($changable)
+                              <div class="text-sm">点击下方按钮进入报名表单：</div>
+                              <a href="{{ secure_url('/reg.modal') }}" data-toggle="ajaxModal" class="btn btn-danger">报名</a>
+                            @else
+                              <div class="text-sm">鉴于您已通过组织团队审核，您目前无法直接修改您的报名信息。如需修改请联系official@bjmun.org。</div>
+                            @endif
                           </div>
                         </div>
                         <div class="col-xs-6 wrapper text-center">

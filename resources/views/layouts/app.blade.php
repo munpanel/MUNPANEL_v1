@@ -161,14 +161,14 @@
   <script src="{{secure_url('/js/bootstrap.js')}}"></script>
   <!-- Sparkline Chart -->
   <script src="{{secure_url('/js/charts/sparkline/jquery.sparkline.min.js')}}"></script>
-  <!-- Parsley -->
-  <script src="js/parsley/parsley.min.js"></script>
-  <script src="js/parsley/parsley.extend.js"></script>
-  <!-- App -->
+ <!-- App -->
   <script src="{{secure_url('/js/app.js')}}"></script>
   <script src="{{secure_url('/js/app.plugin.js')}}"></script>
   <script src="{{secure_url('/js/app.data.js')}}"></script>
   <script src="{{secure_url('/js/charts/easypiechart/jquery.easy-pie-chart.js')}}"></script>
+  <!-- Parsley -->
+  <script src="js/parsley/parsley.min.js"></script>
+  <script src="js/parsley/parsley.extend.js"></script>
 </body>
 </html>
 

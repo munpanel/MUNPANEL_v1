@@ -169,6 +169,19 @@ if (($handle = fopen("/var/www/munpanel/test.csv", "r")) !== FALSE) {
 }
     }
 
+    public function doChangePwd(Request $request)
+    {
+        $user = Auth::user();
+        if (Hash::check($request->oldPassword, $user->password))
+        {
+            $user->password = Hash::make($request->newPassword);
+            $user->save();
+            return redirect(secure_url('/home'));
+        }
+        else
+            return view('error', ['msg' => 'Wrong password!']);
+    }
+
     public function test()
     {
         return "gou";

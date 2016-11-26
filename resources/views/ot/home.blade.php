@@ -1,5 +1,5 @@
-@extends('layouts.ot')
-
+@extends('layouts.app')
+@section('home_active', 'active')
 @section('content')
 <div class="container">
     <div class="row"><br/><br/><br/></div>

@@ -119,13 +119,72 @@
           <!-- nav -->
           <nav class="nav-primary hidden-xs">
             <ul class="nav">
-                @if (Auth::user()->type == 'school')
-                @include('layouts.school')
-                @elseif (Auth::user()->type == 'ot')
-                @include('layouts.ot')
-                @else
-                @include('layouts.delegate')
-                @endif
+              <li class="{{ isset($active['home']) ? $active['home'] : '' }}">
+                <a href="{{ secure_url('/home') }}">
+                  <i class="fa fa-eye"></i>
+                  <span>Home</span>
+                </a>
+              </li>
+              <li class="{{ isset($active['payment']) ? $active['payment'] : '' }}">
+                <a href="{{ secure_url('/pay/invoice') }}">
+                  <i class="fa fa-money"></i>
+                  <span>Invoice</span>
+                </a>
+              </li>
+              <li class="dropdown-submenu {{ isset($active['assignments']) ? $active['assignments'] : '' }}">
+                <a href="{{ secure_url('/assignments') }}" class="dropdown-toggle" > <!-- data-toggle="dropdown"-->
+                  <i class="fa fa-flask"></i>
+                  <span>Assignments</span>
+                </a>
+                <!--ul class="dropdown-menu">
+                  <li>
+                    <a href="assign_detail.html">
+                      Academic Test
+                    </a>
+                  </li>
+                  <li>
+                    <a href="assign_detail.html">
+                      <b class="badge pull-right">FB</b>Position Paper
+                    </a>
+                  </li>
+                  <li>
+                    <a href="assign_detail.html">
+                      <b class="badge bg-danger pull-right">ND</b>Topic Division
+                    </a>
+                  </li>
+                </ul-->
+              </li>
+              <li class="{{ isset($active['documents']) ? $active['documents'] : '' }}">
+                <a href="{{ secure_url('/documents') }}">
+                  <i class="fa fa-file-text"></i>
+                  <span>Documents</span>
+                </a>
+              </li>
+              <li class="{{ isset($active['pages']) ? $active['pages'] : '' }}">
+                <a href="{{ secure_url('/pages') }}">
+                  <b class="badge bg-info pull-right">3</b>
+                  <i class="fa fa-envelope-o"></i>
+                  <span>E-Pages</span>
+                </a>
+              </li>
+              <li class="{{ isset($active['chair']) ? $active['chair'] : '' }}">
+                <a href="{{ secure_url('/chair') }}">
+                  <i class="fa fa-tasks"></i>
+                  <span>Live Screen</span>
+                </a>
+              </li>
+              <li class="{{ isset($active['fb']) ? $active['fb'] : '' }}">
+                <a href="{{ secure_url('/fb') }}">
+                  <i class="fa fa-pencil"></i>
+                  <span>Feedback</span>
+                </a>
+              </li>
+              <li {{ isset($active['ddltimer']) ? $active['ddltimer'] : '' }}>
+                <a href="{{ secure_url('/ddltimer') }}">
+                  <i class="fa fa-clock-o"></i>
+                  <span>Deadline</span>
+                </a>
+              </li>
             </ul>
           </nav>
           <!-- / nav -->
@@ -161,9 +220,6 @@
   <script src="{{secure_url('/js/bootstrap.js')}}"></script>
   <!-- Sparkline Chart -->
   <script src="{{secure_url('/js/charts/sparkline/jquery.sparkline.min.js')}}"></script>
-  <!-- Parsley -->
-  <script src="js/parsley/parsley.min.js"></script>
-  <script src="js/parsley/parsley.extend.js"></script>
   <!-- App -->
   <script src="{{secure_url('/js/app.js')}}"></script>
   <script src="{{secure_url('/js/app.plugin.js')}}"></script>
@@ -171,4 +227,3 @@
   <script src="{{secure_url('/js/charts/easypiechart/jquery.easy-pie-chart.js')}}"></script>
 </body>
 </html>
-

@@ -77,6 +77,11 @@ class HomeController extends Controller
         }
     }
 
+    public function changePwd()
+    {
+        return view('changePwdModal');
+    }
+
     public function regModal($id = null)
     {
         $user = User::find($id);

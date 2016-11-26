@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return redirect('home');
+    return redirect(secure_url('home'));
 });
 
 Route::get('/signin', function () {
@@ -22,6 +22,8 @@ Route::get('/signin', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index');
+Route::get('/changePwd.modal', 'HomeController@changePwd');
+Route::post('/changePwd', 'UserController@doChangePwd');
 
 Route::get('/assignments', function() {
     return view('notavailable');

@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@section('home_active', 'active')
 @section('content')
       <section class="vbox">
         <header class="header bg-white b-b">

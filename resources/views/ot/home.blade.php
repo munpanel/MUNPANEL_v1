@@ -9,7 +9,7 @@
                 <div class="panel-heading">Welcome</div>
 
                 <div class="panel-body">
-                    欢迎组织团队成员 {{Auth::user()->name}}
+                    欢迎组织团队成员 {{Auth::user()->name}}<br/>目前报名人数：代表{{$del}}  志愿者{{$vol}}
                 </div>
             </div>
         </div>

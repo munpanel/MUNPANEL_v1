@@ -46,7 +46,7 @@
             </div>
             <div class="form-group">
               <label class="control-label">Email</label>
-              <input type="text" name="email" placeholder="eg. yixuan@bjmun.org" class="form-control" data-required="true" data-type="email" value="{{ old('email') }}">
+              <input type="text" name="email" placeholder="eg. adamxuanyi@gmail.com" class="form-control" data-required="true" data-type="email" value="{{ old('email') }}">
             </div>
             <div class="form-group">
               <label class="control-label">密码</label>

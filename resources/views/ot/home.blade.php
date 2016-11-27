@@ -9,7 +9,11 @@
                 <div class="panel-heading">Welcome</div>
 
                 <div class="panel-body">
-                    欢迎组织团队成员 {{Auth::user()->name}}<br/>目前报名人数：代表{{$del}}  志愿者{{$vol}}
+                    欢迎组织团队成员 {{Auth::user()->name}}<br/><br/>目前报名人数：<br/>
+                    @foreach ($committees as $committee)
+                    {{$committee->name}} {{$committee->delegates->count()}}<br/>
+                    @endforeach
+                    志愿者{{$vol}}
                 </div>
             </div>
         </div>

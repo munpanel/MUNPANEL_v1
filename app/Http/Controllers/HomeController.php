@@ -34,7 +34,7 @@ class HomeController extends Controller
         $type =Auth::user()->type;
         if ($type == 'ot')
         {
-            return view('ot.home', ['del' => Delegate::count(), 'vol' =>Volunteer::count()]);
+            return view('ot.home', ['committees' => Committee::all(), 'vol' =>Volunteer::count()]);
         }
         else if ($type == 'school')
         {

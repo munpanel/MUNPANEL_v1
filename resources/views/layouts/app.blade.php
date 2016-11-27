@@ -175,6 +175,7 @@
   <script src="{{secure_url('/js/charts/sparkline/jquery.sparkline.min.js')}}"></script>
  <!-- App -->
   <script src="{{secure_url('/js/app.js')}}"></script>
+  <script src="{{secure_url('/js/app.custom.js')}}"></script>
   <script src="{{secure_url('/js/app.plugin.js')}}"></script>
   <script src="{{secure_url('/js/app.data.js')}}"></script>
   <script src="{{secure_url('/js/charts/easypiechart/jquery.easy-pie-chart.js')}}"></script>

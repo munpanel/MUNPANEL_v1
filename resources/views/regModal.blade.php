@@ -12,7 +12,7 @@
             <div class="row">
               <div class="col-sm-12 b-r">
               <div class="alert alert-warning"><b>代表、志愿者，任选一项。保存任何一项将自动清空另一项信息。保存将自动重置报名状态为等待学校审核。</b></div>
-              <form role="form" id="delform"><!--action="{{ secure_url('/saveRegDel') }}" method="post"-->
+              <form role="form" id="delform" data-validate="parsley"><!--action="{{ secure_url('/saveRegDel') }}" method="post"-->
                 {{ csrf_field() }}
                 @if (!is_null($id))
                   <input type="hidden" name="id" value="{{ $id }}">
@@ -29,7 +29,8 @@
                 </div>
                 <div class="form-group">
                   <label>委员会</label>
-                  <select name="committee" class="form-control m-b">
+                  <select name="committee" class="form-control m-b" data-required="true">
+                    <option value="">请选择</option>
                     @foreach ($committees as $committee)
                       @if (isset($delegate))
                         @if ($committee->id == $delegate->committee_id)
@@ -43,7 +44,8 @@
                 </div>
                 <div class="form-group">
                   <label>学校</label>
-                  <select name="school" class="form-control m-b">
+                  <select name="school" class="form-control m-b" data-required="true">
+                    <option value="">请选择</option>
                     @foreach ($schools as $school)
                       @if (isset($delegate))
                         @if ($school->id == $delegate->school_id)
@@ -57,7 +59,8 @@
                 </div>
                 <div class="form-group">
                   <label>年级</label>
-                  <select name="grade" class="form-control m-b">
+                  <select name="grade" class="form-control m-b" data-required="true">
+                    <option value="">请选择</option>
                     <option value="1" {{ isset($delegate) && $delegate->grade == 1 ? 'selected' : '' }}>小学及以下</option>
                     <option value="2" {{ isset($delegate) && $delegate->grade == 2 ? 'selected' : '' }}>初一</option>
                     <option value="3" {{ isset($delegate) && $delegate->grade == 3 ? 'selected' : '' }}>初二</option>
@@ -70,15 +73,15 @@
                 </div>
                 <div class="form-group">
                   <label>身份证号</label>
-                  <input type="text" name="sfz" class="form-control" value="{{ isset($delegate) ? $delegate->sfz : '' }}">
+                  <input type="text" name="sfz" class="form-control" value="{{ isset($delegate) ? $delegate->sfz : '' }}" data-required="true">
                 </div>
                 <div class="form-group">
                   <label>QQ</label>
-                  <input type="text" name="qq" class="form-control" value="{{ isset($delegate) ? $delegate->qq : '' }}">
+                  <input type="text" name="qq" class="form-control" value="{{ isset($delegate) ? $delegate->qq : '' }}" data-required="true">
                 </div>
                 <div class="form-group">
                   <label>微信</label>
-                  <input type="text" name="wechat" class="form-control" value="{{ isset($delegate) ? $delegate->wechat : '' }}">
+                  <input type="text" name="wechat" class="form-control" value="{{ isset($delegate) ? $delegate->wechat : '' }}" data-required="true">
                 </div>
                 <div class="form-group">
                   <label>搭档姓名（无则空）</label>
@@ -90,11 +93,11 @@
                 </div>
                 <div class="form-group">
                   <label>电话</label>
-                  <input type="text" name="tel" class="form-control" value="{{ isset($delegate) ? $delegate->tel : '' }}">
+                  <input type="text" name="tel" class="form-control" value="{{ isset($delegate) ? $delegate->tel : '' }}" data-required="true">
                 </div>
                 <div class="form-group">
                   <label>家长电话</label>
-                  <input type="text" name="parenttel" class="form-control" value="{{ isset($delegate) ? $delegate->parenttel : '' }}">
+                  <input type="text" name="parenttel" class="form-control" value="{{ isset($delegate) ? $delegate->parenttel : '' }}" data-required="true">
                 </div>
                 <div class="form-group">
                   <label>性别</label>
@@ -153,7 +156,7 @@
             <div class="row">
               <div class="col-sm-12 b-r">
               <div class="alert alert-warning"><b>代表、志愿者，任选一项。保存任何一项将自动清空另一项信息。保存将自动重置报名状态为等待学校审核。</b></div>
-              <form role="form" id="volform"><!--action="{{ secure_url('/saveRegDel') }}" method="post"-->
+              <form role="form" id="volform" data-validate="parsley"><!--action="{{ secure_url('/saveRegDel') }}" method="post"-->
                 {{ csrf_field() }}
                 @if (!is_null($id))
                   <input type="hidden" name="id" value="{{ $id }}">
@@ -170,7 +173,8 @@
                 </div>
                 <div class="form-group">
                   <label>学校</label>
-                  <select name="school" class="form-control m-b">
+                  <select name="school" class="form-control m-b" data-required="true">
+                    <option value="">请选择</option>
                     @foreach ($schools as $school)
                       @if (isset($volunteer))
                         @if ($school->id == $volunteer->school_id)
@@ -184,7 +188,8 @@
                 </div>
                 <div class="form-group">
                   <label>年级</label>
-                  <select name="grade" class="form-control m-b">
+                  <select name="grade" class="form-control m-b" data-required="true">
+                    <option value="">请选择</option>
                     <option value="1" {{ isset($volunteer) && $volunteer->grade == 1 ? 'selected' : '' }}>小学及以下</option>
                     <option value="2" {{ isset($volunteer) && $volunteer->grade == 2 ? 'selected' : '' }}>初一</option>
                     <option value="3" {{ isset($volunteer) && $volunteer->grade == 3 ? 'selected' : '' }}>初二</option>
@@ -197,15 +202,15 @@
                 </div>
                 <div class="form-group">
                   <label>身份证号</label>
-                  <input type="text" name="sfz" class="form-control" value="{{ isset($volunteer) ? $volunteer->sfz : '' }}">
+                  <input type="text" name="sfz" class="form-control" value="{{ isset($volunteer) ? $volunteer->sfz : '' }}" data-required="true">
                 </div>
                 <div class="form-group">
                   <label>QQ</label>
-                  <input type="text" name="qq" class="form-control" value="{{ isset($volunteer) ? $volunteer->qq : '' }}">
+                  <input type="text" name="qq" class="form-control" value="{{ isset($volunteer) ? $volunteer->qq : '' }}" data-required="true">
                 </div>
                 <div class="form-group">
                   <label>微信</label>
-                  <input type="text" name="wechat" class="form-control" value="{{ isset($volunteer) ? $volunteer->wechat : '' }}">
+                  <input type="text" name="wechat" class="form-control" value="{{ isset($volunteer) ? $volunteer->wechat : '' }}" data-required="true">
                 </div>
                 <div class="form-group">
                   <label>室友姓名（无则空）</label>
@@ -213,11 +218,11 @@
                 </div>
                 <div class="form-group">
                   <label>电话</label>
-                  <input type="text" name="tel" class="form-control" value="{{ isset($volunteer) ? $volunteer->tel : '' }}">
+                  <input type="text" name="tel" class="form-control" value="{{ isset($volunteer) ? $volunteer->tel : '' }}" data-required="true">
                 </div>
                 <div class="form-group">
                   <label>家长电话</label>
-                  <input type="text" name="parenttel" class="form-control" value="{{ isset($volunteer) ? $volunteer->parenttel : '' }}">
+                  <input type="text" name="parenttel" class="form-control" value="{{ isset($volunteer) ? $volunteer->parenttel : '' }}" data-required="true">
                 </div>
                 <div class="form-group">
                   <label>性别</label>
@@ -276,7 +281,7 @@
             <div class="row">
               <div class="col-sm-12 b-r">
               <div class="alert alert-warning"><b>代表、志愿者、观察员，三者任选一项。保存任何一项将自动清空其余两项信息。</b></div>
-              <form role="form" id="obsform"><!--action="{{ secure_url('/saveRegDel') }}" method="post"-->
+              <form role="form" id="obsform" data-validate="parsley"><!--action="{{ secure_url('/saveRegDel') }}" method="post"-->
                 {{ csrf_field() }}
                 @if (!is_null($id))
                   <input type="hidden" name="id" value="{{ $id }}">
@@ -293,7 +298,8 @@
                 </div>
                 <div class="form-group">
                   <label>学校</label>
-                  <select name="school" class="form-control m-b">
+                  <select name="school" class="form-control m-b" data-required="true">
+                    <option value="">请选择</option>
                     @foreach ($schools as $school)
                       @if (isset($observer))
                         @if ($school->id == $observer->school_id)
@@ -307,7 +313,8 @@
                 </div>
                 <div class="form-group">
                   <label>年级</label>
-                  <select name="grade" class="form-control m-b">
+                  <select name="grade" class="form-control m-b" data-required="true">
+                    <option value="">请选择</option>
                     <option value="1" {{ isset($observer) && $observer->grade == 1 ? 'selected' : '' }}>小学及以下</option>
                     <option value="2" {{ isset($observer) && $observer->grade == 2 ? 'selected' : '' }}>初一</option>
                     <option value="3" {{ isset($observer) && $observer->grade == 3 ? 'selected' : '' }}>初二</option>
@@ -320,15 +327,15 @@
                 </div>
                 <div class="form-group">
                   <label>身份证号</label>
-                  <input type="text" name="sfz" class="form-control" value="{{ isset($observer) ? $observer->sfz : '' }}">
+                  <input type="text" name="sfz" class="form-control" value="{{ isset($observer) ? $observer->sfz : '' }}" data-required="true">
                 </div>
                 <div class="form-group">
                   <label>QQ</label>
-                  <input type="text" name="qq" class="form-control" value="{{ isset($observer) ? $observer->qq : '' }}">
+                  <input type="text" name="qq" class="form-control" value="{{ isset($observer) ? $observer->qq : '' }}" data-required="true">
                 </div>
                 <div class="form-group">
                   <label>微信</label>
-                  <input type="text" name="wechat" class="form-control" value="{{ isset($observer) ? $observer->wechat : '' }}">
+                  <input type="text" name="wechat" class="form-control" value="{{ isset($observer) ? $observer->wechat : '' }}" data-required="true">
                 </div>
                 <div class="form-group">
                   <label>室友姓名（无则空）</label>
@@ -336,11 +343,11 @@
                 </div>
                 <div class="form-group">
                   <label>电话</label>
-                  <input type="text" name="tel" class="form-control" value="{{ isset($observer) ? $observer->tel : '' }}">
+                  <input type="text" name="tel" class="form-control" value="{{ isset($observer) ? $observer->tel : '' }}" data-required="true">
                 </div>
                 <div class="form-group">
                   <label>家长电话</label>
-                  <input type="text" name="parenttel" class="form-control" value="{{ isset($observer) ? $observer->parenttel : '' }}">
+                  <input type="text" name="parenttel" class="form-control" value="{{ isset($observer) ? $observer->parenttel : '' }}" data-required="true">
                 </div>
                 <div class="form-group">
                   <label>性别</label>
@@ -400,26 +407,32 @@
 <script>
 $('#delform').submit(function(e){
     e.preventDefault();
-    $.post("{{ secure_url('/saveRegDel') }}", $('#delform').serialize(), function(receivedData){
-        //if (receivedData == "success")
-            $('#ajaxModal').modal('hide');
-        //useTheResponseData(receivedData);
-    });
+    if ($( '#delform' ).parsley( 'validate' )) {
+        $.post("{{ secure_url('/saveRegDel') }}", $('#delform').serialize(), function(receivedData){
+            //if (receivedData == "success")
+                $('#ajaxModal').modal('hide');
+            //useTheResponseData(receivedData);
+        });
+    }
 });
 $('#volform').submit(function(e){
     e.preventDefault();
-    $.post("{{ secure_url('/saveRegVol') }}", $('#volform').serialize(), function(receivedData){
-        //if (receivedData == "success")
-            $('#ajaxModal').modal('hide');
-        //useTheResponseData(receivedData);
-    });
+    if ($( '#volform' ).parsley( 'validate' )) {
+        $.post("{{ secure_url('/saveRegVol') }}", $('#volform').serialize(), function(receivedData){
+            //if (receivedData == "success")
+                $('#ajaxModal').modal('hide');
+           //useTheResponseData(receivedData);
+        });
+    }
 });
 $('#obsform').submit(function(e){
     e.preventDefault();
-    $.post("{{ secure_url('/saveRegObs') }}", $('#obsform').serialize(), function(receivedData){
-        //if (receivedData == "success")
-            $('#ajaxModal').modal('hide');
-        //useTheResponseData(receivedData);
-    });
+    if ($( '#obsform' ).parsley( 'validate' )) {
+        $.post("{{ secure_url('/saveRegObs') }}", $('#obsform').serialize(), function(receivedData){
+            //if (receivedData == "success")
+                $('#ajaxModal').modal('hide');
+            //useTheResponseData(receivedData);
+        });
+    }
 });
 </script>

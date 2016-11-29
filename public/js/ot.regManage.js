@@ -22,6 +22,19 @@ $(document).ready(function() {
                 $modal.modal();
                 $modal.load($remote);
             });
+            $(document).on('change', '.status-options', function() {
+                var father = $(this).parent();
+                jQuery.get('ot/verify/' + father.attr('uid') + '/' + $(this).val());
+                var father = $(this).parent();
+                var val = $(this).val();
+                father.removeClass();
+                if (val == 'reg')
+                    father.addClass('has-error');
+                else if (val == 'oVerified')
+                    father.addClass('has-info');
+                else if (val == 'paid')
+                    father.addClass('has-success'); 
+            });
            //$('#registration-table_paginate').hide();
            $('#registration-table_length').hide();
            $('.dataTables_filter').hide();
@@ -29,6 +42,17 @@ $(document).ready(function() {
            $('#registration-table').removeClass('no-footer');
         },
         "fnDrawCallback": function( oSettings ) {
+            $('.status-select').each(function (i) {
+                var text = $(this).text();
+                //if (text == 'reg' || text == 'sVerified' || text == 'oVerified' || text == 'paid')
+                //{
+                    var content = $("<select class='status-options form-control m-b' style='height:auto'><option value='reg'>等待学校审核</option><option value='sVerified'>等待组委审核</option><option value='oVerified'>待缴费</option><option value='paid'>成功</option></select>");
+                    content.val(text);
+                    $(this).empty();
+                    $(this).append(content);
+                    $(this).removeClass('status-select');
+                //}
+            });
             $('#registration-pagnination').empty();
             $('.paginate_button').each(function (i) {
                 var li = $("<li></li>");

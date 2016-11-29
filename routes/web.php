@@ -58,6 +58,7 @@ Route::get('/regManage', 'HomeController@regManage');
 
 Route::get('/school/verify/{id}', 'UserController@schoolVerify');
 Route::get('/school/unverify/{id}', 'UserController@schoolUnverify');
+Route::get('/ot/verify/{id}/{status}', 'UserController@setStatus');
 
 Route::get('/regschools', 'UserController@regSchool');
 Route::get('/test', 'UserController@test');

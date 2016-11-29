@@ -143,6 +143,16 @@ class UserController extends Controller
         $specific->save();
     }
 
+    public function setStatus($id, $status)
+    {
+        if (Auth::user()->type != 'ot')
+            return "Error";
+        $specific =  User::find($id)->specific();
+        $specific->status = $status;
+        $specific->save();
+    }
+
+
     public function regSchool()
     {
 if (($handle = fopen("/var/www/munpanel/test.csv", "r")) !== FALSE) {

@@ -67,13 +67,21 @@ class DatatablesController extends Controller
                     $partner = '无';
                 else
                     $partner = $delegate->partnername;
+                if ($delegate->status == 'paid')
+                    $statusbar = 'has-success';
+                else if ($delegate->status == 'oVerified')
+                    $statusbar = 'has-warning';
+                else if ($delegate->status == 'sVerified')
+                    $statusbar = '';
+                else
+                    $statusbar = 'has-error';
                 $result->push([
                     'details' => '<a href="reg.modal/'. $delegate->user_id .'" data-toggle="ajaxModal" id="'. $delegate->user_id .'" class="details-modal"><i class="fa fa-search-plus"></i></a>',
                     'name' => $delegate->user->name,
                     'school' => $delegate->school->name,
                     'committee' => $delegate->committee->name,
                     'partner' => $partner,
-                    'status' => $delegate->status,
+                    'status' => '<div class="status-select '.$statusbar.'" uid="'. $delegate->user_id .'">'.$delegate->status."</div>",
                 ]);
             }
             $volunteers = Volunteer::with(['school' => function($q) {$q->select('name', 'id');}, 'user' => function($q) {$q->select('name', 'id');}])->get(['user_id', 'school_id', 'status']);

@@ -55,6 +55,7 @@ Route::post('/saveRegVol', 'UserController@regSaveVol');
 Route::post('/saveRegObs', 'UserController@regSaveObs');
 
 Route::get('/regManage', 'HomeController@regManage');
+Route::get('/userManage', 'HomeController@userManage');
 
 Route::get('/school/verify/{id}', 'UserController@schoolVerify');
 Route::get('/school/unverify/{id}', 'UserController@schoolUnverify');
@@ -68,4 +69,5 @@ Route::get('/pay/invoice', 'HomeController@invoice');
 Route::get('/pay/checkout.modal', 'HomeController@checkout');
 
 Route::get('/ajax/registrations', 'DatatablesController@registrations');
+Route::get('/ajax/users', 'DatatablesController@users');
 

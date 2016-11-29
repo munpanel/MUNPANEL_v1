@@ -111,4 +111,22 @@ class DatatablesController extends Controller
             return "Error";
         return Datatables::of($result)->make(true);
     }
+
+    public function users()
+    {
+            $result = new Collection;
+            $users = User::get(['id', 'email', 'name', 'type']);
+            foreach ($users as $user)
+            {
+                $result->push([
+                    'details' => '', //TO-DO
+                    'id' => $user->id,
+                    'email' => $user->email,
+                    'name' => $user->name,
+                    'type' =>$user->type,
+                ]);
+            }
+ 
+        return Datatables::of($result)->make(true);
+    }
 }

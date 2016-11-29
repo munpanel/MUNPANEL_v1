@@ -115,6 +115,13 @@ class HomeController extends Controller
         }
     }
 
+    public function userManage()
+    {
+        if ( Auth::user()->type != 'ot' )
+            return 'Error';
+        return view('ot.userManage');
+    }
+
     public function invoice()
     {
         if (Auth::user()->type == 'unregistered')

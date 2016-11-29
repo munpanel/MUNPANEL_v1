@@ -16,7 +16,8 @@
     <link rel="stylesheet" href="{{secure_url('/css/font-awesome.min.css')}}" type="text/css" />
     <link rel="stylesheet" href="{{secure_url('/css/font.css')}}" type="text/css" cache="false" />
     <link rel="stylesheet" href="{{secure_url('/css/plugin.css')}}" type="text/css" />
-    <link href="{{secure_url('/css/app.css')}}" rel="stylesheet">
+    <link rel="stylesheet" href="{{secure_url('/css/app.css')}}" rel="stylesheet" />
+    @stack('css')
 
     <!-- Scripts -->
     <script>
@@ -171,17 +172,14 @@
 	<script src="{{secure_url('/js/jquery.min.js')}}"></script>
   <!-- Bootstrap -->
   <script src="{{secure_url('/js/bootstrap.js')}}"></script>
-  <!-- Sparkline Chart -->
-  <script src="{{secure_url('/js/charts/sparkline/jquery.sparkline.min.js')}}"></script>
  <!-- App -->
   <script src="{{secure_url('/js/app.js')}}"></script>
-  <script src="{{secure_url('/js/app.custom.js')}}"></script>
   <script src="{{secure_url('/js/app.plugin.js')}}"></script>
   <script src="{{secure_url('/js/app.data.js')}}"></script>
-  <script src="{{secure_url('/js/charts/easypiechart/jquery.easy-pie-chart.js')}}"></script>
   <!-- Parsley -->
-  <script src="js/parsley/parsley.min.js"></script>
-  <script src="js/parsley/parsley.extend.js"></script>
+  <script src="{{secure_url('/js/parsley/parsley.min.js')}}"></script>
+  <script src="{{secure_url('/js/parsley/parsley.extend.js')}}"></script>
+  @stack('scripts')
 </body>
 </html>
 

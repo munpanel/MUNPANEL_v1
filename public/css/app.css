@@ -248,7 +248,7 @@ a:hover .caret-white {
   background-color: #fcfdfe;
 }
 .panel .table-striped > thead th {
-  background: #fafbfc;
+  background-color: #fafbfc;
   border-right: 1px solid #e0e4e8;
 }
 .panel .table-striped > thead th:last-child {

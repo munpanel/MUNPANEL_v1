@@ -66,3 +66,5 @@ Route::post('/pay/info', 'PayController@payInfo');
 Route::get('/pay/invoice', 'HomeController@invoice');
 Route::get('/pay/checkout.modal', 'HomeController@checkout');
 
+Route::get('/ajax/registrations', 'DatatablesController@registrations');
+

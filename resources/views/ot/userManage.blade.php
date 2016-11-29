@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('regManage_active', 'active')
+@section('userManage_active', 'active')
 @push('scripts')
     <script src="{{secure_url('/js/jquery.dataTables.min.js')}}"></script>
     <script src="{{secure_url('/js/ot.userManage.js')}}"></script>

@@ -2,6 +2,7 @@
 @section('regManage_active', 'active')
 @push('scripts')
     <script src="{{secure_url('/js/jquery.dataTables.min.js')}}"></script>
+    <script src="{{secure_url('/js/datatables/fnReloadAjax.js')}}"></script>
     <script src="{{secure_url('/js/ot.regManage.js')}}"></script>
 @endpush
 @push('css')

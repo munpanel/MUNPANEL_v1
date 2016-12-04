@@ -118,12 +118,28 @@ class DatatablesController extends Controller
             $users = User::get(['id', 'email', 'name', 'type']);
             foreach ($users as $user)
             {
+                if ($user->type == 'unregistered')
+                    $type = '未报名';
+                else if ($user->type == 'ot')
+                    $type = '组织团队';
+                else if ($user->type == 'dais')
+                    $type = '学术团队';
+                else if ($user->type == 'delegate')
+                    $type = '代表';
+                else if ($user->type == 'volunteer')
+                    $type = '志愿者';
+                else if ($user->type == 'observer')
+                    $type = '观察员';
+                else if ($user->type == 'school')
+                    $type = '学校';
+                else
+                    $type = '未知';
                 $result->push([
-                    'details' => '', //TO-DO
+                    'details' => '<a href="ot/userDetails.modal/'. $user->id .'" data-toggle="ajaxModal" id="'. $user->id .'" class="details-modal"><i class="fa fa-search-plus"></i></a>',
                     'id' => $user->id,
                     'email' => $user->email,
                     'name' => $user->name,
-                    'type' =>$user->type,
+                    'type' =>$type,
                 ]);
             }
  

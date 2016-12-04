@@ -21,6 +21,9 @@ $(document).ready(function() {
                 $modal.modal();
                 $modal.load($remote);
             });
+            $(document).on('hidden.bs.modal', '#ajaxModal', function() {
+                $('#user-table').dataTable().fnReloadAjax();
+            });
            //$('#user-table_paginate').hide();
            $('#user-table_length').hide();
            $('.dataTables_filter').hide();

@@ -192,8 +192,27 @@ if (($handle = fopen("/var/www/munpanel/test.csv", "r")) !== FALSE) {
             return view('error', ['msg' => 'Wrong password!']);
     }
 
+    public function updateUser(Request $request, $id)
+    {
+        if (Auth::user()->type != 'ot')
+            return 'Error';
+        $user = User::findOrFail($id);
+        $name = $request->get('name');
+        $value = $request->get('value');
+        if ($name == 'password')
+            $value = Hash::make($value);
+        if ($name == 'type')
+        {
+            Delegate::destroy($user->id);
+            Volunteer::destroy($user->id);
+            Observer::destroy($user->id);
+        }
+        $user->$name = $value;
+        $user->save();
+    }
+
     public function test()
     {
         return "gou";
-        }
+    }
 }

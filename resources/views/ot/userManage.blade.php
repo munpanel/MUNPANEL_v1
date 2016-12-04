@@ -2,10 +2,13 @@
 @section('userManage_active', 'active')
 @push('scripts')
     <script src="{{secure_url('/js/jquery.dataTables.min.js')}}"></script>
+    <script src="{{secure_url('/js/datatables/fnReloadAjax.js')}}"></script>
+    <script src="{{secure_url('/js/editable/bootstrap-editable.js')}}"></script>
     <script src="{{secure_url('/js/ot.userManage.js')}}"></script>
 @endpush
 @push('css')
     <link rel="stylesheet" href="{{secure_url('/css/jquery.dataTables.min.css')}}" type="text/css" />
+    <link rel="stylesheet" href="{{secure_url('/css/bootstrap-editable.css')}}" type="text/css" />
 @endpush
 @section('content')
 <section class="vbox">

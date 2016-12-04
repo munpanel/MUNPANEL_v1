@@ -50,6 +50,8 @@ Route::get('/ddltimer', function() {
 });
 
 Route::get('/reg.modal/{id?}', 'HomeController@regModal');
+Route::get('/ot/userDetails.modal/{id}', 'HomeController@userDetailsModal');
+
 Route::post('/saveRegDel', 'UserController@regSaveDel');
 Route::post('/saveRegVol', 'UserController@regSaveVol');
 Route::post('/saveRegObs', 'UserController@regSaveObs');
@@ -60,6 +62,7 @@ Route::get('/userManage', 'HomeController@userManage');
 Route::get('/school/verify/{id}', 'UserController@schoolVerify');
 Route::get('/school/unverify/{id}', 'UserController@schoolUnverify');
 Route::get('/ot/verify/{id}/{status}', 'UserController@setStatus');
+Route::post('/ot/update/user/{id}', 'UserController@updateUser');
 
 Route::get('/regschools', 'UserController@regSchool');
 Route::get('/test', 'UserController@test');

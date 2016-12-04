@@ -122,6 +122,13 @@ class HomeController extends Controller
         return view('ot.userManage');
     }
 
+    public function userDetailsModal($id)
+    {
+        if (Auth::user()->type != 'ot')
+            return "Error";
+        return view('ot.userDetailsModal', ['user' => User::findOrFail($id)]);
+    }
+
     public function invoice()
     {
         if (Auth::user()->type == 'unregistered')

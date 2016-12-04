@@ -35,6 +35,9 @@ $(document).ready(function() {
                 else if (val == 'paid')
                     father.addClass('has-success'); 
             });
+            $(document).on('hidden.bs.modal', '#ajaxModal', function() {
+                $('#registration-table').dataTable().fnReloadAjax();
+            });
            //$('#registration-table_paginate').hide();
            $('#registration-table_length').hide();
            $('.dataTables_filter').hide();

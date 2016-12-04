@@ -1,6 +1,6 @@
               <li class="@yield('home_active')">
                 <a href="{{ secure_url('/home') }}">
-                  <i class="fa fa-eye"></i>
+                  <i class="fa fa-home"></i>
                   <span>Home</span>
                 </a>
               </li>
@@ -8,6 +8,12 @@
                 <a href="{{ secure_url('/userManage') }}">
                   <i class="fa fa-users"></i>
                   <span>Users Management</span>
+                </a>
+              </li>
+              <li class="@yield('schoolManage_active')">
+                <a href="{{ secure_url('/schoolManage') }}">
+                  <i class="fa fa-university"></i>
+                  <span>Schools Management</span>
                 </a>
               </li>
               <li class="@yield('regManage_active')">

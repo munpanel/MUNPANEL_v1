@@ -122,11 +122,25 @@ class HomeController extends Controller
         return view('ot.userManage');
     }
 
+    public function schoolManage()
+    {
+        if ( Auth::user()->type != 'ot' )
+            return 'Error';
+        return view('ot.schoolManage');
+    }
+
     public function userDetailsModal($id)
     {
         if (Auth::user()->type != 'ot')
             return "Error";
         return view('ot.userDetailsModal', ['user' => User::findOrFail($id)]);
+    }
+
+    public function schoolDetailsModal($id)
+    {
+        if (Auth::user()->type != 'ot')
+            return "Error";
+        return view('ot.schoolDetailsModal', ['school' => School::findOrFail($id)]);
     }
 
     public function invoice()

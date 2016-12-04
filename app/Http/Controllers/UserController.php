@@ -211,6 +211,17 @@ if (($handle = fopen("/var/www/munpanel/test.csv", "r")) !== FALSE) {
         $user->save();
     }
 
+    public function updateSchool(Request $request, $id)
+    {
+        if (Auth::user()->type != 'ot')
+            return 'Error';
+        $school = School::findOrFail($id);
+        $name = $request->get('name');
+        $value = $request->get('value');
+        $school->$name = $value;
+        $school->save();
+    }
+
     public function test()
     {
         return "gou";

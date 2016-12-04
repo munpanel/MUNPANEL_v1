@@ -8,6 +8,7 @@ use Yajra\Datatables\Datatables;
 use App\User;
 use App\Delegate;
 use App\Volunteer;
+use App\School;
 use Illuminate\Support\Facades\Auth;
 
 class DatatablesController extends Controller
@@ -143,6 +144,22 @@ class DatatablesController extends Controller
                 ]);
             }
  
+        return Datatables::of($result)->make(true);
+    }
+
+    public function schools()
+    {
+        $result = new Collection;
+        $schools = School::get(['id', 'name', 'user_id']);
+        foreach($schools as $school)
+        {
+            $result->push([
+                'details' => '<a href="ot/schoolDetails.modal/'. $school->id .'" data-toggle="ajaxModal" id="'. $school->id .'" class="details-modal"><i class="fa fa-search-plus"></i></a>',
+                'id' => $school->id,
+                'name' => $school->name,
+                'uid' => $school->user_id,
+            ]);
+        }
         return Datatables::of($result)->make(true);
     }
 }

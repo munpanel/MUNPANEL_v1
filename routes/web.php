@@ -52,6 +52,7 @@ Route::get('/ddltimer', function() {
 Route::get('/reg.modal/{id?}', 'HomeController@regModal');
 Route::get('/ot/userDetails.modal/{id}', 'HomeController@userDetailsModal');
 Route::get('/ot/schoolDetails.modal/{id}', 'HomeController@schoolDetailsModal');
+Route::get('/ot/committeeDetails.modal/{id}', 'HomeController@committeeDetailsModal');
 
 Route::post('/saveRegDel', 'UserController@regSaveDel');
 Route::post('/saveRegVol', 'UserController@regSaveVol');
@@ -60,15 +61,17 @@ Route::post('/saveRegObs', 'UserController@regSaveObs');
 Route::get('/regManage', 'HomeController@regManage');
 Route::get('/userManage', 'HomeController@userManage');
 Route::get('/schoolManage', 'HomeController@schoolManage');
+Route::get('/committeeManage', 'HomeController@committeeManage');
 
 Route::get('/school/verify/{id}', 'UserController@schoolVerify');
 Route::get('/school/unverify/{id}', 'UserController@schoolUnverify');
 Route::get('/ot/verify/{id}/{status}', 'UserController@setStatus');
 Route::post('/ot/update/user/{id}', 'UserController@updateUser');
 Route::post('/ot/update/school/{id}', 'UserController@updateSchool');
+Route::post('/ot/update/committee/{id}', 'UserController@updateCommittee');
 
-Route::get('/regschools', 'UserController@regSchool');
-Route::get('/test', 'UserController@test');
+//Route::get('/regschools', 'UserController@regSchool');
+//Route::get('/test', 'UserController@test');
 
 Route::post('/pay/info', 'PayController@payInfo');
 Route::get('/pay/invoice', 'HomeController@invoice');
@@ -77,4 +80,5 @@ Route::get('/pay/checkout.modal', 'HomeController@checkout');
 Route::get('/ajax/registrations', 'DatatablesController@registrations');
 Route::get('/ajax/users', 'DatatablesController@users');
 Route::get('/ajax/schools', 'DatatablesController@schools');
+Route::get('/ajax/committees', 'DatatablesController@committees');
 

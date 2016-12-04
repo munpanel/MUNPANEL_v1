@@ -4,6 +4,12 @@
                   <span>Home</span>
                 </a>
               </li>
+              <li class="@yield('committeeManage_active')">
+                <a href="{{ secure_url('/committeeManage') }}">
+                  <i class="fa fa-sitemap"></i>
+                  <span>Committees Management</span>
+                </a>
+              </li>
               <li class="@yield('userManage_active')">
                 <a href="{{ secure_url('/userManage') }}">
                   <i class="fa fa-users"></i>

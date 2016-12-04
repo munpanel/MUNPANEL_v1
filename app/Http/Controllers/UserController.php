@@ -7,6 +7,7 @@ use App\Delegate;
 use App\Volunteer;
 use App\Observer;
 use App\School;
+use App\Committee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -220,6 +221,17 @@ if (($handle = fopen("/var/www/munpanel/test.csv", "r")) !== FALSE) {
         $value = $request->get('value');
         $school->$name = $value;
         $school->save();
+    }
+
+    public function updateCommittee(Request $request, $id)
+    {
+        if (Auth::user()->type != 'ot')
+            return 'Error';
+        $committee = Committee::findOrFail($id);
+        $name = $request->get('name');
+        $value = $request->get('value');
+        $committee->$name = $value;
+        $committee->save();
     }
 
     public function test()

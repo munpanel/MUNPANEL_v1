@@ -9,6 +9,7 @@ use App\User;
 use App\Delegate;
 use App\Volunteer;
 use App\School;
+use App\Committee;
 use Illuminate\Support\Facades\Auth;
 
 class DatatablesController extends Controller
@@ -158,6 +159,21 @@ class DatatablesController extends Controller
                 'id' => $school->id,
                 'name' => $school->name,
                 'uid' => $school->user_id,
+            ]);
+        }
+        return Datatables::of($result)->make(true);
+    }
+
+    public function committees()
+    {
+        $result = new Collection;
+        $committees = Committee::get(['id', 'name']);
+        foreach($committees as $committee)
+        {
+            $result->push([
+                'details' => '<a href="ot/committeeDetails.modal/'. $committee->id .'" data-toggle="ajaxModal" id="'. $committee->id .'" class="details-modal"><i class="fa fa-search-plus"></i></a>',
+                'id' => $committee->id,
+                'name' => $committee->name,
             ]);
         }
         return Datatables::of($result)->make(true);

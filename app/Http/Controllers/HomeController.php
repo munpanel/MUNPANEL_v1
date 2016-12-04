@@ -129,6 +129,13 @@ class HomeController extends Controller
         return view('ot.schoolManage');
     }
 
+    public function committeeManage()
+    {
+        if ( Auth::user()->type != 'ot' )
+            return 'Error';
+        return view('ot.committeeManage');
+    }
+
     public function userDetailsModal($id)
     {
         if (Auth::user()->type != 'ot')
@@ -141,6 +148,13 @@ class HomeController extends Controller
         if (Auth::user()->type != 'ot')
             return "Error";
         return view('ot.schoolDetailsModal', ['school' => School::findOrFail($id)]);
+    }
+
+    public function committeeDetailsModal($id)
+    {
+        if (Auth::user()->type != 'ot')
+            return "Error";
+        return view('ot.committeeDetailsModal', ['committee' => Committee::findOrFail($id)]);
     }
 
     public function invoice()

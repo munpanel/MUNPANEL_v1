@@ -140,21 +140,49 @@ class HomeController extends Controller
     {
         if (Auth::user()->type != 'ot')
             return "Error";
-        return view('ot.userDetailsModal', ['user' => User::findOrFail($id)]);
+        if ($id == 'new')
+        {
+            $user = new User;
+            $user->email = 'newuser@munpanel.com';
+            $user->password = 'noLogin';
+            $user->name = 'New User';
+            $user->type = 'unregistered';
+            $user->save();
+        }
+        else
+            $user = User::findOrFail($id);
+        return view('ot.userDetailsModal', ['user' => $user]);
     }
 
     public function schoolDetailsModal($id)
     {
         if (Auth::user()->type != 'ot')
             return "Error";
-        return view('ot.schoolDetailsModal', ['school' => School::findOrFail($id)]);
+        if ($id == 'new')
+        {
+            $school = new School;
+            $school->name = 'New School'; //TO-DO: default status disabled
+            $school->user_id = 1;
+            $school->save();
+        }
+        else
+            $school = School::findOrFail($id);
+        return view('ot.schoolDetailsModal', ['school' => $school]);
     }
 
     public function committeeDetailsModal($id)
     {
         if (Auth::user()->type != 'ot')
             return "Error";
-        return view('ot.committeeDetailsModal', ['committee' => Committee::findOrFail($id)]);
+        if ($id == 'new')
+        {
+            $committee = new Committee;
+            $committee->name = 'New Committee';
+            $committee->save();
+        }
+        else
+            $committee = Committee::findOrFail($id);
+        return view('ot.committeeDetailsModal', ['committee' => $committee]);
     }
 
     public function invoice()

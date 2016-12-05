@@ -234,6 +234,27 @@ if (($handle = fopen("/var/www/munpanel/test.csv", "r")) !== FALSE) {
         $committee->save();
     }
 
+    public function deleteUser(Request $request, $id)
+    {
+        if (Auth::user()->type != 'ot')
+            return 'Error';
+        User::destroy($id);
+    }
+
+    public function deleteCommittee(Request $request, $id)
+    {
+        if (Auth::user()->type != 'ot')
+            return 'Error';
+        Committee::destroy($id);
+    }
+
+    public function deleteSchool(Request $request, $id)
+    {
+        if (Auth::user()->type != 'ot')
+            return 'Error';
+        School::destroy($id);
+    }
+
     public function test()
     {
         return "gou";

@@ -70,6 +70,12 @@ Route::post('/ot/update/user/{id}', 'UserController@updateUser');
 Route::post('/ot/update/school/{id}', 'UserController@updateSchool');
 Route::post('/ot/update/committee/{id}', 'UserController@updateCommittee');
 
+Route::get('/ot/delete/user/{id}', 'UserController@deleteUser');
+Route::get('/ot/delete/school/{id}', 'UserController@deleteSchool');
+Route::get('/ot/delete/committee/{id}', 'UserController@deleteCommittee');
+
+
+
 //Route::get('/regschools', 'UserController@regSchool');
 //Route::get('/test', 'UserController@test');
 

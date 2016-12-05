@@ -1,7 +1,8 @@
 <div class="modal-dialog">
     <div class="modal-content">
         <div class="modal-body">
-            <h4>学校ID {{$school->id}}</h4><button id="enableEditable-{{$school->id}}" class="btn btn-default pull-right">编辑模式</button>
+            <h4>学校ID {{$school->id}}</h4><button id="enableEditable-{{$school->id}}" class="btn btn-default pull-right">编辑模式</button><button id="deleteButton-{{$school->id}}" class="btn btn-danger pull-right">删除</button>
+
             <table id="school-{{$school->id}}" class="table table-bordered table-striped" style="clear: both">
                 <tbody>
                     <tr>
@@ -24,5 +25,11 @@ $('#school-{{$school->id}} .editable').editable('toggleDisabled');
 
 $('#enableEditable-{{$school->id}}').click(function() {
     $('#school-{{$school->id}} .editable').editable('toggleDisabled');
+});
+$('#deleteButton-{{$school->id}}').click(function() {
+    var cb = function() {
+        $('#ajaxModal').modal('hide');
+    };
+    jQuery.get('ot/delete/school/{{$school->id}}', cb);
 });
 </script>

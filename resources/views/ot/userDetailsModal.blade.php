@@ -1,7 +1,7 @@
 <div class="modal-dialog">
     <div class="modal-content">
         <div class="modal-body">
-            <h4>UID {{$user->id}}</h4><button id="enableEditable-{{$user->id}}" class="btn btn-default pull-right">编辑模式</button>
+            <h4>UID {{$user->id}}</h4><button id="enableEditable-{{$user->id}}" class="btn btn-default pull-right">编辑模式</button><button id="deleteButton-{{$user->id}}" class="btn btn-danger pull-right">删除</button>
             <table id="user-{{$user->id}}" class="table table-bordered table-striped" style="clear: both">
                 <tbody>
                     <tr>
@@ -32,5 +32,11 @@ $('#user-{{$user->id}} .editable').editable('toggleDisabled');
 
 $('#enableEditable-{{$user->id}}').click(function() {
     $('#user-{{$user->id}} .editable').editable('toggleDisabled');
+});
+$('#deleteButton-{{$user->id}}').click(function() {
+    var cb = function() {
+        $('#ajaxModal').modal('hide');
+    };
+    jQuery.get('ot/delete/user/{{$user->id}}', cb);
 });
 </script>

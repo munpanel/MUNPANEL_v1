@@ -1,7 +1,8 @@
 <div class="modal-dialog">
     <div class="modal-content">
         <div class="modal-body">
-            <h4>委员会ID {{$committee->id}}</h4><button id="enableEditable-{{$committee->id}}" class="btn btn-default pull-right">编辑模式</button>
+            <h4>委员会ID {{$committee->id}}</h4><button id="enableEditable-{{$committee->id}}" class="btn btn-default pull-right">编辑模式</button><button id="deleteButton-{{$committee->id}}" class="btn btn-danger pull-right">删除</button>
+
             <table id="committee-{{$committee->id}}" class="table table-bordered table-striped" style="clear: both">
                 <tbody>
                     <tr>
@@ -20,5 +21,12 @@ $('#committee-{{$committee->id}} .editable').editable('toggleDisabled');
 
 $('#enableEditable-{{$committee->id}}').click(function() {
     $('#committee-{{$committee->id}} .editable').editable('toggleDisabled');
+});
+
+$('#deleteButton-{{$committee->id}}').click(function() {
+    var cb = function() {
+        $('#ajaxModal').modal('hide');
+    };
+    jQuery.get('ot/delete/committee/{{$committee->id}}', cb);
 });
 </script>

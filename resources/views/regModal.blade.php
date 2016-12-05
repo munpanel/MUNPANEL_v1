@@ -411,6 +411,7 @@ $('#delform').submit(function(e){
         $.post("{{ secure_url('/saveRegDel') }}", $('#delform').serialize(), function(receivedData){
             //if (receivedData == "success")
                 $('#ajaxModal').modal('hide');
+                location.reload();
             //useTheResponseData(receivedData);
         });
     }
@@ -421,6 +422,7 @@ $('#volform').submit(function(e){
         $.post("{{ secure_url('/saveRegVol') }}", $('#volform').serialize(), function(receivedData){
             //if (receivedData == "success")
                 $('#ajaxModal').modal('hide');
+                location.reload();
            //useTheResponseData(receivedData);
         });
     }
@@ -431,6 +433,7 @@ $('#obsform').submit(function(e){
         $.post("{{ secure_url('/saveRegObs') }}", $('#obsform').serialize(), function(receivedData){
             //if (receivedData == "success")
                 $('#ajaxModal').modal('hide');
+                location.reload();
             //useTheResponseData(receivedData);
         });
     }

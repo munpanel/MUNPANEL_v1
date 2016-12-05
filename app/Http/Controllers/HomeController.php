@@ -50,6 +50,11 @@ class HomeController extends Controller
             {
                 $percent = 0;
                 $status = '未注册';
+                if ($type == 'delegate') //Deal with YCZ-ECO Situation
+                {
+                    $status = '等待重填';
+                    $notice_msg = '抱歉，您之前报名了中文ECOSOC委员会，现因组织团队疏忽，需要您重新填写报名表单之后社团重新审核。感谢您的理解与支持。';
+                }
             }
             else if ($specific->status == 'reg')
             {
@@ -73,7 +78,10 @@ class HomeController extends Controller
                 $status = "已缴费";
                 $changable = false;
             }
-            return view('home', ['percent' => $percent, 'status' => $status, 'changable' => $changable]);
+            if (isset($notice_msg))
+                return view('home', ['percent' => $percent, 'status' => $status, 'changable' => $changable, 'notice_msg' => $notice_msg]);
+            else
+                return view('home', ['percent' => $percent, 'status' => $status, 'changable' => $changable]);
         }
     }
 

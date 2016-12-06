@@ -50,41 +50,42 @@ Route::get('/ddltimer', function() {
 });
 
 Route::get('/reg.modal/{id?}', 'HomeController@regModal');
-Route::get('/ot/userDetails.modal/{id}', 'HomeController@userDetailsModal');
-Route::get('/ot/schoolDetails.modal/{id}', 'HomeController@schoolDetailsModal');
-Route::get('/ot/committeeDetails.modal/{id}', 'HomeController@committeeDetailsModal');
+Route::get('/ot/userDetails.modal/{id}', ['middleware' => ['permission:edit-users'], 'uses' => 'HomeController@userDetailsModal']);
+Route::get('/ot/schoolDetails.modal/{id}', ['middleware' => ['permission:edit-schools'], 'uses' => 'HomeController@schoolDetailsModal']);
+Route::get('/ot/committeeDetails.modal/{id}', ['middleware' => ['permission:edit-committees'], 'uses' => 'HomeController@committeeDetailsModal']);
 
 Route::post('/saveRegDel', 'UserController@regSaveDel');
 Route::post('/saveRegVol', 'UserController@regSaveVol');
 Route::post('/saveRegObs', 'UserController@regSaveObs');
 
 Route::get('/regManage', 'HomeController@regManage');
-Route::get('/userManage', 'HomeController@userManage');
-Route::get('/schoolManage', 'HomeController@schoolManage');
-Route::get('/committeeManage', 'HomeController@committeeManage');
+Route::get('/userManage', ['middleware' => ['permission:edit-users'], 'uses' => 'HomeController@userManage']);
+Route::get('/schoolManage', ['middleware' => ['permission:edit-schools'], 'uses' => 'HomeController@schoolManage']);
+Route::get('/committeeManage', ['middleware' => ['permission:edit-committees'], 'uses' => 'HomeController@committeeManage']);
 
 Route::get('/school/verify/{id}', 'UserController@schoolVerify');
 Route::get('/school/unverify/{id}', 'UserController@schoolUnverify');
 Route::get('/ot/verify/{id}/{status}', 'UserController@setStatus');
-Route::post('/ot/update/user/{id}', 'UserController@updateUser');
-Route::post('/ot/update/school/{id}', 'UserController@updateSchool');
-Route::post('/ot/update/committee/{id}', 'UserController@updateCommittee');
+Route::post('/ot/update/user/{id}', ['middleware' => ['permission:edit-users'], 'uses' => 'UserController@updateUser']);
+Route::post('/ot/update/school/{id}', ['middleware' => ['permission:edit-schools'], 'uses' => 'UserController@updateSchool']);
+Route::post('/ot/update/committee/{id}', ['middleware' => ['permission:edit-committees'], 'uses' => 'UserController@updateCommittee']);
 
-Route::get('/ot/delete/user/{id}', 'UserController@deleteUser');
-Route::get('/ot/delete/school/{id}', 'UserController@deleteSchool');
-Route::get('/ot/delete/committee/{id}', 'UserController@deleteCommittee');
+Route::get('/ot/delete/user/{id}', ['middleware' => ['permission:edit-users'], 'uses' => 'UserController@deleteUser']);
+Route::get('/ot/delete/school/{id}', ['middleware' => ['permission:edit-schools'], 'uses' => 'UserController@deleteSchool']);
+Route::get('/ot/delete/committee/{id}', ['middleware' => ['permission:edit-committees'], 'uses' => 'UserController@deleteCommittee']);
 
 
 
 //Route::get('/regschools', 'UserController@regSchool');
 //Route::get('/test', 'UserController@test');
+Route::get('/createPermissions', 'UserController@createPermissions');
 
 Route::post('/pay/info', 'PayController@payInfo');
 Route::get('/pay/invoice', 'HomeController@invoice');
 Route::get('/pay/checkout.modal', 'HomeController@checkout');
 
-Route::get('/ajax/registrations', 'DatatablesController@registrations');
-Route::get('/ajax/users', 'DatatablesController@users');
-Route::get('/ajax/schools', 'DatatablesController@schools');
-Route::get('/ajax/committees', 'DatatablesController@committees');
+Route::get('/ajax/registrations', ['middleware' => ['permission:view-regs'], 'uses' => 'DatatablesController@registrations']);
+Route::get('/ajax/users', ['middleware' => ['permission:edit-users'], 'uses' => 'DatatablesController@users']);
+Route::get('/ajax/schools', ['middleware' => ['permission:edit-schools'], 'uses' => 'DatatablesController@schools']);
+Route::get('/ajax/committees', ['middleware' => ['permission:edit-committees'], 'uses' => 'DatatablesController@committees']);
 

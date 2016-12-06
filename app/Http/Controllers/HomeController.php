@@ -105,7 +105,7 @@ class HomeController extends Controller
     public function regManage()
     {
         $type =Auth::user()->type;
-        if ($type == 'ot')
+        if ($type == 'ot' && Auth::user()->can('edit-users'))
         {
             return view('ot.regManage', ['delegates' => Delegate::all(), 'volunteers' => Volunteer::all(), 'observers' => Observer::all()]);
         }

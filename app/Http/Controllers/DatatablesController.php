@@ -77,13 +77,25 @@ class DatatablesController extends Controller
                     $statusbar = '';
                 else
                     $statusbar = 'has-error';
+                if ($delegate->status == 'paid' && (!$user->can('approve-regs-pay')))
+                    $status = '成功';
+                else if ($user->can('approve-regs'))
+                    $status = '<div class="status-select '.$statusbar.'" uid="'. $delegate->user_id .'">'.$delegate->status."</div>";
+                else if ($delegate->status == 'reg')
+                    $status = '等待学校审核';
+                else if ($delegate->status == 'sVerified')
+                    $status = '等待组委审核';
+                 else if ($delegate->status == 'oVerified')
+                    $status = '待缴费';
+                 else if ($delegate->status == 'paid')
+                    $status = '成功';
                 $result->push([
                     'details' => '<a href="reg.modal/'. $delegate->user_id .'" data-toggle="ajaxModal" id="'. $delegate->user_id .'" class="details-modal"><i class="fa fa-search-plus"></i></a>',
                     'name' => $delegate->user->name,
                     'school' => $delegate->school->name,
                     'committee' => $delegate->committee->name,
                     'partner' => $partner,
-                    'status' => '<div class="status-select '.$statusbar.'" uid="'. $delegate->user_id .'">'.$delegate->status."</div>",
+                    'status' => $status,
                 ]);
             }
             $volunteers = Volunteer::with(['school' => function($q) {$q->select('name', 'id');}, 'user' => function($q) {$q->select('name', 'id');}])->get(['user_id', 'school_id', 'status']);
@@ -97,13 +109,25 @@ class DatatablesController extends Controller
                     $statusbar = '';
                 else
                     $statusbar = 'has-error';
+                if ($volunteer->status == 'paid' && (!$user->can('approve-regs-pay')))
+                    $status = '成功';
+                else if ($user->can('approve-regs'))
+                    $status = '<div class="status-select '.$statusbar.'" uid="'. $volunteer->user_id .'">'.$volunteer->status."</div>";
+                else if ($volunteer->status == 'reg')
+                    $status = '等待学校审核';
+                else if ($volunteer->status == 'sVerified')
+                    $status = '等待组委审核';
+                 else if ($volunteer->status == 'oVerified')
+                    $status = '待缴费';
+                 else if ($volunteer->status == 'paid')
+                    $status = '成功';
                 $result->push([
                     'details' => '<a href="reg.modal/'. $volunteer->user_id .'" data-toggle="ajaxModal" id="'. $volunteer->user_id .'" class="details-modal"><i class="fa fa-search-plus"></i></a>',
                     'name' => $volunteer->user->name,
                     'school' => $volunteer->school->name,
                     'committee' => "志愿者",
                     'partner' => "无",
-                    'status' => '<div class="status-select '.$statusbar.'" uid="'. $volunteer->uiser_id .'">'.$volunteer->status."</div>",
+                    'status' => $status,
                 ]);
   
             }

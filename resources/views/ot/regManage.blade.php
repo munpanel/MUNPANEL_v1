@@ -3,7 +3,11 @@
 @push('scripts')
     <script src="{{secure_url('/js/jquery.dataTables.min.js')}}"></script>
     <script src="{{secure_url('/js/datatables/fnReloadAjax.js')}}"></script>
+    @if (Auth::user()->can('approve-regs-pay'))
+    <script src="{{secure_url('/js/ot.regManage.withPay.js')}}"></script>
+    @else
     <script src="{{secure_url('/js/ot.regManage.js')}}"></script>
+    @endif
 @endpush
 @push('css')
     <link rel="stylesheet" href="{{secure_url('/css/jquery.dataTables.min.css')}}" type="text/css" />

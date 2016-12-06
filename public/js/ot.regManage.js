@@ -49,7 +49,7 @@ $(document).ready(function() {
                 var text = $(this).text();
                 //if (text == 'reg' || text == 'sVerified' || text == 'oVerified' || text == 'paid')
                 //{
-                    var content = $("<select class='status-options form-control m-b' style='height:auto'><option value='reg'>等待学校审核</option><option value='sVerified'>等待组委审核</option><option value='oVerified'>待缴费</option><option value='paid'>成功</option></select>");
+                    var content = $("<select class='status-options form-control m-b' style='height:auto'><option value='reg'>等待学校审核</option><option value='sVerified'>等待组委审核</option><option value='oVerified'>待缴费</option></select>");
                     content.val(text);
                     $(this).empty();
                     $(this).append(content);

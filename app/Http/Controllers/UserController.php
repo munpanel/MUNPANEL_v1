@@ -8,6 +8,8 @@ use App\Volunteer;
 use App\Observer;
 use App\School;
 use App\Committee;
+use App\Permission;
+use App\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -30,6 +32,8 @@ class UserController extends Controller
         $user = User::find($request->id);
         if (is_null($request->id))
             $user = Auth::user();
+        else if (Auth::user()->type == 'ot' && (!Auth::user()->can('edit-regs')))
+            return "error";
         else if (Auth::user()->type != 'ot' && Auth::user()->type != 'school')
             return "error";
         else if (Auth::user()->type == 'school' && Auth::user()->school->id != $user->specific()->school->id)
@@ -67,6 +71,8 @@ class UserController extends Controller
         $user = User::find($request->id);
         if (is_null($request->id))
             $user = Auth::user();
+        else if (Auth::user()->type == 'ot' && (!Auth::user()->can('edit-regs')))
+            return "error";
         else if (Auth::user()->type != 'ot' && Auth::user()->type != 'school')
             return "error";
         else if (Auth::user()->type == 'school' && Auth::user()->school->id != $user->specific()->school->id)
@@ -98,7 +104,16 @@ class UserController extends Controller
 
     public function regSaveObs(Request $request)
     {
-        $user = Auth::user();
+        //$user = Auth::user();
+        $user = User::find($request->id);
+        if (is_null($request->id))
+            $user = Auth::user();
+        else if (Auth::user()->type == 'ot' && (!Auth::user()->can('edit-regs')))
+            return "error";
+        else if (Auth::user()->type != 'ot' && Auth::user()->type != 'school')
+            return "error";
+        else if (Auth::user()->type == 'school' && Auth::user()->school->id != $user->specific()->school->id)
+            return "error";
         $user->type = 'observer';
         $user->save();
         $obs = $user->observer;
@@ -146,7 +161,9 @@ class UserController extends Controller
 
     public function setStatus($id, $status)
     {
-        if (Auth::user()->type != 'ot')
+        if (Auth::user()->type != 'ot' || (!Auth::user()->can('approve-regs')))
+            return "Error";
+        if ($status == 'paid' && (!Auth::user()->can('approve-regs-pay')))
             return "Error";
         $specific =  User::find($id)->specific();
         $specific->status = $status;
@@ -253,6 +270,79 @@ if (($handle = fopen("/var/www/munpanel/test.csv", "r")) !== FALSE) {
         if (Auth::user()->type != 'ot')
             return 'Error';
         School::destroy($id);
+    }
+
+    public function createPermissions()
+    {
+        /*$editUser = new Permission();
+        $editUser->name = 'edit-users';
+        $editUser->display_name = '用户管理';
+        $editUser->description = '添加、删除、编辑用户的登陆信息、权限';
+        $editUser->save();
+
+        $editRole = new Permission();
+        $editRole->name = 'edit-roles';
+        $editRole->display_name = '角色管理';
+        $editRole->description = '添加、删除角色，修改角色所含权限';
+        $editRole->save();
+
+        $viewReg = new Permission();
+        $viewReg->name = 'view-regs';
+        $viewReg->display_name = '报名信息查看';
+        $viewReg->description = '查看代表、志愿者、观察员的报名信息';
+        $viewReg->save();
+
+        $editReg = new Permission();
+        $editReg->name = 'edit-regs';
+        $editReg->display_name = '报名信息编辑';
+        $editReg->description = "编辑代表、志愿者、观察员的报名信息";
+        $editReg->save();
+
+        $approveReg = new Permission();
+        $approveReg->name = 'approve-regs';
+        $approveReg->display_name = '报名信息审核';
+        $approveReg->description = '修改代表、志愿者、观察员的报名状态（不能修改为已缴费）';
+        $approveReg->save();
+
+        $approvePay = new Permission();
+        $approvePay->name = 'approve-regs-pay';
+        $approvePay->display_name = '报名缴费审核';
+        $approvePay->description = '修改代表、志愿者、观察员的报名状态为已缴费（需要拥有报名信息审核权限）';
+        $approvePay->save();
+
+        $editCom = new Permission();
+        $editCom->name = 'edit-committees';
+        $editCom->display_name = '委员会管理';
+        $editCom->description = '添加、删除、编辑委员会';
+        $editCom->save();
+
+        $editSchool = new Permission();
+        $editSchool->name = 'edit-schools';
+        $editSchool->display_name = '学校管理';
+        $editSchool->description = '添加、删除、编辑学校';
+        $editSchool->save();*/
+
+
+        $editUser = Permission::find(1);
+        $editRole = Permission::find(2);
+        $viewReg = Permission::find(3);
+        $editReg = Permission::find(4);
+        $approveReg = Permission::find(5);
+        $approvePay = Permission::find(6);
+        $editCom = Permission::find(7);
+        $editSchool = Permission::find(8);
+
+        /*$sysadmin = new Role();
+        $sysadmin->name = 'sysadmin';
+        $sysadmin->display_name = '系统管理员';
+        $sysadmin->description = '包括所有权限。一般不应使用此角色而应使用若干子角色结合。';
+        $sysadmin->save();*/
+
+        $sysadmin = Role::find(1);
+
+        $sysadmin->attachPermissions(array($editUser, $editRole, $viewReg, $editReg, $approveReg, $approvePay, $editCom, $editSchool));
+        User::where('email', '=', 'yixuan@bjmun.org')->first()->attachRole($sysadmin);
+
     }
 
     public function test()

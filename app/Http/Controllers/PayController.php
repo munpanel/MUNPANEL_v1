@@ -27,14 +27,14 @@ class PayController extends Controller
     public function payNotify(Request $request)
     {
         //TO UPDATE: verification for security purposes (Teegon is still working on it. Update after they update lol). Payment status is strongly recommended to be manually checked now.
-        //file_put_contents("/var/www/munpanel/storage/t", 'a'.var_export($request,true));
+        file_put_contents("/var/www/munpanel/storage/t", 'a'.var_export($request,true));
         $amount = $request->amount;
-        // VERIFY AMOUNT
-        if (Auth::user()->invoiceAmount() != $amount)
-            return "ERROR";
-        // END VERIFICATION
         $meta = json_decode($request->metadata);
         $user = User::find($meta->uid);
+        //VERIFY AMOUNT
+        if ($user->invoiceAmount() != $amount)
+            return "ERROR";
+        //END VERIFICATION
         $specific = $user->specific();
         $specific->status = 'paid';
         $specific->save();

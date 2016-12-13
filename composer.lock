@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "a45b9bb5045b49aa2373847a8887ad60",
-    "content-hash": "89a4dbd1f2bdf938674a26ee204953d5",
+    "hash": "5c3e3f252a3dba36ec72c95341f249e4",
+    "content-hash": "1c1e680b9cd9edcb0c520f62dc62947e",
     "packages": [
         {
             "name": "classpreloader/classpreloader",
@@ -223,71 +223,6 @@
             "time": "2016-05-11 00:36:29"
         },
         {
-            "name": "graham-campbell/htmlmin",
-            "version": "v4.4.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/GrahamCampbell/Laravel-HTMLMin.git",
-                "reference": "31a3101a7ff58a62250d77d61cd2516e55683b24"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/GrahamCampbell/Laravel-HTMLMin/zipball/31a3101a7ff58a62250d77d61cd2516e55683b24",
-                "reference": "31a3101a7ff58a62250d77d61cd2516e55683b24",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/contracts": "5.1.*|5.2.*|5.3.*",
-                "illuminate/filesystem": "5.1.*|5.2.*|5.3.*",
-                "illuminate/http": "5.1.*|5.2.*|5.3.*",
-                "illuminate/routing": "5.1.*|5.2.*|5.3.*",
-                "illuminate/support": "5.1.*|5.2.*|5.3.*",
-                "illuminate/view": "5.1.*|5.2.*|5.3.*",
-                "mrclay/minify": "^2.2",
-                "php": ">=5.5.9"
-            },
-            "require-dev": {
-                "graham-campbell/testbench": "^3.1",
-                "mockery/mockery": "^0.9.4",
-                "phpunit/phpunit": "^4.8|^5.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "4.4-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "GrahamCampbell\\HTMLMin\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Graham Campbell",
-                    "email": "graham@alt-three.com"
-                }
-            ],
-            "description": "HTMLMin Is A Simple HTML Minifier For Laravel 5",
-            "keywords": [
-                "Graham Campbell",
-                "GrahamCampbell",
-                "Laravel HTMLMin",
-                "Laravel-HTMLMin",
-                "framework",
-                "html",
-                "html minifier",
-                "htmlmin",
-                "laravel",
-                "minifier"
-            ],
-            "time": "2016-08-28 09:57:28"
-        },
-        {
             "name": "jakub-onderka/php-console-color",
             "version": "0.1",
             "source": {
@@ -376,20 +311,20 @@
         },
         {
             "name": "jeremeamia/SuperClosure",
-            "version": "2.2.0",
+            "version": "2.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jeremeamia/super_closure.git",
-                "reference": "29a88be2a4846d27c1613aed0c9071dfad7b5938"
+                "reference": "443c3df3207f176a1b41576ee2a66968a507b3db"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jeremeamia/super_closure/zipball/29a88be2a4846d27c1613aed0c9071dfad7b5938",
-                "reference": "29a88be2a4846d27c1613aed0c9071dfad7b5938",
+                "url": "https://api.github.com/repos/jeremeamia/super_closure/zipball/443c3df3207f176a1b41576ee2a66968a507b3db",
+                "reference": "443c3df3207f176a1b41576ee2a66968a507b3db",
                 "shasum": ""
             },
             "require": {
-                "nikic/php-parser": "^1.2|^2.0",
+                "nikic/php-parser": "^1.2|^2.0|^3.0",
                 "php": ">=5.4",
                 "symfony/polyfill-php56": "^1.0"
             },
@@ -399,7 +334,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.2-dev"
+                    "dev-master": "2.3-dev"
                 }
             },
             "autoload": {
@@ -430,7 +365,7 @@
                 "serialize",
                 "tokenizer"
             ],
-            "time": "2015-12-05 17:17:57"
+            "time": "2016-12-07 09:37:55"
         },
         {
             "name": "laravel/framework",
@@ -762,16 +697,16 @@
         },
         {
             "name": "maatwebsite/excel",
-            "version": "2.1.7",
+            "version": "2.1.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Maatwebsite/Laravel-Excel.git",
-                "reference": "55d18b6a99b30b9003c2f174cc3ecd9ca79f1bf5"
+                "reference": "d9c398f7eba0ac9caf9c104dd0d55bd6a5ff231e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Maatwebsite/Laravel-Excel/zipball/55d18b6a99b30b9003c2f174cc3ecd9ca79f1bf5",
-                "reference": "55d18b6a99b30b9003c2f174cc3ecd9ca79f1bf5",
+                "url": "https://api.github.com/repos/Maatwebsite/Laravel-Excel/zipball/d9c398f7eba0ac9caf9c104dd0d55bd6a5ff231e",
+                "reference": "d9c398f7eba0ac9caf9c104dd0d55bd6a5ff231e",
                 "shasum": ""
             },
             "require": {
@@ -825,7 +760,7 @@
                 "import",
                 "laravel"
             ],
-            "time": "2016-10-18 16:43:26"
+            "time": "2016-12-09 19:11:09"
         },
         {
             "name": "monolog/monolog",
@@ -904,51 +839,6 @@
                 "psr-3"
             ],
             "time": "2016-11-26 00:15:39"
-        },
-        {
-            "name": "mrclay/minify",
-            "version": "2.3.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/mrclay/minify.git",
-                "reference": "f4cb31135d288f951bb0af1f23a03d4c00ba9446"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/mrclay/minify/zipball/f4cb31135d288f951bb0af1f23a03d4c00ba9446",
-                "reference": "f4cb31135d288f951bb0af1f23a03d4c00ba9446",
-                "shasum": ""
-            },
-            "require": {
-                "ext-pcre": "*",
-                "php": ">=5.2.1"
-            },
-            "require-dev": {
-                "tubalmartin/cssmin": "~2.4.8"
-            },
-            "suggest": {
-                "tubalmartin/cssmin": "Support minify with CSSMin (YUI PHP port)"
-            },
-            "type": "library",
-            "autoload": {
-                "classmap": [
-                    "min/lib/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Stephen Clay",
-                    "email": "steve@mrclay.org",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Minify is a PHP5 app that helps you follow several rules for client-side performance. It combines multiple CSS or Javascript files, removes unnecessary whitespace and comments, and serves them with gzip encoding and optimal client-side cache headers",
-            "homepage": "http://code.google.com/p/minify/",
-            "time": "2016-03-08 11:49:57"
         },
         {
             "name": "mtdowling/cron-expression",
@@ -2451,16 +2341,16 @@
         },
         {
             "name": "yajra/laravel-datatables-oracle",
-            "version": "v6.22.2",
+            "version": "v6.22.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yajra/laravel-datatables.git",
-                "reference": "18aeddbb091d27d84e4c855d59f0362d2da9f97b"
+                "reference": "3f3f353f010542e5360d1412bb846189ebc6d342"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yajra/laravel-datatables/zipball/18aeddbb091d27d84e4c855d59f0362d2da9f97b",
-                "reference": "18aeddbb091d27d84e4c855d59f0362d2da9f97b",
+                "url": "https://api.github.com/repos/yajra/laravel-datatables/zipball/3f3f353f010542e5360d1412bb846189ebc6d342",
+                "reference": "3f3f353f010542e5360d1412bb846189ebc6d342",
                 "shasum": ""
             },
             "require": {
@@ -2507,7 +2397,7 @@
                 "laravel4",
                 "laravel5"
             ],
-            "time": "2016-12-01 02:54:52"
+            "time": "2016-12-07 08:59:09"
         },
         {
             "name": "zizaco/entrust",
@@ -3288,16 +3178,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "5.7.2",
+            "version": "5.7.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "336aff0ac52e306c98e7455bc3e8d7b0bf777a5e"
+                "reference": "de164acc2f2bb0b79beb892a36260264b2a03233"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/336aff0ac52e306c98e7455bc3e8d7b0bf777a5e",
-                "reference": "336aff0ac52e306c98e7455bc3e8d7b0bf777a5e",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/de164acc2f2bb0b79beb892a36260264b2a03233",
+                "reference": "de164acc2f2bb0b79beb892a36260264b2a03233",
                 "shasum": ""
             },
             "require": {
@@ -3308,7 +3198,7 @@
                 "ext-xml": "*",
                 "myclabs/deep-copy": "~1.3",
                 "php": "^5.6 || ^7.0",
-                "phpspec/prophecy": "^1.3.1",
+                "phpspec/prophecy": "^1.6.2",
                 "phpunit/php-code-coverage": "^4.0.3",
                 "phpunit/php-file-iterator": "~1.4",
                 "phpunit/php-text-template": "~1.2",
@@ -3366,20 +3256,20 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2016-12-03 08:33:00"
+            "time": "2016-12-09 02:48:53"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
-            "version": "3.4.2",
+            "version": "3.4.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit-mock-objects.git",
-                "reference": "90a08f5deed5f7ac35463c161f2e8fa0e5652faf"
+                "reference": "3ab72b65b39b491e0c011e2e09bb2206c2aa8e24"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit-mock-objects/zipball/90a08f5deed5f7ac35463c161f2e8fa0e5652faf",
-                "reference": "90a08f5deed5f7ac35463c161f2e8fa0e5652faf",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit-mock-objects/zipball/3ab72b65b39b491e0c011e2e09bb2206c2aa8e24",
+                "reference": "3ab72b65b39b491e0c011e2e09bb2206c2aa8e24",
                 "shasum": ""
             },
             "require": {
@@ -3425,7 +3315,7 @@
                 "mock",
                 "xunit"
             ],
-            "time": "2016-11-27 07:52:03"
+            "time": "2016-12-08 20:27:08"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",

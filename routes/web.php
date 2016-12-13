@@ -84,7 +84,7 @@ Route::post('/pay/info', 'PayController@payInfo');
 Route::get('/pay/invoice', 'HomeController@invoice');
 Route::get('/pay/checkout.modal', 'HomeController@checkout');
 
-Route::get('/ajax/registrations', ['middleware' => ['permission:view-regs'], 'uses' => 'DatatablesController@registrations']);
+Route::get('/ajax/registrations', 'DatatablesController@registrations');
 Route::get('/ajax/users', ['middleware' => ['permission:edit-users'], 'uses' => 'DatatablesController@users']);
 Route::get('/ajax/schools', ['middleware' => ['permission:edit-schools'], 'uses' => 'DatatablesController@schools']);
 Route::get('/ajax/committees', ['middleware' => ['permission:edit-committees'], 'uses' => 'DatatablesController@committees']);

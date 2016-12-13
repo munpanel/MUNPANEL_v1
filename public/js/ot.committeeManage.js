@@ -20,7 +20,7 @@ $(document).ready(function() {
                 $modal.load($remote);
             });
             $(document).on('hidden.bs.modal', '#ajaxModal', function() {
-                $('#committee-table').dataTable().fnReloadAjax();
+                $('#committee-table').dataTable().fnReloadAjax(undefined, undefined, true);
             });
            //$('#committee-table_paginate').hide();
            $('#committee-table_length').hide();

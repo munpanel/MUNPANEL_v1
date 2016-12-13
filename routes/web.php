@@ -77,7 +77,7 @@ Route::get('/ot/delete/committee/{id}', ['middleware' => ['permission:edit-commi
 
 
 //Route::get('/regschools', 'UserController@regSchool');
-//Route::get('/test', 'UserController@test');
+Route::get('/test', 'UserController@test');
 Route::get('/createPermissions', 'UserController@createPermissions');
 
 Route::post('/pay/info', 'PayController@payInfo');

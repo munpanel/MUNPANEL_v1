@@ -36,7 +36,7 @@ $(document).ready(function() {
                     father.addClass('has-success'); 
             });
             $(document).on('hidden.bs.modal', '#ajaxModal', function() {
-                $('#registration-table').dataTable().fnReloadAjax();
+                $('#registration-table').dataTable().fnReloadAjax(undefined, undefined, true);
             });
            //$('#registration-table_paginate').hide();
            $('#registration-table_length').hide();

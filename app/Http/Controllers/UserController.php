@@ -48,7 +48,8 @@ class UserController extends Controller
             $del->email = $user->email;
         }
         $del->school_id = $request->school;
-        $del->status = 'reg';
+        if (Auth::user()->type != 'ot' || $del->status == null)
+            $del->status = 'reg';
         $del->gender = $request->gender;
         $del->sfz = $request->sfz;
         $del->grade = $request->grade;
@@ -87,7 +88,8 @@ class UserController extends Controller
             $vol->email = $user->email;
         }
         $vol->school_id = $request->school;
-        $vol->status = 'reg';
+        if (Auth::user()->type != 'ot' || $vol->status == null)
+            $vol->status = 'reg';
         $vol->gender = $request->gender;
         $vol->sfz = $request->sfz;
         $vol->grade = $request->grade;
@@ -124,7 +126,8 @@ class UserController extends Controller
             $obs->email = $user->email;
         }
         $obs->school_id = $request->school;
-        $obs->status = 'reg';
+        if (Auth::user()->type != 'ot' || $obs->status == null)
+            $obs->status = 'reg';
         $obs->gender = $request->gender;
         $obs->sfz = $request->sfz;
         $obs->grade = $request->grade;
@@ -347,6 +350,8 @@ if (($handle = fopen("/var/www/munpanel/test.csv", "r")) !== FALSE) {
 
     public function test()
     {
+        return Auth::user()->invoiceAmount();
+        return Auth::user()->invoiceItems();
         return "gou";
     }
 }

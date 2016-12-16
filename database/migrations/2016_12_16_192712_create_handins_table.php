@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateAssignmentNationTable extends Migration
+class CreateAssignmentDelegateTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,15 @@ class CreateAssignmentNationTable extends Migration
      */
     public function up()
     {
-        Schema::create('assignment_nation', function (Blueprint $table) {
-            $table->integer('committee_id')->unsigned();
-			$table->string('nation');
+        Schema::create('handins', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('user_id')->unsigned();
+            $table->integer('nation_id')->unsigned();
 	        $table->integer('assignment_id')->unsigned();
 			$table->mediumtext('assignment_content');
             $table->timestamps()->nullable();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('no action');
             $table->foreign('assignment_id')->references('id')->on('assignments')->onDelete('cascade');
-            $table->foreign(['committee_id', 'nation'])->references(['committee_id', 'name'])->on('nations')->onDelete('cascade');
         });
     }
 
@@ -31,6 +32,6 @@ class CreateAssignmentNationTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('assignment_nation');
+        Schema::dropIfExists('handins');
     }
 }

@@ -17,12 +17,12 @@ class CreateNationDelegateTable extends Migration
             $table->integer('user_id')->unsigned();
 	        $table->integer('school_id')->unsigned();
             $table->integer('committee_id')->unsigned();
-			$table->string('delegate_nation');
+			$table->string('nation_id');
             $table->timestamps()->nullable();
             $table->primary('user_id');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('school_id')->references('id')->on('schools')->onDelete('cascade');
-            $table->foreign(['committee_id', 'delegate_nation'])->references(['committee_id', 'name'])->on('nations')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('no action');
+            $table->foreign('school_id')->references('id')->on('schools')->onDelete('no action');
+            $table->foreign('nation_id')->references('id')->on('nations')->onDelete('cascade');
         });
     }
 

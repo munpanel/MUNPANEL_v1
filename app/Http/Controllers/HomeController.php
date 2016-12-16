@@ -199,7 +199,7 @@ class HomeController extends Controller
             return view('error', ['msg' => 'Please register first.']);
         if (Auth::user()->specific()->status != 'oVerified' && Auth::user()->specific()->status != 'paid')
             return view('error', ['msg' =>'You have to be verified by the Organizing Team first.']);
-        return view('invoice');
+        return view('invoice', ['invoiceItems' => Auth::user()->invoiceItems(), 'invoiceAmount' => Auth::user()->invoiceAmount()]);
     }
 
     public function checkout()

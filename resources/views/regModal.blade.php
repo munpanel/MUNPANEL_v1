@@ -11,7 +11,11 @@
           <div class="modal-body">
             <div class="row">
               <div class="col-sm-12 b-r">
+              @if (Auth::user()->type == 'ot')
+              <div class="alert alert-warning"><b>代表、志愿者，任选一项。保存任何一项将自动清空另一项信息。组织团队保存表单将不修改原报名状态。</b></div>
+              @else
               <div class="alert alert-warning"><b>代表、志愿者，任选一项。保存任何一项将自动清空另一项信息。保存将自动重置报名状态为等待学校审核。</b></div>
+              @endif
               <form role="form" id="delform" data-validate="parsley"><!--action="{{ secure_url('/saveRegDel') }}" method="post"-->
                 {{ csrf_field() }}
                 @if (!is_null($id))
@@ -411,7 +415,9 @@ $('#delform').submit(function(e){
         $.post("{{ secure_url('/saveRegDel') }}", $('#delform').serialize(), function(receivedData){
             //if (receivedData == "success")
                 $('#ajaxModal').modal('hide');
-                location.reload();
+                @if (Auth::user()->type != 'ot')
+                location.reaload();
+                @endif
             //useTheResponseData(receivedData);
         });
     }
@@ -422,7 +428,9 @@ $('#volform').submit(function(e){
         $.post("{{ secure_url('/saveRegVol') }}", $('#volform').serialize(), function(receivedData){
             //if (receivedData == "success")
                 $('#ajaxModal').modal('hide');
-                location.reload();
+                @if (Auth::user()->type != 'ot')
+                location.reaload();
+                @endif
            //useTheResponseData(receivedData);
         });
     }
@@ -433,7 +441,9 @@ $('#obsform').submit(function(e){
         $.post("{{ secure_url('/saveRegObs') }}", $('#obsform').serialize(), function(receivedData){
             //if (receivedData == "success")
                 $('#ajaxModal').modal('hide');
-                location.reload();
+                @if (Auth::user()->type != 'ot')
+                location.reaload();
+                @endif
             //useTheResponseData(receivedData);
         });
     }

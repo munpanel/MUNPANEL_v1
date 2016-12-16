@@ -34,6 +34,9 @@ $(document).ready(function() {
                 $modal.modal();
                 $modal.load($remote);
             });
+            $(document).on('hidden.bs.modal', '#ajaxModal', function() {
+                $('#registration-table').dataTable().fnReloadAjax(undefined, undefined, true);
+            });
            //$('#registration-table_paginate').hide();
            $('#registration-table_length').hide();
            $('.dataTables_filter').hide();

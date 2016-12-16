@@ -62,21 +62,17 @@
               </tr>
             </thead>
             <tbody>
+              @foreach($invoiceItems as $item)
               <tr>
-                <td>1</td>
-                <td>BJMUNC 2017会费</td>
-                <td>¥300.00</td>
-                <td>¥300.00</td>
+                <td>{{$item[0]}}</td>
+                <td>{{$item[1]}}</td>
+                <td>¥{{$item[2]}}.00</td>
+                <td>¥{{$item[0] * $item[2]}}.00</td>
               </tr>
-              <tr>
-                <td>1</td>
-                <td>21世纪饭店住宿费</td>
-                <td>¥500.00</td>
-                <td>¥500.00</td>
-              </tr>
+              @endforeach
               <tr>
                 <td colspan="3" class="text-right no-border"><strong>总计</strong></td>
-                <td><strong>¥800.00</strong></td>
+                <td><strong>¥{{$invoiceAmount}}.00</strong></td>
               </tr>
             </tbody>
           </table>

@@ -39,6 +39,7 @@
       })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
       ga('create', "{{Config::get('analytics.trackingID')}}", 'auto');
+      ga('set', 'userId', {{Auth::user()->id}});
       ga('send', 'pageview');
 
     </script>

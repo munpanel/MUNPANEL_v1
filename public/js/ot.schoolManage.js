@@ -21,7 +21,7 @@ $(document).ready(function() {
                 $modal.load($remote);
             });
             $(document).on('hidden.bs.modal', '#ajaxModal', function() {
-                $('#school-table').dataTable().fnReloadAjax();
+                $('#school-table').dataTable().fnReloadAjax(undefined, undefined, true);
             });
            //$('#school-table_paginate').hide();
            $('#school-table_length').hide();

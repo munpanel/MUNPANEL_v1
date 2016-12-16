@@ -22,7 +22,7 @@ $(document).ready(function() {
                 $modal.load($remote);
             });
             $(document).on('hidden.bs.modal', '#ajaxModal', function() {
-                $('#user-table').dataTable().fnReloadAjax();
+                $('#user-table').dataTable().fnReloadAjax(undefined, undefined, true);
             });
            //$('#user-table_paginate').hide();
            $('#user-table_length').hide();

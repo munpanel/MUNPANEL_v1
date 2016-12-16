@@ -61,6 +61,8 @@ class DatatablesController extends Controller
             //TO-DO: Observers
         }
         else if ($user->type=='ot'){
+            if (!Auth::user()->can('view-regs'))
+                return "ERROR";
             $result = new Collection;
             $delegates = Delegate::with(['school' => function($q) {$q->select('name', 'id');}, 'user' => function($q) {$q->select('name', 'id');}, 'committee' => function($q) {$q->select('name', 'id');}])->get(['user_id', 'school_id', 'committee_id', 'status', 'partnername']);//->select(['user_id', 'name', 'school', 'committee', 'partnername']);
             foreach ($delegates as $delegate)

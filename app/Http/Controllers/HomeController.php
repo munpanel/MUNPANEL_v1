@@ -105,6 +105,8 @@ class HomeController extends Controller
         if ((!is_null($specific)) && Auth::user()->type != 'ot')
             if ($specific->status == 'oVerified' || $specific->status == 'paid')
                 $changable = false;
+        if (Auth::user()->type == 'school' && Config::get('munpanel.registration_school_changable'))
+            $changable = true;
         return view('regModal', ['committees' => Committee::all(), 'schools' => School::all(), 'id' => $id, 'user' => $user, 'delegate' => $user->delegate, 'volunteer' => $user->volunteer, 'observer' => $user->observer, 'changable' => $changable]);
     }
 

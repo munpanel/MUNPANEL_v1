@@ -20,6 +20,8 @@
               <div class="alert alert-warning"><b>代表、志愿者，任选一项。保存任何一项将自动清空另一项信息。组织团队保存表单将不修改原报名状态。</b></div>
               @elseif ($changable)
               <div class="alert alert-warning"><b>代表、志愿者，任选一项。保存任何一项将自动清空另一项信息。保存将自动重置报名状态为等待学校审核。</b></div>
+              @elseif (Config::get('munpanel.registration_school_changable'))
+              <div class="alert alert-warning"><b>当前为只读状态，如需编辑请联系贵校社团管理层。</b></div>
               @else
               <div class="alert alert-warning"><b>当前为只读状态，如需编辑请联系official@bjmun.org。</b></div>
               @endif
@@ -55,7 +57,7 @@
                 </div>
                 <div class="form-group">
                   <label>学校</label>
-                  <select name="school" class="form-control m-b" data-required="true" {{$changable?'':'disabled'}}>
+                  <select name="school" class="form-control m-b" data-required="true" {{$changable&&(Auth::user()->type != 'school')?'':'disabled'}}>
                     <option value="">请选择</option>
                     @foreach ($schools as $school)
                       @if (isset($delegate))
@@ -182,6 +184,8 @@
               <div class="alert alert-warning"><b>代表、志愿者，任选一项。保存任何一项将自动清空另一项信息。组织团队保存表单将不修改原报名状态。</b></div>
               @elseif ($changable)
               <div class="alert alert-warning"><b>代表、志愿者，任选一项。保存任何一项将自动清空另一项信息。保存将自动重置报名状态为等待学校审核。</b></div>
+              @elseif (Config::get('munpanel.registration_school_changable'))
+              <div class="alert alert-warning"><b>当前为只读状态，如需编辑请联系贵校社团管理层。</b></div>
               @else
               <div class="alert alert-warning"><b>当前为只读状态，如需编辑请联系official@bjmun.org。</b></div>
               @endif
@@ -202,7 +206,7 @@
                 </div>
                 <div class="form-group">
                   <label>学校</label>
-                  <select name="school" class="form-control m-b" data-required="true" {{$changable?'':'disabled'}}>
+                  <select name="school" class="form-control m-b" data-required="true" {{$changable&&(Auth::user()->type != 'school')?'':'disabled'}}>
                     <option value="">请选择</option>
                     @foreach ($schools as $school)
                       @if (isset($volunteer))

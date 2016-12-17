@@ -214,4 +214,13 @@ class HomeController extends Controller
     {
         return view('checkoutModal');
     }
+    
+    public function assignment()
+    {
+        if (Auth::user()->type == 'unregistered')
+            return view('error', ['msg' => '403 您不是参会代表，无权访问该页面！']);
+        if (Auth::user()->specific()->status != 'paid')
+            return view('error', ['msg' => '403 请先缴清会费！']);
+        return view('assignment');
+    }
 }

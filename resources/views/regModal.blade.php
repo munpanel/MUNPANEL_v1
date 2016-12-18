@@ -2,19 +2,28 @@
       <div class="modal-content">
 <header class="header bg-dark bg-gradient">
           <ul class="nav nav-tabs">
+            @if($changable || $user->type == 'delegate')
             <li class="{{ $user->type == 'delegate' || $user->type == 'unregistered' ? 'active' : '' }}"><a href="#delegate" data-toggle="tab" aria-expanded="true">代表</a></li>
+            @endif
+            @if($changable || $user->type == 'volunteer')
             <li class="{{ $user->type == 'volunteer' ? 'active' : '' }}"><a href="#volunteer" data-toggle="tab" aria-expanded="false">志愿者</a></li>
+            @endif
           </ul>
         </header>
       <div class="tab-content">
+        @if($changable || $user->type == 'delegate')
         <section class="tab-pane {{ $user->type == 'delegate' || $user->type == 'unregistered' ? 'active' : '' }}" id="delegate">
           <div class="modal-body">
             <div class="row">
               <div class="col-sm-12 b-r">
               @if (Auth::user()->type == 'ot')
               <div class="alert alert-warning"><b>代表、志愿者，任选一项。保存任何一项将自动清空另一项信息。组织团队保存表单将不修改原报名状态。</b></div>
-              @else
+              @elseif ($changable)
               <div class="alert alert-warning"><b>代表、志愿者，任选一项。保存任何一项将自动清空另一项信息。保存将自动重置报名状态为等待学校审核。</b></div>
+              @elseif (Config::get('munpanel.registration_school_changable'))
+              <div class="alert alert-warning"><b>当前为只读状态，如需编辑请联系贵校社团管理层。</b></div>
+              @else
+              <div class="alert alert-warning"><b>当前为只读状态，如需编辑请联系official@bjmun.org。</b></div>
               @endif
               <form role="form" id="delform" data-validate="parsley"><!--action="{{ secure_url('/saveRegDel') }}" method="post"-->
                 {{ csrf_field() }}
@@ -33,7 +42,7 @@
                 </div>
                 <div class="form-group">
                   <label>委员会</label>
-                  <select name="committee" class="form-control m-b" data-required="true">
+                  <select name="committee" class="form-control m-b" data-required="true" {{$changable?'':'disabled'}}>
                     <option value="">请选择</option>
                     @foreach ($committees as $committee)
                       @if (isset($delegate))
@@ -48,7 +57,7 @@
                 </div>
                 <div class="form-group">
                   <label>学校</label>
-                  <select name="school" class="form-control m-b" data-required="true">
+                  <select name="school" class="form-control m-b" data-required="true" {{$changable&&(Auth::user()->type != 'school')?'':'disabled'}}>
                     <option value="">请选择</option>
                     @foreach ($schools as $school)
                       @if (isset($delegate))
@@ -63,7 +72,7 @@
                 </div>
                 <div class="form-group">
                   <label>年级</label>
-                  <select name="grade" class="form-control m-b" data-required="true">
+                  <select name="grade" class="form-control m-b" data-required="true" {{$changable?'':'disabled'}}>
                     <option value="">请选择</option>
                     <option value="1" {{ isset($delegate) && $delegate->grade == 1 ? 'selected' : '' }}>小学及以下</option>
                     <option value="2" {{ isset($delegate) && $delegate->grade == 2 ? 'selected' : '' }}>初一</option>
@@ -77,33 +86,34 @@
                 </div>
                 <div class="form-group">
                   <label>身份证号</label>
-                  <input type="text" name="sfz" class="form-control" value="{{ isset($delegate) ? $delegate->sfz : '' }}" data-required="true">
+                  <input type="text" name="sfz" class="form-control" value="{{ isset($delegate) ? $delegate->sfz : '' }}" data-required="true" {{$changable?'':'disabled'}}>
                 </div>
                 <div class="form-group">
                   <label>QQ</label>
-                  <input type="text" name="qq" class="form-control" value="{{ isset($delegate) ? $delegate->qq : '' }}" data-required="true">
+                  <input type="text" name="qq" class="form-control" value="{{ isset($delegate) ? $delegate->qq : '' }}" data-required="true" {{$changable?'':'disabled'}}>
                 </div>
                 <div class="form-group">
                   <label>微信</label>
-                  <input type="text" name="wechat" class="form-control" value="{{ isset($delegate) ? $delegate->wechat : '' }}" data-required="true">
+                  <input type="text" name="wechat" class="form-control" value="{{ isset($delegate) ? $delegate->wechat : '' }}" data-required="true" {{$changable?'':'disabled'}}>
                 </div>
                 <div class="form-group">
                   <label>搭档姓名（无则空）</label>
-                  <input type="text" name="partnername" class="form-control" value="{{ isset($delegate) ? $delegate->partnername : '' }}">
+                  <input type="text" name="partnername" class="form-control" value="{{ isset($delegate) ? $delegate->partnername : '' }}" {{$changable?'':'disabled'}}>
                 </div>
                 <div class="form-group">
                   <label>室友姓名（无则空）</label>
-                  <input type="text" name="roommatename" class="form-control" value="{{ isset($delegate) ? $delegate->roommatename : '' }}">
+                  <input type="text" name="roommatename" class="form-control" value="{{ isset($delegate) ? $delegate->roommatename : '' }}" {{$changable?'':'disabled'}}>
                 </div>
                 <div class="form-group">
                   <label>电话</label>
-                  <input type="text" name="tel" class="form-control" value="{{ isset($delegate) ? $delegate->tel : '' }}" data-required="true">
+                  <input type="text" name="tel" class="form-control" value="{{ isset($delegate) ? $delegate->tel : '' }}" data-required="true" {{$changable?'':'disabled'}}>
                 </div>
                 <div class="form-group">
                   <label>家长电话</label>
-                  <input type="text" name="parenttel" class="form-control" value="{{ isset($delegate) ? $delegate->parenttel : '' }}" data-required="true">
+                  <input type="text" name="parenttel" class="form-control" value="{{ isset($delegate) ? $delegate->parenttel : '' }}" data-required="true" {{$changable?'':'disabled'}}>
                 </div>
                 <div class="form-group">
+                  @if ($changable)
                   <label>性别</label>
                   <div class="btn-group" data-toggle="buttons">
                     @if (isset($delegate) && $delegate->gender == 'male')
@@ -125,6 +135,10 @@
                       </label>
                     @endif
                   </div>
+                  @else
+                  {{$delegate->gender == 'male' ? '性别男；':'性别女；'}}
+                  @endif
+                  @if ($changable)
                   <label>是否住宿</label>
                   <div class="btn-group" data-toggle="buttons">
                     @if (isset($delegate) && $delegate->accomodate == 1)
@@ -146,20 +160,35 @@
                       </label>
                     @endif
                   </div>
+                  @else
+                  {{$delegate->accomodate ? '住宿':'不住宿'}}
+                  @endif
                 </div>
+                @if ($changable)
                 <div class="checkbox m-t-lg">
                   <button type="submit" class="btn btn-sm btn-success pull-right text-uc m-t-n-xs"><strong>保存</strong></button>
-                </div>                
+                </div>         
+                @endif       
               </form>
               </div>
             </div>
           </div>          
         </section>
+        @endif
+        @if($changable || $user->type == 'volunteer')
         <section class="tab-pane {{ $user->type == 'volunteer' ? 'active' : '' }}" id="volunteer">
           <div class="modal-body">
             <div class="row">
               <div class="col-sm-12 b-r">
+              @if (Auth::user()->type == 'ot')
+              <div class="alert alert-warning"><b>代表、志愿者，任选一项。保存任何一项将自动清空另一项信息。组织团队保存表单将不修改原报名状态。</b></div>
+              @elseif ($changable)
               <div class="alert alert-warning"><b>代表、志愿者，任选一项。保存任何一项将自动清空另一项信息。保存将自动重置报名状态为等待学校审核。</b></div>
+              @elseif (Config::get('munpanel.registration_school_changable'))
+              <div class="alert alert-warning"><b>当前为只读状态，如需编辑请联系贵校社团管理层。</b></div>
+              @else
+              <div class="alert alert-warning"><b>当前为只读状态，如需编辑请联系official@bjmun.org。</b></div>
+              @endif
               <form role="form" id="volform" data-validate="parsley"><!--action="{{ secure_url('/saveRegDel') }}" method="post"-->
                 {{ csrf_field() }}
                 @if (!is_null($id))
@@ -177,7 +206,7 @@
                 </div>
                 <div class="form-group">
                   <label>学校</label>
-                  <select name="school" class="form-control m-b" data-required="true">
+                  <select name="school" class="form-control m-b" data-required="true" {{$changable&&(Auth::user()->type != 'school')?'':'disabled'}}>
                     <option value="">请选择</option>
                     @foreach ($schools as $school)
                       @if (isset($volunteer))
@@ -192,7 +221,7 @@
                 </div>
                 <div class="form-group">
                   <label>年级</label>
-                  <select name="grade" class="form-control m-b" data-required="true">
+                  <select name="grade" class="form-control m-b" data-required="true" {{$changable?'':'disabled'}}>
                     <option value="">请选择</option>
                     <option value="1" {{ isset($volunteer) && $volunteer->grade == 1 ? 'selected' : '' }}>小学及以下</option>
                     <option value="2" {{ isset($volunteer) && $volunteer->grade == 2 ? 'selected' : '' }}>初一</option>
@@ -206,29 +235,30 @@
                 </div>
                 <div class="form-group">
                   <label>身份证号</label>
-                  <input type="text" name="sfz" class="form-control" value="{{ isset($volunteer) ? $volunteer->sfz : '' }}" data-required="true">
+                  <input type="text" name="sfz" class="form-control" value="{{ isset($volunteer) ? $volunteer->sfz : '' }}" data-required="true" {{$changable?'':'disabled'}}>
                 </div>
                 <div class="form-group">
                   <label>QQ</label>
-                  <input type="text" name="qq" class="form-control" value="{{ isset($volunteer) ? $volunteer->qq : '' }}" data-required="true">
+                  <input type="text" name="qq" class="form-control" value="{{ isset($volunteer) ? $volunteer->qq : '' }}" data-required="true" {{$changable?'':'disabled'}}>
                 </div>
                 <div class="form-group">
                   <label>微信</label>
-                  <input type="text" name="wechat" class="form-control" value="{{ isset($volunteer) ? $volunteer->wechat : '' }}" data-required="true">
+                  <input type="text" name="wechat" class="form-control" value="{{ isset($volunteer) ? $volunteer->wechat : '' }}" data-required="true" {{$changable?'':'disabled'}}>
                 </div>
                 <div class="form-group">
                   <label>室友姓名（无则空）</label>
-                  <input type="text" name="roommatename" class="form-control" value="{{ isset($volunteer) ? $volunteer->roommatename : '' }}">
+                  <input type="text" name="roommatename" class="form-control" value="{{ isset($volunteer) ? $volunteer->roommatename : '' }}" {{$changable?'':'disabled'}}>
                 </div>
                 <div class="form-group">
                   <label>电话</label>
-                  <input type="text" name="tel" class="form-control" value="{{ isset($volunteer) ? $volunteer->tel : '' }}" data-required="true">
+                  <input type="text" name="tel" class="form-control" value="{{ isset($volunteer) ? $volunteer->tel : '' }}" data-required="true" {{$changable?'':'disabled'}}>
                 </div>
                 <div class="form-group">
                   <label>家长电话</label>
-                  <input type="text" name="parenttel" class="form-control" value="{{ isset($volunteer) ? $volunteer->parenttel : '' }}" data-required="true">
+                  <input type="text" name="parenttel" class="form-control" value="{{ isset($volunteer) ? $volunteer->parenttel : '' }}" data-required="true" {{$changable?'':'disabled'}}>
                 </div>
                 <div class="form-group">
+                  @if ($changable)
                   <label>性别</label>
                   <div class="btn-group" data-toggle="buttons">
                     @if (isset($volunteer) && $volunteer->gender == 'male')
@@ -250,6 +280,10 @@
                       </label>
                     @endif
                   </div>
+                  @else
+                  {{$volunteer->gender == 'male' ? '性别男；':'性别女'}}
+                  @endif
+                  @if ($changable)
                   <label>是否住宿</label>
                   <div class="btn-group" data-toggle="buttons">
                     @if (isset($volunteer) && $volunteer->accomodate == 1)
@@ -271,6 +305,9 @@
                       </label>
                     @endif
                   </div>
+                  @else
+                  {{$volunteer->accomodate ? '住宿':'不住宿'}}
+                  @endif
                 </div>
                 <div class="checkbox m-t-lg">
                   <button type="submit" class="btn btn-sm btn-success pull-right text-uc m-t-n-xs"><strong>保存</strong></button>
@@ -280,6 +317,7 @@
             </div>
           </div>
         </section>
+        @endif
         <section class="tab-pane {{ $user->type == 'observer' ? 'active' : '' }}" id="observer">
           <div class="modal-body">
             <div class="row">
@@ -408,6 +446,7 @@
         </div>
       </div><!-- /.modal-content -->
 </div>
+@if ($changable)
 <script>
 $('#delform').submit(function(e){
     e.preventDefault();
@@ -449,3 +488,4 @@ $('#obsform').submit(function(e){
     }
 });
 </script>
+@endif

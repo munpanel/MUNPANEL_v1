@@ -7,7 +7,8 @@ $(document).ready(function() {
             {data: 'details', name: 'details', orderable: false},
             {data: 'id', name: 'id', orderable: true},
             {data: 'name', name: 'name', orderable: false},
-            {data: 'uid', name: 'uid', orderable: true}
+            {data: 'uid', name: 'uid', orderable: true},
+            {data: 'statistics', name: 'statistics', orderable: false}
         ],
         fnInitComplete: function(oSettings, json) {
             $(document).on('click','.details-modal', function(e) {

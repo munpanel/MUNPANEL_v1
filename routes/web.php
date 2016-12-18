@@ -73,6 +73,7 @@ Route::get('/ot/delete/school/{id}', ['middleware' => ['permission:edit-schools'
 Route::get('/ot/delete/committee/{id}', ['middleware' => ['permission:edit-committees'], 'uses' => 'UserController@deleteCommittee']);
 
 
+//Route::get('/dais/assignments', 'HomeController@assignment');
 
 //Route::get('/regschools', 'UserController@regSchool');
 Route::get('/test', 'UserController@test');

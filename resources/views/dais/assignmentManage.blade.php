@@ -1,10 +1,12 @@
 @extends('layouts.app')
 @section('assignment_active', 'active')
 @section('content')
-    <!-- TODO: 制作并添加 JavaScript 脚本 -->
-      <header class="header b-b bg-white">          
+    <!-- TODO: 检查 /public/js/dais.assignmentManage.js -->
+      <header class="header b-b bg-white">      
+          <a href="{{secure_url('/ot/committeeDetails.modal/new')}}" class="btn btn-sm btn-success details-modal pull-right"><i class="fa fa-plus"></i> 新建</a>
           <p>BJMUNC2017 {{$committee->display_name}} 学术作业清单</p>
-        </header><section class="scrollable wrapper w-f">
+        </header>
+      <section class="scrollable wrapper w-f">
       <section class="panel">
                 <div class="table-responsive">
                   <table class="table table-striped m-b-none" id="assignment-table">

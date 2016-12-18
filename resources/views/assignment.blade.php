@@ -1,8 +1,8 @@
 @extends('layouts.app')
 @section('assignment_active', 'active')
 @section('content')
-      <header class="header b-b">          
-          <p>BJMUNC2017 &lt;committees.display_name&gt; 学术作业清单</p>
+      <header class="header b-b bg-white">          
+          <p>BJMUNC2017 {{$committee}} 学术作业清单</p>
         </header><section class="scrollable wrapper w-f">
       <section class="panel">
                 <div class="table-responsive">

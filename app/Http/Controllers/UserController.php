@@ -47,7 +47,8 @@ class UserController extends Controller
             $del->user_id = $user->id;
             $del->email = $user->email;
         }
-        $del->school_id = $request->school;
+        if (Auth::user()->type != 'school')
+            $del->school_id = $request->school;
         if (Auth::user()->type != 'ot' || $del->status == null)
             $del->status = 'reg';
         $del->gender = $request->gender;
@@ -87,7 +88,8 @@ class UserController extends Controller
             $vol->user_id = $user->id;
             $vol->email = $user->email;
         }
-        $vol->school_id = $request->school;
+        if (Auth::user()->type != 'school')
+            $vol->school_id = $request->school;
         if (Auth::user()->type != 'ot' || $vol->status == null)
             $vol->status = 'reg';
         $vol->gender = $request->gender;

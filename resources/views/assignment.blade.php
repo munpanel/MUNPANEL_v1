@@ -1,9 +1,9 @@
-@extends('layouts.app')
+ï»¿@extends('layouts.app')
 @section('assignment_active', 'active')
 @section('content')
-    <!-- TODO: ÖÆ×÷²¢Ìí¼Ó JavaScript ½Å±¾ -->
+    <!-- TODO: åˆ¶ä½œå¹¶æ·»åŠ  JavaScript è„šæœ¬ -->
       <header class="header b-b bg-white">          
-          <p>BJMUNC2017 {{$committee->display_name}} Ñ§Êõ×÷ÒµÇåµ¥</p>
+          <p>BJMUNC2017 {{$committee->display_name}} å­¦æœ¯ä½œä¸šæ¸…å•</p>
         </header><section class="scrollable wrapper w-f">
       <section class="panel">
                 <div class="table-responsive">
@@ -12,8 +12,8 @@
                       <tr>
                         <th width="30">#</th>
 			<th width="30"></th>
-                        <th>Ñ§Êõ×÷Òµ±êÌâ</th>
-                        <th>Ìá½»ÆÚÏŞ</th>
+                        <th>å­¦æœ¯ä½œä¸šæ ‡é¢˜</th>
+                        <th>æäº¤æœŸé™</th>
                         <th width="30"></th>
                       </tr>
                     </thead>

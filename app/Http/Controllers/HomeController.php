@@ -43,6 +43,10 @@ class HomeController extends Controller
             //return $del->count();
             return view('school.home', ['del' => $school->delegates->count(), 'vol' => $school->volunteers->count()]);
         }
+        else if ($type == 'dais')
+        {
+            return "Aloha Dais";
+        }
         else
         {
             $specific = Auth::user()->specific();

@@ -17,14 +17,12 @@ class CreateNationsTable extends Migration
 			$table->increments('id');
             $table->integer('committee_id')->unsigned();
 			$table->string('name');
-			$table->integer('nationgroup_id')->unsigned()->nullable();
 			$table->integer('conpetence')->unsigned()->default(1);
 			$table->boolean('veto_power')->default(false);
 			$table->boolean('attendance')->nullable();
-            $table->timestamps()->nullable();
+            $table->timestamps();
             $table->unique(['committee_id', 'name']);
             $table->foreign('committee_id')->references('id')->on('committees')->onDelete('cascade');
-            $table->foreign('nationgroup_id')->references('id')->on('nationgroups')->onDelete('set null');
         });
     }
 

@@ -225,7 +225,7 @@ class HomeController extends Controller
             return view('error', ['msg' => '403 您不是参会代表，无权访问该页面！']);
         if (Auth::user()->specific()->status != 'paid')
             return view('error', ['msg' => '403 请先缴清会费！']);
-        $committee = Auth::user()->specific()->committee();
+        $committee = Auth::user()->specific()->committee;
         return view('assignment', ['committee' => $committee]);
     }
 }

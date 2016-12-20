@@ -217,4 +217,19 @@ class DatatablesController extends Controller
         }
         return Datatables::of($result)->make(true);
     }
+    
+    public function assignments()
+    {
+        $result = new Collection;
+        $assignments = Assignment::get(['id', 'title', 'deadline']);
+        foreach($assignments as $assignment)
+        {
+            $result->push([
+                'id' => $assignment->id,
+                'details' => '<a href="assignmentDetail/'. $assignment->id.'" data-toggle="ajaxModal" id="'. $assignment.id.'" class="details-modal"><i class="fa fa-search-plus></i></a>"',
+                'title' => $assignment->title,
+                'deadline' => $assignment->deadline,
+            ])
+        }
+    }
 }

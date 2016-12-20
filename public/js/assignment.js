@@ -4,10 +4,10 @@ $(document).ready(function() {
         //serverSide: true,
         ajax: 'ajax/assignments',
         columns: [
-            {data: 'details', name: 'details', orderable: false},
             {data: 'id', name: 'id', orderable: true},
-            {data: 'title', name:'title', orderable: true},
-            {data: 'type', name: 'type', orderable: true},
+            {data: 'details', name: 'details', orderable: false},
+            {data: 'title', name:'title', orderable: false},
+            //{data: 'type', name: 'type', orderable: true},
             {data: 'deadline', name: 'deadline', orderable: true}
             
         ],
@@ -31,7 +31,7 @@ $(document).ready(function() {
            $('.dataTables_filter').hide();
            $('#assignment-table_info').appendTo($('#assignment-pageinfo'));
            $('#assignment-table').removeClass('no-footer');
-        },
+        },/*
         "fnDrawCallback": function( oSettings ) {
             $('#assignment-pagnination').empty();
             $('.paginate_button').each(function (i) {
@@ -49,7 +49,7 @@ $(document).ready(function() {
             "infoEmpty": "无记录",
             "infoFiltered": "(从 _MAX_ 条记录过滤)"
         },
-        "order": [[1, "asc"]],
+        "order": [[1, "asc"]],*/
     });
     var table=$('#assignment-table').DataTable();
     $("#assignment-length-select").change(function() {

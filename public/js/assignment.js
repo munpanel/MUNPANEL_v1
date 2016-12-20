@@ -26,7 +26,7 @@ $(document).ready(function() {
             $(document).on('hidden.bs.modal', '#ajaxModal', function() {
                 $('#assignment-table').dataTable().fnReloadAjax(undefined, undefined, true);
             });
-           //$('#assignment-table_paginate').hide();
+           /*$('#assignment-table_paginate').hide();
            $('#assignment-table_length').hide();
            $('.dataTables_filter').hide();
            $('#assignment-table_info').appendTo($('#assignment-pageinfo'));

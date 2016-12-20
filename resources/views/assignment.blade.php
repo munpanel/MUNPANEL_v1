@@ -11,9 +11,8 @@
     <link rel="stylesheet" href="{{secure_url('/css/bootstrap-editable.css')}}" type="text/css" />
 @endpush
 @section('content')
-    <!-- TODO: 制作并添加 JavaScript 脚本 -->
       <header class="header b-b bg-white">          
-          <p>BJMUNC2017 {{$committee->display_name}} 学术作业清单</p>
+          <p>BJMUNC2017&nbsp;&nbsp;{{$committee->display_name}}&nbsp;&nbsp;学术作业清单</p>
       </header>
       <section class="scrollable wrapper w-f">
         <section class="panel">
@@ -25,7 +24,7 @@
                   <th width="30"></th>
                   <th>学术作业标题</th>
                   <th>提交期限</th>
-                  <th width="30"></th>
+                  <!--th width="30"></th-->
                 </tr>
               </thead>
               <!-- tbody>

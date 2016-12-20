@@ -15,7 +15,7 @@
                     <tr>
                         <td width="35%">上交期限</td>
                         <!-- TODO: 插入日历 -->
-                        <td width="65%"><!--a href="#" id="deadline" data-type="text" data-pk="{{$assignment->id}}" data-url="{{secure_url('/dais/update/assignment/'.$assignment->id)}}" data-title="password" class="editable">{{$assignment->title}}</a--></td>
+                        <td width="65%"><input class="input-sm input-s datepicker-input form-control" type="text" size="16" value="12-02-2016" data-date-format="dd-mm-yyyy"><!--a href="#" id="deadline" data-type="text" data-pk="{{$assignment->id}}" data-url="{{secure_url('/dais/update/assignment/'.$assignment->id)}}" data-title="password" class="editable">{{$assignment->title}}</a--></td>
                     </tr>
                     <tr>         
                         <td width="35%">作业说明</td>

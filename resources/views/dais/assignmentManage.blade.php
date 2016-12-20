@@ -13,7 +13,7 @@
                     <thead>
                       <tr>
                         <th width="30">#</th>
-			<th width="30"></th>
+                        <th width="40">操作</th>
                         <th>学术作业标题</th>
                         <th>提交期限</th>
                         <th width="30"></th>
@@ -22,7 +22,7 @@
                     <tbody>
                       <tr>
                         <td>1</td>
-                        <td><a href="assign_detail.html"><i class="fa fa-search-plus"></i></a></td>
+                        <td><a href="assign_detail2.html"><i class="fa fa-pencil"></i></a>&nbsp;&nbsp;<a href="assign_detail.html"><i class="fa fa-folder-open"></i></a></td>
                         <td>Academic Test</td>
                         <td>Feb 1, 2016</td>
                         <td>
@@ -30,7 +30,7 @@
                         </td>
                       </tr>
                         <tr><td>2</td>
-                        <td><a href="assign_detail.html"><i class="fa fa-search-plus"></i></a></td>
+                        <td><a href="assign_detail2.html"><i class="fa fa-pencil"></i></a>&nbsp;&nbsp;<a href="assign_detail.html"><i class="fa fa-folder-open"></i></a></td>
                         <td>Position Paper<b class="badge pull-right">New Feedback</b></td>
                         <td>Feb 10, 2016</td>
                         <td>
@@ -38,7 +38,7 @@
                         </td>
                       </tr>
                         <tr><td>3</td>
-                        <td><a href="assign_detail2.html"><i class="fa fa-search-plus"></i></a></td>
+                        <td><a href="assign_detail2.html"><i class="fa fa-pencil"></i></a>&nbsp;&nbsp;<a href="assign_detail.html"><i class="fa fa-folder-open"></i></a></td>
                         <td>Topic Division</td>
                         <td>Feb 10, 2016</td>
                         <td>

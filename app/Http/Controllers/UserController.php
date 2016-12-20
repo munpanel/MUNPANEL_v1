@@ -49,6 +49,8 @@ class UserController extends Controller
         }
         if (Auth::user()->type != 'school')
             $del->school_id = $request->school;
+        else
+            $del->school_id = Auth::user()->school->id;
         if (Auth::user()->type != 'ot' || $del->status == null)
             $del->status = 'reg';
         $del->gender = $request->gender;
@@ -90,6 +92,8 @@ class UserController extends Controller
         }
         if (Auth::user()->type != 'school')
             $vol->school_id = $request->school;
+        else
+            $vol->school_id = Auth::user()->school->id;
         if (Auth::user()->type != 'ot' || $vol->status == null)
             $vol->status = 'reg';
         $vol->gender = $request->gender;

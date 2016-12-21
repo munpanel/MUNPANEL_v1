@@ -18,9 +18,9 @@
             <table class="table table-striped m-b-none" id="assignment-table">
               <thead>
                 <tr>
-                  <th width="30"></th>
-                  <th width="30">#</th>
-                  <th>学术作业标题</th>
+                  <th width="20"></th>
+                  <th width="20">#</th>
+                  <th width="55%">学术作业标题</th>
                   <th>提交期限</th>
                   <!--th width="30"></th-->
                 </tr>

@@ -37,7 +37,7 @@
                   </div>
                   <div id="collapseOne" class="panel-collapse in">
                     <div class="panel-body text-sm">
-                      <b>作业标题: </b>{{$assignment->title}}<br><b>提交对象: </b>All Delegates (以{{$assignment->subject_type == 'individual' ? '个人' : '国家'}}为单位)<br><b>提交形式: </b>{{$assignment->handin_type == 'upload' ? '文件上传' : '在线文本编辑器'}}<br><b>提交期限: </b>{{$assignment->deadline}}<br><b>提交时间: </b>{{$handin->updated_at}}
+                      <b>作业标题: </b>{{$assignment->title}}<br><b>提交对象: </b>All Delegates (以{{$assignment->subject_type == 'individual' ? '个人' : '国家'}}为单位)<br><b>提交形式: </b>{{$assignment->handin_type == 'upload' ? '文件上传' : '在线文本编辑器'}}<br><b>提交期限: </b>{{$assignment->deadline}}<br><b>最近一次提交: </b>{{$handin->user->name}}提交于{{$handin->updated_at}}
                     </div>
                   </div>
                 </div>
@@ -71,6 +71,7 @@
                <section class="panel bg-info lter no-borders">
                 <div class="panel-body">
                   <span class="h4">{{$assignment->title}}</span>
+                  <div class="pull-right">重新提交</div>
                   <div class="text-center padder m-t">
                     <i class="fa fa-file-text fa fa-4x"></i>
                   </div>

@@ -15,11 +15,11 @@ class CreateHandinsTable extends Migration
     {
         Schema::create('handins', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id')->nullable()->unsigned(); //Choose one from two according to different type of subjects
-            $table->integer('nation_id')->nullable()->unsigned(); //Choose one from two according to different type of subjects
-	        $table->integer('assignment_id')->unsigned();
-			$table->enum('handin_type', ['upload', 'text']); //If upload, assignment_content = file location
-			$table->mediumtext('content');
+            $table->integer('user_id')->unsigned(); //无论何种提交类型，均强制记录提交者
+            $table->integer('nation_id')->nullable()->unsigned(); //对非国家单位的学测可留空
+            $table->integer('assignment_id')->unsigned();
+	    $table->enum('handin_type', ['upload', 'text']); //If upload, assignment_content = file location
+            $table->mediumtext('content');
             $table->string('remark');
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('no action');

@@ -236,9 +236,9 @@ class HomeController extends Controller
         //TO-DO: Verify if it's the assignment of the user.
         $assignment = Assignment::findOrFail($id);
         if ($assignment->subject_type == 'nation')
-            $handin = Handin::where('assignment_id', $id)->where('nation_id', Auth::user()->delegate->nation->id)->first();
+            $handin = Handin::where('assignment_id', $id)->where('nation_id', Auth::user()->delegate->nation->id)->orderBy('id', 'desc')->first();
         else
-            $handin = Handin::where('assignment_id', $id)->where('user_id', Auth::user()->id)->first();
+            $handin = Handin::where('assignment_id', $id)->where('user_id', Auth::user()->id)->orderBy('id', 'desc')->first();
         if (!is_null($handin))
         {
             return view('assignmentHandinInfo', ['assignment' => $assignment, 'handin' => $handin]);
@@ -263,8 +263,8 @@ class HomeController extends Controller
             $assignment = Assignment::findOrFail($id);
             if ($assignment->subject_type == 'nation')
                 $handin->nation_id = Auth::user()->delegate->nation->id;
-            else
-                $handin->user_id = Auth::user()->id;
+            //else
+            $handin->user_id = Auth::user()->id;
             $handin->content = $request->file->store('assignmentHandins');
             $handin->assignment_id = $id;
             $handin->handin_type = 'upload';
@@ -282,9 +282,9 @@ class HomeController extends Controller
     {
         $assignment = Assignment::findOrFail($id);
         if ($assignment->subject_type == 'nation')
-            $handin = Handin::where('assignment_id', $id)->where('nation_id', Auth::user()->delegate->nation->id)->first();
+            $handin = Handin::where('assignment_id', $id)->where('nation_id', Auth::user()->delegate->nation->id)->orderBy('id', 'desc')->first();
         else
-            $handin = Handin::where('assignment_id', $id)->where('user_id', Auth::user()->id)->first();
+            $handin = Handin::where('assignment_id', $id)->where('user_id', Auth::user()->id)->orderBy('id', 'desc')->first();
         if (is_null($handin))
             return "ERROR";
         return response()->download(storage_path('/app/'.$handin->content));

@@ -100,14 +100,26 @@ class HomeController extends Controller
             return "error";
         else if (Auth::user()->type == 'school' && Auth::user()->school->id != $user->specific()->school->id)
             return "error";
+        $schools = array();
+        if (Auth::user()->type == 'ot')
+        {
+            $schools = School::all();
+            foreach ($schools as $school)
+            {
+                if ($school->user_id == 1)
+                    $school->name .= '(非成员校)';
+            }
+        }
+        else
+            $schools = School::where('user_id', '!=', 1)->get(); // Member Schools only
         $changable = Config::get('munpanel.registration_enabled') || (Auth::user()->type == 'ot');
         $specific = $user->specific();
         if ((!is_null($specific)) && Auth::user()->type != 'ot')
-            if ($specific->status == 'oVerified' || $specific->status == 'paid')
+            if ($specific->status == 'oVerified' || $specific->status == 'paid' || $specific->school->user_id == 1)
                 $changable = false;
         if (Auth::user()->type == 'school' && Config::get('munpanel.registration_school_changable'))
             $changable = true;
-        return view('regModal', ['committees' => Committee::all(), 'schools' => School::all(), 'id' => $id, 'user' => $user, 'delegate' => $user->delegate, 'volunteer' => $user->volunteer, 'observer' => $user->observer, 'changable' => $changable]);
+        return view('regModal', ['committees' => Committee::all(), 'schools' => $schools, 'id' => $id, 'user' => $user, 'delegate' => $user->delegate, 'volunteer' => $user->volunteer, 'observer' => $user->observer, 'changable' => $changable]);
     }
 
     public function regManage()

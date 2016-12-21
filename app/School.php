@@ -9,7 +9,7 @@ class School extends Model
     protected $fillable = array('name');
 
     public function user() {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('App\User'); //UID=1 <=> Non-Member School
     }
 
     public function delegates() {

@@ -64,7 +64,7 @@ class DatatablesController extends Controller
             if (!Auth::user()->can('view-regs'))
                 return "ERROR";
             $result = new Collection;
-            $delegates = Delegate::with(['school' => function($q) {$q->select('name', 'id');}, 'user' => function($q) {$q->select('name', 'id');}, 'committee' => function($q) {$q->select('name', 'id');}])->get(['user_id', 'school_id', 'committee_id', 'status', 'partnername']);//->select(['user_id', 'name', 'school', 'committee', 'partnername']);
+            $delegates = Delegate::with(['school' => function($q) {$q->select('name', 'id', 'user_id');}, 'user' => function($q) {$q->select('name', 'id');}, 'committee' => function($q) {$q->select('name', 'id');}])->get(['user_id', 'school_id', 'committee_id', 'status', 'partnername']);//->select(['user_id', 'name', 'school', 'committee', 'partnername']);
             foreach ($delegates as $delegate)
             {
                 if ($delegate->partnername == '')
@@ -91,16 +91,19 @@ class DatatablesController extends Controller
                     $status = '待缴费';
                  else if ($delegate->status == 'paid')
                     $status = '成功';
+                $school = $delegate->school->name;
+                if ($delegate->school->user_id == 1)
+                    $school .= '(非成员校)';
                 $result->push([
                     'details' => '<a href="reg.modal/'. $delegate->user_id .'" data-toggle="ajaxModal" id="'. $delegate->user_id .'" class="details-modal"><i class="fa fa-search-plus"></i></a>',
                     'name' => $delegate->user->name,
-                    'school' => $delegate->school->name,
+                    'school' => $school,
                     'committee' => $delegate->committee->name,
                     'partner' => $partner,
                     'status' => $status,
                 ]);
             }
-            $volunteers = Volunteer::with(['school' => function($q) {$q->select('name', 'id');}, 'user' => function($q) {$q->select('name', 'id');}])->get(['user_id', 'school_id', 'status']);
+            $volunteers = Volunteer::with(['school' => function($q) {$q->select('name', 'id', 'user_id');}, 'user' => function($q) {$q->select('name', 'id');}])->get(['user_id', 'school_id', 'status']);
             foreach ($volunteers as $volunteer)
             {
                 if ($volunteer->status == 'paid')
@@ -123,10 +126,13 @@ class DatatablesController extends Controller
                     $status = '待缴费';
                  else if ($volunteer->status == 'paid')
                     $status = '成功';
+                $school = $volunteer->school->name;
+                if ($volunteer->school->user_id == 1)
+                    $school .= '(非成员校)';
                 $result->push([
                     'details' => '<a href="reg.modal/'. $volunteer->user_id .'" data-toggle="ajaxModal" id="'. $volunteer->user_id .'" class="details-modal"><i class="fa fa-search-plus"></i></a>',
                     'name' => $volunteer->user->name,
-                    'school' => $volunteer->school->name,
+                    'school' => $school,
                     'committee' => "志愿者",
                     'partner' => "无",
                     'status' => $status,
@@ -163,7 +169,8 @@ class DatatablesController extends Controller
                 else
                     $type = '未知';
                 $result->push([
-                    'details' => '<a href="ot/userDetails.modal/'. $user->id .'" data-toggle="ajaxModal" id="'. $user->id .'" class="details-modal"><i class="fa fa-search-plus"></i></a>',
+                    'details' => '<a href="ot/userDetails.modal/'. $user->id .'" data-toggle="ajaxModal" id="'. $user->id .'" class="details-modal"><i class="fa fa-user-circle-o"></i></a>',
+                    'reg' => '<a href="reg.modal/'. $user->id .'" data-toggle="ajaxModal" id="reg.'. $user->id .'" class="details-modal"><i class="fa fa-search-plus"></i></a>',
                     'id' => $user->id,
                     'email' => $user->email,
                     'name' => $user->name,

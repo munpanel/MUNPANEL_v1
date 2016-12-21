@@ -10,6 +10,7 @@ use App\Observer;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Config;
 
 class HomeController extends Controller
 {
@@ -45,11 +46,11 @@ class HomeController extends Controller
         else
         {
             $specific = Auth::user()->specific();
-            $changable = true;
+            $changable = Config::get('munpanel.registration_enabled');
             if (is_null($specific))
             {
                 $percent = 0;
-                $status = '未注册';
+                $status = '未报名';
                 if ($type == 'delegate') //Deal with YCZ-ECO Situation
                 {
                     $status = '等待重填';
@@ -111,7 +112,14 @@ class HomeController extends Controller
         }
         else
             $schools = School::where('user_id', '<>', 1); // Member Schools only
-        return view('regModal', ['committees' => Committee::all(), 'schools' => $schools, 'id' => $id, 'user' => $user, 'delegate' => $user->delegate, 'volunteer' => $user->volunteer, 'observer' => $user->observer]);
+        $changable = Config::get('munpanel.registration_enabled') || (Auth::user()->type == 'ot');
+        $specific = $user->specific();
+        if ((!is_null($specific)) && Auth::user()->type != 'ot')
+            if ($specific->status == 'oVerified' || $specific->status == 'paid')
+                $changable = false;
+        if (Auth::user()->type == 'school' && Config::get('munpanel.registration_school_changable'))
+            $changable = true;
+        return view('regModal', ['committees' => Committee::all(), 'schools' => $schools, 'id' => $id, 'user' => $user, 'delegate' => $user->delegate, 'volunteer' => $user->volunteer, 'observer' => $user->observer, 'changable' => $changable]);
     }
 
     public function regManage()

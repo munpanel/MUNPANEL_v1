@@ -184,13 +184,26 @@ class DatatablesController extends Controller
     {
         $result = new Collection;
         $schools = School::get(['id', 'name', 'user_id']);
+        $committees = Committee::all();
         foreach($schools as $school)
         {
+            $delegates = $school->delegates;
+            $volunteers = $school->volunteers;
+            $delcount = "";
+            $volcount = 'Volunteers: ' . $volunteers->whereIn('status', array('paid', 'oVerified'))->count() . '/' . $volunteers->whereIn('status', array('paid', 'oVerified', 'sVerified'))->count() . '/' . $volunteers->whereIn('status', array('paid', 'oVerified', 'sVerified', 'reg'))->count() . "<br>";
+            foreach($committees as $committee)
+            {
+                $del = $delegates->where('committee_id', $committee->id);
+                $delcount .= $committee->name . ": " . $del->whereIn('status', array('paid', 'oVerified'))->count() . '/' . $del->whereIn('status', array('paid', 'oVerified', 'sVerified'))->count() . '/' . $del->whereIn('status', array('paid', 'oVerified', 'sVerified', 'reg'))->count() . "<br>";
+            }
+            //TODO: observers
+            $statistics = $delcount . $volcount;
             $result->push([
                 'details' => '<a href="ot/schoolDetails.modal/'. $school->id .'" data-toggle="ajaxModal" id="'. $school->id .'" class="details-modal"><i class="fa fa-search-plus"></i></a>',
                 'id' => $school->id,
                 'name' => $school->name,
                 'uid' => $school->user_id,
+                'statistics' => $statistics,
             ]);
         }
         return Datatables::of($result)->make(true);

@@ -5,6 +5,7 @@ $(document).ready(function() {
         ajax: 'ajax/users',
         columns: [
             {data: 'details', name: 'details', orderable: false},
+            {data: 'reg', name: 'reg', orderable: false},
             {data: 'id', name: 'id', orderable: true},
             {data: 'email', name:'email', orderable: true},
             {data: 'name', name: 'name', orderable: false},
@@ -47,7 +48,7 @@ $(document).ready(function() {
             "infoEmpty": "无记录",
             "infoFiltered": "(从 _MAX_ 条记录过滤)"
         },
-        "order": [[1, "asc"]],
+        "order": [[2, "asc"]],
     });
     var table=$('#user-table').DataTable();
     $("#searchButton").click(function() {

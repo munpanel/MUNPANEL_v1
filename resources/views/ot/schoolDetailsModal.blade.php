@@ -10,7 +10,7 @@
                         <td width="65%"><a href="#" id="name" data-type="text" data-pk="{{$school->id}}" data-url="{{secure_url('/ot/update/school/'.$school->id)}}" data-title="name" class="editable">{{$school->name}}</a></td>
                     </tr>
                     <tr>
-                        <td width="35%">管理员UID</td>
+                        <td width="35%">管理员UID(非成员校为1)</td>
                         <td width="65%"><a href="#" id="user_id" data-type="text" data-pk="{{$school->id}}" data-url="{{secure_url('/ot/update/school/'.$school->id)}}" data-title="user_id" class="editable">{{$school->user_id}}</a></td>
                     </tr>
                   </tbody>

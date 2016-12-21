@@ -35,14 +35,8 @@
                     <thead>
                       <tr>
                         <!--th width="20"><input type="checkbox"></th-->
-                        <th width="20"></th>
-                        <!--th class="th-sortable" data-toggle="class">Project
-                          <span class="th-sort">
-                            <i class="fa fa-sort-down text"></i>
-                            <i class="fa fa-sort-up text-active"></i>
-                            <i class="fa fa-sort"></i>
-                          </span>
-                        </th-->
+                        <th width="15"></th>
+                        <th width="15"></th>
                         <th>ID</th>
                         <th>email</th>
                         <th>姓名</th>

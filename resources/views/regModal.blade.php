@@ -20,7 +20,7 @@
               <div class="alert alert-warning"><b>代表、志愿者，任选一项。保存任何一项将自动清空另一项信息。组织团队保存表单将不修改原报名状态。</b></div>
               @elseif ($changable)
               <div class="alert alert-warning"><b>代表、志愿者，任选一项。保存任何一项将自动清空另一项信息。保存将自动重置报名状态为等待学校审核。</b></div>
-              @elseif (Config::get('munpanel.registration_school_changable'))
+              @elseif (Config::get('munpanel.registration_school_changable') && $delegate->school->user_id != 1)
               <div class="alert alert-warning"><b>当前为只读状态，如需编辑请联系贵校社团管理层。</b></div>
               @else
               <div class="alert alert-warning"><b>当前为只读状态，如需编辑请联系official@bjmun.org。</b></div>
@@ -58,7 +58,13 @@
                 <div class="form-group">
                   <label>学校</label>
                   <select name="school" class="form-control m-b" data-required="true" {{$changable&&(Auth::user()->type != 'school')?'':'disabled'}}>
-                    <option value="">请选择</option>
+                    @if (isset($delegate))
+                      @if ($delegate->school->user_id == 1)
+                        <option value="" selected>{{$delegate->school->name}} (非成员校)</option>
+                      @endif
+                    @else
+                      <option value="">请选择</option>
+                    @endif
                     @foreach ($schools as $school)
                       @if (isset($delegate))
                         @if ($school->id == $delegate->school_id)
@@ -184,7 +190,7 @@
               <div class="alert alert-warning"><b>代表、志愿者，任选一项。保存任何一项将自动清空另一项信息。组织团队保存表单将不修改原报名状态。</b></div>
               @elseif ($changable)
               <div class="alert alert-warning"><b>代表、志愿者，任选一项。保存任何一项将自动清空另一项信息。保存将自动重置报名状态为等待学校审核。</b></div>
-              @elseif (Config::get('munpanel.registration_school_changable'))
+              @elseif (Config::get('munpanel.registration_school_changable') && $volunteer->school->user_id != 1)
               <div class="alert alert-warning"><b>当前为只读状态，如需编辑请联系贵校社团管理层。</b></div>
               @else
               <div class="alert alert-warning"><b>当前为只读状态，如需编辑请联系official@bjmun.org。</b></div>
@@ -207,7 +213,13 @@
                 <div class="form-group">
                   <label>学校</label>
                   <select name="school" class="form-control m-b" data-required="true" {{$changable&&(Auth::user()->type != 'school')?'':'disabled'}}>
-                    <option value="">请选择</option>
+                    @if (isset($volunteer))
+                      @if ($volunteer->school->user_id == 1)
+                        <option value="" selected>{{$volunteer->school->name}} (非成员校)</option>
+                      @endif
+                    @else
+                      <option value="">请选择</option>
+                    @endif
                     @foreach ($schools as $school)
                       @if (isset($volunteer))
                         @if ($school->id == $volunteer->school_id)

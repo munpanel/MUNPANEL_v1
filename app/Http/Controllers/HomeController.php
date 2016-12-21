@@ -111,11 +111,11 @@ class HomeController extends Controller
             }
         }
         else
-            $schools = School::where('user_id', '<>', 1); // Member Schools only
+            $schools = School::where('user_id', '!=', 1)->get(); // Member Schools only
         $changable = Config::get('munpanel.registration_enabled') || (Auth::user()->type == 'ot');
         $specific = $user->specific();
         if ((!is_null($specific)) && Auth::user()->type != 'ot')
-            if ($specific->status == 'oVerified' || $specific->status == 'paid')
+            if ($specific->status == 'oVerified' || $specific->status == 'paid' || $specific->school->user_id == 1)
                 $changable = false;
         if (Auth::user()->type == 'school' && Config::get('munpanel.registration_school_changable'))
             $changable = true;

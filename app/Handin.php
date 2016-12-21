@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Handin extends Model
 {
     protected $table='handins';
-    protected $fillable = ['user_id', 'nation_id', 'assignment_id', 'assignment_content'];    
+    protected $fillable = ['user_id', 'nation_id', 'assignment_id', 'content', 'handin_type', 'remark']; 
 
     public function committee() 
     {

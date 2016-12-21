@@ -8,6 +8,8 @@ use App\Delegate;
 use App\Volunteer;
 use App\Observer;
 use App\User;
+use App\Assignment;
+use App\Handin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Config;
@@ -219,13 +221,52 @@ class HomeController extends Controller
         return view('checkoutModal');
     }
     
-    public function assignment()
+    public function assignmentsList()
     {
         if (Auth::user()->type != 'delegate')
-            return view('error', ['msg' => '403 您不是参会代表，无权访问该页面！']);
+            return view('error', ['msg' => '您不是参会代表，无权访问该页面！']);
         if (Auth::user()->specific()->status != 'paid')
-            return view('error', ['msg' => '403 请先缴清会费！']);
+            return view('error', ['msg' => '请先缴清会费！']);
         $committee = Auth::user()->specific()->committee;
-        return view('assignment', ['committee' => $committee]);
+        return view('assignmentsList', ['committee' => $committee]);
+    }
+
+    public function assignment($id)
+    {
+        //TO-DO: Verify if it's the assignment of the user.
+        $assignment = Assignment::findOrFail($id);
+        if ($assignment->handin_type == 'upload')
+        {
+            return view('assignmentHandinUpload', ['assignment' => $assignment]);
+        }
+        else
+        {
+            //TO-DO Text Mode Hand in
+            return "Under Development...";
+        }
+    }
+
+    public function uploadAssignment(Request $request, $id)
+    {
+        //TO-DO: Verify if it's the assignment of the user.
+        if ($request->hasFile('file') && $request->file('file')->isValid())
+        {
+            $handin = new Handin;
+            $assignment = Assignment::findOrFail($id);
+            if ($assignment->subject_type == 'nation')
+                $handin->nation_id = Auth::user()->delegate->nation->id;
+            else
+                $handin->user_id = Auth::user()->id;
+            $handin->content = $request->file->store('assignmentHandins');
+            $handin->assignment_id = $id;
+            $handin->handin_type = 'upload';
+            $handin->remark = $request->remark;
+            $handin->save();
+            return redirect(secure_url('/assignment/' . $id));
+        }
+        else
+        {
+            return "Error";
+        }
     }
 }

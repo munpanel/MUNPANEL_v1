@@ -14,6 +14,10 @@ class Delegate extends Model
         return $this->belongsTo('App\Committee');
     }
 
+    public function nation() {
+        return $this->belongsTo('App\Nation');
+    }
+
     public function user() {
         return $this->belongsTo('App\User');
     }

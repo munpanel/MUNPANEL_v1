@@ -19,7 +19,8 @@ class CreateHandinsTable extends Migration
             $table->integer('nation_id')->nullable()->unsigned(); //Choose one from two according to different type of subjects
 	        $table->integer('assignment_id')->unsigned();
 			$table->enum('handin_type', ['upload', 'text']); //If upload, assignment_content = file location
-			$table->mediumtext('assignment_content');
+			$table->mediumtext('content');
+            $table->string('remark');
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('no action');
             $table->foreign('nation_id')->references('id')->on('nations')->onDelete('no action');

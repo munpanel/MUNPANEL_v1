@@ -25,7 +25,9 @@ Route::get('/home', 'HomeController@index');
 Route::get('/changePwd.modal', 'HomeController@changePwd');
 Route::post('/changePwd', 'UserController@doChangePwd');
 
-Route::get('/assignments', 'HomeController@assignment');
+Route::get('/assignments', 'HomeController@assignmentsList');
+Route::get('/assignment/{id}', 'HomeController@assignment');
+Route::post('/assignment/{id}/upload', 'HomeController@uploadAssignment');
 
 Route::get('/documents', function() {
     return view('notavailable');
@@ -87,4 +89,4 @@ Route::get('/ajax/registrations', 'DatatablesController@registrations');
 Route::get('/ajax/users', ['middleware' => ['permission:edit-users'], 'uses' => 'DatatablesController@users']);
 Route::get('/ajax/schools', ['middleware' => ['permission:edit-schools'], 'uses' => 'DatatablesController@schools']);
 Route::get('/ajax/committees', ['middleware' => ['permission:edit-committees'], 'uses' => 'DatatablesController@committees']);
-
+Route::get('/ajax/assignments', 'DatatablesController@assignments');

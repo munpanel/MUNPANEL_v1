@@ -10,6 +10,7 @@ use App\Delegate;
 use App\Volunteer;
 use App\School;
 use App\Committee;
+use App\Assignment;
 use Illuminate\Support\Facades\Auth;
 
 class DatatablesController extends Controller
@@ -222,14 +223,17 @@ class DatatablesController extends Controller
     {
         $result = new Collection;
         $assignments = Assignment::get(['id', 'title', 'deadline']);
+        $i = 0;
         foreach($assignments as $assignment)
         {
             $result->push([
-                'id' => $assignment->id,
-                'details' => '<a href="assignmentDetail/'. $assignment->id.'" data-toggle="ajaxModal" id="'. $assignment.id.'" class="details-modal"><i class="fa fa-search-plus></i></a>"',
+                //'id' => $assignment->id,
+                'id' => ++$i, // We don't want to use the actual assignment id in the database because it may not be continuous for a delegate, and is hence not user-friendly.
+                'details' => '<a href="assignment/'. $assignment->id.'"><i class="fa fa-search-plus"></i></a>',
                 'title' => $assignment->title,
                 'deadline' => $assignment->deadline,
-            ])
+            ]);
         }
+        return Datatables::of($result)->make(true);
     }
 }

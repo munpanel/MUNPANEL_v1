@@ -37,7 +37,7 @@
                   </div>
                   <div id="collapseOne" class="panel-collapse in">
                     <div class="panel-body text-sm">
-                      <b>作业标题: </b>{{$assignment->title}}<br><b>提交对象: </b>All Delegates (以{{$assignment->subject_type == 'individual' ? '个人' : '国家'}}为单位)<br><b>提交形式: </b>{{$assignment->handin_type == 'upload' ? '文件上传' : '在线文本编辑器'}}<b>提交期限: </b>{{$assignment->deadline}}
+                      <b>作业标题: </b>{{$assignment->title}}<br><b>提交对象: </b>All Delegates (以{{$assignment->subject_type == 'individual' ? '个人' : '国家'}}为单位)<br><b>提交形式: </b>{{$assignment->handin_type == 'upload' ? '文件上传' : '在线文本编辑器'}}<br><b>提交期限: </b>{{$assignment->deadline}}
                     </div>
                   </div>
                 </div>

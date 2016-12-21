@@ -235,7 +235,15 @@ class HomeController extends Controller
     {
         //TO-DO: Verify if it's the assignment of the user.
         $assignment = Assignment::findOrFail($id);
-        if ($assignment->handin_type == 'upload')
+        if ($assignment->subject_type == 'nation')
+            $handin = Handin::where('assignment_id', $id)->where('nation_id', Auth::user()->delegate->nation->id)->first();
+        else
+            $handin = Handin::where('assignment_id', $id)->where('user_id', Auth::user()->id)->first();
+        if (!is_null($handin))
+        {
+            return view('assignmentHandinInfo', ['assignment' => $assignment, 'handin' => $handin]);
+        }
+        else if ($assignment->handin_type == 'upload')
         {
             return view('assignmentHandinUpload', ['assignment' => $assignment]);
         }
@@ -268,5 +276,17 @@ class HomeController extends Controller
         {
             return "Error";
         }
+    }
+
+    public function downloadAssignment($id)
+    {
+        $assignment = Assignment::findOrFail($id);
+        if ($assignment->subject_type == 'nation')
+            $handin = Handin::where('assignment_id', $id)->where('nation_id', Auth::user()->delegate->nation->id)->first();
+        else
+            $handin = Handin::where('assignment_id', $id)->where('user_id', Auth::user()->id)->first();
+        if (is_null($handin))
+            return "ERROR";
+        return response()->download(storage_path('/app/'.$handin->content));
     }
 }

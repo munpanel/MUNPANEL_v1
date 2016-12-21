@@ -70,7 +70,7 @@
               <div class="col-lg-6">
                <section class="panel bg-info lter no-borders">
                 <div class="panel-body">
-                  <span class="h4">{{$assignment->name}}</span>
+                  <span class="h4">{{$assignment->title}}</span>
                   <div class="text-center padder m-t">
                     <i class="fa fa-file-text fa fa-4x"></i>
                   </div>

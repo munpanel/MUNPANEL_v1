@@ -11,6 +11,7 @@ use App\Volunteer;
 use App\School;
 use App\Committee;
 use App\Assignment;
+use App\Handin;
 use Illuminate\Support\Facades\Auth;
 
 class DatatablesController extends Controller
@@ -222,15 +223,22 @@ class DatatablesController extends Controller
     public function assignments()
     {
         $result = new Collection;
-        $assignments = Assignment::get(['id', 'title', 'deadline']);
+        $assignments = Assignment::all();//get(['id', 'title', 'deadline']);
         $i = 0;
         foreach($assignments as $assignment)
         {
+            if ($assignment->subject_type == 'nation')
+                $handin = Handin::where('assignment_id', $assignment->id)->where('nation_id', Auth::user()->delegate->nation->id)->first();
+            else
+                $handin = Handin::where('assignment_id', $assignment->id)->where('user_id', Auth::user()->id)->first();
+            $title = $assignment->title;
+            if (is_null($handin)) //TO-DO: ddl check
+                $title = $title."<b class=\"badge bg-danger pull-right\">未提交</b>";
             $result->push([
                 //'id' => $assignment->id,
                 'id' => ++$i, // We don't want to use the actual assignment id in the database because it may not be continuous for a delegate, and is hence not user-friendly.
                 'details' => '<a href="assignment/'. $assignment->id.'"><i class="fa fa-search-plus"></i></a>',
-                'title' => $assignment->title,
+                'title' => $title,
                 'deadline' => $assignment->deadline,
             ]);
         }

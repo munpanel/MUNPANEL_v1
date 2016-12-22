@@ -12,6 +12,7 @@ use App\School;
 use App\Committee;
 use App\Assignment;
 use App\Handin;
+use App\Nation;
 use Illuminate\Support\Facades\Auth;
 
 class DatatablesController extends Controller
@@ -240,6 +241,24 @@ class DatatablesController extends Controller
                 'details' => '<a href="assignment/'. $assignment->id.'"><i class="fa fa-search-plus"></i></a>',
                 'title' => $title,
                 'deadline' => $assignment->deadline,
+            ]);
+        }
+        return Datatables::of($result)->make(true);
+    }
+
+    public function nations()
+    {
+        $result = new Collection;
+        $nations = Nation::all();
+        foreach($nations as $nation)
+        {
+            $result->push([
+                'details' => '<a href="ot/nationDetails.modal/'. $nation->id .'" data-toggle="ajaxModal" id="'. $nation->id .'" class="details-modal"><i class="fa fa-search-plus"></i></a>',
+                'id' => $nation->id,
+                'committee' => $nation->committee->name,
+                'name' => $nation->name,
+                'conpetence' => $nation->conpetence,
+                'veto_power' => $nation->veto_power ? '是' : '否',
             ]);
         }
         return Datatables::of($result)->make(true);

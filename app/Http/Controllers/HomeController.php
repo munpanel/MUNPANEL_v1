@@ -47,7 +47,7 @@ class HomeController extends Controller
         }
         else if ($type == 'dais')
         {
-            return "Aloha Dais";
+            return view('dais.home');
         }
         else
         {
@@ -156,6 +156,13 @@ class HomeController extends Controller
         if ( Auth::user()->type != 'ot' )
             return 'Error';
         return view('ot.committeeManage');
+    }
+
+    public function nationManage()
+    {
+        if ( Auth::user()->type != 'ot' )
+            return 'Error';
+        return view('ot.nationManage');
     }
 
     public function userDetailsModal($id)

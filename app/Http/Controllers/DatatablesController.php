@@ -223,7 +223,7 @@ class DatatablesController extends Controller
     public function assignments()
     {
         $result = new Collection;
-        $assignments = Assignment::all();//get(['id', 'title', 'deadline']);
+        $assignments = Auth::user()->delegate->assignments();//Assignment::all();//get(['id', 'title', 'deadline']);
         $i = 0;
         foreach($assignments as $assignment)
         {

@@ -231,36 +231,67 @@ class HomeController extends Controller
         return view('assignmentsList', ['committee' => $committee]);
     }
 
-    public function assignment($id)
+    public function assignment($id, $action = 'info')
     {
-        //TO-DO: Verify if it's the assignment of the user.
         $assignment = Assignment::findOrFail($id);
+        if (!$assignment->belongsToDelegate(Auth::user()->id))
+            return "ERROR";
         if ($assignment->subject_type == 'nation')
             $handin = Handin::where('assignment_id', $id)->where('nation_id', Auth::user()->delegate->nation->id)->orderBy('id', 'desc')->first();
         else
             $handin = Handin::where('assignment_id', $id)->where('user_id', Auth::user()->id)->orderBy('id', 'desc')->first();
-        if (!is_null($handin))
+        if ($action == 'info')
         {
-            return view('assignmentHandinInfo', ['assignment' => $assignment, 'handin' => $handin]);
+            if (!is_null($handin))
+            {
+                return view('assignmentHandinInfo', ['assignment' => $assignment, 'handin' => $handin]);
+            }
+            else if ($assignment->handin_type == 'upload')
+            {
+                return view('assignmentHandinUpload', ['assignment' => $assignment]);
+            }
+            else
+            {
+                //TO-DO Text Mode Hand in
+                return "Under Development...";
+            }
         }
-        else if ($assignment->handin_type == 'upload')
+        else if ($action == "download")
         {
-            return view('assignmentHandinUpload', ['assignment' => $assignment]);
+            if (is_null($handin))
+                return "ERROR";
+            return response()->download(storage_path('/app/'.$handin->content));
         }
-        else
+        else if ($action == "resubmit")
         {
-            //TO-DO Text Mode Hand in
-            return "Under Development...";
+            if (is_null($handin))
+                return redirect(secure_url('/assignment/' . $id));
+            if (strtotime(date("y-m-d h:i:s")) < strtotime($assignment->deadline))
+            {
+                if ($assignment->handin_type == 'upload')
+                {
+                    return view('assignmentHandinUpload', ['assignment' => $assignment]);
+                }
+                else
+                {
+                    //TO-DO Text Mode Hand in
+                    return "Under Development...";
+                }
+            }
+            return "ERROR";
         }
     }
 
     public function uploadAssignment(Request $request, $id)
     {
-        //TO-DO: Verify if it's the assignment of the user.
+        $assignment = Assignment::findOrFail($id);
+        if (!$assignment->belongsToDelegate(Auth::user()->id))
+            return "ERROR";
+        if (strtotime(date("y-m-d h:i:s")) >= strtotime($assignment->deadline))
+            return "ERROR";
         if ($request->hasFile('file') && $request->file('file')->isValid())
         {
             $handin = new Handin;
-            $assignment = Assignment::findOrFail($id);
             if ($assignment->subject_type == 'nation')
                 $handin->nation_id = Auth::user()->delegate->nation->id;
             //else
@@ -278,15 +309,4 @@ class HomeController extends Controller
         }
     }
 
-    public function downloadAssignment($id)
-    {
-        $assignment = Assignment::findOrFail($id);
-        if ($assignment->subject_type == 'nation')
-            $handin = Handin::where('assignment_id', $id)->where('nation_id', Auth::user()->delegate->nation->id)->orderBy('id', 'desc')->first();
-        else
-            $handin = Handin::where('assignment_id', $id)->where('user_id', Auth::user()->id)->orderBy('id', 'desc')->first();
-        if (is_null($handin))
-            return "ERROR";
-        return response()->download(storage_path('/app/'.$handin->content));
-    }
 }

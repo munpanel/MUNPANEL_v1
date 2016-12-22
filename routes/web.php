@@ -26,9 +26,8 @@ Route::get('/changePwd.modal', 'HomeController@changePwd');
 Route::post('/changePwd', 'UserController@doChangePwd');
 
 Route::get('/assignments', 'HomeController@assignmentsList');
-Route::get('/assignment/{id}', 'HomeController@assignment');
+Route::get('/assignment/{id}/{action?}', 'HomeController@assignment');
 Route::post('/assignment/{id}/upload', 'HomeController@uploadAssignment');
-Route::get('/assignment/{id}/download', 'HomeController@downloadAssignment');
 
 Route::get('/documents', function() {
     return view('notavailable');

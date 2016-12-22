@@ -18,4 +18,9 @@ class Nation extends Model
     {
         return $this->hasMany('App\NationDel');
     }
+    
+    public function nationgroups()
+    {
+        return $this->belongstoMany('App\Nationgroup', 'nationgroup_nation');
+    }
 }

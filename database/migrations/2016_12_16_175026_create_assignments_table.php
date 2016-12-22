@@ -15,14 +15,12 @@ class CreateAssignmentsTable extends Migration
     {
         Schema::create('assignments', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('nationgroup_id')->unsigned();
 			$table->enum('subject_type', ['individual', 'nation']);
 			$table->enum('handin_type', ['upload', 'text']);
 			$table->string('title');
 			$table->mediumText('description');
 			$table->dateTime('deadline');
             $table->timestamps();
-            $table->foreign('nationgroup_id')->references('id')->on('nationgroups')->onDelete('cascade');
         });
     }
 

@@ -9,9 +9,9 @@ class Assignment extends Model
     protected $table='assignments';
     protected $fillable = ['nationgroup_id', 'subject_type', 'handin_type', 'title', 'description', 'deadline'];    
 
-    public function nationgroup() 
+    public function nationgroups()
     {
-        return $this->belongsTo('App\Nationgroup');
+        return $this->belongsToMany('App\Nationgroup');
     }
 
     public function committee() 
@@ -21,8 +21,16 @@ class Assignment extends Model
 
     public function handins()
     {
-	return $this->hasMany('App\Handin');
-    }        
+        return $this->hasMany('App\Handin');
+    }   
+    
+    public function belongsToDelegate($uid) 
+    {
+        $nationgroups = $this->nationgroups;
+        foreach ($nationgroups as $nationgroup)
+            if ($nationgroup->hasDelegate($uid))
+                return true;
+        return false;
+    }
 	
-	// TODO: 添加其他的关联关系（如果有或需要）
 }

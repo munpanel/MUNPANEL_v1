@@ -252,6 +252,12 @@ class DatatablesController extends Controller
         $nations = Nation::all();
         foreach($nations as $nation)
         {
+            $groups = '';
+            foreach ($nation->nationgroups as $ngroup)
+            {
+                $groups = $groups . ' '. $ngroup->display_name;
+            }
+
             $result->push([
                 'details' => '<a href="ot/nationDetails.modal/'. $nation->id .'" data-toggle="ajaxModal" id="'. $nation->id .'" class="details-modal"><i class="fa fa-search-plus"></i></a>',
                 'id' => $nation->id,
@@ -259,6 +265,7 @@ class DatatablesController extends Controller
                 'name' => $nation->name,
                 'conpetence' => $nation->conpetence,
                 'veto_power' => $nation->veto_power ? '是' : '否',
+                'nationgroup' => $groups,
             ]);
         }
         return Datatables::of($result)->make(true);

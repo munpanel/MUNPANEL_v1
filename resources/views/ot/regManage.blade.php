@@ -19,6 +19,7 @@
                 <div class="col-sm-6 m-b-xs">
                   <!--a href="#subNav" data-toggle="class:hide" class="btn btn-sm btn-info"><i class="fa fa-caret-right text fa fa-large"></i><i class="fa fa-caret-left text-active fa fa-large"></i></a>
                   <a href="#" class="btn btn-sm btn-success"><i class="fa fa-plus"></i> Create</a-->
+                  <a href="{{secure_url('/regManage/imexport.modal')}}" class="btn btn-sm btn-success details-modal"><i class="fa fa-plus"></i> 批量管理</a>
                 </div>
                 <div class="col-sm-6 m-b-xs">
                   <div class="input-group">

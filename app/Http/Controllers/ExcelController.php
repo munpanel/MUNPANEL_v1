@@ -22,12 +22,13 @@ class ExcelController extends Controller
 {
     public function exportRegistrations($ext = 'xlsx') {
         if (Auth::user()->type != 'ot')
-            return 'Error';
+            return view('error', ['msg' => '您不是组织团队成员，无权进行该操作！']);
         //TO-DO: permission check
         Excel::create('registrations', function($excel) {
             $excel->sheet('registrations', function($sheet){
                 $sheet->appendRow(array('UID(勿改 新添留空)', '姓名', 'E-mail', '密码(不改留空)', '委员会/志愿者/观察员', '席位', '学校', '年级', '身份证号', 'QQ', '微信', '搭档姓名', '室友姓名', '电话', '家长电话', '性别', '住宿', '状态'));
                 $delegates = Delegate::with('user', 'committee', 'school', 'nation')->get();
+                $count = $delegates->count();
                 foreach ($delegates as $del)
                 {
                     switch ($del->grade)
@@ -61,9 +62,10 @@ class ExcelController extends Controller
                         $gender = '男';
                     else
                         $gender = '女';
-                    $sheet->appendRow(array($del->user_id, $del->user->name, $del->user->email, '', $del->committee->name, $nation, $del->school->name, $grade, $del->sfz, $del->qq, $del->wechat, $del->partnername, $del->roommatename, $del->tel, $del->parenttel, $gender, $accomodate, $status));
+                    $sheet->appendRow(array($del->user_id, $del->user->name, $del->user->email, '', $del->committee->name, $nation, $del->school->name, $grade, $del->sfz . "\t", $del->qq, $del->wechat, $del->partnername, $del->roommatename, $del->tel, $del->parenttel, $gender, $accomodate, $status));
                 }
                 $volunteers = Volunteer::with('user', 'school')->get();
+                $count += $volunteers->count();
                 foreach ($volunteers as $vol)
                 {
                     switch ($vol->grade)
@@ -97,9 +99,16 @@ class ExcelController extends Controller
                         $gender = '男';
                     else
                         $gender = '女';
-                    $sheet->appendRow(array($vol->user_id, $vol->user->name, $vol->user->email, '', '志愿者', '无', $vol->school->name, $grade, $vol->sfz, $vol->qq, $vol->wechat, '', $vol->roommatename, $vol->tel, $vol->parenttel, $gender, $accomodate, $status));
+                    $sheet->appendRow(array($vol->user_id, $vol->user->name, $vol->user->email, '', '志愿者', '无', $vol->school->name, $grade, $vol->sfz . "\t", $vol->qq, $vol->wechat, '', $vol->roommatename, $vol->tel, $vol->parenttel, $gender, $accomodate, $status));
                 }
-                //TO-DO: volunteers
+                //TO-DO: observers
+                $sheet->setColumnFormat(array(
+                    'I' => '@',
+                    'J' => '@',
+                    'K' => '@',
+                    'N' => '@',
+                    'O' => '@'
+                ));
             });
         })->export($ext);
     }
@@ -171,7 +180,9 @@ class ExcelController extends Controller
                             }
                             $vol->status = $status;
                         }
-                        $vol->sfz = ExcelController::mapData($row, $vol->sfz, '身份证号');
+                        $sfz1 = $row['身份证号'];
+                        if (substr($sfz1, -1) == "\t") $sfz1 = rtrim($sfz1, "\t");
+                        $vol->sfz = $sfz1;
                         $vol->qq = ExcelController::mapData($row, $vol->qq, 'qq');
                         $vol->wechat = ExcelController::mapData($row, $vol->wechat, '微信');
                         $vol->roommatename = ExcelController::mapData($row, $vol->roommatename, '室友姓名');
@@ -242,8 +253,10 @@ class ExcelController extends Controller
                             }
                             $del->status = $status;
                         }
-                        $del->email = ExcelController::mapData($row, $user->name, '姓名');
-                        $del->sfz = ExcelController::mapData($row, $del->sfz, '身份证号');
+                        $del->email = $user->email;
+                        $sfz1 = $row['身份证号'];
+                        if (substr($sfz1, -1) == "\t") $sfz1 = rtrim($sfz1, "\t");
+                        $del->sfz = $sfz1;
                         $del->qq = ExcelController::mapData($row, $del->qq, 'qq');
                         $del->wechat = ExcelController::mapData($row, $del->wechat, '微信');
                         $del->partnername = ExcelController::mapData($row, $del->partnername, '搭档姓名');
@@ -270,8 +283,9 @@ class ExcelController extends Controller
                     }
                 }
             });
+            return redirect(secure_url('/regManage'));
         }
         else
-            return "Error";
+            return view('error', ['msg' => '操作失败！']);
     }
 }

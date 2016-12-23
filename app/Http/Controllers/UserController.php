@@ -357,6 +357,7 @@ if (($handle = fopen("/var/www/munpanel/test.csv", "r")) !== FALSE) {
 
     public function test()
     {
+        return Auth::user()->delegate->nation->name;
         return Assignment::find(1)->belongsToDelegate(9);
         return response()->json(Auth::user()->delegate->assignments());
         return Auth::user()->invoiceAmount();

@@ -25,7 +25,7 @@
             <div class="row">
               <div class="col-sm-12 b-r">
                 仅支持导入（编辑过的）导出的表。请务必检查各项是否填写正确。如错误的大小写、多输入的空格等均会导致识别失败从而产生错误数据。慎重导入。
-                <form id="uploadForm" enctype="multipart/form-data" <!-- action="{{$importURL}}"  method="post" --> data-validate="parsley"><!-- ToDo: validation -->
+                <form id="uploadForm" enctype="multipart/form-data" data-validate="parsley"><!-- ToDo: validation -->
                   {{ csrf_field() }}
                   <br>请选择您要导入的表格文件。<br><input type="file" title="Browse" name="file" class="parsley-required" data-required="true"><button type="submit" class="btn btn-success pull-right" >导入</button>
                 </form>

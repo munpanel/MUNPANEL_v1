@@ -10,7 +10,7 @@
 @section('content')
 <section class="vbox">
       <header class="header b-b bg-white">          
-          <p>BJMUNC2017&nbsp;&nbsp;{{$committee->display_name}}&nbsp;&nbsp;学术作业清单</p>
+          <p>您的学术作业清单</p>
       </header>
       <section class="scrollable wrapper w-f">
         <section class="panel">

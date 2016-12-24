@@ -27,6 +27,7 @@ class CreateDelegateInfoTable extends Migration
             $table->string('parenttel');
             $table->string('tel');
             $table->integer('committee_id')->unsigned();
+            $table->integer('nation_id')->nullable();
             $table->boolean('accomodate');
             $table->string('roommatename');
             $table->timestamps();
@@ -34,6 +35,7 @@ class CreateDelegateInfoTable extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('school_id')->references('id')->on('schools')->onDelete('cascade');
             $table->foreign('committee_id')->references('id')->on('committees')->onDelete('cascade');
+            $table->foreign('nation_id')->references('id')->on('nations')->onDelete('set null');
         });
     }
 

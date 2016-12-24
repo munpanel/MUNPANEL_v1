@@ -25,9 +25,9 @@ Route::get('/home', 'HomeController@index');
 Route::get('/changePwd.modal', 'HomeController@changePwd');
 Route::post('/changePwd', 'UserController@doChangePwd');
 
-Route::get('/assignments', function() {
-    return view('notavailable');
-});
+Route::get('/assignments', 'HomeController@assignmentsList');
+Route::get('/assignment/{id}/{action?}', 'HomeController@assignment');
+Route::post('/assignment/{id}/upload', 'HomeController@uploadAssignment');
 
 Route::get('/documents', function() {
     return view('notavailable');
@@ -59,9 +59,13 @@ Route::post('/saveRegVol', 'UserController@regSaveVol');
 Route::post('/saveRegObs', 'UserController@regSaveObs');
 
 Route::get('/regManage', 'HomeController@regManage');
+Route::get('/regManage/imexport.modal', 'HomeController@imexportRegistrations');
+Route::get('/regManage/export', 'ExcelController@exportRegistrations');
+Route::post('/regManage/import', 'ExcelController@importRegistrations');
 Route::get('/userManage', ['middleware' => ['permission:edit-users'], 'uses' => 'HomeController@userManage']);
 Route::get('/schoolManage', ['middleware' => ['permission:edit-schools'], 'uses' => 'HomeController@schoolManage']);
 Route::get('/committeeManage', ['middleware' => ['permission:edit-committees'], 'uses' => 'HomeController@committeeManage']);
+Route::get('/nationManage', ['middleware' => ['permission:edit-nations'], 'uses' => 'HomeController@nationManage']);
 
 Route::get('/school/verify/{id}', 'UserController@schoolVerify');
 Route::get('/school/unverify/{id}', 'UserController@schoolUnverify');
@@ -75,6 +79,7 @@ Route::get('/ot/delete/school/{id}', ['middleware' => ['permission:edit-schools'
 Route::get('/ot/delete/committee/{id}', ['middleware' => ['permission:edit-committees'], 'uses' => 'UserController@deleteCommittee']);
 
 
+//Route::get('/dais/assignments', 'HomeController@assignment');
 
 //Route::get('/regschools', 'UserController@regSchool');
 Route::get('/test', 'UserController@test');
@@ -88,4 +93,5 @@ Route::get('/ajax/registrations', 'DatatablesController@registrations');
 Route::get('/ajax/users', ['middleware' => ['permission:edit-users'], 'uses' => 'DatatablesController@users']);
 Route::get('/ajax/schools', ['middleware' => ['permission:edit-schools'], 'uses' => 'DatatablesController@schools']);
 Route::get('/ajax/committees', ['middleware' => ['permission:edit-committees'], 'uses' => 'DatatablesController@committees']);
-
+Route::get('/ajax/nations', ['middleware' => ['permission:edit-nations'], 'uses' => 'DatatablesController@nations']);
+Route::get('/ajax/assignments', 'DatatablesController@assignments');

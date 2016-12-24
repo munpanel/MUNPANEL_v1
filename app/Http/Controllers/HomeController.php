@@ -8,6 +8,8 @@ use App\Delegate;
 use App\Volunteer;
 use App\Observer;
 use App\User;
+use App\Assignment;
+use App\Handin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Config;
@@ -42,6 +44,10 @@ class HomeController extends Controller
             $school = Auth::user()->school;
             //return $del->count();
             return view('school.home', ['del' => $school->delegates->count(), 'vol' => $school->volunteers->count()]);
+        }
+        else if ($type == 'dais')
+        {
+            return view('dais.home');
         }
         else
         {
@@ -164,6 +170,13 @@ class HomeController extends Controller
         return view('ot.committeeManage');
     }
 
+    public function nationManage()
+    {
+        if ( Auth::user()->type != 'ot' )
+            return 'Error';
+        return view('ot.nationManage');
+    }
+
     public function userDetailsModal($id)
     {
         if (Auth::user()->type != 'ot')
@@ -226,4 +239,98 @@ class HomeController extends Controller
     {
         return view('checkoutModal');
     }
+    
+    public function assignmentsList()
+    {
+        if (Auth::user()->type != 'delegate')
+            return view('error', ['msg' => '您不是参会代表，无权访问该页面！']);
+        if (Auth::user()->specific()->status != 'paid')
+            return view('error', ['msg' => '请先缴清会费！']);
+        $committee = Auth::user()->specific()->committee;
+        return view('assignmentsList', ['committee' => $committee]);
+    }
+
+    public function assignment($id, $action = 'info')
+    {
+        $assignment = Assignment::findOrFail($id);
+        if (!$assignment->belongsToDelegate(Auth::user()->id))
+            return "ERROR";
+        if ($assignment->subject_type == 'nation')
+            $handin = Handin::where('assignment_id', $id)->where('nation_id', Auth::user()->delegate->nation->id)->orderBy('id', 'desc')->first();
+        else
+            $handin = Handin::where('assignment_id', $id)->where('user_id', Auth::user()->id)->orderBy('id', 'desc')->first();
+        if ($action == 'info')
+        {
+            if (!is_null($handin))
+            {
+                return view('assignmentHandinInfo', ['assignment' => $assignment, 'handin' => $handin]);
+            }
+            else if ($assignment->handin_type == 'upload')
+            {
+                return view('assignmentHandinUpload', ['assignment' => $assignment]);
+            }
+            else
+            {
+                //TO-DO Text Mode Hand in
+                return "Under Development...";
+            }
+        }
+        else if ($action == "download")
+        {
+            if (is_null($handin))
+                return "ERROR";
+            return response()->download(storage_path('/app/'.$handin->content));
+        }
+        else if ($action == "resubmit")
+        {
+            if (is_null($handin))
+                return redirect(secure_url('/assignment/' . $id));
+            if (strtotime(date("y-m-d h:i:s")) < strtotime($assignment->deadline))
+            {
+                if ($assignment->handin_type == 'upload')
+                {
+                    return view('assignmentHandinUpload', ['assignment' => $assignment]);
+                }
+                else
+                {
+                    //TO-DO Text Mode Hand in
+                    return "Under Development...";
+                }
+            }
+            return "ERROR";
+        }
+    }
+
+    public function uploadAssignment(Request $request, $id)
+    {
+        $assignment = Assignment::findOrFail($id);
+        if (!$assignment->belongsToDelegate(Auth::user()->id))
+            return "ERROR";
+        if (strtotime(date("y-m-d h:i:s")) >= strtotime($assignment->deadline))
+            return "ERROR";
+        if ($request->hasFile('file') && $request->file('file')->isValid())
+        {
+            $handin = new Handin;
+            if ($assignment->subject_type == 'nation')
+                $handin->nation_id = Auth::user()->delegate->nation->id;
+            //else
+            $handin->user_id = Auth::user()->id;
+            $handin->content = $request->file->store('assignmentHandins');
+            $handin->assignment_id = $id;
+            $handin->handin_type = 'upload';
+            $handin->remark = $request->remark;
+            $handin->save();
+            return redirect(secure_url('/assignment/' . $id));
+        }
+        else
+        {
+            return "Error";
+        }
+    }
+
+    public function imexportRegistrations()
+    {
+        return view('ot.imexportModal', ['importURL' => secure_url('/regManage/import'), 'exportURL' => secure_url('/regManage/export')]);
+    }
+
 }

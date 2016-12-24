@@ -10,6 +10,9 @@ use App\Delegate;
 use App\Volunteer;
 use App\School;
 use App\Committee;
+use App\Assignment;
+use App\Handin;
+use App\Nation;
 use Illuminate\Support\Facades\Auth;
 
 class DatatablesController extends Controller
@@ -220,6 +223,56 @@ class DatatablesController extends Controller
                 'details' => '<a href="ot/committeeDetails.modal/'. $committee->id .'" data-toggle="ajaxModal" id="'. $committee->id .'" class="details-modal"><i class="fa fa-search-plus"></i></a>',
                 'id' => $committee->id,
                 'name' => $committee->name,
+            ]);
+        }
+        return Datatables::of($result)->make(true);
+    }
+    
+    public function assignments()
+    {
+        $result = new Collection;
+        $assignments = Auth::user()->delegate->assignments();//Assignment::all();//get(['id', 'title', 'deadline']);
+        $i = 0;
+        foreach($assignments as $assignment)
+        {
+            if ($assignment->subject_type == 'nation')
+                $handin = Handin::where('assignment_id', $assignment->id)->where('nation_id', Auth::user()->delegate->nation->id)->first();
+            else
+                $handin = Handin::where('assignment_id', $assignment->id)->where('user_id', Auth::user()->id)->first();
+            $title = $assignment->title;
+            if (is_null($handin)) //TO-DO: ddl check
+                $title = $title."<b class=\"badge bg-danger pull-right\">未提交</b>";
+            $result->push([
+                //'id' => $assignment->id,
+                'id' => ++$i, // We don't want to use the actual assignment id in the database because it may not be continuous for a delegate, and is hence not user-friendly.
+                'details' => '<a href="assignment/'. $assignment->id.'"><i class="fa fa-search-plus"></i></a>',
+                'title' => $title,
+                'deadline' => $assignment->deadline,
+            ]);
+        }
+        return Datatables::of($result)->make(true);
+    }
+
+    public function nations()
+    {
+        $result = new Collection;
+        $nations = Nation::all();
+        foreach($nations as $nation)
+        {
+            $groups = '';
+            foreach ($nation->nationgroups as $ngroup)
+            {
+                $groups = $groups . ' '. $ngroup->display_name;
+            }
+
+            $result->push([
+                'details' => '<a href="ot/nationDetails.modal/'. $nation->id .'" data-toggle="ajaxModal" id="'. $nation->id .'" class="details-modal"><i class="fa fa-search-plus"></i></a>',
+                'id' => $nation->id,
+                'committee' => $nation->committee->name,
+                'name' => $nation->name,
+                'conpetence' => $nation->conpetence,
+                'veto_power' => $nation->veto_power ? '是' : '否',
+                'nationgroup' => $groups,
             ]);
         }
         return Datatables::of($result)->make(true);

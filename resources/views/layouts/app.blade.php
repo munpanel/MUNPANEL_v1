@@ -140,6 +140,8 @@
                 @include('layouts.school')
                 @elseif (Auth::user()->type == 'ot')
                 @include('layouts.ot')
+                @elseif (Auth::user()->type == 'dais')
+                @include('layouts.dais')
                 @else
                 @include('layouts.delegate')
                 @endif

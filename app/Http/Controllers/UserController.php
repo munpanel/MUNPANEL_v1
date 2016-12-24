@@ -10,6 +10,7 @@ use App\School;
 use App\Committee;
 use App\Permission;
 use App\Role;
+use App\Assignment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -356,6 +357,9 @@ if (($handle = fopen("/var/www/munpanel/test.csv", "r")) !== FALSE) {
 
     public function test()
     {
+        return Auth::user()->delegate->nation->name;
+        return Assignment::find(1)->belongsToDelegate(9);
+        return response()->json(Auth::user()->delegate->assignments());
         return Auth::user()->invoiceAmount();
         return Auth::user()->invoiceItems();
         return "gou";

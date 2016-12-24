@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 class Delegate extends Model
@@ -14,11 +15,37 @@ class Delegate extends Model
         return $this->belongsTo('App\Committee');
     }
 
+    public function nation() {
+        return $this->belongsTo('App\Nation');
+    }
+
     public function user() {
         return $this->belongsTo('App\User');
     }
 
     public function school() {
         return $this->belongsTo('App\School');
+    }
+
+    public function individual_assignments() {
+        return $this->hasMany('App\Assignment');
+    }
+
+    public function nationgroups() {
+        return $this->nation->nationgroups();
+    }
+
+    public function assignments() {
+        $result = new Collection;
+        if (is_null($this->nation))
+            return $result;
+        $nationgroups = $this->nationgroups;
+        foreach($nationgroups as $nationgroup)
+        {
+            $assignments = $nationgroup->assignments;
+            foreach ($assignments as $assignment)
+                $result->push($assignment);
+        }
+        return $result->unique()->sortBy('id');
     }
 }

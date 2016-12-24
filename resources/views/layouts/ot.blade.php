@@ -36,3 +36,11 @@
                 </a>
               </li>
               @endpermission
+              @permission('edit-nations')
+              <li class="@yield('nationManage_active')">
+                <a href="{{ secure_url('/nationManage') }}">
+                  <i class="fa fa-id-badge"></i>
+                  <span>Nation Management</span>
+                </a>
+              </li>
+              @endpermission

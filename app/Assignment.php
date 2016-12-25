@@ -14,9 +14,14 @@ class Assignment extends Model
         return $this->belongsToMany('App\Nationgroup');
     }
 
-    public function committee() 
+    public function delegategroups()
     {
-        return $this->belongsTo('App\Nationgroup')->hasMany('App\Nation')->belongsTo('App\Committee');
+        return $this->belongsToMany('App\Delegategroup');
+    }
+
+    public function committees() 
+    {
+        return $this->belongsToMany('App\Committee');
     }
 
     public function handins()

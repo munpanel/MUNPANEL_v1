@@ -19,7 +19,7 @@ class CreateAssignmentCommitteeTable extends Migration
 
             $table->foreign('assignment_id')->references('id')->on('assignments')
                 ->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('committee_id')->references('id')->on('committee')
+            $table->foreign('committee_id')->references('id')->on('committees')
                 ->onUpdate('cascade')->onDelete('cascade');
 
             $table->primary(['assignment_id', 'committee_id']);

@@ -18,7 +18,7 @@ class CreateDelegateDelegategroupTable extends Migration
             $table->integer('delegate_id')->unsigned();
 
             $table->foreign('delegategroup_id')->references('id')->on('delegategroups')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('delegate_id')->references('user_id')->on('delegate-info')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('delegate_id')->references('user_id')->on('delegate_info')->onUpdate('cascade')->onDelete('cascade');
 
             $table->primary(['delegategroup_id', 'delegate_id']);
         });

@@ -19,7 +19,7 @@ class CreateAssignmentDelegategroupTable extends Migration
 
             $table->foreign('assignment_id')->references('id')->on('assignments')
                 ->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('delegategroup_id')->references('id')->on('delegategroup')
+            $table->foreign('delegategroup_id')->references('id')->on('delegategroups')
                 ->onUpdate('cascade')->onDelete('cascade');
 
             $table->primary(['assignment_id', 'delegategroup_id']);

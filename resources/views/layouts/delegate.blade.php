@@ -41,7 +41,7 @@
               </li>
               <li class="@yield('pages_active')">
                 <a href="{{ secure_url('/pages') }}">
-                  <b class="badge bg-info pull-right">3</b>
+                  <!--b class="badge bg-info pull-right">3</b-->
                   <i class="fa fa-envelope-o"></i>
                   <span>E-Pages</span>
                 </a>

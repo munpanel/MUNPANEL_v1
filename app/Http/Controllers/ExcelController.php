@@ -117,7 +117,9 @@ class ExcelController extends Controller
     {
         if (isset($valuerow[$valuekey]))
             return $valuerow[$valuekey];
-        return $key;
+        if (isset($key))
+            return $key;
+        return "";
     }
 
     public function importRegistrations(Request $request)

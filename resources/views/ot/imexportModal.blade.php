@@ -41,7 +41,23 @@ $('#uploadForm').submit(function(e){
     e.preventDefault();
     if ($('#uploadForm').parsley('validate')) 
     {
-        $.post("{{$importURL}}", $('#uploadForm').serialize())
+        var formData = new FormData($( "#uploadForm" )[0]);
+        //$.post("{{$importURL}}", $('#uploadForm').serialize());
+        $.ajax({  
+            url:  '{{$importURL}}',
+            type: 'POST',  
+            data: formData,  
+            async: false,  
+            cache: false,  
+            contentType: false,  
+            processData: false,  
+            success: function (returndata) {  
+                alert(returndata);  
+            },  
+            error: function (returndata) {  
+                alert(returndata);  
+            }  
+       });  
     }
 });
 </script>

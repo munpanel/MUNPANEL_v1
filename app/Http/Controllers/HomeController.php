@@ -120,7 +120,7 @@ class HomeController extends Controller
             $schools = School::where('user_id', '!=', 1)->get(); // Member Schools only
         $changable = Config::get('munpanel.registration_enabled') || (Auth::user()->type == 'ot');
         $specific = $user->specific();
-        if ((!is_null($specific)) && Auth::user()->type != 'ot')
+        if ((isset($specific)) && Auth::user()->type != 'ot')
             if ($specific->status == 'oVerified' || $specific->status == 'paid' || $specific->school->user_id == 1)
                 $changable = false;
         if (Auth::user()->type == 'school' && Config::get('munpanel.registration_school_changable'))
@@ -261,7 +261,7 @@ class HomeController extends Controller
             $handin = Handin::where('assignment_id', $id)->where('user_id', Auth::user()->id)->orderBy('id', 'desc')->first();
         if ($action == 'info')
         {
-            if (!is_null($handin))
+            if (isset($handin))
             {
                 return view('assignmentHandinInfo', ['assignment' => $assignment, 'handin' => $handin]);
             }

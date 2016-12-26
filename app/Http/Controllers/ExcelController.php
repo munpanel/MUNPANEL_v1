@@ -152,7 +152,7 @@ class ExcelController extends Controller
                         $user->save();
                         $vol = Volunteer::firstOrNew(['user_id' => $user->id]);
                         $vol->user_id = $row['uid勿改_新添留空'];
-                        if (!is_null($row['学校']))
+                        if (isset($row['学校']))
                             $vol->school_id = School::firstOrCreate(['name' => $row['学校']])->id; // the default uid of school is 1, so a new school is a non-member school by default
                         if (isset($row['年级']))
                         {

@@ -27,7 +27,7 @@
               @endif
               <form role="form" id="delform" data-validate="parsley"><!--action="{{ secure_url('/saveRegDel') }}" method="post"-->
                 {{ csrf_field() }}
-                @if (!is_null($id))
+                @if (isset($id))
                   <input type="hidden" name="id" value="{{ $id }}">
                 @endif
                 <div class="form-group">
@@ -197,7 +197,7 @@
               @endif
               <form role="form" id="volform" data-validate="parsley"><!--action="{{ secure_url('/saveRegDel') }}" method="post"-->
                 {{ csrf_field() }}
-                @if (!is_null($id))
+                @if (isset($id))
                   <input type="hidden" name="id" value="{{ $id }}">
                 @endif
                 <div class="form-group">
@@ -337,7 +337,7 @@
               <div class="alert alert-warning"><b>代表、志愿者、观察员，三者任选一项。保存任何一项将自动清空其余两项信息。</b></div>
               <form role="form" id="obsform" data-validate="parsley"><!--action="{{ secure_url('/saveRegDel') }}" method="post"-->
                 {{ csrf_field() }}
-                @if (!is_null($id))
+                @if (isset($id))
                   <input type="hidden" name="id" value="{{ $id }}">
                 @endif
                 <div class="form-group">

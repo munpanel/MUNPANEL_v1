@@ -31,21 +31,21 @@ class Assignment extends Model
     
     public function belongsToDelegate($uid) 
     {
-        if (!is_null($this->nationgroups))
+        if (isset($this->nationgroups))
         {
             $nationgroups = $this->nationgroups;
             foreach ($nationgroups as $nationgroup)
                 if ($nationgroup->hasDelegate($uid))
                     return true;
         }
-        if (!is_null($this->delegategroups))
+        if (isset($this->delegategroups))
         {
             $delegategroups = $this->delegategroups;
             foreach ($delegategroups as $delegategroup)
                 if ($delegategroup->hasDelegate($uid))
                     return true;
         }
-        if (!is_null($this->committees))
+        if (isset($this->committees))
         {
             $committees = $this->committees;
             foreach ($committees as $committee)

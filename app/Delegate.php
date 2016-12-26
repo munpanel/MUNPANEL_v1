@@ -35,16 +35,42 @@ class Delegate extends Model
         return $this->nation->nationgroups();
     }
 
+    public function delegategroup() {
+        return $this->belongstoMany('App\Delegategroup');
+    }
+
     public function assignments() {
         $result = new Collection;
-        if (is_null($this->nation))
-            return $result;
-        $nationgroups = $this->nationgroups;
-        foreach($nationgroups as $nationgroup)
+        if (isset($this->nation))
         {
-            $assignments = $nationgroup->assignments;
+            $nationgroups = $this->nationgroups;
+            if (isset($nationgroups))
+            {
+                foreach($nationgroups as $nationgroup)
+                {
+                    $assignments = $nationgroup->assignments;
+                    if (isset($assignments))
+                        foreach ($assignments as $assignment)
+                            $result->push($assignment);
+                }
+            }
+        }
+        $assignments = $this->committee->assignments;
+        if (isset($assignments))
+        {
             foreach ($assignments as $assignment)
                 $result->push($assignment);
+        }
+        $delegategroups = $this->delegategroups;
+        if (isset($delegategroups))
+        {
+            foreach($delegategroups as $delegategroup)
+            {
+                $assignments = $delegategroup->assignments;
+                if (isset($assignments))
+                    foreach ($assignments as $assignment)
+                        $result->push($assignment);
+            }
         }
         return $result->unique()->sortBy('id');
     }

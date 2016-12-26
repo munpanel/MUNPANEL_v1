@@ -52,10 +52,10 @@ $('#uploadForm').submit(function(e){
             contentType: false,  
             processData: false,  
             success: function (returndata) {  
-                alert(returndata);  
+                location.reload();
             },  
             error: function (returndata) {  
-                alert(returndata);  
+                alert('An error occured while importing.');
             }  
        });  
     }

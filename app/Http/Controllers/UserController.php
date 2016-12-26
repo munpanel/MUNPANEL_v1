@@ -11,6 +11,7 @@ use App\Committee;
 use App\Permission;
 use App\Role;
 use App\Assignment;
+use App\Delegategroup;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -357,6 +358,32 @@ if (($handle = fopen("/var/www/munpanel/test.csv", "r")) !== FALSE) {
 
     public function test()
     {
+        $assignment = new Assignment;
+        $assignment->subject_type = 'individual';
+        $assignment->handin_type = 'upload';
+        $assignment->title = '成员校代表 UNSC报名学术测试';
+        $assignment->description = '<h3>学术测试题目</h3><br>1. 试分析现今对也门局势造成影响的主要因素<br>2.    请选择美国或俄罗斯，分析也门局势与本国的关系<br>3.     若未被联合国安全理事会录取，第二志愿委员会之选择<br><br><h3>学术测试要求</h3><br>请有搭档的代表由二人合作共同完成一份学术测试，目前没有搭档的代表请自行完成本次测试。二人合作共同完成的，请在学术测试答案文件中注明双人姓名，仅需一个人提交系统即可。<br><br><h3>学术诚信要求</h3><br>本学术测试均请各位代表独立完成，学术测试的全部内容需是撰写学术测试者自行完成的结果，请勿使撰写学术测试者之外的任何人对于学术测试参与包括但不限于：撰写、部分撰写、修改、点评等影响学术测试的行为，一经发现将被视为学术不端进行处理。<br><br>在学术测试撰写时，鼓励各位代表进行各类资料的查阅。但主席团禁止任何形式的抄袭，若在学术测试的撰写过程中需要对于资料进行参考或引用，请在文中以脚注形式标注出引用文段，并在文后列举撰写过程中全部的参考资料。若对于学术资料进行引用但未标注，也会同样被认定为抄袭。<br><br><u>在学术测试当中，被发现有任何学术不端行为的代表将不予录取。</u><br><br><h3>参考与引用标注方式</h3>书籍类：作者：《文献名》，出版社，出版年，页码。<br>论文与报刊类：作者：《文献名》，《刊物名》和期数。<br>外文类：作者，文献名（斜体），出版地：出版社或报刊名，时间，页码。<br>网络内容：文章主题，网络链接<br>其他形式的参考引用内容请自行注明<br><br>学术测试将会在提交之后又联合国安全理事会主席团批阅后择优录取60名国家代表，未被录取之代表将优先按照第二志愿进行调剂（将按照其他委员会报名情况进行整体安排，会有部分情况不按照第二志愿进行调剂）。';
+        $assignment->deadline = '2017-01-01 23:59:59';
+        $assignment->save();
+        $delegategroup = Delegategroup::find(1);
+        $delegategroup->assignments()->attach($assignment);
+        return '...';
+        $delegategroup = new Delegategroup;
+        $delegategroup->name = '非成员校ECOSOC';
+        $delegategroup->display_name = '非成员校ECOSOC代表';
+        $delegategroup->save();
+        //$delegategroup = Delegategroup::find(2);
+        $delegates = Committee::find(9)->delegates;
+        $delegates->load('school');
+        foreach ($delegates as $delegate)
+                if ($delegate->school->user_id == 1)
+                        $delegategroup->delegates()->attach($delegate);
+        /*$delegates = Committee::find(2)->delegates;
+        $delegates->load('school');
+        foreach ($delegates as $delegate)
+                if ($delegate->school->user_id == 1)
+                        $delegategroup->delegates()->attach($delegate);*/
+        return 'hello';
         return Auth::user()->delegate->nation->name;
         return Assignment::find(1)->belongsToDelegate(9);
         return response()->json(Auth::user()->delegate->assignments());

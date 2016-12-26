@@ -35,7 +35,7 @@ class Delegate extends Model
         return $this->nation->nationgroups();
     }
 
-    public function delegategroup() {
+    public function delegategroups() {
         return $this->belongstoMany('App\Delegategroup');
     }
 

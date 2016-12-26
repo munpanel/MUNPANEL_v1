@@ -8,7 +8,7 @@ class Delegategroup extends Model
 {
     //
     protected $table = 'delegategroups';
-    protected $fillable = 'name';
+    protected $fillable = ['name', 'display_name'];
 
     public function delegates()
     {

@@ -131,6 +131,9 @@ class ExcelController extends Controller
                 $result = $reader->toArray();
                 foreach ($result as $row)
                 {
+                    foreach ($row as &$cell)
+                        if (isset($cell))
+                                $cell = trim($cell);
                     if (isset($row['uid勿改_新添留空']))
                         $user = User::firstOrNew(['id' => $row['uid勿改_新添留空']]);
                     else if(isset($row['e_mail']))
@@ -148,7 +151,7 @@ class ExcelController extends Controller
                     }
                     if ($row['委员会志愿者观察员'] == '志愿者') 
                     {
-                        $user->type = ExcelController::mapData($row, $user->type, 'volunteer');
+                        $user->type = 'volunteer';
                         $user->save();
                         $vol = Volunteer::firstOrNew(['user_id' => $user->id]);
                         $vol->user_id = $row['uid勿改_新添留空'];
@@ -214,7 +217,7 @@ class ExcelController extends Controller
                     }
                     else //in this case, it's delegate
                     {
-                        ExcelController::mapData($row, $user->type, 'delegate');
+                        $user->type = 'delegate';
                         $user->save();
                         $del = Delegate::firstOrNew(['user_id' => $user->id]);
                         if (isset($row['学校']))

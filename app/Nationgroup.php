@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Nationgroup extends Model
 {
     protected $table='nationgroups';
-    protected $fillable = ['name'];    
+    protected $fillable = ['name', 'display_name'];    
 
     public function nations() 
     {

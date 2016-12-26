@@ -244,8 +244,8 @@ class HomeController extends Controller
     {
         if (Auth::user()->type != 'delegate')
             return view('error', ['msg' => '您不是参会代表，无权访问该页面！']);
-        if (Auth::user()->specific()->status != 'paid')
-            return view('error', ['msg' => '请先缴清会费！']);
+        if (Auth::user()->specific()->status == 'reg')//TO-DO: parameters for this
+            return view('error', ['msg' => '请等待审核']);
         $committee = Auth::user()->specific()->committee;
         return view('assignmentsList', ['committee' => $committee]);
     }

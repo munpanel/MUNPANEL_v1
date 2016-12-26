@@ -60,7 +60,7 @@ class Assignment extends Model
                 $prefix = ', ';
             }
         }
- 
+        return $scope;
     }
     
     public function belongsToDelegate($uid) 

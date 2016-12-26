@@ -49,7 +49,7 @@
                   </div>
                   <div id="collapseTwo" class="panel-collapse collapse">
                     <div class="panel-body text-sm">
-                      {{$assignment->description}}
+                      {!!$assignment->description!!}
                     </div>
                   </div>
                 </div>

@@ -14,19 +14,22 @@ use App\Assignment;
 use App\Nation;
 use Excel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 
 
 class ExcelController extends Controller
 {
-    public function exportRegistrations($ext = 'xlsx') {
+    public function exportRegistrations($flag = 'normal', $ext = 'xlsx') {
         if (Auth::user()->type != 'ot')
             return view('error', ['msg' => '您不是组织团队成员，无权进行该操作！']);
         //TO-DO: permission check
         Excel::create('registrations', function($excel) {
             $excel->sheet('registrations', function($sheet){
                 $sheet->appendRow(array('UID(勿改 新添留空)', '姓名', 'E-mail', '密码(不改留空)', '委员会/志愿者/观察员', '席位', '学校', '年级', '身份证号', 'QQ', '微信', '搭档姓名', '室友姓名', '电话', '家长电话', '性别', '住宿', '状态'));
+                if (Route::current()->getParameter('flag') == 'empty')
+                    return;
                 $delegates = Delegate::with('user', 'committee', 'school', 'nation')->get();
                 $count = $delegates->count();
                 foreach ($delegates as $del)

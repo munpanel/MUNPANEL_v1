@@ -28,6 +28,40 @@ class Assignment extends Model
     {
         return $this->hasMany('App\Handin');
     }   
+
+    public function scope()
+    {
+        $prefix = '';
+        $scope = '';
+        if (isset($this->nationgroups))
+        {
+            $nationgroups = $this->nationgroups;
+            foreach ($nationgroups as $nationgroup)
+            {
+                $scope .= $prefix . $nationgroup->display_name;
+                $prefix = ', ';
+            }
+        }
+        if (isset($this->delegategroups))
+        {
+            $delegategroups = $this->delegategroups;
+            foreach ($delegategroups as $delegategroup)
+            {
+                $scope .= $prefix . $delegategroup->display_name;
+                $prefix = ', ';
+            }
+        }
+        if (isset($this->committees))
+        {
+            $committees = $this->committees;
+            foreach ($committees as $committee)
+            {
+                $scope .= $prefix . $committee->display_name;
+                $prefix = ', ';
+            }
+        }
+ 
+    }
     
     public function belongsToDelegate($uid) 
     {

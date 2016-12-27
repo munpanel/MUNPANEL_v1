@@ -232,7 +232,7 @@ class HomeController extends Controller
             return view('error', ['msg' => 'Please register first.']);
         if (Auth::user()->specific()->status != 'oVerified' && Auth::user()->specific()->status != 'paid')
             return view('error', ['msg' =>'You have to be verified by the Organizing Team first.']);
-        if (Auth::user()->specific()->school->payment_method == 'group')
+        if (Auth::user()->specific()->school->payment_method == 'group' && Auth::user()->specific()->status != 'paid')
             return view('error', ['msg' => '贵校目前配置为统一缴费，请联系社团管理层缴费。']);
         return view('invoice', ['invoiceItems' => Auth::user()->invoiceItems(), 'invoiceAmount' => Auth::user()->invoiceAmount()]);
     }

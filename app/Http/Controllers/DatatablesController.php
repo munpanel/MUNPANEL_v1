@@ -277,4 +277,22 @@ class DatatablesController extends Controller
         }
         return Datatables::of($result)->make(true);
     }
+    
+    public function documents()
+    {
+        $result = new Collection;
+        $documents = Auth::user()->delegate->documents();//Assignment::all();//get(['id', 'title', 'deadline']);
+        $i = 0;
+        foreach($documents as $document)
+        {
+            $result->push([
+                //'id' => $document->id,
+                'id' => ++$i, // We don't want to use the actual document id in the database because it may not be continuous for a delegate, and is hence not user-friendly.
+                'details' => '<a href="document/'. $document->id.'"><i class="fa fa-search-plus"></i></a>',
+                'title' => $document->title,
+                'deadline' => $document->created_at,
+            ]);
+        }
+        return Datatables::of($result)->make(true);
+    }
 }

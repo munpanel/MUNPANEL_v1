@@ -333,4 +333,15 @@ class HomeController extends Controller
         return view('ot.imexportModal', ['importURL' => secure_url('/regManage/import'), 'exportURL' => secure_url('/regManage/export')]);
     }
 
+    public function documentsList()
+    {
+        if (Auth::user()->type != 'delegate')
+            return view('error', ['msg' => '您不是参会代表，无权访问该页面！']);
+        if (Auth::user()->specific()->status == 'reg')//TO-DO: parameters for this
+            return view('error', ['msg' => '请等待审核']);
+        $committee = Auth::user()->specific()->committee;
+        // TODO: 完成 document 清单页面
+        //return view('documentsList', ['committee' => $committee]);
+        return view('error', ['msg' => '页面建筑中！']);
+    }
 }

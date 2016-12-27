@@ -29,9 +29,7 @@ Route::get('/assignments', 'HomeController@assignmentsList');
 Route::get('/assignment/{id}/{action?}', 'HomeController@assignment');
 Route::post('/assignment/{id}/upload', 'HomeController@uploadAssignment');
 
-Route::get('/documents', function() {
-    return view('notavailable');
-});
+Route::get('/documents', 'HomeController@documentsList');
 
 Route::get('/pages', function() {
     return view('notavailable');

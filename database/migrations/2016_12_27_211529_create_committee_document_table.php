@@ -13,7 +13,18 @@ class CreateCommitteeDocumentTable extends Migration
      */
     public function up()
     {
-        //
+                Schema::create('committee_document', function (Blueprint $table) {
+            $table->integer('committee_id')->unsigned();
+            $table->integer('document_id')->unsigned();
+
+            $table->foreign('committee_id')->references('id')->on('committees')
+                ->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('document_id')->references('id')->on('documents')
+                ->onUpdate('cascade')->onDelete('cascade');
+
+            $table->primary(['document_id', 'committee_id']);
+ 
+        });
     }
 
     /**
@@ -23,6 +34,6 @@ class CreateCommitteeDocumentTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('document_committee');
     }
 }

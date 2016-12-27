@@ -341,7 +341,34 @@ class HomeController extends Controller
             return view('error', ['msg' => '请等待审核']);
         $committee = Auth::user()->specific()->committee;
         // TODO: 完成 document 清单页面
-        //return view('documentsList', ['committee' => $committee]);
-        return view('error', ['msg' => '页面建筑中！']);
+        return view('documentsList');
+        //return view('error', ['msg' => '页面建筑中！']);
+    }
+    
+    public function document($id)
+    {
+        $document = Document::findOrFail($id);
+        if (!$document->belongsToDelegate(Auth::user()->id))
+            return view('error', ['msg' => '您不是此学术文件的分发对象，无权访问该页面！']);
+        if ($action == 'info')
+        {
+            if (isset($handin))
+            {
+                return view('documentInfo', ['document' => $document]);
+            }
+            else if ($document->handin_type == 'upload')
+            {
+                return view('documentHandinUpload', ['document' => $document]);
+            }
+            else
+            {
+                //TO-DO Text Mode Hand in
+                return "Under Development...";
+            }
+        }
+        else if ($action == "download")
+        {
+            return response()->download(storage_path('/app/'.$document->path));
+        }
     }
 }

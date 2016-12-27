@@ -358,7 +358,17 @@ if (($handle = fopen("/var/www/munpanel/test.csv", "r")) !== FALSE) {
 
     public function test()
     {
-       $assignment = new Assignment;
+        $schools = School::all();
+        foreach($schools as $school)
+        {
+            if ($school->user_id != 1)
+            {
+                $school->payment_method = 'group';
+                $school->save();
+            }
+        }
+        return 'ha';
+        $assignment = new Assignment;
         $assignment->subject_type = 'individual';
         $assignment->handin_type = 'upload';
         $assignment->title = '非成员校代表 ECOSOC报名学术测试';

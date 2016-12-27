@@ -17,6 +17,7 @@ class CreateSchoolsTable extends Migration
             $table->increments('id');
             $table->string('name')->unique();
             $table->integer('user_id')->unsigned();
+            $table->enum('payment_method', ['individual', 'group']);
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });

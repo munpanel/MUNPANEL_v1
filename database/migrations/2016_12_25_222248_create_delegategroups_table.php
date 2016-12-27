@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSchoolsTable extends Migration
+class CreateDelegategroupsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,12 @@ class CreateSchoolsTable extends Migration
      */
     public function up()
     {
-        Schema::create('schools', function (Blueprint $table) {
+        Schema::create('delegategroups', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name')->unique();
-            $table->integer('user_id')->unsigned();
+            $table->string('name');
+            $table->string('display_name');
             $table->timestamps();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-        });
+        }); 
     }
 
     /**
@@ -29,6 +28,6 @@ class CreateSchoolsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('schools');
+        Schema::dropIfExists('delegategroups');
     }
 }

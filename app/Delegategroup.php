@@ -4,12 +4,20 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Committee extends Model
+class Delegategroup extends Model
 {
-    protected $fillable = array('name');
+    //
+    protected $table = 'delegategroups';
+    protected $fillable = ['name', 'display_name'];
 
-    public function delegates() {
-        return $this->hasMany('App\Delegate');
+    public function delegates()
+    {
+        return $this->belongsToMany('App\Delegate');
+    }
+
+    public function assignments()
+    {
+        return $this->belongsToMany('App\Assignment');
     }
     
     public function hasDelegate($uid)

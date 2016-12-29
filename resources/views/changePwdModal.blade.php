@@ -23,7 +23,7 @@
                       </form>
                 </div>
             </div>
-          <div class="modal-body">
+          </div>
       </div><!-- /.modal-content -->
 </div>
 <script>

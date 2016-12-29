@@ -35,11 +35,11 @@ class UserController extends Controller
         if (is_null($request->id))
             $user = Auth::user();
         else if (Auth::user()->type == 'ot' && (!Auth::user()->can('edit-regs')))
-            return "error";
+            return view('dialogErrorModal', ['msg' => '您无权进行该操作！']);
         else if (Auth::user()->type != 'ot' && Auth::user()->type != 'school')
-            return "error";
+            return view('dialogErrorModal', ['msg' => '您无权进行该操作！']);
         else if (Auth::user()->type == 'school' && Auth::user()->school->id != $user->specific()->school->id)
-            return "error";
+            return view('dialogErrorModal', ['msg' => '您无权对非本校参会人员进行操作！']);
         $user->type = 'delegate';
         $user->save();
         $del = $user->delegate;
@@ -78,11 +78,11 @@ class UserController extends Controller
         if (is_null($request->id))
             $user = Auth::user();
         else if (Auth::user()->type == 'ot' && (!Auth::user()->can('edit-regs')))
-            return "error";
+            return view('dialogErrorModal', ['msg' => '您无权进行该操作！']);
         else if (Auth::user()->type != 'ot' && Auth::user()->type != 'school')
-            return "error";
+            return view('dialogErrorModal', ['msg' => '您无权进行该操作！']);
         else if (Auth::user()->type == 'school' && Auth::user()->school->id != $user->specific()->school->id)
-            return "error";
+            return view('dialogErrorModal', ['msg' => '您无权对非本校参会人员进行操作！']);
         $user->type = 'volunteer';
         $user->save();
         $vol = $user->volunteer;
@@ -119,11 +119,11 @@ class UserController extends Controller
         if (is_null($request->id))
             $user = Auth::user();
         else if (Auth::user()->type == 'ot' && (!Auth::user()->can('edit-regs')))
-            return "error";
+            return view('dialogErrorModal', ['msg' => '您无权进行该操作！']);
         else if (Auth::user()->type != 'ot' && Auth::user()->type != 'school')
-            return "error";
+            return view('dialogErrorModal', ['msg' => '您无权进行该操作！']);
         else if (Auth::user()->type == 'school' && Auth::user()->school->id != $user->specific()->school->id)
-            return "error";
+            return view('dialogErrorModal', ['msg' => '您无权对非本校参会人员进行操作！']);
         $user->type = 'observer';
         $user->save();
         $obs = $user->observer;
@@ -155,7 +155,7 @@ class UserController extends Controller
         $school = Auth::user()->school;
         $specific =  User::find($id)->specific();
         if ($specific->school->id != $school->id)
-            return "error";
+            return view('dialogdialogErrorModalModal', ['msg' => '您无权对非本校参会人员进行操作！']);
         $specific->status = 'sVerified';
         $specific->save();
     }
@@ -165,7 +165,7 @@ class UserController extends Controller
         $school = Auth::user()->school;
         $specific =  User::find($id)->specific();
         if ($specific->school->id != $school->id)
-            return "error";
+            return view('dialogdialogErrorModalModal', ['msg' => '您无权对非本校参会人员进行操作！']);
         $specific->status = 'reg';
         $specific->save();
     }
@@ -173,9 +173,9 @@ class UserController extends Controller
     public function setStatus($id, $status)
     {
         if (Auth::user()->type != 'ot' || (!Auth::user()->can('approve-regs')))
-            return "Error";
+            return view('dialogdialogErrorModalModal', ['msg' => '您无权进行该操作！']);
         if ($status == 'paid' && (!Auth::user()->can('approve-regs-pay')))
-            return "Error";
+            return view('dialogdialogErrorModalModal', ['msg' => '您无权更改该参会人员的缴费信息！']);
         $specific =  User::find($id)->specific();
         $specific->status = $status;
         $specific->save();
@@ -218,13 +218,13 @@ if (($handle = fopen("/var/www/munpanel/test.csv", "r")) !== FALSE) {
             return redirect(secure_url('/home'));
         }
         else
-            return view('error', ['msg' => 'Wrong password!']);
+            return view('dialogdialogErrorModalModal', ['msg' => '您输入的密码有误，请重试！']);
     }
 
     public function updateUser(Request $request, $id)
     {
         if (Auth::user()->type != 'ot')
-            return 'Error';
+            return view('dialogdialogErrorModalModal', ['msg' => '您不是该会议组织团队成员，无权进行该操作！']);
         $user = User::findOrFail($id);
         $name = $request->get('name');
         $value = $request->get('value');
@@ -243,7 +243,7 @@ if (($handle = fopen("/var/www/munpanel/test.csv", "r")) !== FALSE) {
     public function updateSchool(Request $request, $id)
     {
         if (Auth::user()->type != 'ot')
-            return 'Error';
+            return view('dialogdialogErrorModalModal', ['msg' => '您不是该会议组织团队成员，无权进行该操作！']);
         $school = School::findOrFail($id);
         $name = $request->get('name');
         $value = $request->get('value');
@@ -254,7 +254,7 @@ if (($handle = fopen("/var/www/munpanel/test.csv", "r")) !== FALSE) {
     public function updateCommittee(Request $request, $id)
     {
         if (Auth::user()->type != 'ot')
-            return 'Error';
+            return view('dialogdialogErrorModalModal', ['msg' => '您不是该会议组织团队成员，无权进行该操作！']);
         $committee = Committee::findOrFail($id);
         $name = $request->get('name');
         $value = $request->get('value');
@@ -265,21 +265,21 @@ if (($handle = fopen("/var/www/munpanel/test.csv", "r")) !== FALSE) {
     public function deleteUser(Request $request, $id)
     {
         if (Auth::user()->type != 'ot')
-            return 'Error';
+            return view('dialogdialogErrorModalModal', ['msg' => '您不是该会议组织团队成员，无权进行该操作！']);
         User::destroy($id);
     }
 
     public function deleteCommittee(Request $request, $id)
     {
         if (Auth::user()->type != 'ot')
-            return 'Error';
+            return view('dialogdialogErrorModalModal', ['msg' => '您不是该会议组织团队成员，无权进行该操作！']);
         Committee::destroy($id);
     }
 
     public function deleteSchool(Request $request, $id)
     {
         if (Auth::user()->type != 'ot')
-            return 'Error';
+            return view('dialogdialogErrorModalModal', ['msg' => '您不是该会议组织团队成员，无权进行该操作！']);
         School::destroy($id);
     }
 

@@ -23,7 +23,7 @@ class ExcelController extends Controller
 {
     public function exportRegistrations($flag = 'normal', $ext = 'xlsx') {
         if (Auth::user()->type != 'ot')
-            return view('error', ['msg' => '您不是组织团队成员，无权进行该操作！']);
+            return view('dialogErrorModal', ['msg' => '您不是该会议组织团队成员，无权进行该操作！']);
         //TO-DO: permission check
         Excel::create('registrations', function($excel) {
             $excel->sheet('registrations', function($sheet){
@@ -294,6 +294,6 @@ class ExcelController extends Controller
             return redirect(secure_url('/regManage'));
         }
         else
-            return view('error', ['msg' => '操作失败！']);
+            return view('dialogErrorModal', ['msg' => '操作失败！']);
     }
 }

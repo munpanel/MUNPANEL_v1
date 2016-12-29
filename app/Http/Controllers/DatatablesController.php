@@ -65,7 +65,7 @@ class DatatablesController extends Controller
         }
         else if ($user->type=='ot'){
             if (!Auth::user()->can('view-regs'))
-                return "ERROR";
+                return view('dialogErrorModal', ['msg' => '您无权进行该操作！']);
             $result = new Collection;
             $delegates = Delegate::with(['school' => function($q) {$q->select('name', 'id', 'user_id');}, 'user' => function($q) {$q->select('name', 'id');}, 'committee' => function($q) {$q->select('name', 'id');}])->get(['user_id', 'school_id', 'committee_id', 'status', 'partnername']);//->select(['user_id', 'name', 'school', 'committee', 'partnername']);
             foreach ($delegates as $delegate)
@@ -145,7 +145,7 @@ class DatatablesController extends Controller
             //TO-DO: Observers
         }
         else
-            return "Error";
+            return view('dialogErrorModal', ['msg' => '您无权进行该操作！']);
         return Datatables::of($result)->make(true);
     }
 

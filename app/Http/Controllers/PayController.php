@@ -33,7 +33,7 @@ class PayController extends Controller
         $user = User::find($meta->uid);
         //VERIFY AMOUNT
         if ($user->invoiceAmount() != $amount)
-            return "ERROR";
+            return view('dialogErrorModal', ['msg' => '支付金额不正确！']);
         //END VERIFICATION
         $specific = $user->specific();
         $specific->status = 'paid';

@@ -103,9 +103,9 @@ class HomeController extends Controller
         if (is_null($id))
             $user = Auth::user();
         else if (Auth::user()->type != 'ot' && Auth::user()->type != 'school')
-            return "error";
+            return view('error', ['msg' => '2333']);
         else if (Auth::user()->type == 'school' && Auth::user()->school->id != $user->specific()->school->id)
-            return "error";
+            return view('error', ['msg' => '2333']);
         $schools = array();
         if (Auth::user()->type == 'ot')
         {
@@ -145,42 +145,42 @@ class HomeController extends Controller
         }
         else
         {
-            return "Illegal Request";
+            return view('error', ['msg' => '您没有权限访问该页面！']);
         }
     }
 
     public function userManage()
     {
         if ( Auth::user()->type != 'ot' )
-            return 'Error';
+            return view('error', ['msg' => '您不是该会议组织团队成员，无权访问该页面！']);
         return view('ot.userManage');
     }
 
     public function schoolManage()
     {
         if ( Auth::user()->type != 'ot' )
-            return 'Error';
+            return view('error', ['msg' => '您不是该会议组织团队成员，无权访问该页面！']);
         return view('ot.schoolManage');
     }
 
     public function committeeManage()
     {
         if ( Auth::user()->type != 'ot' )
-            return 'Error';
+            return view('error', ['msg' => '您不是该会议组织团队成员，无权访问该页面！']);
         return view('ot.committeeManage');
     }
 
     public function nationManage()
     {
         if ( Auth::user()->type != 'ot' )
-            return 'Error';
+            return view('error', ['msg' => '您不是该会议组织团队成员，无权访问该页面！']);
         return view('ot.nationManage');
     }
 
     public function userDetailsModal($id)
     {
         if (Auth::user()->type != 'ot')
-            return "Error";
+            return view('error', ['msg' => '您不是该会议组织团队成员，无权访问该页面！']);
         if ($id == 'new')
         {
             $user = new User;
@@ -198,7 +198,7 @@ class HomeController extends Controller
     public function schoolDetailsModal($id)
     {
         if (Auth::user()->type != 'ot')
-            return "Error";
+            return view('error', ['msg' => '您不是该会议组织团队成员，无权访问该页面！']);
         if ($id == 'new')
         {
             $school = new School;
@@ -214,7 +214,7 @@ class HomeController extends Controller
     public function committeeDetailsModal($id)
     {
         if (Auth::user()->type != 'ot')
-            return "Error";
+            return view('error', ['msg' => '您不是该会议组织团队成员，无权访问该页面！']);
         if ($id == 'new')
         {
             $committee = new Committee;
@@ -229,9 +229,9 @@ class HomeController extends Controller
     public function invoice()
     {
         if (Auth::user()->type == 'unregistered')
-            return view('error', ['msg' => 'Please register first.']);
+            return view('error', ['msg' => '请先报名该会议！']);
         if (Auth::user()->specific()->status != 'oVerified' && Auth::user()->specific()->status != 'paid')
-            return view('error', ['msg' =>'You have to be verified by the Organizing Team first.']);
+            return view('error', ['msg' => '请等待学校和/或组织团队审核！']);
         if (Auth::user()->specific()->school->payment_method == 'group' && Auth::user()->specific()->status != 'paid')
             return view('error', ['msg' => '贵校目前配置为统一缴费，请联系社团管理层缴费。']);
         return view('invoice', ['invoiceItems' => Auth::user()->invoiceItems(), 'invoiceAmount' => Auth::user()->invoiceAmount()]);
@@ -245,9 +245,11 @@ class HomeController extends Controller
     public function assignmentsList()
     {
         if (Auth::user()->type != 'delegate')
-            return view('error', ['msg' => '您不是参会代表，无权访问该页面！']);
+            return view('error', ['msg' => '您不是该会议参会代表，无权访问该页面！']);
         if (Auth::user()->specific()->status == 'reg')//TO-DO: parameters for this
-            return view('error', ['msg' => '请等待审核']);
+            return view('error', ['msg' => '请等待学校和/或组织团队审核！']);
+        if (Auth::user()->specific()->status != 'paid')//TO-DO: parameters for this
+            return view('error', ['msg' => '请先缴费！如果您已通过社团缴费，请等待组织团队确认']);
         $committee = Auth::user()->specific()->committee;
         return view('assignmentsList', ['committee' => $committee]);
     }
@@ -256,7 +258,7 @@ class HomeController extends Controller
     {
         $assignment = Assignment::findOrFail($id);
         if (!$assignment->belongsToDelegate(Auth::user()->id))
-            return "ERROR";
+            return view('error', ['msg' => '您不是此学术作业的分发对象，无权访问该页面！']);
         if ($assignment->subject_type == 'nation')
             $handin = Handin::where('assignment_id', $id)->where('nation_id', Auth::user()->delegate->nation->id)->orderBy('id', 'desc')->first();
         else
@@ -280,7 +282,7 @@ class HomeController extends Controller
         else if ($action == "download")
         {
             if (is_null($handin))
-                return "ERROR";
+                return view('error', ['msg' => '未找到您提交的文件！']);
             return response()->download(storage_path('/app/'.$handin->content));
         }
         else if ($action == "resubmit")
@@ -299,7 +301,7 @@ class HomeController extends Controller
                     return "Under Development...";
                 }
             }
-            return "ERROR";
+            return view('error', ['msg' => '该学术作业已超过提交期限，无法再提交！']);
         }
     }
 
@@ -307,9 +309,9 @@ class HomeController extends Controller
     {
         $assignment = Assignment::findOrFail($id);
         if (!$assignment->belongsToDelegate(Auth::user()->id))
-            return "ERROR";
+            return view('error', ['msg' => '您不是此学术作业的分发对象，无权提交该作业！']);
         if (strtotime(date("y-m-d h:i:s")) >= strtotime($assignment->deadline))
-            return "ERROR";
+            return view('error', ['msg' => '该学术作业已超过提交期限，无法再提交！']);
         if ($request->hasFile('file') && $request->file('file')->isValid())
         {
             $handin = new Handin;
@@ -326,7 +328,7 @@ class HomeController extends Controller
         }
         else
         {
-            return "Error";
+            return view('error', ['msg' => '上传出错，请重试！']);
         }
     }
 

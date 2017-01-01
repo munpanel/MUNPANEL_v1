@@ -15,7 +15,7 @@ use App\Handin;
 use App\Nation;
 use Illuminate\Support\Facades\Auth;
 
-class DatatablesController extends Controller
+class DatatablesController extends Controller //To-Do: Permission Check
 {
     public function __construct()
     {
@@ -291,6 +291,29 @@ class DatatablesController extends Controller
                 'details' => '<a href="document/'. $document->id.'"><i class="fa fa-search-plus"></i></a>',
                 'title' => $document->title,
                 'deadline' => $document->created_at,
+            ]);
+        }
+        return Datatables::of($result)->make(true);
+    }
+
+    public function handins()
+    {
+        $result = new Collection;
+        $handins = Handin::all();
+        foreach($handins as $handin)
+        {
+            $groups = '';
+
+            //To-Do
+
+            $result->push([
+                'details' => '<a href="ot/nationDetails.modal/'. $nation->id .'" data-toggle="ajaxModal" id="'. $nation->id .'" class="details-modal"><i class="fa fa-search-plus"></i></a>',
+                'id' => $nation->id,
+                'committee' => $nation->committee->name,
+                'name' => $nation->name,
+                'conpetence' => $nation->conpetence,
+                'veto_power' => $nation->veto_power ? '是' : '否',
+                'nationgroup' => $groups,
             ]);
         }
         return Datatables::of($result)->make(true);

@@ -29,6 +29,7 @@ Route::get('/assignments', 'HomeController@assignmentsList');
 Route::get('/assignment/{id}/{action?}', 'HomeController@assignment');
 Route::post('/assignment/{id}/upload', 'HomeController@uploadAssignment');
 
+// TODO: 判定 - 代表 or 学团 or 组委？
 Route::get('/documents', 'HomeController@documentsList');
 Route::get('/document/{id}/{action?}', 'HomeController@document');
 
@@ -56,6 +57,15 @@ Route::get('/ot/committeeDetails.modal/{id}', ['middleware' => ['permission:edit
 Route::post('/saveRegDel', 'UserController@regSaveDel');
 Route::post('/saveRegVol', 'UserController@regSaveVol');
 Route::post('/saveRegObs', 'UserController@regSaveObs');
+
+
+Route::get('/roleAlloc', function() {
+    return view('notavailable');
+});
+
+Route::get('/assignmentManage', function() {
+    return view('notavailable');
+});
 
 Route::get('/regManage', 'HomeController@regManage');
 Route::get('/regManage/imexport.modal', 'HomeController@imexportRegistrations');

@@ -332,7 +332,7 @@ class HomeController extends Controller
         $assignment = Assignment::findOrFail($id);
         if (!$assignment->belongsToDelegate(Auth::user()->id))
             return "ERROR";
-        if (strtotime(date("y-m-d h:i:s")) >= strtotime($assignment->deadline))
+        if (strtotime(date("y-m-d H:i:s")) >= strtotime($assignment->deadline))
             return "ERROR";
         if ($request->hasFile('file') && $request->file('file')->isValid())
         {

@@ -77,7 +77,7 @@
                   </div>
                 </div>
                 <footer class="panel-footer lt">
-              @if (strtotime(date("y-m-d h:i:s")) < strtotime($assignment->deadline))
+              @if (strtotime(date("y-m-d H:i:s")) < strtotime($assignment->deadline))
               <section class="panel wizard" id="uploadWizard"> 
                 <div class="clearfix wizard-steps">
                   <ul class="steps">

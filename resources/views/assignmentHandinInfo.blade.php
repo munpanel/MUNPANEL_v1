@@ -71,7 +71,7 @@
                <section class="panel bg-info lter no-borders">
                 <div class="panel-body">
                   <span class="h4">{{$assignment->title}}</span>
-                  @if (strtotime(date("y-m-d h:i:s")) < strtotime($assignment->deadline))
+                  @if (strtotime(date("y-m-d H:i:s")) < strtotime($assignment->deadline))
                       <a class="badge bg-primary pull-right" href="{{secure_url('/assignment/'.$assignment->id.'/resubmit')}}">重新提交</a>
                   @endif
                   <div class="text-center padder m-t">

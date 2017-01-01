@@ -77,6 +77,7 @@
                   </div>
                 </div>
                 <footer class="panel-footer lt">
+              @if (strtotime(date("y-m-d h:i:s")) < strtotime($assignment->deadline))
               <section class="panel wizard" id="uploadWizard"> 
                 <div class="clearfix wizard-steps">
                   <ul class="steps">
@@ -98,6 +99,9 @@
                 </div>
                 </form>
               </section>
+              @else
+              截止时间已到，您并未上传。
+              @endif
                 </footer>
               </section>
           </div>

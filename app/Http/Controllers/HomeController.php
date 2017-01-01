@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Storage;
 use Config;
 use Zipper;
 use File;
+use ZipArchive;
 
 class HomeController extends Controller
 {
@@ -311,12 +312,17 @@ class HomeController extends Controller
             $assignment = Assignment::findOrFail($id);
             $zipname = $assignment->title . ' ' . date("y-m-d-H-i-s") . '.zip';
             $zippername = '../storage/app/assignmentExports/' . $zipname;
+            $zip = new ZipArchive();
+            $zip->open($zippername, ZipArchive::CREATE);
+            // There seems to be bugs with Laravel::Zipper, so we use the ZipArchive of PHP.
             $i = 0;
             foreach($handins as $handin)
             {
                 $filename = $handin->user->name . ' ' . date('y-m-d-H-i-s', strtotime($handin->updated_at)) . '.' . File::extension(storage_path('/app/'.$handin->content));
-                Zipper::zip($zippername)->addString($filename, Storage::get($handin->content));
+                $zip->addFile(storage_path('app/' . $handin->content), $filename);
+                //Zipper::zip($zippername)->addString($filename, Storage::get($handin->content));
             }
+            $zip->close();
             return response()->download(storage_path('app/assignmentExports/'. $zipname));
         }
     }

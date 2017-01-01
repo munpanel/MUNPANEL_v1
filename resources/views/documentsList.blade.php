@@ -9,8 +9,12 @@
 @endpush
 @section('content')
 <section class="vbox">
-  <header class="header b-b bg-white">          
+  <header class="header b-b bg-white">
+    @if ($type == 'dais')
+      <a href="{{secure_url('/dais/documentDetails.modal/new')}}" class="btn btn-sm btn-success details-modal"><i class="fa fa-plus"></i> 新建</a>
+    @else
       <p>您的学术文件列表</p>
+    @endif
   </header>
   <section class="scrollable wrapper w-f">
     <section class="panel">
@@ -18,7 +22,11 @@
         <table class="table table-striped m-b-none" id="document-table">
           <thead>
             <tr>
-              <th width="20"></th>
+              @if ($type == 'dais')
+                <th width="40">操作</th>
+              @else
+                <th width="20"></th>
+              @endif              
               <th width="20">#</th>
               <th width="55%">学术文件标题</th>
               <th>发布日期</th>

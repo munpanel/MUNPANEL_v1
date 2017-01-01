@@ -353,8 +353,7 @@ class HomeController extends Controller
             return "Error";
         }
     }
-
-<<<<<<< HEAD
+    
     public function imexportRegistrations()
     {
         return view('ot.imexportModal', ['importURL' => secure_url('/regManage/import'), 'exportURL' => secure_url('/regManage/export')]);
@@ -362,13 +361,15 @@ class HomeController extends Controller
 
     public function documentsList()
     {
-        if (Auth::user()->type != 'delegate')
-            return view('error', ['msg' => '您不是参会代表，无权访问该页面！']);
+        if (Auth::user()->type == 'unregistered')
+            return view('error', ['msg' => '您无权访问该页面！']);
         if (Auth::user()->specific()->status == 'reg')//TO-DO: parameters for this
-            return view('error', ['msg' => '请等待审核']);
+            return view('error', ['msg' => '请等待学校和/或组织团队审核！']);  
+        if (Auth::user()->specific()->status != 'paid')//TO-DO: parameters for this  
+            return view('error', ['msg' => '请先缴费！如果您已通过社团缴费，请等待组织团队确认']); 
         $committee = Auth::user()->specific()->committee;
         // TODO: 完成 document 清单页面
-        return view('documentsList');
+        return view('documentsList', ['type' => Auth::user()->type]);
         //return view('error', ['msg' => '页面建筑中！']);
     }
     
@@ -377,27 +378,13 @@ class HomeController extends Controller
         $document = Document::findOrFail($id);
         if (!$document->belongsToDelegate(Auth::user()->id))
             return view('error', ['msg' => '您不是此学术文件的分发对象，无权访问该页面！']);
-        if ($action == 'info')
-        {
-            if (isset($handin))
-            {
-                return view('documentInfo', ['document' => $document]);
-            }
-            else if ($document->handin_type == 'upload')
-            {
-                return view('documentHandinUpload', ['document' => $document]);
-            }
-            else
-            {
-                //TO-DO Text Mode Hand in
-                return "Under Development...";
-            }
-        }
-        else if ($action == "download")
+        if ($action == "download")
         {
             return response()->download(storage_path('/app/'.$document->path));
         }
+        else
+        {
+            return view('documentInfo', ['document' => $document]);
+        }
     }
-=======
->>>>>>> master
 }

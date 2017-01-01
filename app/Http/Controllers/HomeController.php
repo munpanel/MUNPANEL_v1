@@ -12,7 +12,10 @@ use App\Assignment;
 use App\Handin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Config;
+use Zipper;
+use File;
 
 class HomeController extends Controller
 {
@@ -255,9 +258,11 @@ class HomeController extends Controller
     public function assignment($id, $action = 'info')
     {
         $assignment = Assignment::findOrFail($id);
-        if (!$assignment->belongsToDelegate(Auth::user()->id))
-            return "ERROR";
-        if ($assignment->subject_type == 'nation')
+        if (Auth::user()->type != 'ot' && Auth::user()->type != 'dais' && (!$assignment->belongsToDelegate(Auth::user()->id)))
+            return "ERROR"; //TO-DO: Permission check for ot and dais (for downloading handins)
+        if (Auth::user()->type == 'ot') //To-Do: Dais
+            $handins = $assignment->handins;
+        else if ($assignment->subject_type == 'nation')
             $handin = Handin::where('assignment_id', $id)->where('nation_id', Auth::user()->delegate->nation->id)->orderBy('id', 'desc')->first();
         else
             $handin = Handin::where('assignment_id', $id)->where('user_id', Auth::user()->id)->orderBy('id', 'desc')->first();
@@ -301,6 +306,19 @@ class HomeController extends Controller
             }
             return "ERROR";
         }
+        else if ($action == "export")
+        {
+            $assignment = Assignment::findOrFail($id);
+            $zipname = $assignment->title . ' ' . date("y-m-d-H-i-s") . '.zip';
+            $zippername = '../storage/app/assignmentExports/' . $zipname;
+            $i = 0;
+            foreach($handins as $handin)
+            {
+                $filename = $handin->user->name . ' ' . date('y-m-d-H-i-s', strtotime($handin->updated_at)) . '.' . File::extension(storage_path('/app/'.$handin->content));
+                Zipper::zip($zippername)->addString($filename, Storage::get($handin->content));
+            }
+            return response()->download(storage_path('app/assignmentExports/'. $zipname));
+        }
     }
 
     public function uploadAssignment(Request $request, $id)
@@ -328,11 +346,6 @@ class HomeController extends Controller
         {
             return "Error";
         }
-    }
-
-    public function imexportRegistrations()
-    {
-        return view('ot.imexportModal', ['importURL' => secure_url('/regManage/import'), 'exportURL' => secure_url('/regManage/export')]);
     }
 
 }

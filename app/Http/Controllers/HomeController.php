@@ -318,7 +318,7 @@ class HomeController extends Controller
             $i = 0;
             foreach($handins as $handin)
             {
-                $filename = $handin->user->name . ' ' . date('y-m-d-H-i-s', strtotime($handin->updated_at)) . '.' . File::extension(storage_path('/app/'.$handin->content));
+                $filename = $handin->user->id . '_' . $handin->user->name . ' ' . date('y-m-d-H-i-s', strtotime($handin->updated_at)) . '.' . File::extension(storage_path('/app/'.$handin->content));
                 $zip->addFile(storage_path('app/' . $handin->content), $filename);
                 //Zipper::zip($zippername)->addString($filename, Storage::get($handin->content));
             }

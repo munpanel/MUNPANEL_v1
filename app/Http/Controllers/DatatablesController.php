@@ -282,13 +282,13 @@ class DatatablesController extends Controller //To-Do: Permission Check
     {
         $result = new Collection;
         if (Auth::user()->type == 'dais')
-            $documents = Document::all(); // TODO: get docs per committee 前置事项: 构建 Dais ORM
+            $documents = /*Auth::user()->dais->documents();*/Document::all(); // TODO: get docs per committee 前置事项: 构建 Dais ORM
         else
             $documents = Auth::user()->delegate->documents();//Assignment::all();//get(['id', 'title', 'deadline']);
         $i = 0;
         $detailline = '<a href="document/'. $document->id.'"><i class="fa fa-search-plus"></i></a>';
         if (Auth::user()->type == 'dais')
-            $detailline .= '<a href="documentDetails.modal/'. $document->id.'"><i class="fa fa-pencil"></i></a>';
+            $detailline .= ' <a href="documentDetails.modal/'. $document->id.'"><i class="fa fa-pencil"></i></a>';
         foreach($documents as $document)
         {
             $result->push([

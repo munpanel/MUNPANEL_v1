@@ -354,4 +354,9 @@ class HomeController extends Controller
         }
     }
 
+    public function imexportRegistrations()
+    {
+        return view('ot.imexportModal', ['importURL' => secure_url('/regManage/import'), 'exportURL' => secure_url('/regManage/export')]);
+    }
+
 }

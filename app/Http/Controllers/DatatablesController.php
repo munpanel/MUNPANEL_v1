@@ -282,19 +282,19 @@ class DatatablesController extends Controller //To-Do: Permission Check
     {
         $result = new Collection;
         if (Auth::user()->type == 'dais')
-            $documents = /*Auth::user()->dais->documents();*/Document::all(); // TODO: get docs per committee 前置事项: 构建 Dais ORM
+            $documents = /*Auth::user()->dais->documents();*/Document::all(); // TODO: get docs per committee
         else
             $documents = Auth::user()->delegate->documents();//Assignment::all();//get(['id', 'title', 'deadline']);
         $i = 0;
-        $detailline = '<a href="document/'. $document->id.'"><i class="fa fa-search-plus"></i></a>';
-        if (Auth::user()->type == 'dais')
-            $detailline .= ' <a href="documentDetails.modal/'. $document->id.'"><i class="fa fa-pencil"></i></a>';
         foreach($documents as $document)
         {
+            $detailline = '<a href="document/'. $document->id.'"><i class="fa fa-search-plus"></i></a>';
+            if (Auth::user()->type == 'dais')
+                $detailline = $detailline . ' <a href="documentDetails.modal/'. $document->id.'"><i class="fa fa-pencil"></i></a>';
             $result->push([
                 //'id' => $document->id,
-                'id' => ++$i, // We don't want to use the actual document id in the database because it may not be continuous for a delegate, and is hence not user-friendly.
                 'details' => $detailline,
+                'id' => ++$i, // We don't want to use the actual document id in the database because it may not be continuous for a delegate, and is hence not user-friendly.
                 'title' => $document->title,
                 'deadline' => $document->created_at,
             ]);

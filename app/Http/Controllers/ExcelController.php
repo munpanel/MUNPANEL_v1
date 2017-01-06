@@ -193,7 +193,7 @@ class ExcelController extends Controller
                             }
                             $vol->status = $status;
                         }
-                        $sfz1 = $row['身份证号'];
+                        $sfz1 = ExcelController::mapData($row, $vol->sfz, '身份证号');
                         if (substr($sfz1, -1) == "\t") $sfz1 = rtrim($sfz1, "\t");
                         $vol->sfz = $sfz1;
                         $vol->qq = ExcelController::mapData($row, $vol->qq, 'qq');
@@ -268,7 +268,7 @@ class ExcelController extends Controller
                             $del->status = $status;
                         }
                         $del->email = $user->email;
-                        $sfz1 = $row['身份证号'];
+                        $sfz1 = ExcelController::mapData($row, $del->sfz, '身份证号');
                         if (substr($sfz1, -1) == "\t") $sfz1 = rtrim($sfz1, "\t");
                         $del->sfz = $sfz1;
                         $del->qq = ExcelController::mapData($row, $del->qq, 'qq');

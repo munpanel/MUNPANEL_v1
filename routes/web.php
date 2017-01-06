@@ -25,6 +25,7 @@ Route::get('/home', 'HomeController@index');
 Route::get('/changePwd.modal', 'HomeController@changePwd');
 Route::post('/changePwd', 'UserController@doChangePwd');
 
+// TODO: 判定 - 代表 or 学团 or 组委？
 Route::get('/assignments', 'HomeController@assignmentsList');
 Route::get('/assignment/{id}/{action?}', 'HomeController@assignment');
 Route::post('/assignment/{id}/upload', 'HomeController@uploadAssignment');

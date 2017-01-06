@@ -248,12 +248,17 @@ class HomeController extends Controller
     
     public function assignmentsList()
     {
-        if (Auth::user()->type != 'delegate')
-            return view('error', ['msg' => '您不是参会代表，无权访问该页面！']);
-        if (Auth::user()->specific()->status == 'reg')//TO-DO: parameters for this
-            return view('error', ['msg' => '请等待审核']);
+        if (Auth::user()->type == 'unregistered')
+            return view('error', ['msg' => '您无权访问该页面！']);
+        if (Auth::user()->type == 'delegate')
+        {
+            if (Auth::user()->specific()->status == 'reg')//TO-DO: parameters for this
+                return view('error', ['msg' => '请等待学校和/或组织团队审核！']);  
+            if (Auth::user()->specific()->status != 'paid')//TO-DO: parameters for this  
+                return view('error', ['msg' => '请先缴费！如果您已通过社团缴费，请等待组织团队确认']); 
+        }
         $committee = Auth::user()->specific()->committee;
-        return view('assignmentsList', ['committee' => $committee]);
+        return view('assignmentsList', ['committee' => $committee, 'type' => Auth::user()->type]);
     }
 
     public function assignment($id, $action = 'info')

@@ -13,7 +13,7 @@
         @if ($type == 'dais') 
           <a href="{{secure_url('/dais/documentDetails.modal/new')}}" class="btn btn-sm btn-success details-modal"><i class="fa fa-plus"></i> 新建</a> 
         @else 
-          <p>您的学术文件列表</p>
+          <p>您的学术作业列表</p>
         @endif 
       </header>
       <section class="scrollable wrapper w-f">

@@ -14,6 +14,7 @@ use App\Assignment;
 use App\Handin;
 use App\Nation;
 use App\Document;
+use Config;
 use Illuminate\Support\Facades\Auth;
 
 class DatatablesController extends Controller //To-Do: Permission Check
@@ -30,35 +31,57 @@ class DatatablesController extends Controller //To-Do: Permission Check
             $delegates = Delegate::with(['school' => function($q) {$q->select('name', 'id');}, 'user' => function($q) {$q->select('name', 'id');}, 'committee' => function($q) {$q->select('name', 'id');}])->where('school_id', $user->school->id)->get(['user_id', 'school_id', 'committee_id', 'status', 'partnername']);//->select(['user_id', 'name', 'school', 'committee', 'partnername']);
             foreach ($delegates as $delegate)
             {
+                if ($delegate->status == 'reg')
+                    $status = '等待学校审核';
+                else if ($delegate->status == 'sVerified')
+                    $status = '等待组委审核';
+                 else if ($delegate->status == 'oVerified')
+                    $status = '待缴费';
+                 else if ($delegate->status == 'paid')
+                    $status = '成功';
                 if ($delegate->partnername == '')
                     $partner = '无';
                 else
                     $partner = $delegate->partnername;
-                if ($delegate->status == 'reg')
-                    $approval = '<a href="#" class="approval-status" data-id="'. $delegate->user_id .'"><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i></a>';
-                else
-                    $approval = '<a href="#" class="approval-status active" data-id="'. $delegate->user_id .'"><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i></a>';
+                if (Config::get('munpanel.registration_school_changable'))
+                {
+                    if ($delegate->status == 'reg')
+                        $status = '<a href="#" class="approval-status" data-id="'. $delegate->user_id .'"><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i></a>';
+                    else
+                        $status = '<a href="#" class="approval-status active" data-id="'. $delegate->user_id .'"><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i></a>';
+                }
                 $result->push([
                     'details' => '<a href="reg.modal/'. $delegate->user_id .'" data-toggle="ajaxModal" id="'. $delegate->user_id .'" class="details-modal"><i class="fa fa-search-plus"></i></a>',
                     'name' => $delegate->user->name,
                     'committee' => $delegate->committee->name,
                     'partner' => $partner,
-                    'approval' => $approval,
+                    'approval' => $status,
                 ]);
             }
             $volunteers = Volunteer::with(['school' => function($q) {$q->select('name', 'id');}, 'user' => function($q) {$q->select('name', 'id');}])->where('school_id', $user->school->id)->get(['user_id', 'school_id', 'status']);
             foreach ($volunteers as $volunteer)
             {
                 if ($volunteer->status == 'reg')
-                    $approval = '<a href="#" class="approval-status" data-id="'. $volunteer->user_id .'"><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i></a>';
-                else
-                    $approval = '<a href="#" class="approval-status active" data-id="'. $volunteer->user_id .'"><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i></a>';
+                    $status = '等待学校审核';
+                else if ($volunteer->status == 'sVerified')
+                    $status = '等待组委审核';
+                 else if ($volunteer->status == 'oVerified')
+                    $status = '待缴费';
+                 else if ($volunteer->status == 'paid')
+                    $status = '成功';
+                if (Config::get('munpanel.registration_school_changable'))
+                {
+                    if ($volunteer->status == 'reg')
+                        $status = '<a href="#" class="approval-status" data-id="'. $volunteer->user_id .'"><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i></a>';
+                    else
+                        $status = '<a href="#" class="approval-status active" data-id="'. $volunteer->user_id .'"><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i></a>';
+                }
                 $result->push([
                     'details' => '<a href="reg.modal/'. $volunteer->user_id .'" data-toggle="ajaxModal" id="'. $volunteer->user_id .'" class="details-modal"><i class="fa fa-search-plus"></i></a>',
                     'name' => $volunteer->user->name,
                     'committee' => "志愿者",
                     'partner' => "无",
-                    'approval' => $approval,
+                    'approval' => $status,
                 ]);
  
             }

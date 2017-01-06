@@ -119,7 +119,12 @@ class ExcelController extends Controller
     private static function mapData($valuerow, $key, $valuekey)
     {
         if (isset($valuerow[$valuekey]))
-            return $valuerow[$valuekey];
+        {
+            if ($valuerow[$valuekey] == 'N/A')
+                return "";
+            else
+                return $valuerow[$valuekey];
+        }
         if (isset($key))
             return $key;
         return "";

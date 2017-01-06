@@ -104,3 +104,4 @@ Route::get('/ajax/schools', ['middleware' => ['permission:edit-schools'], 'uses'
 Route::get('/ajax/committees', ['middleware' => ['permission:edit-committees'], 'uses' => 'DatatablesController@committees']);
 Route::get('/ajax/nations', ['middleware' => ['permission:edit-nations'], 'uses' => 'DatatablesController@nations']);
 Route::get('/ajax/assignments', 'DatatablesController@assignments');
+Route::get('/ajax/documents', 'DatatablesController@documents');

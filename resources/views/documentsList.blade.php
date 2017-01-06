@@ -22,11 +22,7 @@
         <table class="table table-striped m-b-none" id="document-table">
           <thead>
             <tr>
-              @if ($type == 'dais')
-                <th width="40">操作</th>
-              @else
-                <th width="20"></th>
-              @endif              
+              <th width="{{$type == 'dais' ? '40' : '20'}}">{{$type == 'dais' ? '操作' : ''}}</th>
               <th width="20">#</th>
               <th width="55%">学术文件标题</th>
               <th>发布日期</th>

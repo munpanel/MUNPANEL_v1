@@ -13,6 +13,7 @@ use App\Committee;
 use App\Assignment;
 use App\Handin;
 use App\Nation;
+use App\Document;
 use Illuminate\Support\Facades\Auth;
 
 class DatatablesController extends Controller //To-Do: Permission Check
@@ -290,7 +291,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
         {
             $detailline = '<a href="document/'. $document->id.'"><i class="fa fa-search-plus"></i></a>';
             if (Auth::user()->type == 'dais')
-                $detailline = $detailline . ' <a href="documentDetails.modal/'. $document->id.'"><i class="fa fa-pencil"></i></a>';
+                $detailline = $detailline . '&nbsp;<a href="documentDetails.modal/'. $document->id.'"><i class="fa fa-pencil"></i></a>';
             $result->push([
                 //'id' => $document->id,
                 'details' => $detailline,

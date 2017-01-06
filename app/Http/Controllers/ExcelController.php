@@ -225,7 +225,8 @@ class ExcelController extends Controller
                         $del = Delegate::firstOrNew(['user_id' => $user->id]);
                         if (isset($row['学校']))
                             $del->school_id = School::firstOrCreate(['name' => $row['学校']])->id; // the default uid of school is 1, so a new school is a non-member school by default
-                        $del->committee_id = Committee::firstOrCreate(['name' => $row['委员会志愿者观察员']])->id;
+                        if ($row['委员会志愿者观察员'] != '代表')
+                            $del->committee_id = Committee::firstOrCreate(['name' => $row['委员会志愿者观察员']])->id;
                         if (isset($row['席位']))
                         {
                             if ($row['席位'] != '未分配')

@@ -237,8 +237,22 @@ class HomeController extends Controller
         if (Auth::user()->specific()->status != 'oVerified' && Auth::user()->specific()->status != 'paid')
             return view('error', ['msg' =>'You have to be verified by the Organizing Team first.']);
         if (Auth::user()->specific()->school->payment_method == 'group' && Auth::user()->specific()->status != 'paid')
-            return view('error', ['msg' => '贵校目前配置为统一缴费，请联系社团管理层缴费。']);
+            return view('error', ['msg' => '贵校目前配置为统一缴费，请联系社团管理层缴费。我们亦提供直接每人线上使用微信支付、支付宝线上支付自动确认的便捷服务，如需使用请联系社团管理层在学校后台修改支付方式。']);
         return view('invoice', ['invoiceItems' => Auth::user()->invoiceItems(), 'invoiceAmount' => Auth::user()->invoiceAmount()]);
+    }
+
+    public function schoolPay()
+    {
+        if (Auth::user()->type != 'school')
+            return view('error', ['msg' => 'You have to use your school account!']);
+        return view('school.pay');
+    }
+    
+    public function changeSchoolPaymentMethod($method)
+    {
+        Auth::user()->school->payment_method = $method;
+        Auth::user()->school->save();
+        return redirect(secure_url('/school/payment'));
     }
 
     public function checkout()

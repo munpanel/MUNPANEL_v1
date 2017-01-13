@@ -417,4 +417,19 @@ class HomeController extends Controller
             return view('documentInfo', ['document' => $document]);
         }
     }
+    
+    public function documentDetailsModal($id)
+    {
+        if ($id == 'new')
+        {
+            $document = new Document;
+            $document->title = 'New document';
+            $document->description = 'noLogin';
+            $document->path = 'unregistered';
+            $document->save();
+        }
+        else
+            $document = Document::findOrFail($id);
+        return view('documentDetailsModal', ['document' => $document]);
+    }
 }

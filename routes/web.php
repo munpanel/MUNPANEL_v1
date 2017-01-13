@@ -33,6 +33,7 @@ Route::post('/assignment/{id}/upload', 'HomeController@uploadAssignment');
 // TODO: 判定 - 代表 or 学团 or 组委？
 Route::get('/documents', 'HomeController@documentsList');
 Route::get('/document/{id}/{action?}', 'HomeController@document');
+Route::get('/documentDetails.modal/{id}', 'HomeController@documentDetailsModal');
 
 Route::get('/pages', function() {
     return view('notavailable');

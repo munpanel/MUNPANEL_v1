@@ -2,14 +2,17 @@
     <div class="modal-content">
         <div class="modal-body">
             <h4>{{(Auth::user()->type == 'ot' || Auth::user()->type == 'dais') ? '学术文件 #' . $document->id : $document->title}}</h4>
-            {{if (Auth::user()->type == 'ot' || Auth::user()->type == 'dais') echo '<button id="enableEditable-'.$document->id.'" class="btn btn-default pull-right">编辑模式</button><button id="deleteButton-'.$document->id.'" class="btn btn-danger pull-right">删除</button>'}}
+            @if (Auth::user()->type == 'ot' || Auth::user()->type == 'dais') 
+                <button id="enableEditable-{{$document->id}}" class="btn btn-default pull-right">编辑模式</button><button id="deleteButton-{{$document->id}}" class="btn btn-danger pull-right">删除</button>
+            @endif
             <table id="document-{{$document->id}}" class="table table-bordered table-striped" style="clear: both">
                 <tbody>
-                    {{if (Auth::user()->type == 'ot' || Auth::user()->type == 'dais') echo '
+                    @if (Auth::user()->type == 'ot' || Auth::user()->type == 'dais')
                     <tr>
                         <td width="35%">标题</td>
                         <td width="65%"><a href="#" id="title" data-type="text" data-pk="{{$document->id}}" data-url="{{secure_url('/ot/update/document/'.$document->id)}}" data-title="title" class="editable">{{$document->title}}</a></td>
-                    </tr>'}}
+                    </tr>
+                    @endif
                     <tr>
                         <td width="35%">分发对象</td>
                         <td width="65%">{{$document->scope()}}</td>
@@ -23,11 +26,12 @@
                         <!-- TODO: 改用多行文本 -->
                         <td width="65%"><a href="#" id="description" data-type="text" data-pk="{{$document->id}}" data-url="{{secure_url('/ot/update/document/'.$document->id)}}" data-title="description" class="editable">{!!$document->description!!}</a></td>
                     </tr>
-                    {{if (Auth::user()->type == 'ot' || Auth::user()->type == 'dais') echo '
+                    @if (Auth::user()->type == 'ot' || Auth::user()->type == 'dais')
                     <tr>         
                         <td width="35%">选择文件 (PDF 格式)</td>
                         <td width="65%">TODO: 文件选择器</td>
-                    </tr>'}}
+                    </tr>
+                    @endif
                   </tbody>
             </table>
         </div>

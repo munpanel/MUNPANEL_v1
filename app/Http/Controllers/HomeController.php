@@ -10,6 +10,7 @@ use App\Observer;
 use App\User;
 use App\Assignment;
 use App\Handin;
+use App\Document;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -395,7 +396,7 @@ class HomeController extends Controller
         //return view('error', ['msg' => '页面建筑中！']);
     }
     
-    public function document($id)
+    public function document($id, $action = "")
     {
         $document = Document::findOrFail($id);
         if (!$document->belongsToDelegate(Auth::user()->id))
@@ -403,6 +404,10 @@ class HomeController extends Controller
         if ($action == "download")
         {
             return response()->download(storage_path('/app/'.$document->path));
+        }
+        else if ($action == "raw")
+        {
+            return response()->file(storage_path('/app/'.$document->path));
         }
         else
         {

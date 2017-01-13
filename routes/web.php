@@ -95,6 +95,8 @@ Route::get('/ot/delete/committee/{id}', ['middleware' => ['permission:edit-commi
 Route::get('/test', 'UserController@test');
 Route::get('/createPermissions', 'UserController@createPermissions');
 
+Route::get('/school/payment', 'HomeController@schoolPay');
+Route::get('/school/pay/change/{method}', 'HomeController@changeSchoolPaymentMethod');
 Route::post('/pay/info', 'PayController@payInfo');
 Route::get('/pay/invoice', 'HomeController@invoice');
 Route::get('/pay/checkout.modal', 'HomeController@checkout');

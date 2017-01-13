@@ -399,8 +399,11 @@ class HomeController extends Controller
     public function document($id, $action = "")
     {
         $document = Document::findOrFail($id);
-        if (!$document->belongsToDelegate(Auth::user()->id))
-            return view('error', ['msg' => '您不是此学术文件的分发对象，无权访问该页面！']);
+        if (Auth::user()->type == 'unregistered' || Auth::user()->type == 'volunteer')
+            return view('error', ['msg' => '您不是参会代表，无权访问该页面！']);
+        else if (Auth::user()->type == 'delegate')
+            if (!$document->belongsToDelegate(Auth::user()->id))
+                return view('error', ['msg' => '您不是此学术文件的分发对象，无权访问该页面！']);
         if ($action == "download")
         {
             return response()->download(storage_path('/app/'.$document->path));

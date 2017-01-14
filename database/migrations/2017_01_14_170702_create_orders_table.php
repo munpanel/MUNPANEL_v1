@@ -16,6 +16,7 @@ class CreateOrdersTable extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->unsigned();
+            $table->integer('invoice_id')->unsigned();
             $table->enum('status', ['unpaid', 'paid', 'done'])->default('unpaid');
             $table->enum('shipment_method', ['mail', 'conference', 'none']); //快递；会议领取；虚拟商品
             $table->string('address')->nullable();
@@ -24,6 +25,7 @@ class CreateOrdersTable extends Migration
             $table->dateTime('shipped_at');
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('no action');
+            $table->foreign('invoice_id')->references('id')->on('invoices')->onDelete('no action');
         });
     }
 

@@ -23,6 +23,6 @@ $(document).ready(function() {
             "info": "共 _MAX_ 项在售商品",
             "infoEmpty": "无在售商品",
         },
-        "order": [[1, "asc"]],
+        "order": [[0, "asc"]],
     });
 });

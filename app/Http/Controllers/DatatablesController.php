@@ -334,6 +334,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
         {
             $remain = $good->remains;
             if ($remain == -1) $remain = 99999;
+            if ($remain > 5) $remain = 5;
             if ($remain == 0) $command = '<p class="text-muted">已售罄</p>';
             else
             {
@@ -344,24 +345,24 @@ class DatatablesController extends Controller //To-Do: Permission Check
                 }
                 else
                 {
-                    $command = '数量： <span class="spinner input-group shop-spinner" id="MySpinner" data-max="' . $remain . '" data-min="1">
-                              <input name="spinner" class="form-control spinner-input" type="text" maxlength="2" value="1">
-                              <div class="btn-group btn-group-vertical input-group-btn">
-                                <button class="btn-xs btn-white spinner-up" type="button">
-                                  <i class="fa fa-chevron-up text-muted"></i>
-                                </button>
-                                <button class="btn-xs btn-white spinner-down" type="button">
-                                  <i class="fa fa-chevron-down text-muted"></i>
-                                </button>
-                              </div>
-                            </span> <a href="'.secure_url('/store/cart/add/'.$good->id).'" class="btn btn-sm btn-success details-modal"><i class="fa fa-plus"></i> 加入购物车</a>';
+                    $command = '数量： <div id="MySpinner" class="spinner input-group" data-min="1" data-max="'.$remain.'">
+                          <input type="text" class="form-control spinner-input" value="1" name="spinner" maxlength="2">
+                          <div class="btn-group btn-group-vertical input-group-btn">
+                            <button type="button" class="btn btn-white spinner-up">
+                              <i class="fa fa-chevron-up text-muted"></i>
+                            </button>
+                            <button type="button" class="btn btn-white spinner-down">
+                              <i class="fa fa-chevron-down text-muted"></i>
+                            </button>
+                          </div>
+                        </div><a href="'.   secure_url('/store/cart/add/'.$good->id).'" class="btn btn-sm btn-success details-modal"><i class="fa fa-plus"></i> 加入购物车</a>';
                 }
             }
             $result->push([
                 'id' => ++$i, 
                 'image' => '<a href="good.modal/'. $good->id.'" data-toggle="ajaxModal"><img src="goodimg/' . $good->id . '" class="shop-image-small"></a>',
                 'title' => '<a href="good.modal/'. $good->id.'" data-toggle="ajaxModal">'.$good->name.'</a>',
-                'price' => $good->price,
+                'price' => '¥' . number_format($good->price, 2),
                 'command' => $command,
             ]);
         }

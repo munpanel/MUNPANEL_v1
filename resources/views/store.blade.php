@@ -3,9 +3,11 @@
 @push('scripts')
     <script src="{{secure_url('/js/jquery.dataTables.min.js')}}"></script>
     <script src="{{secure_url('/js/store.js')}}"></script>
+    <script src="{{secure_url('/js/fuelux/fuelux.js')}}"></script>
 @endpush
 @push('css')
     <link rel="stylesheet" href="{{secure_url('/css/jquery.dataTables.min.css')}}" type="text/css" />
+    <link rel="stylesheet" href="{{secure_url('/js/fuelux/fuelux.css')}}" type="text/css" />
 @endpush
 @section('content')
 <section class="vbox">

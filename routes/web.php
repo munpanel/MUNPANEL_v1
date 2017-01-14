@@ -50,6 +50,10 @@ Route::get('/ddltimer', function() {
     return view('notavailable');
 });
 
+
+Route::get('/shop', 'HomeController@shop');
+Route::get('/goodimg/{id}', 'HomeController@goodImage');
+
 Route::get('/reg.modal/{id?}', 'HomeController@regModal');
 Route::get('/ot/userDetails.modal/{id}', ['middleware' => ['permission:edit-users'], 'uses' => 'HomeController@userDetailsModal']);
 Route::get('/ot/schoolDetails.modal/{id}', ['middleware' => ['permission:edit-schools'], 'uses' => 'HomeController@schoolDetailsModal']);
@@ -117,3 +121,4 @@ Route::get('/ajax/schools', ['middleware' => ['permission:edit-schools'], 'uses'
 Route::get('/ajax/committees', ['middleware' => ['permission:edit-committees'], 'uses' => 'DatatablesController@committees']);
 Route::get('/ajax/nations', ['middleware' => ['permission:edit-nations'], 'uses' => 'DatatablesController@nations']);
 Route::get('/ajax/assignments', 'DatatablesController@assignments');
+Route::get('/ajax/shop', 'DatatablesController@shopgoods');

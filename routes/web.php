@@ -96,8 +96,8 @@ Route::get('/ot/delete/committee/{id}', ['middleware' => ['permission:edit-commi
 //Route::get('/dais/assignments', 'HomeController@assignment');
 
 //Route::get('/regschools', 'UserController@regSchool');
-Route::get('/test', 'UserController@test');
-Route::get('/createPermissions', 'UserController@createPermissions');
+//Route::get('/test', 'UserController@test');
+//Route::get('/createPermissions', 'UserController@createPermissions');
 
 Route::get('/school/payment', 'HomeController@schoolPay');
 Route::get('/school/pay/change/{method}', 'HomeController@changeSchoolPaymentMethod');

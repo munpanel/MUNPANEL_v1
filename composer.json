@@ -10,7 +10,8 @@
         "yajra/laravel-datatables-oracle": "^6.0",
         "zizaco/entrust": "dev-master",
         "maatwebsite/excel": "~2.1.0",
-        "chumper/zipper": "0.6.x"
+        "chumper/zipper": "0.6.x",
+        "gloudemans/shoppingcart": "*"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

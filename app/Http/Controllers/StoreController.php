@@ -15,18 +15,22 @@ class StoreController extends Controller
 
     public function displayCart()
     {
+        return response()->json(Cart::content());
     }
 
-    public function addCart($id)
+    public function addCart($id, $num)
     {
+        Cart::add(Good::findOrFail($id), $num);
     }
 
     public function removeCart($id)
     {
+        Cart::remove($id); //ID is rowID instead of goodID
     }
 
     public function emptyCart()
     {
+        Cart::destroy();
     }
 
     public function displayOrder($id)

@@ -106,7 +106,7 @@ Route::get('/pay/checkout.modal', 'HomeController@checkout');
 
 Route::get('/store', 'StoreController@home');
 Route::get('/store/cart', 'StoreController@displayCart');
-Route::get('/store/cart/add/{id}', 'StoreController@addCart');
+Route::get('/store/cart/add/{id}/{num}', 'StoreController@addCart');
 Route::get('/store/cart/remove/{id}', 'StoreController@removeCart');
 Route::get('/store/cart/empty', 'StoreController@emptyCart');
 Route::get('/store/order/{id}', 'StoreController@displayOrder');

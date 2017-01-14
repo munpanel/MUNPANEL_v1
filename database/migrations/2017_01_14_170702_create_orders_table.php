@@ -14,18 +14,25 @@ class CreateOrdersTable extends Migration
     public function up()
     {
         Schema::create('orders', function (Blueprint $table) {
-            $table->increments('id');
+            $table->string('id');
             $table->integer('user_id')->unsigned();
-            $table->integer('invoice_id')->unsigned();
             $table->enum('status', ['unpaid', 'paid', 'done'])->default('unpaid');
-            $table->enum('shipment_method', ['mail', 'conference', 'none']); //快递；会议领取；虚拟商品
+            $table->enum('shipment_method', ['mail', 'conference', 'none'])->nullable(); //快递；会议领取；虚拟商品
             $table->string('address')->nullable();
             $table->string('shipment_no')->nullable();
             $table->string('content'); //JSON
-            $table->dateTime('shipped_at');
+            /*** TEEGON ***/
+            $table->string('charge_id')->nullable();//流水号
+            $table->string('buyer')->nullable();//支付方(微信ID/支付宝手机号)
+            $table->string('payment_no')->nullable();//第三方交易单号
+            /*** TEEGON ***/
+            $table->double('price');//冗余，空间换时间
+            $table->string('payment_channel');//wxpay, alipay  为方便扩展，天工可能开发新接口如Apple Pay等，不做成enum
+            $table->dateTime('payed_at')->nullable();
+            $table->dateTime('shipped_at')->nullable();
             $table->timestamps();
+            $table->primary('id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('no action');
-            $table->foreign('invoice_id')->references('id')->on('invoices')->onDelete('no action');
         });
     }
 

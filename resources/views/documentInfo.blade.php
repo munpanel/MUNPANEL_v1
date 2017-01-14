@@ -13,7 +13,8 @@
         <header class="header bg-white b-b">
           <p>{{$document->title}}</p>
           <a href="{{secure_url('/document/'.$document->id.'/download')}}" class="btn btn-sm btn-success details-modal pull-right"><i class="fa fa-download"></i> 下载该文件</a>
-          <a href="{{secure_url('/documentDetails.modal/'.$document->id)}}" class="btn btn-sm btn-white details-modal pull-right"><i class="fa fa-info"></i> 信息</a>
+          <p class="pull-right">&nbsp&nbsp</p>
+          <a href="{{secure_url('/documentDetails.modal/'.$document->id)}}" class="btn btn-sm btn-white details-modal pull-right" data-toggle="ajaxModal"><i class="fa fa-info"></i> 信息</a>
         </header>
         <section class="scrollable">
           <embed src="{{secure_url('/document/'.$document->id.'/raw')}}" width="100%" height="100%"></embed>

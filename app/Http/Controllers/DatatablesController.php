@@ -328,13 +328,13 @@ class DatatablesController extends Controller //To-Do: Permission Check
         {
             $detailline = '<a href="document/'. $document->id.'"><i class="fa fa-search-plus"></i></a>';
             if (Auth::user()->type == 'dais')
-                $detailline = $detailline . '&nbsp;<a href="documentDetails.modal/'. $document->id.'"><i class="fa fa-pencil"></i></a>';
+                $detailline = $detailline . '&nbsp;<a href="documentDetails.modal/'. $document->id.'" data-toggle="ajaxModal"><i class="fa fa-pencil"></i></a>';
             $result->push([
                 //'id' => $document->id,
                 'details' => $detailline,
                 'id' => ++$i, // We don't want to use the actual document id in the database because it may not be continuous for a delegate, and is hence not user-friendly.
                 'title' => $document->title,
-                'deadline' => $document->created_at,
+                'deadline' => date('Y年n月j日', strtotime($document->created_at)),
             ]);
         }
         return Datatables::of($result)->make(true);

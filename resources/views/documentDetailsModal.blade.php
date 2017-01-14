@@ -23,13 +23,17 @@
                     </tr>
                     <tr>
                         <td width="35%">描述</td>
+                        @if (Auth::user()->type == 'ot' || Auth::user()->type == 'dais')
                         <!-- TODO: 改用多行文本 -->
                         <td width="65%"><a href="#" id="description" data-type="text" data-pk="{{$document->id}}" data-url="{{secure_url('/ot/update/document/'.$document->id)}}" data-title="description" class="editable">{!!$document->description!!}</a></td>
+                        @else
+                        <td width="65%">{!!$document->description!!}</td>
+                        @endif
                     </tr>
                     @if (Auth::user()->type == 'ot' || Auth::user()->type == 'dais')
                     <tr>         
                         <td width="35%">选择文件 (PDF 格式)</td>
-                        <td width="65%">TODO: 文件选择器</td>
+                        <td width="65%">{{$document->path}}<br>TODO: 文件选择器</td>
                     </tr>
                     @endif
                   </tbody>
@@ -37,6 +41,7 @@
         </div>
     </div>
 </div>
+@if (Auth::user()->type == 'ot' || Auth::user()->type == 'dais')
 <script>
 $.fn.editable.defaults.mode = 'inline';
 $('#document-{{$document->id}} .editable').editable();
@@ -52,3 +57,4 @@ $('#deleteButton-{{$document->id}}').click(function() {
     jQuery.get('ot/delete/document/{{$document->id}}', cb);
 });
 </script>
+@endif

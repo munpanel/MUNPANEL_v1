@@ -424,8 +424,8 @@ class HomeController extends Controller
         {
             $document = new Document;
             $document->title = 'New document';
-            $document->description = 'noLogin';
-            $document->path = 'unregistered';
+            $document->description = '请在此输入对该学术文件的描述';
+            $document->path = 'no-docs.pdf';
             $document->save();
         }
         else

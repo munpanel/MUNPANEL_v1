@@ -52,7 +52,6 @@ Route::get('/ddltimer', function() {
 
 
 Route::get('/shop', 'HomeController@shop');
-Route::get('/goodimg/{id}', 'HomeController@goodImage');
 
 Route::get('/reg.modal/{id?}', 'HomeController@regModal');
 Route::get('/ot/userDetails.modal/{id}', ['middleware' => ['permission:edit-users'], 'uses' => 'HomeController@userDetailsModal']);
@@ -105,7 +104,7 @@ Route::post('/pay/info', 'PayController@payInfo');
 Route::get('/pay/invoice', 'HomeController@invoice');
 Route::get('/pay/checkout.modal', 'HomeController@checkout');
 
-Route::get('/store/index', 'StoreController@goodsList');
+Route::get('/store/index', 'StoreController@home');
 Route::get('/store/cart', 'StoreController@displayCart');
 Route::get('/store/cart/add/{id}', 'StoreController@addCart');
 Route::get('/store/cart/remove/{id}', 'StoreController@removeCart');
@@ -113,6 +112,7 @@ Route::get('/store/cart/empty', 'StoreController@emptyCart');
 Route::get('/store/order/{id}', 'StoreController@displayOrder');
 Route::get('/store/checkout', 'StoreController@checkout');
 Route::post('/store/doCheckout', 'StoreController@doCheckout');
+Route::get('/goodimg/{id}', 'StoreController@goodImage');
 
 
 Route::get('/ajax/registrations', 'DatatablesController@registrations');
@@ -121,4 +121,4 @@ Route::get('/ajax/schools', ['middleware' => ['permission:edit-schools'], 'uses'
 Route::get('/ajax/committees', ['middleware' => ['permission:edit-committees'], 'uses' => 'DatatablesController@committees']);
 Route::get('/ajax/nations', ['middleware' => ['permission:edit-nations'], 'uses' => 'DatatablesController@nations']);
 Route::get('/ajax/assignments', 'DatatablesController@assignments');
-Route::get('/ajax/shop', 'DatatablesController@shopgoods');
+Route::get('/ajax/store', 'StoreController@goodsList');

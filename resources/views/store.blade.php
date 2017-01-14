@@ -1,8 +1,8 @@
 ﻿@extends('layouts.app')
-@section('shop_active', 'active')
+@section('store_active', 'active')
 @push('scripts')
     <script src="{{secure_url('/js/jquery.dataTables.min.js')}}"></script>
-    <script src="{{secure_url('/js/shop.js')}}"></script>
+    <script src="{{secure_url('/js/store.js')}}"></script>
 @endpush
 @push('css')
     <link rel="stylesheet" href="{{secure_url('/css/jquery.dataTables.min.css')}}" type="text/css" />
@@ -11,7 +11,7 @@
 <section class="vbox">
       <header class="header b-b bg-white">          
         <p>BJMUNC2017 纪念品商店</p>
-        <a href="{{secure_url('/ot/committeeDetails.modal/new')}}" class="btn btn-sm btn-info details-modal pull-right"><i class="fa fa-shopping-cart"></i> 我的购物车</a>
+        <a href="{{secure_url('/ot/committeeDetails.modal/new')}}" class="btn btn-sm btn-info details-modal pull-right"><i class="fa fa-storeping-cart"></i> 我的购物车</a>
         @if (false) 
            <!-- TODO: 构建后台 -->
         @endif
@@ -19,7 +19,7 @@
       <section class="scrollable wrapper w-f">
         <section class="panel">
           <div class="table-responsive">
-            <table class="table table-striped m-b-none" id="shop-table">
+            <table class="table table-striped m-b-none" id="store-table">
               <thead>
                 <tr>
                   <th width="20">#</th>
@@ -36,7 +36,7 @@
             <footer class="footer bg-white b-t">
               <div class="row m-t-sm text-center-xs">
                 <div class="col-sm-12">
-                  <small class="text-muted inline m-t-sm m-b-sm" id="shop-pageinfo"></small>
+                  <small class="text-muted inline m-t-sm m-b-sm" id="store-pageinfo"></small>
                 </div>
               </div>
             </footer>

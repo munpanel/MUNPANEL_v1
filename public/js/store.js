@@ -1,10 +1,10 @@
 $(document).ready(function() {
-   $('#shop-table').DataTable({
+   $('#store-table').DataTable({
         //processing: true,
         //serverSide: true,
         paging: false,
         bFilter: false,
-        ajax: 'ajax/shops',
+        ajax: 'ajax/store',
         columns: [
             {data: 'id', name: 'id', orderable: true},
             {data: 'image', name:'image', orderable: false},
@@ -14,9 +14,9 @@ $(document).ready(function() {
             {data: 'command', name: 'command', orderable: true}            
         ],
         fnInitComplete: function(oSettings, json) {
-           $('#shop-table_length').hide();
-           $('#shop-table_info').appendTo($('#shop-pageinfo'));
-           $('#shop-table').removeClass('no-footer');
+           $('#store-table_length').hide();
+           $('#store-table_info').appendTo($('#store-pageinfo'));
+           $('#store-table').removeClass('no-footer');
         },
         "language": {
             "zeroRecords": "无在售商品",

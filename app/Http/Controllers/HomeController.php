@@ -10,7 +10,6 @@ use App\Observer;
 use App\User;
 use App\Assignment;
 use App\Handin;
-use App\Good;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -374,14 +373,4 @@ class HomeController extends Controller
         return view('ot.imexportModal', ['importURL' => secure_url('/regManage/import'), 'exportURL' => secure_url('/regManage/export')]);
     }
 
-    public function shop()
-    {
-        return view('shop');
-    }
-    
-    public function goodImage($id)
-    {
-        $item = Good::findOrFail($id);
-        return response()->download(storage_path('/app/'.$item->image));
-    }
 }

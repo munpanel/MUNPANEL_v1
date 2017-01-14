@@ -53,9 +53,9 @@
                 </a>
               </li>
               <li class="@yield('shop_active')">
-                <a href="{{ secure_url('/shop') }}">
+                <a href="{{ secure_url('/store/index') }}">
                   <i class="fa fa-shopping-bag"></i>
-                  <span>Souvenir Shop</span>
+                  <span>Souvenir Store</span>
                 </a>
               </li>
               <li class="@yield('fb_active')">

@@ -104,7 +104,7 @@ Route::post('/pay/info', 'PayController@payInfo');
 Route::get('/pay/invoice', 'HomeController@invoice');
 Route::get('/pay/checkout.modal', 'HomeController@checkout');
 
-Route::get('/store/index', 'StoreController@home');
+Route::get('/store', 'StoreController@home');
 Route::get('/store/cart', 'StoreController@displayCart');
 Route::get('/store/cart/add/{id}', 'StoreController@addCart');
 Route::get('/store/cart/remove/{id}', 'StoreController@removeCart');
@@ -121,4 +121,4 @@ Route::get('/ajax/schools', ['middleware' => ['permission:edit-schools'], 'uses'
 Route::get('/ajax/committees', ['middleware' => ['permission:edit-committees'], 'uses' => 'DatatablesController@committees']);
 Route::get('/ajax/nations', ['middleware' => ['permission:edit-nations'], 'uses' => 'DatatablesController@nations']);
 Route::get('/ajax/assignments', 'DatatablesController@assignments');
-Route::get('/ajax/store', 'StoreController@goodsList');
+Route::get('/ajax/store', 'DatatablesController@goods');

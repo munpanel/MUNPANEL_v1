@@ -11,7 +11,7 @@
 <section class="vbox">
       <header class="header b-b bg-white">          
         <p>BJMUNC2017 纪念品商店</p>
-        <a href="{{secure_url('/ot/committeeDetails.modal/new')}}" class="btn btn-sm btn-info details-modal pull-right"><i class="fa fa-storeping-cart"></i> 我的购物车</a>
+        <a href="{{secure_url('/ot/committeeDetails.modal/new')}}" class="btn btn-sm btn-info details-modal pull-right"><i class="fa fa-shopping-cart"></i> 我的购物车</a>
         @if (false) 
            <!-- TODO: 构建后台 -->
         @endif
@@ -23,10 +23,10 @@
               <thead>
                 <tr>
                   <th width="20">#</th>
-                  <th width="350">图片</th>
+                  <th width="160">图片</th>
                   <th>品名</th>
                   <th width="40">单价</th>
-                  <th width="100">操作</th>
+                  <th width="150">操作</th>
                 </tr>
               </thead>
             </table>

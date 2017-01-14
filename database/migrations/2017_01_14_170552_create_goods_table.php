@@ -16,6 +16,7 @@ class CreateGoodsTable extends Migration
         Schema::create('goods', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
+            $table->string('image');
             $table->boolean('enabled')->default(false);
             $table->double('price');
             $table->integer('remains'); //-1 for unlimited

@@ -13,10 +13,10 @@
 <section class="vbox">
       <header class="header b-b bg-white">          
         <p>BJMUNC2017 纪念品商店</p>
-        <a href="{{secure_url('/ot/committeeDetails.modal/new')}}" class="btn btn-sm btn-info details-modal pull-right"><i class="fa fa-shopping-cart"></i> 我的购物车</a>
-        @if (false) 
+        <a href="{{secure_url('/store/cart')}}" class="btn btn-sm btn-info details-modal pull-right"><i class="fa fa-shopping-cart"></i> 我的购物车</a>
+        @permission('edit-store')
            <!-- TODO: 构建后台 -->
-        @endif
+        @endpermission
       </header>
       <section class="scrollable wrapper w-f">
         <section class="panel">
@@ -28,7 +28,7 @@
                   <th width="160">图片</th>
                   <th>品名</th>
                   <th width="40">单价</th>
-                  <th width="150">操作</th>
+                  <th width="240">操作</th>
                 </tr>
               </thead>
             </table>

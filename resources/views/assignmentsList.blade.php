@@ -1,5 +1,5 @@
 ﻿@extends('layouts.app')
-@section('assignment_active', 'active')
+@section('assignments_active', 'active')
 @push('scripts')
     <script src="{{secure_url('/js/jquery.dataTables.min.js')}}"></script>
     <script src="{{secure_url('/js/assignmentsList.js')}}"></script>

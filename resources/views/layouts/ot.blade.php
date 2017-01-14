@@ -44,7 +44,7 @@
                 </a>
               </li>
               @endpermission
-              <li class="@yield('shop_active')">
+              <li class="@yield('store_active')">
                 <a href="{{ secure_url('/store') }}">
                   <i class="fa fa-shopping-bag"></i>
                   <span>Souvenir Store</span>

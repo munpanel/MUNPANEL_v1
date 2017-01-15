@@ -332,31 +332,25 @@ class DatatablesController extends Controller //To-Do: Permission Check
         $i = 0;
         foreach($goods as $good)
         {
+            if (!$good->enabled) continue;
             $remain = $good->remains;
-            if ($remain == -1) $remain = 99999;
+            if ($remain == -1) $remain = 5;
             if ($remain > 5) $remain = 5;
             if ($remain == 0) $command = '<p class="text-muted">已售罄</p>';
             else
             {
-                if (!$good->enabled) continue;
-                if (Auth::user()->type == 'ot')
-                {
-                    $command = 'TODO: 针对组委的操作项';
-                }
-                else
-                {
-                    $command = '数量： <div id="MySpinner" class="spinner input-group" data-min="1" data-max="'.$remain.'">
-                          <input type="text" class="form-control spinner-input" value="1" name="spinner" maxlength="2">
-                          <div class="btn-group btn-group-vertical input-group-btn">
-                            <button type="button" class="btn btn-white spinner-up">
-                              <i class="fa fa-chevron-up text-muted"></i>
-                            </button>
-                            <button type="button" class="btn btn-white spinner-down">
-                              <i class="fa fa-chevron-down text-muted"></i>
-                            </button>
-                          </div>
-                        </div><a href="'.   secure_url('/store/cart/add/'.$good->id).'" class="btn btn-sm btn-success details-modal"><i class="fa fa-plus"></i> 加入购物车</a>';
-                }
+                $command = '<form class="form-inline"><span>数量： </span><div id="MySpinner" class="spinner input-group shop-spinner" data-min="1" data-max="'.$remain.'">
+                      {{ csrf_field() }}
+                      <input type="text" class="form-control spinner-input" value="1" name="num" maxlength="2">
+                      <div class="btn-group btn-group-vertical input-group-btn">
+                        <button type="button" class="btn btn-white spinner-up">
+                          <i class="fa fa-chevron-up text-muted"></i>
+                        </button>
+                        <button type="button" class="btn btn-white spinner-down">
+                          <i class="fa fa-chevron-down text-muted"></i>
+                        </button>
+                      </div>
+                    </div>&nbsp;<a href="'.secure_url('/store/cart/add/'.$good->id).'" class="btn btn-success details-modal"><i class="fa fa-plus"></i> 加入购物车</a></form>';
             }
             $result->push([
                 'id' => ++$i, 

@@ -18,9 +18,9 @@ class StoreController extends Controller
         return response()->json(Cart::content());
     }
 
-    public function addCart($id, $num)
+    public function addCart(Request $request, $id)
     {
-        Cart::add(Good::findOrFail($id), $num);
+        Cart::add(Good::findOrFail($id), $request->num);
     }
 
     public function removeCart($id)

@@ -11,7 +11,7 @@
                 </a>
               </li>
               <li class="dropdown-submenu @yield('assignments_active')">
-                <a href="{{ secure_url('/assignmentManage') }}" class="dropdown-toggle" > <!-- data-toggle="dropdown"-->
+                <a href="{{ secure_url('/assignments') }}" class="dropdown-toggle" > <!-- data-toggle="dropdown"-->
                   <i class="fa fa-flask"></i>
                   <span>Assignments & Handins</span>
                 </a>

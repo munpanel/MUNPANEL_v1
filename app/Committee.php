@@ -11,6 +11,16 @@ class Committee extends Model
     public function delegates() {
         return $this->hasMany('App\Delegate');
     }
+
+    public function assignments()
+    {
+        return $this->belongsToMany('App\Assignment');
+    }
+    
+    public function documents()
+    {
+        return $this->belongsToMany('App\Document');
+    }
     
     public function hasDelegate($uid)
     {

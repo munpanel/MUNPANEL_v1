@@ -74,4 +74,40 @@ class Delegate extends Model
         }
         return $result->unique()->sortBy('id');
     }
+    
+    public function documents() {
+        $result = new Collection;
+        if (isset($this->nation))
+        {
+            $nationgroups = $this->nationgroups;
+            if (isset($nationgroups))
+            {
+                foreach($nationgroups as $nationgroup)
+                {
+                    $documents = $nationgroup->documents;
+                    if (isset($documents))
+                        foreach ($documents as $document)
+                            $result->push($document);
+                }
+            }
+        }
+        $documents = $this->committee->documents;
+        if (isset($documents))
+        {
+            foreach ($documents as $document)
+                $result->push($document);
+        }
+        $delegategroups = $this->delegategroups;
+        if (isset($delegategroups))
+        {
+            foreach($delegategroups as $delegategroup)
+            {
+                $documents = $delegategroup->documents;
+                if (isset($documents))
+                    foreach ($documents as $document)
+                        $result->push($document);
+            }
+        }
+        return $result->unique()->sortBy('id');
+    }
 }

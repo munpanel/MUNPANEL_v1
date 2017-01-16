@@ -285,6 +285,16 @@ class HomeController extends Controller
             $handins = $assignment->handins;
         else if ($assignment->subject_type == 'nation')
             $handin = Handin::where('assignment_id', $id)->where('nation_id', Auth::user()->delegate->nation->id)->orderBy('id', 'desc')->first();
+        else if ($assignment->subject_type == 'partner')
+        {
+            $handin = Handin::where('assignment_id', $id)->where('nation_id', Auth::user()->delegate->partner->user->id)->orderBy('id', 'desc')->first();
+            if (!isset($handin)) $handin = Handin::where('assignment_id', $id)->where('user_id', Auth::user()->id)->orderBy('id', 'desc')->first();
+            else
+            {
+                $handin1 = Handin::where('assignment_id', $id)->where('user_id', Auth::user()->id)->orderBy('id', 'desc')->first();
+                if (isset($handin1) && $handin1->id > $handin->id) $handin = $handin1;
+            }
+        }
         else
             $handin = Handin::where('assignment_id', $id)->where('user_id', Auth::user()->id)->orderBy('id', 'desc')->first();
         if ($action == 'info')

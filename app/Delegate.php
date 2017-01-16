@@ -9,7 +9,7 @@ class Delegate extends Model
 {
     protected $table='delegate_info';
     protected $primaryKey = 'user_id';
-    protected $fillable = ['user_id','school_id','status','gender','sfz','grade','email','qq','wechat','partnername','parenttel','tel','committee_id','accomodate','roommatename'];
+    protected $fillable = ['user_id','school_id','status','gender','sfz','grade','email','qq','wechat','partnername','parenttel','tel','committee_id','accomodate','roommatename','partner_user_id','roommate_user_id','notes'];
 
     public function committee() {
         return $this->belongsTo('App\Committee');
@@ -20,7 +20,7 @@ class Delegate extends Model
     }
 
     public function user() {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('App\User', 'delegate_info_user_id');
     }
 
     public function school() {
@@ -91,7 +91,7 @@ class Delegate extends Model
                     if (is_null($partner->delegate->partnername))                             // 如果对方未填搭档，自动补全
                         $partner->delegate->partnername = $this->user->name;
                     if ($partner->delegate->partnername != $this->user->name) continue;       // 排除多角搭档
-                    $this->partner_user_id = $partner->id;
+                    $this->partner_user_id = $partner->id;                                    // TODO: 保存修改
                     $partner->delegate->partner_user_id = $this->user->id;
                     return;
                 }
@@ -103,7 +103,7 @@ class Delegate extends Model
     }
     
     public function partner() {
-        return $this->hasOne('App\User', 'foreign_key')->delegate; 
+        return $this->hasOne('App\User', 'delegate_info_partner_user_id')->delegate; 
     }
     
     public function assignroommateByName() 
@@ -127,7 +127,7 @@ class Delegate extends Model
                         $this->notes .= "在自动配对室友时检测到室友为异性，请核查";
                         return;
                     }
-                    $this->roommate_user_id = $roommate->id;
+                    $this->roommate_user_id = $roommate->id;                     // TODO: 保存修改
                     $roommate->specific()->roommate_user_id = $this->user->id;
                     return;
                 }
@@ -139,7 +139,7 @@ class Delegate extends Model
     }
     
     public function roommate() {
-        return $this->hasOne('App\User', 'foreign_key')->specific(); 
+        return $this->hasOne('App\User', 'delegate_info_roommate_user_id')->specific(); 
     }
     
     public function documents() {

@@ -10,6 +10,7 @@ use App\Observer;
 use App\User;
 use App\Assignment;
 use App\Handin;
+use App\Document;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -237,8 +238,22 @@ class HomeController extends Controller
         if (Auth::user()->specific()->status != 'oVerified' && Auth::user()->specific()->status != 'paid')
             return view('error', ['msg' =>'You have to be verified by the Organizing Team first.']);
         if (Auth::user()->specific()->school->payment_method == 'group' && Auth::user()->specific()->status != 'paid')
-            return view('error', ['msg' => '贵校目前配置为统一缴费，请联系社团管理层缴费。']);
+            return view('error', ['msg' => '贵校目前配置为统一缴费，请联系社团管理层缴费。我们亦提供直接每人线上使用微信支付、支付宝线上支付自动确认的便捷服务，如需使用请联系社团管理层在学校后台修改支付方式。']);
         return view('invoice', ['invoiceItems' => Auth::user()->invoiceItems(), 'invoiceAmount' => Auth::user()->invoiceAmount()]);
+    }
+
+    public function schoolPay()
+    {
+        if (Auth::user()->type != 'school')
+            return view('error', ['msg' => 'You have to use your school account!']);
+        return view('school.pay');
+    }
+    
+    public function changeSchoolPaymentMethod($method)
+    {
+        Auth::user()->school->payment_method = $method;
+        Auth::user()->school->save();
+        return redirect(secure_url('/school/payment'));
     }
 
     public function checkout()
@@ -248,12 +263,17 @@ class HomeController extends Controller
     
     public function assignmentsList()
     {
-        if (Auth::user()->type != 'delegate')
-            return view('error', ['msg' => '您不是参会代表，无权访问该页面！']);
-        if (Auth::user()->specific()->status == 'reg')//TO-DO: parameters for this
-            return view('error', ['msg' => '请等待审核']);
+        if (Auth::user()->type == 'unregistered')
+            return view('error', ['msg' => '您无权访问该页面！']);
+        if (Auth::user()->type == 'delegate')
+        {
+            if (Auth::user()->specific()->status == 'reg')//TO-DO: parameters for this
+                return view('error', ['msg' => '请等待学校和/或组织团队审核！']);  
+            if (Auth::user()->specific()->status != 'paid')//TO-DO: parameters for this  
+                return view('error', ['msg' => '请先缴费！如果您已通过社团缴费，请等待组织团队确认']); 
+        }
         $committee = Auth::user()->specific()->committee;
-        return view('assignmentsList', ['committee' => $committee]);
+        return view('assignmentsList', ['committee' => $committee, 'type' => Auth::user()->type]);
     }
 
     public function assignment($id, $action = 'info')
@@ -353,10 +373,73 @@ class HomeController extends Controller
             return "Error";
         }
     }
-
+    
     public function imexportRegistrations()
     {
         return view('ot.imexportModal', ['importURL' => secure_url('/regManage/import'), 'exportURL' => secure_url('/regManage/export')]);
     }
 
+    public function documentsList()
+    {
+        if (Auth::user()->type == 'unregistered')
+            return view('error', ['msg' => '您无权访问该页面！']);
+        if (Auth::user()->type == 'delegate')
+        {
+            if (Auth::user()->specific()->status == 'reg')//TO-DO: parameters for this
+                return view('error', ['msg' => '请等待学校和/或组织团队审核！']);  
+            if (Auth::user()->specific()->status != 'paid')//TO-DO: parameters for this  
+                return view('error', ['msg' => '请先缴费！如果您已通过社团缴费，请等待组织团队确认']); 
+        }
+        $committee = Auth::user()->specific()->committee;
+        return view('documentsList', ['type' => Auth::user()->type]);
+    }
+    
+    public function document($id, $action = "")
+    {
+        $document = Document::findOrFail($id);
+        if (Auth::user()->type == 'unregistered' || Auth::user()->type == 'volunteer')
+            return view('error', ['msg' => '您不是参会代表，无权访问该页面！']);
+        else if (Auth::user()->type == 'delegate')
+            if (!$document->belongsToDelegate(Auth::user()->id))
+                return view('error', ['msg' => '您不是此学术文件的分发对象，无权访问该页面！']);
+        if ($action == "download")
+        {
+            $document->downloads++;
+            $document->save();
+            return response()->download(storage_path('/app/'.$document->path), $document->title . '.' . File::extension(storage_path('/app/'.$document->path)));
+        }
+        else if ($action == "raw")
+        {
+            return response()->file(storage_path('/app/'.$document->path));
+        }
+        else if ($action == "upload")
+        {
+            if (Auth::user()->type != 'ot' || Auth::user()->type != 'dais')
+                return view('error', ['msg' => '您不是该会议学术团队成员，无权对文件操作！']);
+            // $document->downloads = 0;
+            // $document->views = 0;
+            // TODO: 完成文件上传
+        }
+        else
+        {
+            $document->views++;
+            $document->save();
+            return view('documentInfo', ['document' => $document]);
+        }
+    }
+    
+    public function documentDetailsModal($id)
+    {
+        if ($id == 'new')
+        {
+            $document = new Document;
+            $document->title = 'New document';
+            $document->description = '请在此输入对该学术文件的描述';
+            $document->path = 'default/no-docs.pdf';
+            $document->save();
+        }
+        else
+            $document = Document::findOrFail($id);
+        return view('documentDetailsModal', ['document' => $document]);
+    }
 }

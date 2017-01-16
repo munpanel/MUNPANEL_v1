@@ -90,6 +90,7 @@
                 </li-->
                 <li>
                   <a href="{{ secure_url('/changePwd.modal') }}" data-toggle="ajaxModal">修改密码</a>
+                  <a href="{{ secure_url('/help.html') }}">帮助</a>
                   <a href="{{ secure_url('/logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">注销</a>
                 </li>
               </ul>

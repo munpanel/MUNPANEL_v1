@@ -13,6 +13,8 @@ use App\Committee;
 use App\Assignment;
 use App\Handin;
 use App\Nation;
+use App\Document;
+use Config;
 use Illuminate\Support\Facades\Auth;
 
 class DatatablesController extends Controller //To-Do: Permission Check
@@ -29,35 +31,57 @@ class DatatablesController extends Controller //To-Do: Permission Check
             $delegates = Delegate::with(['school' => function($q) {$q->select('name', 'id');}, 'user' => function($q) {$q->select('name', 'id');}, 'committee' => function($q) {$q->select('name', 'id');}])->where('school_id', $user->school->id)->get(['user_id', 'school_id', 'committee_id', 'status', 'partnername']);//->select(['user_id', 'name', 'school', 'committee', 'partnername']);
             foreach ($delegates as $delegate)
             {
+                if ($delegate->status == 'reg')
+                    $status = '等待学校审核';
+                else if ($delegate->status == 'sVerified')
+                    $status = '等待组委审核';
+                 else if ($delegate->status == 'oVerified')
+                    $status = '待缴费';
+                 else if ($delegate->status == 'paid')
+                    $status = '成功';
                 if ($delegate->partnername == '')
                     $partner = '无';
                 else
                     $partner = $delegate->partnername;
-                if ($delegate->status == 'reg')
-                    $approval = '<a href="#" class="approval-status" data-id="'. $delegate->user_id .'"><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i></a>';
-                else
-                    $approval = '<a href="#" class="approval-status active" data-id="'. $delegate->user_id .'"><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i></a>';
+                if (Config::get('munpanel.registration_school_changable'))
+                {
+                    if ($delegate->status == 'reg')
+                        $status = '<a href="#" class="approval-status" data-id="'. $delegate->user_id .'"><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i></a>';
+                    else
+                        $status = '<a href="#" class="approval-status active" data-id="'. $delegate->user_id .'"><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i></a>';
+                }
                 $result->push([
                     'details' => '<a href="reg.modal/'. $delegate->user_id .'" data-toggle="ajaxModal" id="'. $delegate->user_id .'" class="details-modal"><i class="fa fa-search-plus"></i></a>',
                     'name' => $delegate->user->name,
                     'committee' => $delegate->committee->name,
                     'partner' => $partner,
-                    'approval' => $approval,
+                    'approval' => $status,
                 ]);
             }
             $volunteers = Volunteer::with(['school' => function($q) {$q->select('name', 'id');}, 'user' => function($q) {$q->select('name', 'id');}])->where('school_id', $user->school->id)->get(['user_id', 'school_id', 'status']);
             foreach ($volunteers as $volunteer)
             {
                 if ($volunteer->status == 'reg')
-                    $approval = '<a href="#" class="approval-status" data-id="'. $volunteer->user_id .'"><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i></a>';
-                else
-                    $approval = '<a href="#" class="approval-status active" data-id="'. $volunteer->user_id .'"><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i></a>';
+                    $status = '等待学校审核';
+                else if ($volunteer->status == 'sVerified')
+                    $status = '等待组委审核';
+                 else if ($volunteer->status == 'oVerified')
+                    $status = '待缴费';
+                 else if ($volunteer->status == 'paid')
+                    $status = '成功';
+                if (Config::get('munpanel.registration_school_changable'))
+                {
+                    if ($volunteer->status == 'reg')
+                        $status = '<a href="#" class="approval-status" data-id="'. $volunteer->user_id .'"><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i></a>';
+                    else
+                        $status = '<a href="#" class="approval-status active" data-id="'. $volunteer->user_id .'"><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i></a>';
+                }
                 $result->push([
                     'details' => '<a href="reg.modal/'. $volunteer->user_id .'" data-toggle="ajaxModal" id="'. $volunteer->user_id .'" class="details-modal"><i class="fa fa-search-plus"></i></a>',
                     'name' => $volunteer->user->name,
                     'committee' => "志愿者",
                     'partner' => "无",
-                    'approval' => $approval,
+                    'approval' => $status,
                 ]);
  
             }
@@ -231,21 +255,35 @@ class DatatablesController extends Controller //To-Do: Permission Check
     public function assignments()
     {
         $result = new Collection;
-        $assignments = Auth::user()->delegate->assignments();//Assignment::all();//get(['id', 'title', 'deadline']);
+        if (Auth::user()->type == 'dais')
+            $assignments = /*Auth::user()->dais->Assignment();*/Assignment::all(); // TODO: get docs per committee 
+        else 
+            $assignments = Auth::user()->delegate->assignments();//Assignment::all();//get(['id', 'title', 'deadline']);
         $i = 0;
         foreach($assignments as $assignment)
         {
-            if ($assignment->subject_type == 'nation')
-                $handin = Handin::where('assignment_id', $assignment->id)->where('nation_id', Auth::user()->delegate->nation->id)->first();
-            else
-                $handin = Handin::where('assignment_id', $assignment->id)->where('user_id', Auth::user()->id)->first();
             $title = $assignment->title;
-            if (is_null($handin)) //TO-DO: ddl check
-                $title = $title."<b class=\"badge bg-danger pull-right\">未提交</b>";
+            $detailline = '<a href="assignment/'. $assignment->id.'"><i class="fa fa-search-plus"></i></a>';
+            if (Auth::user()->type == 'delegate')
+            {
+                if ($assignment->subject_type == 'nation')
+                    $handin = Handin::where('assignment_id', $assignment->id)->where('nation_id', Auth::user()->delegate->nation->id)->first();
+                else
+                    $handin = Handin::where('assignment_id', $assignment->id)->where('user_id', Auth::user()->id)->first();
+                if (is_null($handin)) //TO-DO: ddl check
+                    $title = $title."<b class=\"badge bg-danger pull-right\">未提交</b>";
+            }
+            else
+            {
+                $detailline = '<a href="assignment/'. $assignment->id . '/handins"><i class="fa fa-folder-open"></i></a>';
+                $detailline .= '&nbsp;<a href="assignmentDetails.modal/'. $assignment->id.'"><i class="fa fa-pencil"></i></a>';
+                $handin = Handin::where('assignment_id', $assignment->id)->count(); //TODO: 构建排除重复提交的查询数字
+                $title = $title."<b class=\"badge bg-danger pull-right\">" . $handin . " 份提交</b>"; 
+            }
             $result->push([
                 //'id' => $assignment->id,
                 'id' => ++$i, // We don't want to use the actual assignment id in the database because it may not be continuous for a delegate, and is hence not user-friendly.
-                'details' => '<a href="assignment/'. $assignment->id.'"><i class="fa fa-search-plus"></i></a>',
+                'details' => $detailline,
                 'title' => $title,
                 'deadline' => $assignment->deadline,
             ]);
@@ -277,6 +315,30 @@ class DatatablesController extends Controller //To-Do: Permission Check
         }
         return Datatables::of($result)->make(true);
     }
+    
+    public function documents()
+    {
+        $result = new Collection;
+        if (Auth::user()->type == 'dais')
+            $documents = /*Auth::user()->dais->documents();*/Document::all(); // TODO: get docs per committee
+        else
+            $documents = Auth::user()->delegate->documents();//Assignment::all();//get(['id', 'title', 'deadline']);
+        $i = 0;
+        foreach($documents as $document)
+        {
+            $detailline = '<a href="document/'. $document->id.'"><i class="fa fa-search-plus"></i></a>';
+            if (Auth::user()->type == 'dais')
+                $detailline = $detailline . '&nbsp;<a href="documentDetails.modal/'. $document->id.'" data-toggle="ajaxModal"><i class="fa fa-pencil"></i></a>';
+            $result->push([
+                //'id' => $document->id,
+                'details' => $detailline,
+                'id' => ++$i, // We don't want to use the actual document id in the database because it may not be continuous for a delegate, and is hence not user-friendly.
+                'title' => $document->title,
+                'deadline' => date('Y年n月j日', strtotime($document->created_at)),
+            ]);
+        }
+        return Datatables::of($result)->make(true);
+    }
 
     public function handins()
     {
@@ -300,5 +362,4 @@ class DatatablesController extends Controller //To-Do: Permission Check
         }
         return Datatables::of($result)->make(true);
     }
-
 }

@@ -103,7 +103,7 @@ class Delegate extends Model
     }
     
     public function partner() {
-        return $this->hasOne('App\User', 'foreign_key')->delegate; // TODO: 确定这里的外键名称
+        return $this->hasOne('App\User', 'foreign_key')->delegate; 
     }
     
     public function assignroommateByName() 
@@ -139,6 +139,42 @@ class Delegate extends Model
     }
     
     public function roommate() {
-        return $this->hasOne('App\User', 'foreign_key')->specific(); // TODO: 确定这里的外键名称
+        return $this->hasOne('App\User', 'foreign_key')->specific(); 
+    }
+    
+    public function documents() {
+        $result = new Collection;
+        if (isset($this->nation))
+        {
+            $nationgroups = $this->nationgroups;
+            if (isset($nationgroups))
+            {
+                foreach($nationgroups as $nationgroup)
+                {
+                    $documents = $nationgroup->documents;
+                    if (isset($documents))
+                        foreach ($documents as $document)
+                            $result->push($document);
+                }
+            }
+        }
+        $documents = $this->committee->documents;
+        if (isset($documents))
+        {
+            foreach ($documents as $document)
+                $result->push($document);
+        }
+        $delegategroups = $this->delegategroups;
+        if (isset($delegategroups))
+        {
+            foreach($delegategroups as $delegategroup)
+            {
+                $documents = $delegategroup->documents;
+                if (isset($documents))
+                    foreach ($documents as $document)
+                        $result->push($document);
+            }
+        }
+        return $result->unique()->sortBy('id');
     }
 }

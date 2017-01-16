@@ -9,8 +9,12 @@
 @endpush
 @section('content')
 <section class="vbox">
-      <header class="header b-b bg-white">          
-          <p>您的学术作业清单</p>
+      <header class="header b-b bg-white">
+        @if ($type == 'dais') 
+          <a href="{{secure_url('/dais/documentDetails.modal/new')}}" class="btn btn-sm btn-success details-modal"><i class="fa fa-plus"></i> 新建</a> 
+        @else 
+          <p>您的学术作业列表</p>
+        @endif 
       </header>
       <section class="scrollable wrapper w-f">
         <section class="panel">
@@ -18,7 +22,7 @@
             <table class="table table-striped m-b-none" id="assignment-table">
               <thead>
                 <tr>
-                  <th width="20"></th>
+                  <th width="{{$type == 'dais' ? '40' : '20'}}">{{$type == 'dais' ? '操作' : ''}}</th> 
                   <th width="20">#</th>
                   <th width="55%">学术作业标题</th>
                   <th>提交期限</th>

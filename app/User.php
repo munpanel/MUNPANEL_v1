@@ -41,12 +41,16 @@ class User extends Authenticatable
         return $this->hasOne('App\Volunteer');
     }
 
+    public function dais() {
+        return $this->hasOne('App\Dais');
+    }
+
     public function observer() {
         return $this->hasOne('App\Observer');
     }
 
     public function committee() {
-        return $this->delegate->belongsTo('App\Committee');
+        return $this->specific->belongsTo('App\Committee');
     }
 
     public function specific() {
@@ -56,6 +60,8 @@ class User extends Authenticatable
             return $this->volunteer;
         else if ($this->type == 'observer')
             return $this->observer;
+        else if ($this->type == 'dais')
+            return $this->dais;
         else
             return null;
     }

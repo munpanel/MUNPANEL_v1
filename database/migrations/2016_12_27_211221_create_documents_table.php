@@ -18,6 +18,8 @@ class CreateDocumentsTable extends Migration
 			$table->string('title');
 			$table->mediumText('description');
 			$table->mediumText('path');
+            $table->integer('views')->unsigned();
+            $table->integer('downloads')->unsigned();
             $table->timestamps();
         });
     }

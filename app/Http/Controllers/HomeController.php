@@ -391,9 +391,7 @@ class HomeController extends Controller
                 return view('error', ['msg' => '请先缴费！如果您已通过社团缴费，请等待组织团队确认']); 
         }
         $committee = Auth::user()->specific()->committee;
-        // TODO: 完成 document 清单页面
         return view('documentsList', ['type' => Auth::user()->type]);
-        //return view('error', ['msg' => '页面建筑中！']);
     }
     
     public function document($id, $action = "")
@@ -406,14 +404,26 @@ class HomeController extends Controller
                 return view('error', ['msg' => '您不是此学术文件的分发对象，无权访问该页面！']);
         if ($action == "download")
         {
+            $document->downloads++;
+            $document->save();
             return response()->download(storage_path('/app/'.$document->path), $document->title . '.' . File::extension(storage_path('/app/'.$document->path)));
         }
         else if ($action == "raw")
         {
             return response()->file(storage_path('/app/'.$document->path));
         }
+        else if ($action == "upload")
+        {
+            if (Auth::user()->type != 'ot' || Auth::user()->type != 'dais')
+                return view('error', ['msg' => '您不是该会议学术团队成员，无权对文件操作！']);
+            // $document->downloads = 0;
+            // $document->views = 0;
+            // TODO: 完成文件上传
+        }
         else
         {
+            $document->views++;
+            $document->save();
             return view('documentInfo', ['document' => $document]);
         }
     }

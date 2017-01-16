@@ -30,10 +30,14 @@
                         <td width="65%">{!!$document->description!!}</td>
                         @endif
                     </tr>
+                    <tr>         
+                        <td width="35%">统计信息</td>
+                        <td width="65%">{{$document->views}} 次阅览，{{$document->views}} 次下载</td>
+                    </tr>
                     @if (Auth::user()->type == 'ot' || Auth::user()->type == 'dais')
                     <tr>         
                         <td width="35%">选择文件 (PDF 格式)</td>
-                        <td width="65%">{{$document->path}}<br>TODO: 文件选择器</td>
+                        <td width="65%">{{$document->path}}<br>TODO: 文件选择器<br>TODO: 上传后重置统计信息</td>
                     </tr>
                     @endif
                   </tbody>

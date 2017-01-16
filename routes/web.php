@@ -25,14 +25,15 @@ Route::get('/home', 'HomeController@index');
 Route::get('/changePwd.modal', 'HomeController@changePwd');
 Route::post('/changePwd', 'UserController@doChangePwd');
 
+// TODO: 判定 - 代表 or 学团 or 组委？
 Route::get('/assignments', 'HomeController@assignmentsList');
 Route::get('/assignment/{id}/{action?}', 'HomeController@assignment');
 Route::post('/assignment/{id}/upload', 'HomeController@uploadAssignment');
 
 // TODO: 判定 - 代表 or 学团 or 组委？
-Route::get('/documents', function() {
-    return view('notavailable');
-});
+Route::get('/documents', 'HomeController@documentsList');
+Route::get('/document/{id}/{action?}', 'HomeController@document');
+Route::get('/documentDetails.modal/{id}', 'HomeController@documentDetailsModal');
 
 Route::get('/pages', function() {
     return view('notavailable');
@@ -107,3 +108,4 @@ Route::get('/ajax/schools', ['middleware' => ['permission:edit-schools'], 'uses'
 Route::get('/ajax/committees', ['middleware' => ['permission:edit-committees'], 'uses' => 'DatatablesController@committees']);
 Route::get('/ajax/nations', ['middleware' => ['permission:edit-nations'], 'uses' => 'DatatablesController@nations']);
 Route::get('/ajax/assignments', 'DatatablesController@assignments');
+Route::get('/ajax/documents', 'DatatablesController@documents');

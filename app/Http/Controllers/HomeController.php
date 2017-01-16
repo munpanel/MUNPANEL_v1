@@ -10,6 +10,7 @@ use App\Observer;
 use App\User;
 use App\Assignment;
 use App\Handin;
+use App\Document;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -262,12 +263,17 @@ class HomeController extends Controller
     
     public function assignmentsList()
     {
-        if (Auth::user()->type != 'delegate')
-            return view('error', ['msg' => '您不是参会代表，无权访问该页面！']);
-        if (Auth::user()->specific()->status == 'reg')//TO-DO: parameters for this
-            return view('error', ['msg' => '请等待审核']);
+        if (Auth::user()->type == 'unregistered')
+            return view('error', ['msg' => '您无权访问该页面！']);
+        if (Auth::user()->type == 'delegate')
+        {
+            if (Auth::user()->specific()->status == 'reg')//TO-DO: parameters for this
+                return view('error', ['msg' => '请等待学校和/或组织团队审核！']);  
+            if (Auth::user()->specific()->status != 'paid')//TO-DO: parameters for this  
+                return view('error', ['msg' => '请先缴费！如果您已通过社团缴费，请等待组织团队确认']); 
+        }
         $committee = Auth::user()->specific()->committee;
-        return view('assignmentsList', ['committee' => $committee]);
+        return view('assignmentsList', ['committee' => $committee, 'type' => Auth::user()->type]);
     }
 
     public function assignment($id, $action = 'info')
@@ -367,10 +373,63 @@ class HomeController extends Controller
             return "Error";
         }
     }
-
+    
     public function imexportRegistrations()
     {
         return view('ot.imexportModal', ['importURL' => secure_url('/regManage/import'), 'exportURL' => secure_url('/regManage/export')]);
     }
 
+    public function documentsList()
+    {
+        if (Auth::user()->type == 'unregistered')
+            return view('error', ['msg' => '您无权访问该页面！']);
+        if (Auth::user()->type == 'delegate')
+        {
+            if (Auth::user()->specific()->status == 'reg')//TO-DO: parameters for this
+                return view('error', ['msg' => '请等待学校和/或组织团队审核！']);  
+            if (Auth::user()->specific()->status != 'paid')//TO-DO: parameters for this  
+                return view('error', ['msg' => '请先缴费！如果您已通过社团缴费，请等待组织团队确认']); 
+        }
+        $committee = Auth::user()->specific()->committee;
+        // TODO: 完成 document 清单页面
+        return view('documentsList', ['type' => Auth::user()->type]);
+        //return view('error', ['msg' => '页面建筑中！']);
+    }
+    
+    public function document($id, $action = "")
+    {
+        $document = Document::findOrFail($id);
+        if (Auth::user()->type == 'unregistered' || Auth::user()->type == 'volunteer')
+            return view('error', ['msg' => '您不是参会代表，无权访问该页面！']);
+        else if (Auth::user()->type == 'delegate')
+            if (!$document->belongsToDelegate(Auth::user()->id))
+                return view('error', ['msg' => '您不是此学术文件的分发对象，无权访问该页面！']);
+        if ($action == "download")
+        {
+            return response()->download(storage_path('/app/'.$document->path));
+        }
+        else if ($action == "raw")
+        {
+            return response()->file(storage_path('/app/'.$document->path));
+        }
+        else
+        {
+            return view('documentInfo', ['document' => $document]);
+        }
+    }
+    
+    public function documentDetailsModal($id)
+    {
+        if ($id == 'new')
+        {
+            $document = new Document;
+            $document->title = 'New document';
+            $document->description = '请在此输入对该学术文件的描述';
+            $document->path = 'default/no-docs.pdf';
+            $document->save();
+        }
+        else
+            $document = Document::findOrFail($id);
+        return view('documentDetailsModal', ['document' => $document]);
+    }
 }

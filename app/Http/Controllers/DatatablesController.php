@@ -13,6 +13,7 @@ use App\Committee;
 use App\Assignment;
 use App\Handin;
 use App\Nation;
+use App\Document;
 use Config;
 use Illuminate\Support\Facades\Auth;
 
@@ -254,21 +255,35 @@ class DatatablesController extends Controller //To-Do: Permission Check
     public function assignments()
     {
         $result = new Collection;
-        $assignments = Auth::user()->delegate->assignments();//Assignment::all();//get(['id', 'title', 'deadline']);
+        if (Auth::user()->type == 'dais')
+            $assignments = /*Auth::user()->dais->Assignment();*/Assignment::all(); // TODO: get docs per committee 
+        else 
+            $assignments = Auth::user()->delegate->assignments();//Assignment::all();//get(['id', 'title', 'deadline']);
         $i = 0;
         foreach($assignments as $assignment)
         {
-            if ($assignment->subject_type == 'nation')
-                $handin = Handin::where('assignment_id', $assignment->id)->where('nation_id', Auth::user()->delegate->nation->id)->first();
-            else
-                $handin = Handin::where('assignment_id', $assignment->id)->where('user_id', Auth::user()->id)->first();
             $title = $assignment->title;
-            if (is_null($handin)) //TO-DO: ddl check
-                $title = $title."<b class=\"badge bg-danger pull-right\">未提交</b>";
+            $detailline = '<a href="assignment/'. $assignment->id.'"><i class="fa fa-search-plus"></i></a>';
+            if (Auth::user()->type == 'delegate')
+            {
+                if ($assignment->subject_type == 'nation')
+                    $handin = Handin::where('assignment_id', $assignment->id)->where('nation_id', Auth::user()->delegate->nation->id)->first();
+                else
+                    $handin = Handin::where('assignment_id', $assignment->id)->where('user_id', Auth::user()->id)->first();
+                if (is_null($handin)) //TO-DO: ddl check
+                    $title = $title."<b class=\"badge bg-danger pull-right\">未提交</b>";
+            }
+            else
+            {
+                $detailline = '<a href="assignment/'. $assignment->id . '/handins"><i class="fa fa-folder-open"></i></a>';
+                $detailline .= '&nbsp;<a href="assignmentDetails.modal/'. $assignment->id.'"><i class="fa fa-pencil"></i></a>';
+                $handin = Handin::where('assignment_id', $assignment->id)->count(); //TODO: 构建排除重复提交的查询数字
+                $title = $title."<b class=\"badge bg-danger pull-right\">" . $handin . " 份提交</b>"; 
+            }
             $result->push([
                 //'id' => $assignment->id,
                 'id' => ++$i, // We don't want to use the actual assignment id in the database because it may not be continuous for a delegate, and is hence not user-friendly.
-                'details' => '<a href="assignment/'. $assignment->id.'"><i class="fa fa-search-plus"></i></a>',
+                'details' => $detailline,
                 'title' => $title,
                 'deadline' => $assignment->deadline,
             ]);
@@ -300,6 +315,30 @@ class DatatablesController extends Controller //To-Do: Permission Check
         }
         return Datatables::of($result)->make(true);
     }
+    
+    public function documents()
+    {
+        $result = new Collection;
+        if (Auth::user()->type == 'dais')
+            $documents = /*Auth::user()->dais->documents();*/Document::all(); // TODO: get docs per committee
+        else
+            $documents = Auth::user()->delegate->documents();//Assignment::all();//get(['id', 'title', 'deadline']);
+        $i = 0;
+        foreach($documents as $document)
+        {
+            $detailline = '<a href="document/'. $document->id.'"><i class="fa fa-search-plus"></i></a>';
+            if (Auth::user()->type == 'dais')
+                $detailline = $detailline . '&nbsp;<a href="documentDetails.modal/'. $document->id.'" data-toggle="ajaxModal"><i class="fa fa-pencil"></i></a>';
+            $result->push([
+                //'id' => $document->id,
+                'details' => $detailline,
+                'id' => ++$i, // We don't want to use the actual document id in the database because it may not be continuous for a delegate, and is hence not user-friendly.
+                'title' => $document->title,
+                'deadline' => date('Y年n月j日', strtotime($document->created_at)),
+            ]);
+        }
+        return Datatables::of($result)->make(true);
+    }
 
     public function handins()
     {
@@ -323,5 +362,4 @@ class DatatablesController extends Controller //To-Do: Permission Check
         }
         return Datatables::of($result)->make(true);
     }
-
 }

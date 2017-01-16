@@ -21,6 +21,7 @@ class StoreController extends Controller
     public function addCart(Request $request, $id)
     {
         Cart::add(Good::findOrFail($id), $request->num);
+        return view('store'); //TODO: 添加操作成功提示
     }
 
     public function removeCart($id)

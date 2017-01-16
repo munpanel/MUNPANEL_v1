@@ -339,8 +339,9 @@ class DatatablesController extends Controller //To-Do: Permission Check
             if ($remain == 0) $command = '<p class="text-muted">已售罄</p>';
             else
             {
-                $command = '<form class="form-inline"><span>数量： </span><div id="MySpinner" class="spinner input-group shop-spinner" data-min="1" data-max="'.$remain.'">
-                      {{ csrf_field() }}
+                $command = '<form class="form-inline" action="'.secure_url('/store/cart/add/'.$good->id).'" method="post">
+                      <span>数量： </span><div id="MySpinner" class="spinner input-group shop-spinner" data-min="1" data-max="'.$remain.'">'.
+                      csrf_field().'
                       <input type="text" class="form-control spinner-input" value="1" name="num" maxlength="2">
                       <div class="btn-group btn-group-vertical input-group-btn">
                         <button type="button" class="btn btn-white spinner-up">
@@ -350,7 +351,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
                           <i class="fa fa-chevron-down text-muted"></i>
                         </button>
                       </div>
-                    </div>&nbsp;<a href="'.secure_url('/store/cart/add/'.$good->id).'" class="btn btn-success details-modal"><i class="fa fa-plus"></i> 加入购物车</a></form>';
+                    </div>&nbsp;<button class="btn btn-success details-modal" type="submit"><i class="fa fa-plus"></i> 加入购物车</button></form>';
             }
             $result->push([
                 'id' => ++$i, 

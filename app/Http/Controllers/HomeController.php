@@ -10,9 +10,14 @@ use App\Observer;
 use App\User;
 use App\Assignment;
 use App\Handin;
+use App\Document;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Config;
+use Zipper;
+use File;
+use ZipArchive;
 
 class HomeController extends Controller
 {
@@ -233,8 +238,22 @@ class HomeController extends Controller
         if (Auth::user()->specific()->status != 'oVerified' && Auth::user()->specific()->status != 'paid')
             return view('error', ['msg' => '请等待学校和/或组织团队审核！']);
         if (Auth::user()->specific()->school->payment_method == 'group' && Auth::user()->specific()->status != 'paid')
-            return view('error', ['msg' => '贵校目前配置为统一缴费，请联系社团管理层缴费。']);
+            return view('error', ['msg' => '贵校目前配置为统一缴费，请联系社团管理层缴费。我们亦提供直接每人线上使用微信支付、支付宝线上支付自动确认的便捷服务，如需使用请联系社团管理层在学校后台修改支付方式。']);
         return view('invoice', ['invoiceItems' => Auth::user()->invoiceItems(), 'invoiceAmount' => Auth::user()->invoiceAmount()]);
+    }
+
+    public function schoolPay()
+    {
+        if (Auth::user()->type != 'school')
+            return view('error', ['msg' => 'You have to use your school account!']);
+        return view('school.pay');
+    }
+    
+    public function changeSchoolPaymentMethod($method)
+    {
+        Auth::user()->school->payment_method = $method;
+        Auth::user()->school->save();
+        return redirect(secure_url('/school/payment'));
     }
 
     public function checkout()
@@ -244,22 +263,42 @@ class HomeController extends Controller
     
     public function assignmentsList()
     {
+<<<<<<< HEAD
         if (Auth::user()->type != 'delegate')
             return view('error', ['msg' => '您不是该会议参会代表，无权访问该页面！']);
         if (Auth::user()->specific()->status == 'reg')//TO-DO: parameters for this
             return view('error', ['msg' => '请等待学校和/或组织团队审核！']);
         if (Auth::user()->specific()->status != 'paid')//TO-DO: parameters for this
             return view('error', ['msg' => '请先缴费！如果您已通过社团缴费，请等待组织团队确认']);
+=======
+        if (Auth::user()->type == 'unregistered')
+            return view('error', ['msg' => '您无权访问该页面！']);
+        if (Auth::user()->type == 'delegate')
+        {
+            if (Auth::user()->specific()->status == 'reg')//TO-DO: parameters for this
+                return view('error', ['msg' => '请等待学校和/或组织团队审核！']);  
+            if (Auth::user()->specific()->status != 'paid')//TO-DO: parameters for this  
+                return view('error', ['msg' => '请先缴费！如果您已通过社团缴费，请等待组织团队确认']); 
+        }
+>>>>>>> master
         $committee = Auth::user()->specific()->committee;
-        return view('assignmentsList', ['committee' => $committee]);
+        return view('assignmentsList', ['committee' => $committee, 'type' => Auth::user()->type]);
     }
 
     public function assignment($id, $action = 'info')
     {
         $assignment = Assignment::findOrFail($id);
+<<<<<<< HEAD
         if (!$assignment->belongsToDelegate(Auth::user()->id))
             return view('error', ['msg' => '您不是此学术作业的分发对象，无权访问该页面！']);
         if ($assignment->subject_type == 'nation')
+=======
+        if (Auth::user()->type != 'ot' && Auth::user()->type != 'dais' && (!$assignment->belongsToDelegate(Auth::user()->id)))
+            return "ERROR"; //TO-DO: Permission check for ot and dais (for downloading handins)
+        if (Auth::user()->type == 'ot') //To-Do: Dais
+            $handins = $assignment->handins;
+        else if ($assignment->subject_type == 'nation')
+>>>>>>> master
             $handin = Handin::where('assignment_id', $id)->where('nation_id', Auth::user()->delegate->nation->id)->orderBy('id', 'desc')->first();
         else
             $handin = Handin::where('assignment_id', $id)->where('user_id', Auth::user()->id)->orderBy('id', 'desc')->first();
@@ -303,6 +342,24 @@ class HomeController extends Controller
             }
             return view('error', ['msg' => '该学术作业已超过提交期限，无法再提交！']);
         }
+        else if ($action == "export")
+        {
+            $assignment = Assignment::findOrFail($id);
+            $zipname = $assignment->title . ' ' . date("y-m-d-H-i-s") . '.zip';
+            $zippername = '../storage/app/assignmentExports/' . $zipname;
+            $zip = new ZipArchive();
+            $zip->open($zippername, ZipArchive::CREATE);
+            // There seems to be bugs with Laravel::Zipper, so we use the ZipArchive of PHP.
+            $i = 0;
+            foreach($handins as $handin)
+            {
+                $filename = $handin->user->id . '_' . $handin->user->name . ' ' . date('y-m-d-H-i-s', strtotime($handin->updated_at)) . '.' . File::extension(storage_path('/app/'.$handin->content));
+                $zip->addFile(storage_path('app/' . $handin->content), $filename);
+                //Zipper::zip($zippername)->addString($filename, Storage::get($handin->content));
+            }
+            $zip->close();
+            return response()->download(storage_path('app/assignmentExports/'. $zipname));
+        }
     }
 
     public function uploadAssignment(Request $request, $id)
@@ -331,10 +388,63 @@ class HomeController extends Controller
             return view('error', ['msg' => '上传出错，请重试！']);
         }
     }
-
+    
     public function imexportRegistrations()
     {
         return view('ot.imexportModal', ['importURL' => secure_url('/regManage/import'), 'exportURL' => secure_url('/regManage/export')]);
     }
 
+    public function documentsList()
+    {
+        if (Auth::user()->type == 'unregistered')
+            return view('error', ['msg' => '您无权访问该页面！']);
+        if (Auth::user()->type == 'delegate')
+        {
+            if (Auth::user()->specific()->status == 'reg')//TO-DO: parameters for this
+                return view('error', ['msg' => '请等待学校和/或组织团队审核！']);  
+            if (Auth::user()->specific()->status != 'paid')//TO-DO: parameters for this  
+                return view('error', ['msg' => '请先缴费！如果您已通过社团缴费，请等待组织团队确认']); 
+        }
+        $committee = Auth::user()->specific()->committee;
+        // TODO: 完成 document 清单页面
+        return view('documentsList', ['type' => Auth::user()->type]);
+        //return view('error', ['msg' => '页面建筑中！']);
+    }
+    
+    public function document($id, $action = "")
+    {
+        $document = Document::findOrFail($id);
+        if (Auth::user()->type == 'unregistered' || Auth::user()->type == 'volunteer')
+            return view('error', ['msg' => '您不是参会代表，无权访问该页面！']);
+        else if (Auth::user()->type == 'delegate')
+            if (!$document->belongsToDelegate(Auth::user()->id))
+                return view('error', ['msg' => '您不是此学术文件的分发对象，无权访问该页面！']);
+        if ($action == "download")
+        {
+            return response()->download(storage_path('/app/'.$document->path));
+        }
+        else if ($action == "raw")
+        {
+            return response()->file(storage_path('/app/'.$document->path));
+        }
+        else
+        {
+            return view('documentInfo', ['document' => $document]);
+        }
+    }
+    
+    public function documentDetailsModal($id)
+    {
+        if ($id == 'new')
+        {
+            $document = new Document;
+            $document->title = 'New document';
+            $document->description = '请在此输入对该学术文件的描述';
+            $document->path = 'default/no-docs.pdf';
+            $document->save();
+        }
+        else
+            $document = Document::findOrFail($id);
+        return view('documentDetailsModal', ['document' => $document]);
+    }
 }

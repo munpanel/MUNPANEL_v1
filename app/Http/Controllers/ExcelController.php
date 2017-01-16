@@ -119,7 +119,12 @@ class ExcelController extends Controller
     private static function mapData($valuerow, $key, $valuekey)
     {
         if (isset($valuerow[$valuekey]))
-            return $valuerow[$valuekey];
+        {
+            if ($valuerow[$valuekey] == 'N/A')
+                return "";
+            else
+                return $valuerow[$valuekey];
+        }
         if (isset($key))
             return $key;
         return "";
@@ -188,7 +193,7 @@ class ExcelController extends Controller
                             }
                             $vol->status = $status;
                         }
-                        $sfz1 = $row['身份证号'];
+                        $sfz1 = ExcelController::mapData($row, $vol->sfz, '身份证号');
                         if (substr($sfz1, -1) == "\t") $sfz1 = rtrim($sfz1, "\t");
                         $vol->sfz = $sfz1;
                         $vol->qq = ExcelController::mapData($row, $vol->qq, 'qq');
@@ -225,7 +230,8 @@ class ExcelController extends Controller
                         $del = Delegate::firstOrNew(['user_id' => $user->id]);
                         if (isset($row['学校']))
                             $del->school_id = School::firstOrCreate(['name' => $row['学校']])->id; // the default uid of school is 1, so a new school is a non-member school by default
-                        $del->committee_id = Committee::firstOrCreate(['name' => $row['委员会志愿者观察员']])->id;
+                        if ($row['委员会志愿者观察员'] != '代表')
+                            $del->committee_id = Committee::firstOrCreate(['name' => $row['委员会志愿者观察员']])->id;
                         if (isset($row['席位']))
                         {
                             if ($row['席位'] != '未分配')
@@ -262,7 +268,7 @@ class ExcelController extends Controller
                             $del->status = $status;
                         }
                         $del->email = $user->email;
-                        $sfz1 = $row['身份证号'];
+                        $sfz1 = ExcelController::mapData($row, $del->sfz, '身份证号');
                         if (substr($sfz1, -1) == "\t") $sfz1 = rtrim($sfz1, "\t");
                         $del->sfz = $sfz1;
                         $del->qq = ExcelController::mapData($row, $del->qq, 'qq');

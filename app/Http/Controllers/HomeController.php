@@ -263,14 +263,6 @@ class HomeController extends Controller
     
     public function assignmentsList()
     {
-<<<<<<< HEAD
-        if (Auth::user()->type != 'delegate')
-            return view('error', ['msg' => '您不是该会议参会代表，无权访问该页面！']);
-        if (Auth::user()->specific()->status == 'reg')//TO-DO: parameters for this
-            return view('error', ['msg' => '请等待学校和/或组织团队审核！']);
-        if (Auth::user()->specific()->status != 'paid')//TO-DO: parameters for this
-            return view('error', ['msg' => '请先缴费！如果您已通过社团缴费，请等待组织团队确认']);
-=======
         if (Auth::user()->type == 'unregistered')
             return view('error', ['msg' => '您无权访问该页面！']);
         if (Auth::user()->type == 'delegate')
@@ -280,7 +272,6 @@ class HomeController extends Controller
             if (Auth::user()->specific()->status != 'paid')//TO-DO: parameters for this  
                 return view('error', ['msg' => '请先缴费！如果您已通过社团缴费，请等待组织团队确认']); 
         }
->>>>>>> master
         $committee = Auth::user()->specific()->committee;
         return view('assignmentsList', ['committee' => $committee, 'type' => Auth::user()->type]);
     }
@@ -288,17 +279,11 @@ class HomeController extends Controller
     public function assignment($id, $action = 'info')
     {
         $assignment = Assignment::findOrFail($id);
-<<<<<<< HEAD
-        if (!$assignment->belongsToDelegate(Auth::user()->id))
-            return view('error', ['msg' => '您不是此学术作业的分发对象，无权访问该页面！']);
-        if ($assignment->subject_type == 'nation')
-=======
         if (Auth::user()->type != 'ot' && Auth::user()->type != 'dais' && (!$assignment->belongsToDelegate(Auth::user()->id)))
-            return "ERROR"; //TO-DO: Permission check for ot and dais (for downloading handins)
+            return view('error', ['msg' => '您不是此学术作业的分发对象，无权访问该页面！']); //TO-DO: Permission check for ot and dais (for downloading handins)
         if (Auth::user()->type == 'ot') //To-Do: Dais
             $handins = $assignment->handins;
         else if ($assignment->subject_type == 'nation')
->>>>>>> master
             $handin = Handin::where('assignment_id', $id)->where('nation_id', Auth::user()->delegate->nation->id)->orderBy('id', 'desc')->first();
         else
             $handin = Handin::where('assignment_id', $id)->where('user_id', Auth::user()->id)->orderBy('id', 'desc')->first();

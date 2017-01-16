@@ -96,7 +96,8 @@ class Delegate extends Model
                     return;
                 }
             }
-            $this->notes .= "在自动配对搭档时发生错误，请核查\n";
+	    if (isset($this->notes)) $this->notes .= "\n"
+            $this->notes .= "在自动配对搭档时发生错误，请核查";
             return;
         }
     }
@@ -122,7 +123,8 @@ class Delegate extends Model
                     if ($roommate->specific()->roommatename != $this->user->name) continue;    // 排除多角室友
                     if ($roommate->specific()->gender != $this->gender)                        // 排除男女混宿
                     {
-                        $this->notes .= "在自动配对室友时检测到室友为异性，请核查\n";
+	            if (isset($this->notes)) $this->notes .= "\n"
+                        $this->notes .= "在自动配对室友时检测到室友为异性，请核查";
                         return;
                     }
                     $this->roommate_user_id = $roommate->id;
@@ -130,7 +132,8 @@ class Delegate extends Model
                     return;
                 }
             }
-            $this->notes .= "在自动配对室友时发生错误，请核查\n";
+	    if (isset($this->notes)) $this->notes .= "\n"
+            $this->notes .= "在自动配对室友时发生错误，请核查";
             return;
         }
     }

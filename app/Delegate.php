@@ -78,7 +78,7 @@ class Delegate extends Model
     public function assignPartnerByName() 
     {
         $this->partner_user_id = null;
-        if (isset($this->partnername)
+        if (isset($this->partnername))
         {
             $partner_name = $this->partnername;
             $partners = User::where('name', $partner_name);
@@ -96,7 +96,7 @@ class Delegate extends Model
                     return;
                 }
             }
-	    if (isset($this->notes)) $this->notes .= "\n"
+	    if (isset($this->notes)) $this->notes .= "\n";
             $this->notes .= "在自动配对搭档时发生错误，请核查";
             return;
         }
@@ -109,7 +109,7 @@ class Delegate extends Model
     public function assignroommateByName() 
     {
         $this->roommate_user_id = null;
-        if (isset($this->roommatename)
+        if (isset($this->roommatename))
         {
             $roommate_name = $this->roommatename;
             $roommates = User::where('name', $roommate_name);
@@ -123,7 +123,7 @@ class Delegate extends Model
                     if ($roommate->specific()->roommatename != $this->user->name) continue;    // 排除多角室友
                     if ($roommate->specific()->gender != $this->gender)                        // 排除男女混宿
                     {
-	            if (isset($this->notes)) $this->notes .= "\n"
+	            if (isset($this->notes)) $this->notes .= "\n";
                         $this->notes .= "在自动配对室友时检测到室友为异性，请核查";
                         return;
                     }
@@ -132,7 +132,7 @@ class Delegate extends Model
                     return;
                 }
             }
-	    if (isset($this->notes)) $this->notes .= "\n"
+	    if (isset($this->notes)) $this->notes .= "\n";
             $this->notes .= "在自动配对室友时发生错误，请核查";
             return;
         }

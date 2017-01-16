@@ -1,10 +1,10 @@
 <div class="modal-dialog">
     <div class="modal-content">
         <div class="modal-body">
-            <h4>{{(Auth::user()->type == 'ot' || Auth::user()->type == 'dais') ? '学术文件 #' . $document->id : $document->title}}</h4>
             @if (Auth::user()->type == 'ot' || Auth::user()->type == 'dais') 
-                <button id="enableEditable-{{$document->id}}" class="btn btn-default pull-right">编辑模式</button><button id="deleteButton-{{$document->id}}" class="btn btn-danger pull-right">删除</button>
+                <button id="enableEditable-{{$document->id}}" class="btn btn-default pull-right">编辑模式</button><span class="pull-right">&nbsp;</span><button id="deleteButton-{{$document->id}}" class="btn btn-danger pull-right">删除</button>
             @endif
+            <h4>{{(Auth::user()->type == 'ot' || Auth::user()->type == 'dais') ? '学术文件 #' . $document->id : $document->title}}</h4>
             <table id="document-{{$document->id}}" class="table table-bordered table-striped" style="clear: both">
                 <tbody>
                     @if (Auth::user()->type == 'ot' || Auth::user()->type == 'dais')
@@ -32,7 +32,7 @@
                     </tr>
                     <tr>         
                         <td width="35%">统计信息</td>
-                        <td width="65%">{{$document->views}} 次阅览，{{$document->views}} 次下载</td>
+                        <td width="65%">{{$document->views}} 次阅览，{{$document->downloads}} 次下载</td>
                     </tr>
                     @if (Auth::user()->type == 'ot' || Auth::user()->type == 'dais')
                     <tr>         

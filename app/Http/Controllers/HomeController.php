@@ -405,6 +405,7 @@ class HomeController extends Controller
         if ($action == "download")
         {
             $document->downloads++;
+            $document->save();
             return response()->download(storage_path('/app/'.$document->path));
         }
         else if ($action == "raw")
@@ -422,6 +423,7 @@ class HomeController extends Controller
         else
         {
             $document->views++;
+            $document->save();
             return view('documentInfo', ['document' => $document]);
         }
     }

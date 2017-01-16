@@ -406,7 +406,7 @@ class HomeController extends Controller
                 return view('error', ['msg' => '您不是此学术文件的分发对象，无权访问该页面！']);
         if ($action == "download")
         {
-            return response()->download(storage_path('/app/'.$document->path));
+            return response()->download(storage_path('/app/'.$document->path), $document->title . '.' . File::extension(storage_path('/app/'.$document->path)));
         }
         else if ($action == "raw")
         {

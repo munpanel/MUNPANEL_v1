@@ -29,23 +29,28 @@ class Observer extends Model
             {
                 foreach ($roommates as $roommate)
                 {
-                    if ($roommate->type == 'unregistered') continue;                           // 排除未注册室友
-                    if (is_null($roommate->specific()->roommatename))                          // 如果对方未填室友，自动补全
-                        $roommate->specific()->roommatename = $this->user->name;
-                    if ($roommate->specific()->roommatename != $this->user->name) continue;    // 排除多角室友
-                    if ($roommate->specific()->gender != $this->gender)                        // 排除男女混宿
+                    if ($roommate->type == 'unregistered') continue;                    // 排除未注册室友
+                    $typedroommate = $roommate->specific();
+                    if (is_null($typedroommate->roommatename))                          // 如果对方未填室友，自动补全
+                        $typedroommate->roommatename = $this->user->name;
+                    if ($typedroommate->roommatename != $this->user->name) continue;    // 排除多角室友
+                    if ($typedroommate->gender != $this->gender)                        // 排除男女混宿
                     {
-	            if (isset($this->notes)) $this->notes .= "\n";
+                        if (isset($this->notes)) $this->notes .= "\n";
                         $this->notes .= "在自动配对室友时检测到室友为异性，请核查";
+                        $this->save();
                         return;
                     }
-                    $this->roommate_user_id = $roommate->id;                     // TODO: 保存修改
-                    $roommate->specific()->roommate_user_id = $this->user->id;
+                    $this->roommate_user_id = $roommate->id;       
+                    $this->save();
+                    $typedroommate->roommate_user_id = $this->user->id;
+                    $typedroommate->save();
                     return;
                 }
             }
 	    if (isset($this->notes)) $this->notes .= "\n";
             $this->notes .= "在自动配对室友时发生错误，请核查";
+            $this->save();
             return;
         }
     }

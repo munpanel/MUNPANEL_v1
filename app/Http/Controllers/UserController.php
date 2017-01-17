@@ -368,6 +368,15 @@ if (($handle = fopen("/var/www/munpanel/test.csv", "r")) !== FALSE) {
             }
         }
         return 'ha';*/
+        $users = User::all();
+        foreach($users as $user)
+        {
+            if ($user->type != 'delegate' && $user->type != 'observer' && $user->type != 'volunteer') continue;
+            $user->specific->assignRoommateByName();
+            if ($user->type == 'delegate')
+                $user->delegate->assignPartnerByName();
+        }
+        return 'えるの搭档和室友配对';
         $assignment = new Assignment;
         $assignment->subject_type = 'nation';
         $assignment->handin_type = 'upload';

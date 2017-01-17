@@ -20,7 +20,7 @@ class Delegate extends Model
     }
 
     public function user() {
-        return $this->belongsTo('App\User', 'delegate_info_user_id');
+        return $this->belongsTo('App\User');
     }
 
     public function school() {
@@ -103,7 +103,7 @@ class Delegate extends Model
     }
     
     public function partner() {
-        return $this->hasOne('App\User', 'delegate_info_partner_user_id')->delegate; 
+        return $this->belongsTo('App\User', 'partner_user_id'); 
     }
     
     public function assignroommateByName() 
@@ -139,7 +139,7 @@ class Delegate extends Model
     }
     
     public function roommate() {
-        return $this->hasOne('App\User', 'delegate_info_roommate_user_id')->specific(); 
+        return $this->hasOne('App\User', 'roommate_user_id'); 
     }
     
     public function documents() {

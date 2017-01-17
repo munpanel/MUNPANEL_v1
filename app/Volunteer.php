@@ -51,6 +51,6 @@ class Volunteer extends Model
     }
     
     public function roommate() {
-        return $this->hasOne('App\User', 'volunteer_info_roommate_user_id')->specific(); 
+        return $this->hasOne('App\User', 'volunteer_info_roommate_user_id'); 
     }
 }

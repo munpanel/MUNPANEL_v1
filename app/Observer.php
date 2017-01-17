@@ -51,6 +51,6 @@ class Observer extends Model
     }
     
     public function roommate() {
-        return $this->hasOne('App\User', 'observer_info_roommate_user_id')->specific(); 
+        return $this->hasOne('App\User', 'observer_info_roommate_user_id'); 
     }
 }

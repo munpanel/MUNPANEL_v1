@@ -287,7 +287,7 @@ class HomeController extends Controller
             $handin = Handin::where('assignment_id', $id)->where('nation_id', Auth::user()->delegate->nation->id)->orderBy('id', 'desc')->first();
         else if ($assignment->subject_type == 'partner')
         {
-            $handin = Handin::where('assignment_id', $id)->where('nation_id', Auth::user()->delegate->partner->user->id)->orderBy('id', 'desc')->first();
+            $handin = Handin::where('assignment_id', $id)->where('user_id', Auth::user()->delegate->partner->id)->orderBy('id', 'desc')->first();
             if (!isset($handin)) $handin = Handin::where('assignment_id', $id)->where('user_id', Auth::user()->id)->orderBy('id', 'desc')->first();
             else
             {
@@ -410,8 +410,10 @@ class HomeController extends Controller
         if (Auth::user()->type == 'unregistered' || Auth::user()->type == 'volunteer')
             return view('error', ['msg' => '您不是参会代表，无权访问该页面！']);
         else if (Auth::user()->type == 'delegate')
+        {
             if (!$document->belongsToDelegate(Auth::user()->id))
                 return view('error', ['msg' => '您不是此学术文件的分发对象，无权访问该页面！']);
+        }
         if ($action == "download")
         {
             $document->downloads++;

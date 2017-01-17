@@ -11,7 +11,7 @@ class Volunteer extends Model
     protected $fillable = ['user_id','school_id','status','gender','sfz','grade','email','qq','wechat','parenttel','tel','accomodate','roommatename','roommate_user_id','notes'];
 
     public function user() {
-        return $this->belongsTo('App\User', 'volunteer_info_user_id');
+        return $this->belongsTo('App\User');
     }
 
     public function school() {
@@ -51,6 +51,6 @@ class Volunteer extends Model
     }
     
     public function roommate() {
-        return $this->hasOne('App\User', 'volunteer_info_roommate_user_id'); 
+        return $this->hasOne('App\User', 'roommate_user_id'); 
     }
 }

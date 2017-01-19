@@ -109,3 +109,5 @@ Route::get('/ajax/committees', ['middleware' => ['permission:edit-committees'], 
 Route::get('/ajax/nations', ['middleware' => ['permission:edit-nations'], 'uses' => 'DatatablesController@nations']);
 Route::get('/ajax/assignments', 'DatatablesController@assignments');
 Route::get('/ajax/documents', 'DatatablesController@documents');
+
+Route::get('/ot/generateBadge/{name}/{school}/{role}', 'ImageController@generateBadge');

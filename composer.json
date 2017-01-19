@@ -12,7 +12,6 @@
         "maatwebsite/excel": "~2.1.0",
         "chumper/zipper": "0.6.x",
         "dingo/api": "1.0.*@dev",
-        "intervention/image": "^2.3"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

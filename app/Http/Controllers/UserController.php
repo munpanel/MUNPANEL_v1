@@ -371,8 +371,10 @@ if (($handle = fopen("/var/www/munpanel/test.csv", "r")) !== FALSE) {
         $users = User::all();
         foreach($users as $user)
         {
-            if ($user->type != 'delegate' && $user->type != 'observer' && $user->type != 'volunteer') continue;
-            $user->specific->assignRoommateByName();
+            //if ($user->type != 'delegate' && $user->type != 'observer' && $user->type != 'volunteer') continue;
+            $specific = $user->specific();
+            if (is_null($specific)) continue;
+            if ($user->type != 'dais') $specific->assignRoommateByName();
             if ($user->type == 'delegate')
                 $user->delegate->assignPartnerByName();
         }

@@ -110,8 +110,9 @@ class Delegate extends Model
         return $this->belongsTo('App\User', 'partner_user_id'); 
     }
     
-    public function assignroommateByName() 
+    public function assignRoommateByName() 
     {
+        if (!$this->accomodate) return;
         $this->roommate_user_id = null;
         if (isset($this->roommatename))
         {
@@ -123,6 +124,7 @@ class Delegate extends Model
                 {
                     if ($roommate->type == 'unregistered') continue;                    // 排除未注册室友
                     $typedroommate = $roommate->specific();
+                    if (is_null($typedroommate)) { $this->notes .= "specific null "; $this->save();}
                     if (is_null($typedroommate->roommatename))                          // 如果对方未填室友，自动补全
                         $typedroommate->roommatename = $this->user->name;
                     if ($typedroommate->roommatename != $this->user->name) continue;    // 排除多角室友
@@ -148,7 +150,7 @@ class Delegate extends Model
     }
     
     public function roommate() {
-        return $this->hasOne('App\User', 'roommate_user_id'); 
+        return $this->belongsTo('App\User', 'roommate_user_id'); 
     }
     
     public function documents() {

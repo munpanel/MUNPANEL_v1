@@ -118,16 +118,26 @@ class Delegate extends Model
         {
             $roommate_name = $this->roommatename;
             $roommates = User::where('name', $roommate_name);
+            //$this->notes .= isset($roommates) ? '$roommates 非空' : '$roommates 空';
+            $count = $roommates->count();
+            if ($count == 0) 
+            {
+                if (isset($this->notes)) $this->notes .= "\n";
+                $this->notes .= "未找到$roommate_name" . "的报名记录！";
+                $this->save();
+                return;
+            }
             if (!is_null($roommates)) // 对于带空格的roommatename值，在此if表达式外增加foreach表达式以逐一处理
             {
-                foreach ($roommates as $roommate)
-                {
-                    if ($roommate->type == 'unregistered') continue;                    // 排除未注册室友
+                //foreach ($roommates as $roommate)
+                //{
+                    $roommate = $roommates->first();
+                    if ($roommate->type == 'unregistered') return; //continue;                    // 排除未注册室友
                     $typedroommate = $roommate->specific();
                     if (is_null($typedroommate)) { $this->notes .= "specific null "; $this->save();}
                     if (is_null($typedroommate->roommatename))                          // 如果对方未填室友，自动补全
                         $typedroommate->roommatename = $this->user->name;
-                    if ($typedroommate->roommatename != $this->user->name) continue;    // 排除多角室友
+                    if ($typedroommate->roommatename != $this->user->name) {$this->notes .= "多角室友 "; $this->save(); return;}//continue;}    // 排除多角室友
                     if ($typedroommate->gender != $this->gender)                        // 排除男女混宿
                     {
                         if (isset($this->notes)) $this->notes .= "\n";
@@ -140,10 +150,10 @@ class Delegate extends Model
                     $typedroommate->roommate_user_id = $this->user->id;
                     $typedroommate->save();
                     return;
-                }
+                //}
             }
 	    if (isset($this->notes)) $this->notes .= "\n";
-            $this->notes .= "在自动配对室友时发生错误，请核查";
+            $this->notes .= "\$count=$count 在自动配对室友时发生错误，请核查";
             $this->save();
             return;
         }

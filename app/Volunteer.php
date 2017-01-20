@@ -46,7 +46,13 @@ class Volunteer extends Model
                     break;
                 }
             }
-            if ($roommate->type == 'unregistered')                                      // 排除未注册室友
+            if ($roommate->id != $this->user->id)                               // 排除自我配对
+            {
+                $this->notes .= "$myname" . "申报的室友与报名者本人重合！";
+                $this->save(); 
+                return $myname  ."&#09;".$roommate->id . "&#09;自我配对";
+            }
+            if ($roommate->type == 'unregistered')                              // 排除未注册室友
             {
                 if (isset($this->notes)) $this->notes .= "\n";
                 $this->notes .= "$roommate_name" . "并未报名！";

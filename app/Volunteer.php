@@ -20,7 +20,7 @@ class Volunteer extends Model
     
     public function assignroommateByName() 
     {
-        if (!$this->accomodate) return $this->user->name . "&#09;未申请住宿";
+        if (!$this->accomodate) return $this->user->name . "&#09;0&#09;未申请住宿";
         $this->roommate_user_id = null;
         if (isset($this->roommatename))
         {
@@ -32,9 +32,9 @@ class Volunteer extends Model
             if ($count == 0) 
             {
                 if (isset($this->notes)) $this->notes .= "\n";
-                $this->notes .= "未找到$roommate_name" . "的报名记录！";
+                $this->notes .= "未找到室友$roommate_name" . "的报名记录！";
                 $this->save();
-                return $myname . "&#09;&#09;室友姓名$roommate_name&#09;未找到室友的报名记录";
+                return $myname . "&#09;0&#09;室友姓名$roommate_name&#09;未找到室友的报名记录";
             }
             $roommate = $roommates->first();
             if ($count > 1)

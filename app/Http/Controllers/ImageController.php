@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use \Imagick;
 use \ImagickDraw;
+use Metzli\Encoder\Encoder;
+use Metzli\Renderer\PngRenderer;
 
 
 class ImageController extends Controller
@@ -39,8 +41,14 @@ class ImageController extends Controller
         ImageController::addText($draw, 500, 918, $role, 24, '#000000', 'PingHeiBold.ttf', 'MyriadSetProSemibold.ttf');
         ImageController::addText($draw, 500, 1070, $name, 21, '#FFFFFF', 'PingHeiSemibold.ttf', 'MyriadSetProSemibold.ttf');
         ImageController::addText($draw, 500, 1140, $school, 12, '#FFFFFF', 'PingHeiLight.ttf', 'MyriadProLight.otf');
+        $code = Encoder::encode('Hello World!');
+        $renderer = new PngRenderer();
+        $aztec = new Imagick();
+        $aztec->readImageBlob($renderer->render($code));
+        //return response($renderer->render($code))->header('Content-Type', 'image/png');
+        $aztec->setImageColorspace (imagick::COLORSPACE_CMYK); 
         $img->drawImage($draw);
-        header("Content-Type: image/png");
+        $img->compositeImage($aztec, Imagick::COMPOSITE_DEFAULT, 500, 1315);
         return response($img)->header('Content-Type', 'image/jpg');
         $img->writeImage('test.jpg');
     }

@@ -36,7 +36,7 @@ class ImageController extends Controller
         $draw->setTextAlignment(Imagick::ALIGN_CENTER);
         //$draw->setStrokeWidth(5);
         ImageController::addText($draw, 500, 570, "BJMUNC 2017\n" . $title, 12, '#000000', 'PingHeiLight.ttf', 'DINPRORegular.otf');
-        ImageController::addText($draw, 500, 880, $role, 24, '#000000', 'PingHeiBold.ttf', 'MyriadSetProSemibold.ttf');
+        ImageController::addText($draw, 500, 918, $role, 24, '#000000', 'PingHeiBold.ttf', 'MyriadSetProSemibold.ttf');
         ImageController::addText($draw, 500, 1070, $name, 21, '#FFFFFF', 'PingHeiSemibold.ttf', 'MyriadSetProSemibold.ttf');
         ImageController::addText($draw, 500, 1140, $school, 12, '#FFFFFF', 'PingHeiLight.ttf', 'MyriadProLight.otf');
         $img->drawImage($draw);

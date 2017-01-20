@@ -13,17 +13,32 @@ use \ImagickDraw;
 
 class ImageController extends Controller
 {
-    public function generateBadge($name, $school, $role)
+    private function addText($draw, $x, $y, $str, $size, $color, $fontCN, $fontEN)
+    {
+        if (preg_match("/[\x7f-\xff]/", $str)) // if contains Chinese
+        {
+            $draw->setFont(storage_path('app/images/templates/fonts/' . $fontCN));
+        }
+        else
+        {
+            $draw->setFont(storage_path('app/images/templates/fonts/' . $fontEN));
+        }
+        $draw->setFillColor($color);
+        $draw->setFontSize($size * 25 / 6); // for 300 ppi
+        $draw->annotation($x, $y, $str);
+    }
+
+    public function generateBadge($name, $school, $role, $title)
     {
         $img = new Imagick();
         $draw = new ImagickDraw();
-        $img->readImage(storage_path('app/images/templates/17c_badges_Delegate.jpg'));
+        $img->readImage(storage_path('app/images/templates/17c_badge_template_Delegate.jpg'));
         $draw->setTextAlignment(Imagick::ALIGN_CENTER);
         //$draw->setStrokeWidth(5);
-        $draw->setFontSize(8);
-        $draw->setFont('/usr/share/fonts/MUN/AGaramondPro-Bold.otf');
-        $draw->setFillColor('#ffff00');
-        $draw->annotation(500, 555, 'BJMUNC 2017');
+        ImageController::addText($draw, 500, 570, "BJMUNC 2017\n" . $title, 12, '#000000', 'PingHeiLight.ttf', 'DINPRORegular.otf');
+        ImageController::addText($draw, 500, 880, $role, 24, '#000000', 'PingHeiBold.ttf', 'MyriadSetProSemibold.ttf');
+        ImageController::addText($draw, 500, 1070, $name, 21, '#FFFFFF', 'PingHeiSemibold.ttf', 'MyriadSetProSemibold.ttf');
+        ImageController::addText($draw, 500, 1140, $school, 12, '#FFFFFF', 'PingHeiLight.ttf', 'MyriadProLight.otf');
         $img->drawImage($draw);
         header("Content-Type: image/png");
         return response($img)->header('Content-Type', 'image/jpg');

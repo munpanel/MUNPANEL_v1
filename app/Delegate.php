@@ -82,28 +82,41 @@ class Delegate extends Model
         {
             $partner_name = $this->partnername;
             $partners = User::where('name', $partner_name);
+            $count = $partners->count();
+            if ($count == 0) 
+            {
+                if (isset($this->notes)) $this->notes .= "\n";
+                $this->notes .= "未找到$partner_name" . "的报名记录！";
+                $this->save();
+                return $this->user->name . "\t\t搭档姓名$partner_name\t未找到搭档的报名记录";
+            }
             if (!is_null($partners)) // 对于带空格的partnername值，在此if表达式外增加foreach表达式以逐一处理
             {
-                foreach ($partners as $partner)
-                {
-                    if ($partner->type != 'delegate') continue;                        // 排除非代表搭档
+                //foreach ($partners as $partner)
+                //{
+                    $partner = $partners->first();
+                    if ($partner->type != 'delegate') //continue;                        // 排除非代表搭档
+                        return $this->user->name  ."\t".$partner->id . "\t搭档姓名$partner_name\t不是代表";
                     $delpartner = $partner->delegate;
-                    if ($delpartner->committee != $this->committee) continue;          // 排除非本委员会搭档
+                    if ($delpartner->committee != $this->committee) //continue;          // 排除非本委员会搭档
+                        return $this->user->name  ."\t".$partner->id ."\t搭档姓名$partner_name\t不同委员会";
                     if (is_null($delpartner->partnername))                             // 如果对方未填搭档，自动补全
                         $delpartner->partnername = $this->user->name;
-                    if ($delpartner->partnername != $this->user->name) continue;       // 排除多角搭档
+                    if ($delpartner->partnername != $this->user->name) //continue;       // 排除多角搭档
+                        return $this->user->name  ."\t".$partner->id . "\t搭档姓名$partner_name\t多角搭档";
                     $this->partner_user_id = $partner->id;
                     $this->save();
                     $delpartner->partner_user_id = $this->user->id;
                     $delpartner->save();
-                    return;
-                }
+                    return $this->user->name  ."\t".$partner->id . "\t搭档姓名$partner_name\t成功";
+                //}
             }
 	    if (isset($this->notes)) $this->notes .= "\n";
             $this->notes .= "在自动配对搭档时发生错误，请核查";
             $this->save();
             return;
         }
+        return $this->user->name . "\t未填写搭档姓名";
     }
     
     public function partner() {

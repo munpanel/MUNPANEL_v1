@@ -368,6 +368,18 @@ if (($handle = fopen("/var/www/munpanel/test.csv", "r")) !== FALSE) {
             }
         }
         return 'ha';*/
+        $delegates = Delegate::all();
+        $i = 0;
+        $result = "";
+        foreach($delegates as $delegate)
+        {
+            if (isset($delegate->partnername))
+            {
+                $result .= "ID\t".$delegate->user->id ."\t". $delegate->assignPartnerByName() . "\n***";
+                $i++;
+            }
+        }
+        return "えるの搭档配对遍历了$i" . "行记录\n$result";
         $users = User::all();
         foreach($users as $user)
         {

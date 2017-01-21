@@ -10,7 +10,8 @@ use Illuminate\Support\Facades\Storage;
 use \Imagick;
 use \ImagickDraw;
 use Metzli\Encoder\Encoder;
-use Metzli\Renderer\PngRenderer;
+use Metzli\Encoder\AztecCode;
+//use Metzli\Renderer\PngRenderer;
 
 
 class ImageController extends Controller
@@ -30,6 +31,30 @@ class ImageController extends Controller
         $draw->annotation($x, $y, $str);
     }
 
+    private function render(AztecCode $code, $sizeX, $sizeY) // Rewritten according to Metzli\Renderer\PngRenderer, by Adam Yi
+    {
+        $matrix = $code->getMatrix();
+        $factorX = $sizeX / $matrix->getWidth();
+        $factorY = $sizeY / $matrix->getHeight();
+        $img = new Imagick();
+        $img->newImage($sizeX, $sizeY, 'transparent');
+        $img->setImageFormat("png");
+        $img->setImageColorspace (imagick::COLORSPACE_CMYK);
+        $draw = new ImagickDraw();
+        $draw->setFillColor('#000000');
+        for ($x = 0; $x < $matrix->getWidth(); $x++) {
+            for ($y = 0; $y < $matrix->getHeight(); $y++) {
+                if ($matrix->get($x, $y)) {
+                    $draw->rectangle($x * $factorX, $y * $factorY, (($x + 1) * $factorX ), (($y + 1) * $factorY ));
+                    // We don't know why Metzli minuses one here, but it seems great if we don't.
+                    //imagefilledrectangle($im, $x * $f, $y * $f, (($x + 1) * $f - 1), (($y + 1) * $f - 1), $fg);
+                }
+            }
+        }
+        $img->drawImage($draw);
+        return $img;
+    }
+
     public function generateBadge($name, $school, $role, $title)
     {
         $img = new Imagick();
@@ -41,14 +66,17 @@ class ImageController extends Controller
         ImageController::addText($draw, 500, 918, $role, 24, '#000000', 'PingHeiBold.ttf', 'MyriadSetProSemibold.ttf');
         ImageController::addText($draw, 500, 1070, $name, 21, '#FFFFFF', 'PingHeiSemibold.ttf', 'MyriadSetProSemibold.ttf');
         ImageController::addText($draw, 500, 1140, $school, 12, '#FFFFFF', 'PingHeiLight.ttf', 'MyriadProLight.otf');
-        $code = Encoder::encode('Hello World!');
-        $renderer = new PngRenderer();
-        $aztec = new Imagick();
-        $aztec->readImageBlob($renderer->render($code));
+        $code = Encoder::encode(uniqid());
+        //$renderer = new PngRenderer();
+        //$aztec = new Imagick();
+        //$aztec->readImageBlob($renderer->render($code));
+        $codeSize = 45 * 25 /6 ;
+        $aztec = ImageController::render($code, $codeSize, $codeSize);
+        //return response($aztec->getImageBlob())->header('Content-Type', 'image/png');
         //return response($renderer->render($code))->header('Content-Type', 'image/png');
-        $aztec->setImageColorspace (imagick::COLORSPACE_CMYK); 
+        //$aztec->setImageColorspace (imagick::COLORSPACE_CMYK); 
         $img->drawImage($draw);
-        $img->compositeImage($aztec, Imagick::COMPOSITE_DEFAULT, 500, 1315);
+        $img->compositeImage($aztec, Imagick::COMPOSITE_MATHEMATICS, 500 - $codeSize / 2, 1315 - $codeSize / 2);
         return response($img)->header('Content-Type', 'image/jpg');
         $img->writeImage('test.jpg');
     }

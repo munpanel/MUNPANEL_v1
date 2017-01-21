@@ -100,6 +100,7 @@ class Delegate extends Model
                 {
                     if ($partner1->type != 'delegate') continue;                        // 排除非代表搭档
                     if ($partner1->delegate->committee != $this->committee) continue;   // 排除非本委员会搭档
+                    if ($delpartner->status != 'paid' && $delpartner->status != 'oVerified') continue;
                     $partner = $partner1;
                     break;
                 }

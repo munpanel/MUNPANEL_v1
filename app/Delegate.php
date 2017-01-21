@@ -134,6 +134,13 @@ class Delegate extends Model
                 $this->save();
                 return $myname  ."&#09;".$partner->id . "&#09;搭档姓名$partner_name&#09;多角搭档";                
             }
+            if ($delpartner->status != 'paid' && $delpartner->status != 'oVerified')
+            {
+                if (isset($this->notes)) $this->notes .= "\n";
+                $this->notes .= "$partner_name" . "未被审核通过！";
+                $this->save();
+                return $myname  ."&#09;".$partner->id . "&#09;搭档姓名$partner_name&#09;未审核通过";
+            }
             $this->partner_user_id = $partner->id;
             $this->save();
             $delpartner->partner_user_id = $this->user->id;

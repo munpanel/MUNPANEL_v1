@@ -55,11 +55,11 @@ class ImageController extends Controller
         return $img;
     }
 
-    public function generateBadge($name, $school, $role, $title)
+    public function generateBadge($template = 'Delegate', $name, $school, $role, $title)
     {
         $img = new Imagick();
         $draw = new ImagickDraw();
-        $img->readImage(storage_path('app/images/templates/17c_badge_template_Delegate.jpg'));
+        $img->readImage(storage_path('app/images/templates/17c_badge_template_' . $template . '.jpg'));
         $draw->setTextAlignment(Imagick::ALIGN_CENTER);
         //$draw->setStrokeWidth(5);
         ImageController::addText($draw, 500, 570, "BJMUNC 2017\n" . $title, 12, '#000000', 'PingHeiLight.ttf', 'DINPRORegular.otf');

@@ -110,4 +110,4 @@ Route::get('/ajax/nations', ['middleware' => ['permission:edit-nations'], 'uses'
 Route::get('/ajax/assignments', 'DatatablesController@assignments');
 Route::get('/ajax/documents', 'DatatablesController@documents');
 
-Route::get('/ot/generateBadge/{template}/{name}/{school}/{role}/{title}', 'ImageController@generateBadge');
+Route::get('/ot/generateBadge/{template}/{name}/{school}/{role}/{title}/{mode?}', 'ImageController@generateBadge');

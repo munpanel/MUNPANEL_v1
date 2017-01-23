@@ -100,6 +100,7 @@ class Delegate extends Model
                 {
                     if ($partner1->type != 'delegate') continue;                        // 排除非代表搭档
                     if ($partner1->delegate->committee != $this->committee) continue;   // 排除非本委员会搭档
+                    if ($delpartner->status != 'paid' && $delpartner->status != 'oVerified') continue;
                     $partner = $partner1;
                     break;
                 }
@@ -134,6 +135,13 @@ class Delegate extends Model
                 $this->notes .= "$partner_name" . "申报的搭档并非$myname" . "本人！";
                 $this->save();
                 return $myname  ."&#09;".$partner->id . "&#09;搭档姓名$partner_name&#09;多角搭档";                
+            }
+            if ($delpartner->status != 'paid' && $delpartner->status != 'oVerified')
+            {
+                if (isset($this->notes)) $this->notes .= "\n";
+                $this->notes .= "$partner_name" . "未被审核通过！";
+                $this->save();
+                return $myname  ."&#09;".$partner->id . "&#09;搭档姓名$partner_name&#09;未审核通过";
             }
             $this->partner_user_id = $partner->id;
             $this->save();

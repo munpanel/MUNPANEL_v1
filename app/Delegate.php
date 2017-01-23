@@ -106,6 +106,7 @@ class Delegate extends Model
             }
             if ($partner->id != $this->user->id)                                 // 排除自我配对
             {
+                if (isset($this->notes)) $this->notes .= "\n";
                 $this->notes .= "$myname" . "申报的搭档与报名者本人重合！";
                 $this->save(); 
                 return $myname  ."&#09;".$partner->id . "&#09;自我配对";
@@ -177,6 +178,7 @@ class Delegate extends Model
             }
             if ($roommate->id != $this->user->id)                               // 排除自我配对
             {
+                if (isset($this->notes)) $this->notes .= "\n";
                 $this->notes .= "$myname" . "申报的室友与报名者本人重合！";
                 $this->save(); 
                 return $myname  ."&#09;".$roommate->id . "&#09;自我配对";
@@ -189,10 +191,18 @@ class Delegate extends Model
                 return $myname  ."&#09;".$roommate->id . "&#09;室友姓名$roommate_name&#09;未报名参会"; 
             }
             $typedroommate = $roommate->specific();
+            if (!$typedroommate->accomodate)                                    // 排除对方未申请住宿
+            {
+                if (isset($this->notes)) $this->notes .= "\n";
+                $this->notes .= "$roommate_name" . "未申请住宿！";
+                $this->save();
+                return $myname  ."&#09;".$roommate->id . "&#09;室友姓名$roommate_name&#09;未申请住宿";
+            }
             if (is_null($typedroommate->roommatename))                          // 如果对方未填室友，自动补全
                 $typedroommate->roommatename = $myname;
             if ($typedroommate->roommatename != $myname) //continue;}           // 排除多角室友
             {
+                if (isset($this->notes)) $this->notes .= "\n";
                 $this->notes .= "$roommate_name" . "申报的室友并非$myname" . "本人！";
                 $this->save(); 
                 return $myname  ."&#09;".$roommate->id . "&#09;室友姓名$roommate_name&#09;多角室友";
@@ -200,7 +210,7 @@ class Delegate extends Model
             if ($typedroommate->gender != $this->gender)                        // 排除男女混宿
             {
                 if (isset($this->notes)) $this->notes .= "\n";
-                $this->notes .= "室友$roommate_name" . "与报名者为异性！";
+                $this->notes .= "$roommate_name" . "与报名者为异性！";
                 $this->save();
                 return $myname  ."&#09;".$roommate->id . "&#09;室友姓名$roommate_name&#09;室友为异性";
             }

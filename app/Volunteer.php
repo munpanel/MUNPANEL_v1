@@ -61,6 +61,13 @@ class Volunteer extends Model
                 return $myname  ."&#09;".$roommate->id . "&#09;室友姓名$roommate_name&#09;未报名参会"; 
             }
             $typedroommate = $roommate->specific();
+            if ($typedroommate->status != 'paid' && $typedroommate->status != 'oVerified')   // 排除未通过审核室友
+            {
+                if (isset($this->notes)) $this->notes .= "\n";
+                $this->notes .= "室友$partner_name" . "的报名未通过审核！";
+                $this->save();
+                return $myname  ."&#09;".$roommate->id . "&#09;室友姓名$partner_name&#09;未通过审核";
+            }
             if (!$typedroommate->accomodate)                                    // 排除对方未申请住宿
             {
                 if (isset($this->notes)) $this->notes .= "\n";

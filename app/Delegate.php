@@ -120,6 +120,13 @@ class Delegate extends Model
                 return $myname  ."&#09;".$partner->id . "&#09;搭档姓名$partner_name&#09;不是代表";                
             }
             $delpartner = $partner->delegate;
+            if ($delpartner->status != 'paid' && $delpartner->status != 'oVerified')   // 排除未通过审核搭档
+            {
+                if (isset($this->notes)) $this->notes .= "\n";
+                $this->notes .= "搭档$partner_name" . "的报名未通过审核！";
+                $this->save();
+                return $myname  ."&#09;".$partner->id . "&#09;搭档姓名$partner_name&#09;未通过审核";
+            }
             if ($delpartner->committee != $this->committee) //continue;          // 排除非本委员会搭档
             {
                 if (isset($this->notes)) $this->notes .= "\n";
@@ -135,13 +142,6 @@ class Delegate extends Model
                 $this->notes .= "$partner_name" . "申报的搭档并非$myname" . "本人！";
                 $this->save();
                 return $myname  ."&#09;".$partner->id . "&#09;搭档姓名$partner_name&#09;多角搭档";                
-            }
-            if ($delpartner->status != 'paid' && $delpartner->status != 'oVerified')
-            {
-                if (isset($this->notes)) $this->notes .= "\n";
-                $this->notes .= "$partner_name" . "未被审核通过！";
-                $this->save();
-                return $myname  ."&#09;".$partner->id . "&#09;搭档姓名$partner_name&#09;未审核通过";
             }
             $this->partner_user_id = $partner->id;
             $this->save();
@@ -199,6 +199,13 @@ class Delegate extends Model
                 return $myname  ."&#09;".$roommate->id . "&#09;室友姓名$roommate_name&#09;未报名参会"; 
             }
             $typedroommate = $roommate->specific();
+            if ($typedroommate->status != 'paid' && $typedroommate->status != 'oVerified')   // 排除未通过审核室友
+            {
+                if (isset($this->notes)) $this->notes .= "\n";
+                $this->notes .= "室友$partner_name" . "的报名未通过审核！";
+                $this->save();
+                return $myname  ."&#09;".$roommate->id . "&#09;室友姓名$partner_name&#09;未通过审核";
+            }
             if (!$typedroommate->accomodate)                                    // 排除对方未申请住宿
             {
                 if (isset($this->notes)) $this->notes .= "\n";

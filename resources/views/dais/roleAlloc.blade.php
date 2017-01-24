@@ -4,7 +4,8 @@
     <script src="{{secure_url('/js/jquery.dataTables.min.js')}}"></script>
     <script src="{{secure_url('/js/datatables/fnReloadAjax.js')}}"></script>
     <script src="{{secure_url('/js/editable/bootstrap-editable.js')}}"></script>
-    <!--script src="{{secure_url('/js/ot.nationManage.js')}}"></script-->
+    <script src="{{secure_url('/js/dais.roleAllocDelegates.js')}}"></script>
+    <script src="{{secure_url('/js/dais.roleAllocNations.js')}}"></script>
 @endpush
 @push('css')
     <link rel="stylesheet" href="{{secure_url('/css/jquery.dataTables.min.css')}}" type="text/css" />
@@ -54,7 +55,7 @@
                       </span>
                     </div>
                   </div>
-                </div><table class="table table-striped m-b-none text-sm">
+                </div><table class="table table-striped m-b-none text-sm" id="delegate-table">
                       <thead>
                         <tr>
                           <th>姓名</th>
@@ -63,40 +64,6 @@
                           <th width="70">操作</th>
                         </tr>
                       </thead>
-                      <tbody>
-                        <tr>
-                          <td>千反田える</td>
-                          <td>岐阜县立斐太高等学校</td>
-                          <td>英国</td>
-                          <td class="text-right">
-                            <button class="btn btn-xs btn-white" type="button">移出席位</button>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>折木奉太郎</td>
-                          <td>岐阜县立斐太高等学校</td>
-                          <td>英国</td>
-                          <td class="text-right">
-                            <button class="btn btn-xs btn-white" type="button">移出席位</button>
-                          </td>
-                        </tr>
-                        <tr>                    
-                          <td>黄前久美子</td>
-                          <td>京都府立菟道高等学校</td>
-                          <td>待分配</td>
-                          <td class="text-right">
-                            <button class="btn btn-xs btn-success" type="button">移入席位</button>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>高坂丽奈</td>
-                          <td>京都府立菟道高等学校</td>
-                          <td>待分配</td>
-                          <td class="text-right">
-                            <button class="btn btn-xs btn-success" type="button">移入席位</button>
-                          </td>
-                        </tr>
-                      </tbody>
                     </table>
                     <footer class="footer bg-white b-t">
               <div class="row m-t-sm text-center-xs">
@@ -143,7 +110,7 @@
                     </div>
                   </div>
                 </div>
-                    <table class="table table-striped m-b-none text-sm">
+                    <table class="table table-striped m-b-none text-sm" id="nation-table">
                       <thead>
                         <tr>
                           <th width="20"><i class="fa fa-check-circle-o"></i></th>
@@ -152,87 +119,7 @@
                           <th>代表</th> 
                           <th width="150">操作</th>
                         </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td><input name="post[]" type="radio" value="1" checked="true"></td>
-                          <td>德国</td>
-                          <td>LOCARNO_default</td>
-                          <td>无</td>
-                          <td class="text-success">
-                            <button class="btn btn-xs btn-info disabled" type="button">移出代表</button>
-                            <button class="btn btn-xs btn-warning" type="button">编辑</button>
-                            <button class="btn btn-xs btn-danger" type="button">删除</button>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td><input name="post[]" type="radio" value="2"></td>
-                          <td>意大利</td>
-                          <td>LOCARNO_default</td>
-                          <td>无</td>
-                          <td class="text-success">
-                            <button class="btn btn-xs btn-info disabled" type="button">移出代表</button>
-                            <button class="btn btn-xs btn-warning" type="button">编辑</button>
-                            <button class="btn btn-xs btn-danger" type="button">删除</button>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td><input name="post[]" type="radio" value="3"></td>
-                          <td>捷克斯洛伐克</td>
-                          <td>LOCARNO_default</td>
-                          <td>无</td>
-                          <td class="text-success">
-                            <button class="btn btn-xs btn-info disabled" type="button">移出代表</button>
-                            <button class="btn btn-xs btn-warning" type="button">编辑</button>
-                            <button class="btn btn-xs btn-danger" type="button">删除</button>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td><input name="post[]" type="radio" value="4"></td>
-                          <td>比利时</td>
-                          <td>LOCARNO_default</td>
-                          <td>无</td>
-                          <td class="text-success">
-                            <button class="btn btn-xs btn-info disabled" type="button">移出代表</button>
-                            <button class="btn btn-xs btn-warning" type="button">编辑</button>
-                            <button class="btn btn-xs btn-danger" type="button">删除</button>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td><input name="post[]" type="radio" value="5"></td>
-                          <td>法国</td>
-                          <td>LOCARNO_default</td>
-                          <td>无</td>
-                          <td class="text-success">
-                            <button class="btn btn-xs btn-info disabled" type="button">移出代表</button>
-                            <button class="btn btn-xs btn-warning" type="button">编辑</button>
-                            <button class="btn btn-xs btn-danger" type="button">删除</button>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td><input name="post[]" type="radio" value="6"></td>
-                          <td>瑞士</td>
-                          <td>LOCARNO_default</td>
-                          <td>无</td>
-                          <td class="text-success">
-                            <button class="btn btn-xs btn-info disabled" type="button">移出代表</button>
-                            <button class="btn btn-xs btn-warning" type="button">编辑</button>
-                            <button class="btn btn-xs btn-danger" type="button">删除</button>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td><input disabled="disabled" name="post[]" type="radio" value="7"></td>
-                          <td>英国</td>
-                          <td>LOCARNO_default</td>
-                          <td>千反田える, 折木奉太郎</td>
-                          <td class="text-success">
-                            <button class="btn btn-xs btn-info" type="button">移出代表</button>
-                            <button class="btn btn-xs btn-warning" type="button">编辑</button>
-                            <button class="btn btn-xs btn-danger" type="button">删除</button>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
+                      </thead></table>
                     <footer class="footer bg-white b-t">
               <div class="row m-t-sm text-center-xs">
                 <div class="col-sm-4">

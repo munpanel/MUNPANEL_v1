@@ -23,4 +23,36 @@ class Nation extends Model
     {
         return $this->belongstoMany('App\Nationgroup', 'nationgroup_nation');
     }
+    
+    public function scopeDelegate()
+    {
+        $prefix = '';
+        $scope = '';
+        if (isset($this->delegates))
+        {
+            $delegates = $this->delegates;
+            foreach($delegates as $delegate)
+            {
+                $scope .= $prefix . $delegate->user->name;
+                $prefix = ', ';
+            }
+        }
+        return $scope;
+    }
+
+    public function scopeNationGroup()
+    {
+        $prefix = '';
+        $scope = '';
+        if (isset($this->nationgroups))
+        {
+            $nationgroups = $this->nationgroups;
+            foreach($nationgroups as $nationgroup)
+            {
+                $scope .= $prefix . $nationgroup->display_name;
+                $prefix = ', ';
+            }
+        }
+        return $scope;
+    }
 }

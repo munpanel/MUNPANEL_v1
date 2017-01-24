@@ -2,7 +2,7 @@ $(document).ready(function() {
    $('#nation-table').DataTable({
         //processing: true,
         //serverSide: true,
-        ajax: 'ajax/roleListByNation',
+        ajax: 'ajax/roleListByDelegate',
         columns: [
             {data: 'details', name: 'details', orderable: false},
             {data: 'id', name: 'id', orderable: true},

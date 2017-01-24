@@ -452,7 +452,7 @@ class HomeController extends Controller
     {
         if (Auth::user()->type != 'dais')
             return redirect(secure_url('/roleList'));
-        $mycommittee = Auth::user->dais->committee;
+        $mycommittee = Auth::user()->dais->committee;
         return view('dais.roleAlloc');
     }
 }

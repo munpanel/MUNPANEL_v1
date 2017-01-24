@@ -90,8 +90,3 @@
             </footer>
           </section>
 @endsection
-
-本委员会有 {{$total}} 人报名，其中 {{$success}} 人已完成报名流程。
-当前仍有 {{$norole}} 人未得到席位。
-
-本委员会有 {{$nations}} 个席位，剩余 {{$nodels}} 个席位未分配代表。

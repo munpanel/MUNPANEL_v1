@@ -16,33 +16,6 @@
             <header class="header bg-white b-b clearfix">
               <a href="{{secure_url('/ot/nationDetails.modal/bulkAdd')}}" class="btn btn-sm btn-success details-modal disabled pull-right" id="ra-confirm"><i class="fa fa-check"></i> 完成并锁定</a> 
               <p>BJMUNC2017 The Lorcano Conference 1925 席位分配</p>
-              <!--div class="row m-t-sm">
-                <div class="col-sm-6 m-b-xs">
-                  < NOTE: 添加国家 Modal 为批量添加 >
-                  <div class="btn-group">
-                    <a class="btn btn-sm btn-white details-modal"><i class="fa fa-address-book"></i> 查看代表名单</a>
-                    <a class="btn btn-sm btn-white dropdown-toggle" aria-expanded="false" data-toggle="dropdown"><span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                      <li><a href="#">以代表视图显示</a></li>
-                    </ul>
-                  </div>
-                  <div class="btn-group">
-                    <a class="btn btn-sm btn-white details-modal"><i class="fa fa-wheelchair"></i> 查看席位列表</a>
-                    <a class="btn btn-sm btn-white dropdown-toggle" aria-expanded="false" data-toggle="dropdown"><span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                      <li><a href="#">以席位视图显示</a></li>
-                    </ul>
-                  </div>                 
-                </div>
-                <div class="col-sm-6 m-b-xs">
-                  <div class="input-group">
-                    <input type="text" class="input-sm form-control" placeholder="搜索" id="searchbox">
-                    <span class="input-group-btn">
-                      <button class="btn btn-sm btn-white" type="button" id="searchButton">Go!</button>
-                    </span>
-                  </div>
-                </div>
-              </div-->
             </header><section class="scrollable wrapper">
           <div class="tab-content">
             <div class="tab-pane active" id="static">
@@ -53,29 +26,23 @@
                       <span class="badge bg-danger pull-right">剩余 2 人未分配</span>所有代表</header>
                     <div class="row text-sm wrapper">
                   <div class="col-sm-12 m-b-xs">本委员会有 {{$total}} 人报名，其中 {{$success}} 人已完成缴费。当前仍有 {{$norole}} 人无席位。<br><strong class="text-danger">您必须为已报名成功的 {{$norole-success}} 人分配席位，否则席位分配无法完成。</strong></div>
-                    <!--select class="input-sm form-control input-s-sm inline">
-                      <option value="0">Bulk action</option>
-                      <option value="1">Delete selected</option>
-                      <option value="2">Bulk edit</option>
-                      <option value="3">Export</option>
-                    </select>
-                    <button class="btn btn-sm btn-white">Apply</button-->
+                    
                   <div class="col-sm-9 m-b-xs">
                     <div class="btn-group" data-toggle="buttons">
                       <label class="btn btn-sm btn-white active">
-                        <input name="options" id="option1" type="radio"> 报名成功
+                        <input name="view-delegate" id="paid" type="radio"> 报名成功
                       </label>
                       <label class="btn btn-sm btn-white">
-                        <input name="options" id="option2" type="radio"> 已审核通过
+                        <input name="view-delegate" id="verified" type="radio"> 已审核通过
                       </label>
                       <label class="btn btn-sm btn-white">
-                        <input name="options" id="option2" type="radio"> 待分配
+                        <input name="view-delegate" id="no-alloc" type="radio"> 待分配
                       </label>
                       <label class="btn btn-sm btn-white">
-                        <input name="options" id="option2" type="radio"> 必须分配
+                        <input name="view-delegate" id="must-alloc" type="radio"> 必须分配
                       </label>
                       <label class="btn btn-sm btn-white">
-                        <input name="options" id="option2" type="radio"> 全部
+                        <input name="view-delegate" id="all" type="radio"> 全部
                       </label>
                     </div>
                   </div>
@@ -151,25 +118,19 @@
                     <header class="panel-heading">
                   <a href="{{secure_url('/ot/nationDetails.modal/new')}}" class="btn btn-xs btn-white details-modal pull-right">添加席位</a><span class="pull-right">&nbsp;</span><span class="badge bg-warning pull-right">6 个空席位</span>所有席位</header><div class="row text-sm wrapper">
                   <div class="col-sm-12 m-b-xs">本委员会有 {{$nations}} 个席位，剩余 {{$nodels}} 个席位未分配代表。<br><strong class="text-warning">如果您选择锁定席位分配，这 {{$nodels}} 个空席位将会删除。</strong></div>
-                    <!--select class="input-sm form-control input-s-sm inline">
-                      <option value="0">Bulk action</option>
-                      <option value="1">Delete selected</option>
-                      <option value="2">Bulk edit</option>
-                      <option value="3">Export</option>
-                    </select>
-                    <button class="btn btn-sm btn-white">Apply</button-->
+                    
                   <div class="col-sm-9 m-b-xs">
                     <div class="btn-group" data-toggle="buttons">
                       <label class="btn btn-sm btn-white active">
-                        <input name="options" id="option1" type="radio"> 空席位
+                        <input name="view-nation" id="empty" type="radio"> 空席位
                       </label>
-                      <!-- @if(isDouble) -->
+                      <!-- @if($isDouble) -->
                       <label class="btn btn-sm btn-white">
-                        <input name="options" id="option2" type="radio"> 单人席位
+                        <input name="view-nation" id="single" type="radio"> 单人席位
                       </label>
                       <!-- @endif -->
                       <label class="btn btn-sm btn-white">
-                        <input name="options" id="option2" type="radio"> 全部
+                        <input name="view-nation" id="all" type="radio"> 全部
                       </label>
                     </div>
                   </div>

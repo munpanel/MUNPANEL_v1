@@ -15,11 +15,11 @@ class CreateDocumentsTable extends Migration
     {
         Schema::create('documents', function (Blueprint $table) {
             $table->increments('id'); 
-			$table->string('title');
-			$table->mediumText('description');
-			$table->mediumText('path');
-            $table->integer('views')->unsigned();
-            $table->integer('downloads')->unsigned();
+            $table->string('title');
+            $table->mediumText('description');
+            $table->mediumText('path');
+            $table->integer('views')->unsigned()->default(0);
+            $table->integer('downloads')->unsigned()->default(0);
             $table->timestamps();
         });
     }

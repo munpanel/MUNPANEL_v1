@@ -442,4 +442,26 @@ class HomeController extends Controller
             $document = Document::findOrFail($id);
         return view('documentDetailsModal', ['document' => $document]);
     }
+    
+    public function roleList($view = 'nation')
+    {
+        return view('roleList', ['view' => $view]);
+    }
+    
+    public function roleAlloc()
+    {
+        if (Auth::user()->type == 'delegate')
+        {
+            if (!Auth::user()->specific()->committee->is_allocated)
+                return view('error', ['msg' => '您不是该会议学术团队成员，无权进行席位分配！']);
+            else
+                return redirect(secure_url('/roleList'));
+        }
+        else if (Auth::user()->type == 'ot')
+            return redirect(secure_url('/nationManage'));
+        else if (Auth::user()->type != 'dais')
+            return view('error', ['msg' => '您不是该会议学术团队成员，无权进行席位分配！']);            
+        $mycommittee = Auth::user()->dais->committee;
+        return view('dais.roleAlloc', ['committee' => $mycommittee, 'mustAlloc' => $mycommittee->delegates->where('status', 'paid')->whereNull('nation_id')->count(), 'emptyNations' => $mycommittee->nations->whereNull(delegates)->count()]);
+    }
 }

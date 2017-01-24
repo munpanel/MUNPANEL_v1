@@ -60,14 +60,7 @@ Route::post('/saveRegDel', 'UserController@regSaveDel');
 Route::post('/saveRegVol', 'UserController@regSaveVol');
 Route::post('/saveRegObs', 'UserController@regSaveObs');
 
-
-Route::get('/roleAlloc', function() {
-    return view('notavailable');
-});
-
-Route::get('/assignmentManage', function() {
-    return view('notavailable');
-});
+Route::get('/roleList', 'HomeController@roleList');
 
 Route::get('/regManage', 'HomeController@regManage');
 Route::get('/regManage/imexport.modal', 'HomeController@imexportRegistrations');
@@ -89,6 +82,8 @@ Route::get('/ot/delete/user/{id}', ['middleware' => ['permission:edit-users'], '
 Route::get('/ot/delete/school/{id}', ['middleware' => ['permission:edit-schools'], 'uses' => 'UserController@deleteSchool']);
 Route::get('/ot/delete/committee/{id}', ['middleware' => ['permission:edit-committees'], 'uses' => 'UserController@deleteCommittee']);
 
+// TODO: 添加权限控制
+Route::get('/dais/lockAlloc', 'RoleAllocController@lockAlloc');
 
 //Route::get('/dais/assignments', 'HomeController@assignment');
 
@@ -109,5 +104,8 @@ Route::get('/ajax/committees', ['middleware' => ['permission:edit-committees'], 
 Route::get('/ajax/nations', ['middleware' => ['permission:edit-nations'], 'uses' => 'DatatablesController@nations']);
 Route::get('/ajax/assignments', 'DatatablesController@assignments');
 Route::get('/ajax/documents', 'DatatablesController@documents');
-
 Route::get('/ot/generateBadge/{template}/{name}/{school}/{role}/{title}/{mode?}', 'ImageController@generateBadge');
+Route::get('/ajax/roleAllocNations', 'DatatablesController@roleAllocNations');
+Route::get('/ajax/roleAllocDelegates', 'DatatablesController@roleAllocDelegates');
+Route::get('/ajax/roleListByNation', 'DatatablesController@roleListByNation');
+Route::get('/ajax/roleListByDelegate', 'DatatablesController@roleListByDelegate');

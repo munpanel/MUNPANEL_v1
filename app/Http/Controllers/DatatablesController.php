@@ -362,4 +362,93 @@ class DatatablesController extends Controller //To-Do: Permission Check
         }
         return Datatables::of($result)->make(true);
     }
+        
+    public function roleListByNation()
+    {
+        $result = new Collection;
+        
+        return Datatables::of($result)->make(true);
+    }
+    
+    public function roleListByDelegate()
+    {
+        $result = new Collection;
+        
+        return Datatables::of($result)->make(true);
+    }
+    
+    public function roleAllocNations()
+    {
+        $result = new Collection;
+        if (Auth::user()->type != 'dais')
+            $result->push([
+                'select' => '*',
+                'name' => '错误',
+                'nationgroup' => '您没有权限',
+                'delegate' => '进行该操作！',
+                'command' => '<button class="btn btn-xs btn-info disabled" type="button">移出代表</button>
+                              <button class="btn btn-xs btn-warning disabled" type="button">编辑</button>
+                              <button class="btn btn-xs btn-danger disabled" type="button">删除</button>'
+            ]);
+        $mycommittee = Auth::user()->dais->committee;
+        $nations = Nation::where('committee_id', $mycommittee->id)->get();
+        $autosel = false;
+        foreach($nations as $nation)
+        {
+            $select = '<input name="nation" type="radio" value="' . $nation->id . '"';
+            $delnames = '无';
+            $command = '<button class="btn btn-xs btn-info';
+            if (isset($nation->delegates))
+            {
+                $select .= ' disabled="disabled"';
+                $command .= ' disabled';
+            }            
+            else
+            {
+                if (!$autosel)
+                {
+                    $select .= ' checked="true"';
+                    $autosel = true;
+                }
+                $delnames = $nation->scopeDelegate();
+            }
+            $select .= '>';
+            $command .= '" type="button">移出代表</button>
+                        <button class="btn btn-xs btn-warning" type="button">编辑</button>
+                        <button class="btn btn-xs btn-danger" type="button">删除</button>';
+            $result->push([
+                'select' => $select,
+                'name' => $nation->name,
+                'nationgroup' => isset($nation->groups) ? $nation->scopeNationGroup() : '无',
+                'delegate' => $delnames,
+                'command' => $command
+            ]);
+        }
+        return Datatables::of($result)->make(true);
+    }
+    
+    public function roleAllocDelegates()
+    {
+        $result = new Collection;
+        if (Auth::user()->type != 'dais')
+            $result->push([,
+                'name' => '错误',
+                'school' => '您没有权限',
+                'nation' => '进行该操作！',
+                'command' => '<button class="btn btn-xs btn-success disabled" type="button">移入席位</button>'
+            ]);
+        $mycommittee = Auth::user()->dais->committee;
+        $delegates = Delegate::where('committee_id', $mycommittee->id)->get(['user_id', 'school_id', 'nation_id']);
+        foreach($delegates as $delegate)
+        {
+            $result->push([
+                'name' => $delegate->user->name,
+                'school' => $delegate->school->name,
+                'nation' => isset($delegate->nation) ? $delegate->nation->name : '待分配',
+                'command' => isset($delegate->nation) ? '<button class="btn btn-xs btn-white" type="button">移出席位</button>'
+                                                      : '<button class="btn btn-xs btn-success" type="button">移入席位</button>'
+            ]);
+        }
+        return Datatables::of($result)->make(true);
+    }
 }

@@ -362,4 +362,32 @@ class DatatablesController extends Controller //To-Do: Permission Check
         }
         return Datatables::of($result)->make(true);
     }
+        
+    public function roleListByNation()
+    {
+        $result = new Collection;
+        
+        return Datatables::of($result)->make(true);
+    }
+    
+    public function roleListByDelegate()
+    {
+        $result = new Collection;
+        
+        return Datatables::of($result)->make(true);
+    }
+    
+    public function roleAllocNations()
+    {
+        $result = new Collection;
+        
+        return Datatables::of($result)->make(true);
+    }
+    
+    public function roleAllocDelegates()
+    {
+        $result = new Collection;
+        
+        return Datatables::of($result)->make(true);
+    }
 }

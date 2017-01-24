@@ -442,4 +442,17 @@ class HomeController extends Controller
             $document = Document::findOrFail($id);
         return view('documentDetailsModal', ['document' => $document]);
     }
+    
+    public function roleList($view = 'nation')
+    {
+        return view('roleList', ['view' => $view]);
+    }
+    
+    public function roleAlloc()
+    {
+        if (Auth::user()->type != 'dais')
+            return redirect(secure_url('/roleList'));
+        $mycommittee = Auth::user->dais->committee;
+        return view('dais.roleAlloc');
+    }
 }

@@ -29,7 +29,7 @@
                       @endif
                       所有代表</header>
                     <div class="row text-sm wrapper">
-                  <div class="col-sm-12 m-b-xs">本委员会有 {{$committee->delegates->count()}} 人报名，其中 {{$committee->delegates->where('status', 'paid')->count()}} 人已完成报名流程。当前仍有 {{$committee->delegates->whereNull('nation_id')->count()}} 人未分配席位。<br>
+                  <div class="col-sm-12 m-b-xs">本委员会有 {{$committee->delegates->count()}} 人报名，其中 {{$committee->delegates->where('status', 'paid')->count()}} 人已完成报名流程。当前仍有 {{$committee->delegates->where('nation_id', null)->count()}} 人未分配席位。<br>
                   @if ($mustAlloc > 0)
                     <strong class="text-danger">您必须为已报名成功的 {{$mustAlloc}} 人分配席位，否则席位分配无法完成。</strong>
                   @else
@@ -74,16 +74,16 @@
                         </tr>
                       </thead>
                     </table>
-                    <footer class="footer bg-white b-t">
+                    <footer class="footer bg-white b-t" id="delegate-table_length_new">
               <div class="row m-t-sm text-center-xs">
                 <div class="col-sm-4">
-                  <div class="dataTables_length" id="registration-table_length_new"><label>每页 <select name="registration-table_length" id="registration-length-select" aria-controls="registration-table"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> 项</label></div>
+                  <div class="dataTables_length" id="delegate-table_length_new"><label>每页 <select name="delegate-table_length" id="delegate-length-select" aria-controls="delegate-table"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> 项</label></div>
                 </div>
                 <div class="col-sm-4 text-center">
-                  <small class="text-muted inline m-t-sm m-b-sm" id="registration-pageinfo"><div class="dataTables_info" id="registration-table_info" role="status" aria-live="polite">第 1 页 ( 总共 1 页 )</div></small>
+                  <small class="text-muted inline m-t-sm m-b-sm" id="delegate-pageinfo"><div class="dataTables_info" id="delegate-table_info" role="status" aria-live="polite">第 1 页 ( 总共 1 页 )</div></small>
                 </div>
                 <div class="col-sm-4 text-right text-center-xs">                
-                  <ul class="pagination pagination-sm m-t-none m-b-none" id="registration-pagnination"><li><a tabindex="0" class="paginate_button previous disabled" id="registration-table_previous" aria-controls="registration-table" href="#" data-dt-idx="0"><i class="fa fa-chevron-left"></i></a></li><li><a tabindex="0" class="paginate_button current" aria-controls="registration-table" href="#" data-dt-idx="1">1</a></li><li><a tabindex="0" class="paginate_button next disabled" id="registration-table_next" aria-controls="registration-table" href="#" data-dt-idx="2"><i class="fa fa-chevron-right"></i></a></li></ul>
+                  <ul class="pagination pagination-sm m-t-none m-b-none" id="delegate-pagnination"><li><a tabindex="0" class="paginate_button previous disabled" id="delegate-table_previous" aria-controls="delegate-table" href="#" data-dt-idx="0"><i class="fa fa-chevron-left"></i></a></li><li><a tabindex="0" class="paginate_button current" aria-controls="delegate-table" href="#" data-dt-idx="1">1</a></li><li><a tabindex="0" class="paginate_button next disabled" id="delegate-table_next" aria-controls="delegate-table" href="#" data-dt-idx="2"><i class="fa fa-chevron-right"></i></a></li></ul>
                 </div>
               </div>
             </footer>

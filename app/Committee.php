@@ -12,6 +12,10 @@ class Committee extends Model
         return $this->hasMany('App\Delegate');
     }
 
+    public function nations() {
+        return $this->hasMany('App\Nation');
+    }
+
     public function assignments()
     {
         return $this->belongsToMany('App\Assignment');

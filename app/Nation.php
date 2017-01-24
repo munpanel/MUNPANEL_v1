@@ -16,7 +16,7 @@ class Nation extends Model
 
     public function delegates()
     {
-        return $this->hasMany('App\NationDel');
+        return $this->hasMany('App\Delegate');
     }
     
     public function nationgroups()

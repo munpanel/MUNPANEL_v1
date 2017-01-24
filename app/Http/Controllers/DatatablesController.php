@@ -398,10 +398,11 @@ class DatatablesController extends Controller //To-Do: Permission Check
             $select = '<input name="nation" type="radio" value="' . $nation->id . '"';
             $delnames = '无';
             $command = '<button class="btn btn-xs btn-info';
-            if (isset($nation->delegates))
+            if (!$nation->delegates->isEmpty())
             {
                 $select .= ' disabled="disabled"';
                 $command .= ' disabled';
+                $delnames = $nation->scopeDelegate();
             }            
             else
             {
@@ -410,7 +411,6 @@ class DatatablesController extends Controller //To-Do: Permission Check
                     $select .= ' checked="true"';
                     $autosel = true;
                 }
-                $delnames = $nation->scopeDelegate();
             }
             $select .= '>';
             $command .= '" type="button">移出代表</button>
@@ -419,7 +419,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
             $result->push([
                 'select' => $select,
                 'name' => $nation->name,
-                'nationgroup' => isset($nation->groups) ? $nation->scopeNationGroup() : '无',
+                'nationgroup' => isset($nation->nationgroups) ? $nation->scopeNationGroup() : '无',
                 'delegate' => $delnames,
                 'command' => $command
             ]);
@@ -431,7 +431,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
     {
         $result = new Collection;
         if (Auth::user()->type != 'dais')
-            $result->push([,
+            $result->push([
                 'name' => '错误',
                 'school' => '您没有权限',
                 'nation' => '进行该操作！',

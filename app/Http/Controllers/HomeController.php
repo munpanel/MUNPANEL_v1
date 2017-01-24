@@ -462,6 +462,11 @@ class HomeController extends Controller
         else if (Auth::user()->type != 'dais')
             return view('error', ['msg' => '您不是该会议学术团队成员，无权进行席位分配！']);            
         $mycommittee = Auth::user()->dais->committee;
-        return view('dais.roleAlloc', ['committee' => $mycommittee, 'mustAlloc' => $mycommittee->delegates->where('status', 'paid')->whereNull('nation_id')->count(), 'emptyNations' => $mycommittee->nations->whereNull(delegates)->count()]);
+        return view('dais.roleAlloc', [
+            'committee' => $mycommittee, 
+            'mustAlloc' => $mycommittee->delegates->where('status', 'paid')->where('nation_id', null)->count(), 
+            'emptyNations' => $mycommittee->nations->count(),
+            'isDouble' => true
+        ]);
     }
 }

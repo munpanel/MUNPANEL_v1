@@ -61,6 +61,7 @@ Route::post('/saveRegVol', 'UserController@regSaveVol');
 Route::post('/saveRegObs', 'UserController@regSaveObs');
 
 Route::get('/roleList', 'HomeController@roleList');
+Route::get('/roleAlloc', 'HomeController@roleAlloc');
 
 Route::get('/regManage', 'HomeController@regManage');
 Route::get('/regManage/imexport.modal', 'HomeController@imexportRegistrations');

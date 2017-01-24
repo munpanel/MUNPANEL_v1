@@ -82,6 +82,8 @@ Route::get('/ot/delete/user/{id}', ['middleware' => ['permission:edit-users'], '
 Route::get('/ot/delete/school/{id}', ['middleware' => ['permission:edit-schools'], 'uses' => 'UserController@deleteSchool']);
 Route::get('/ot/delete/committee/{id}', ['middleware' => ['permission:edit-committees'], 'uses' => 'UserController@deleteCommittee']);
 
+// TODO: 添加权限控制
+Route::get('/dais/lockAlloc', 'RoleAllocController@lockAlloc');
 
 //Route::get('/dais/assignments', 'HomeController@assignment');
 

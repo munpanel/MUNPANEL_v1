@@ -15,7 +15,7 @@
 
       <section class="vbox">
             <header class="header bg-white b-b clearfix">
-              <a href="{{secure_url('dais/lockAlloc')}}" class="btn btn-sm btn-success details-modal disabled pull-right" id="ra-confirm"><i class="fa fa-check"></i> 完成并锁定</a> 
+              <a href="{{secure_url('dais/lockAlloc')}}" class="btn btn-sm btn-success details-modal {{$mustAlloc > 0 ? 'disabled ': ''}}pull-right" id="ra-confirm"><i class="fa fa-check"></i> 完成并锁定</a> 
               <p>BJMUNC2017 {{$committee->display_name}} 席位分配</p>
             </header><section class="scrollable wrapper">
           <div class="tab-content">
@@ -25,7 +25,7 @@
                   <section class="panel">
                     <header class="panel-heading">
                       @if ($mustAlloc > 0)
-                        <span class="badge bg-danger pull-right">剩余 2 人未分配</span>
+                        <span class="badge bg-danger pull-right">剩余 {{$mustAlloc}} 人未分配</span>
                       @endif
                       所有代表</header>
                     <div class="row text-sm wrapper">
@@ -42,9 +42,9 @@
                       <label class="btn btn-sm btn-white active">
                         <input name="view-delegate" id="paid" type="radio"> 报名成功
                       </label>
-                      <label class="btn btn-sm btn-white">
+                      <!--label class="btn btn-sm btn-white">
                         <input name="view-delegate" id="verified" type="radio"> 已审核通过
-                      </label>
+                      </label-->
                       <label class="btn btn-sm btn-white">
                         <input name="view-delegate" id="no-alloc" type="radio"> 待分配
                       </label>
@@ -101,13 +101,13 @@
                   @if ($mustAlloc > 0 && $emptyNations > 0)
                     <strong class="text-info">当前剩余 {{$emptyNations}} 个空席位可分配给已报名成功的 {{$mustAlloc}} 名无席位代表。</strong>
                   @elseif ($emptyNations > 0)
-                  <strong class="text-warning">如果您选择锁定席位分配，这 {{$emptyNations}} 个空席位将会删除。</strong></div>
+                    <strong class="text-warning">如果您选择锁定席位分配，这 {{$emptyNations}} 个空席位将会删除。</strong>
                   @elseif ($mustAlloc > 0)
                     <strong class="text-danger">所有席位均已分配代表，但仍有 {{$mustAlloc}} 名报名成功的代表需要分配席位。请添加更多的席位。</strong>
                   @else
                     <strong class="text-success">所有席位均已分配代表，请点击“完成并锁定”按钮以完成席位分配。</strong>
                   @endif
-                    
+                  </div> 
                   <div class="col-sm-9 m-b-xs">
                     <div class="btn-group" data-toggle="buttons">
                       <label class="btn btn-sm btn-white active">

@@ -85,6 +85,8 @@ Route::get('/ot/delete/committee/{id}', ['middleware' => ['permission:edit-commi
 
 // TODO: 添加权限控制
 Route::get('/dais/lockAlloc', 'RoleAllocController@lockAlloc');
+Route::get('/dais/removeDel/{id}', 'RoleAllocController@removeDelegate');
+Route::get('/dais/freeNation/{id}', 'RoleAllocController@freeNation');
 
 //Route::get('/dais/assignments', 'HomeController@assignment');
 

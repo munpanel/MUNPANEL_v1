@@ -39,6 +39,10 @@ class Delegate extends Model
         return $this->belongstoMany('App\Delegategroup');
     }
 
+    public function partner() {
+        return $this->belongsTo('App\User', 'partner_user_id');
+    }
+
     public function assignments() {
         $result = new Collection;
         if (isset($this->nation))

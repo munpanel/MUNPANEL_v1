@@ -386,7 +386,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
                 'name' => '错误',
                 'nationgroup' => '您没有权限',
                 'delegate' => '进行该操作！',
-                'command' => '<button class="btn btn-xs btn-info disabled" type="button">移出代表</button>
+                'command' => '<button class="btn btn-xs btn-white disabled" type="button">移出代表</button>
                               <button class="btn btn-xs btn-warning disabled" type="button">编辑</button>
                               <button class="btn btn-xs btn-danger disabled" type="button">删除</button>'
             ]);
@@ -397,15 +397,15 @@ class DatatablesController extends Controller //To-Do: Permission Check
         {
             $select = '<input name="nation" type="radio" value="' . $nation->id . '"';
             $delnames = '无';
-            $command = '<button class="btn btn-xs btn-info';
+            $command = '<a href="' . secure_url('/dais/freeNation/' . $nation->id) . '" class="btn btn-xs btn-white';
             if (!$nation->delegates->isEmpty())
             {
                 $select .= ' disabled="disabled"';
-                $command .= ' disabled';
                 $delnames = $nation->scopeDelegate();
             }            
             else
             {
+                $command .= ' disabled';
                 if (!$autosel)
                 {
                     $select .= ' checked="true"';
@@ -413,7 +413,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
                 }
             }
             $select .= '>';
-            $command .= '" type="button">移出代表</button>
+            $command .= '">移出代表</a>
                         <button class="btn btn-xs btn-warning" type="button">编辑</button>
                         <button class="btn btn-xs btn-danger" type="button">删除</button>';
             $result->push([
@@ -445,7 +445,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
                 'name' => $delegate->user->name,
                 'school' => $delegate->school->name,
                 'nation' => isset($delegate->nation) ? $delegate->nation->name : '待分配',
-                'command' => isset($delegate->nation) ? '<button class="btn btn-xs btn-white" type="button">移出席位</button>'
+                'command' => isset($delegate->nation) ? '<a href="'.secure_url('/dais/removeDel/'.$delegate->user->id).'" class="btn btn-xs btn-white" type="button">移出席位</a>'
                                                       : '<button class="btn btn-xs btn-success" type="button">移入席位</button>'
             ]);
         }

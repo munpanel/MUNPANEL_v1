@@ -435,18 +435,21 @@ class DatatablesController extends Controller //To-Do: Permission Check
                 'name' => '错误',
                 'school' => '您没有权限',
                 'nation' => '进行该操作！',
-                'command' => '<button class="btn btn-xs btn-success disabled" type="button">移入席位</button>'
+                'command' => '<button class="btn btn-xs btn-success addButton" del-id="' . $delegate->user->id . '"type="button">移入席位</button>'
             ]);
         $mycommittee = Auth::user()->dais->committee;
-        $delegates = Delegate::where('committee_id', $mycommittee->id)->get(['user_id', 'school_id', 'nation_id']);
+        $delegates = Delegate::where('committee_id', $mycommittee->id)->where('status', 'paid')->orWhere('status', 'oVerified')->get(['user_id', 'school_id', 'nation_id', 'status']);
         foreach($delegates as $delegate)
         {
+            $name = $delegate->user->name;
+            if ($delegate->status != 'paid')
+                $name .= '（未缴费）';
             $result->push([
-                'name' => $delegate->user->name,
+                'name' => $name,
                 'school' => $delegate->school->name,
                 'nation' => isset($delegate->nation) ? $delegate->nation->name : '待分配',
-                'command' => isset($delegate->nation) ? '<a href="'.secure_url('/dais/removeDel/'.$delegate->user->id).'" class="btn btn-xs btn-white" type="button">移出席位</a>'
-                                                      : '<button class="btn btn-xs btn-success" type="button">移入席位</button>'
+                'command' => isset($delegate->nation) ? '<a href="'.secure_url('/dais/removeSeat/'.$delegate->user->id).'" class="btn btn-xs btn-white" type="button">移出席位</a>'
+                                                      : '<button class="btn btn-xs btn-success addButton" del-id="' . $delegate->user->id . '"type="button">移入席位</button>'
             ]);
         }
         return Datatables::of($result)->make(true);

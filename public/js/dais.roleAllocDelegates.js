@@ -8,27 +8,25 @@ $(document).ready(function() {
             {data: 'school', name: 'school', orderable: false},
             {data: 'nation', name: 'nation', orderable: true},
             {data: 'command', name: 'command', orderable: false}
-        ],
-        fnInitComplete: function(oSettings, json) {
-            $(document).on('click','.details-modal', function(e) {
-                $('#ajaxModal').remove();
-                e.preventDefault();
-                var $this = $(this)
-                  , $remote = $this.data('remote') || $this.attr('href')
-                  , $modal = $('<div class="modal" id="ajaxModal"><div class="modal-body"></div></div>');
-                $('body').append($modal);
-                $modal.modal();
-                $modal.load($remote);
-            });
+            ],
+            fnInitComplete: function(oSettings, json) {
+                $(document).on('click', '.addButton', function(){
+                    $.post("dais/addSeat/" + $(this).attr('del-id'), $('#seatform').serialize(), function(receivedData){
+                        //if (receivedData == "success")
+                        location.reload();
+                        //useTheResponseData(receivedData);
+                        });
+                });
+
             $(document).on('hidden.bs.modal', '#ajaxModal', function() {
                 $('#delegate-table').dataTable().fnReloadAjax(undefined, undefined, true);
             });
-           //$('#delegate-table_paginate').hide();
-           $('#delegate-table_length').hide();
-           $('.dataTables_filter').hide();
-           $('#delegate-table_info').appendTo($('#nation-pageinfo'));
-           $('#delegate-table').removeClass('no-footer');
-        },
+            //$('#delegate-table_paginate').hide();
+            $('#delegate-table_length').hide();
+            $('.dataTables_filter').hide();
+            $('#delegate-table_info').appendTo($('#nation-pageinfo'));
+            $('#delegate-table').removeClass('no-footer');
+            },
         "fnDrawCallback": function( oSettings ) {
             $('#nation-pagnination').empty();
             $('.paginate_button').each(function (i) {

@@ -34,6 +34,23 @@ class RoleAllocController extends Controller
         return redirect(secure_url('/roleAlloc'));
     }
 
+    public function addDelegate(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+        $nation = Nation::findOrFail($request->nation);
+        $delegate = $user->delegate;
+        $delegate->nation_id = $nation->id;
+        $delegate->save();
+        if (isset($delegate->partner_user_id))
+        {
+            $partner = $delegate->partner->delegate;
+            $partner->nation_id = $nation->id;
+            $partner->save();
+        }
+        return 'success';
+        //return redirect(secure_url('/roleAlloc'));
+    }
+
     public function freeNation($id)
     {
         $nation = Nation::findOrFail($id);

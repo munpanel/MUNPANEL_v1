@@ -6,6 +6,8 @@
     <script src="{{secure_url('/js/editable/bootstrap-editable.js')}}"></script>
     <script src="{{secure_url('/js/dais.roleAllocDelegates.js')}}"></script>
     <script src="{{secure_url('/js/dais.roleAllocNations.js')}}"></script>
+</script>
+
 @endpush
 @push('css')
     <link rel="stylesheet" href="{{secure_url('/css/jquery.dataTables.min.css')}}" type="text/css" />
@@ -25,15 +27,15 @@
                   <section class="panel">
                     <header class="panel-heading">
                       @if ($mustAlloc > 0)
-                        <span class="badge bg-danger pull-right">剩余 {{$mustAlloc}} 人未分配</span>
+                        <span class="badge bg-danger pull-right">剩余 {{$mustAlloc}} 已缴费代表未分配</span>
                       @endif
                       所有代表</header>
                     <div class="row text-sm wrapper">
-                  <div class="col-sm-12 m-b-xs">本委员会有 {{$committee->delegates->count()}} 人报名，其中 {{$committee->delegates->where('status', 'paid')->count()}} 人已完成报名流程。当前仍有 {{$committee->delegates->where('nation_id', null)->count()}} 人未分配席位。<br>
+                  <div class="col-sm-12 m-b-xs">本委员会有 {{$committee->delegates->count()}} 人报名，其中 {{App\Delegate::where('committee_id', $committee->id)->where('status', 'paid')->orWhere('status', 'oVerified')->count()}} 人已通过组织团队审核，{{$committee->delegates->where('status', 'paid')->count()}} 人已缴费。已缴费代表中，当前仍有 {{$committee->delegates->where('status', 'paid')->where('nation_id', null)->count()}} 人未分配席位。<br>
                   @if ($mustAlloc > 0)
-                    <strong class="text-danger">您必须为已报名成功的 {{$mustAlloc}} 人分配席位，否则席位分配无法完成。</strong>
+                    <strong class="text-danger">您必须为仍无席位的已缴费的 {{$mustAlloc}} 人分配席位，否则席位分配无法完成。</strong>
                   @else
-                    <strong class="text-success">所有已报名成功的代表均已分配席位，请点击“完成并锁定”按钮以完成席位分配。</strong>
+                    <strong class="text-success">所有已缴费的代表均已分配席位，请点击“完成并锁定”按钮以完成席位分配。</strong>
                   @endif
                   </div>
                     
@@ -132,6 +134,8 @@
                     </div>
                   </div>
                 </div>
+                <form id="seatform">
+                    {{ csrf_field() }}
                     <table class="table table-striped m-b-none text-sm" id="nation-table">
                       <thead>
                         <tr>
@@ -142,6 +146,7 @@
                           <th width="150">操作</th>
                         </tr>
                       </thead></table>
+              </form>
                     <footer class="footer bg-white b-t">
               <div class="row m-t-sm text-center-xs">
                 <div class="col-sm-4">

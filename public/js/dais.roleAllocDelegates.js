@@ -24,7 +24,7 @@ $(document).ready(function() {
             //$('#delegate-table_paginate').hide();
             $('#delegate-table_length').hide();
             $('.dataTables_filter').hide();
-            $('#delegate-table_info').appendTo($('#nation-pageinfo'));
+            $('#delegate-table_info').appendTo($('#delegate-pageinfo'));
             $('#delegate-table').removeClass('no-footer');
             },
         "fnDrawCallback": function( oSettings ) {

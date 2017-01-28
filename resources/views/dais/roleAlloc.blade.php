@@ -31,7 +31,7 @@
                       @endif
                       所有代表</header>
                     <div class="row text-sm wrapper">
-                  <div class="col-sm-12 m-b-xs">本委员会有 {{$committee->delegates->count()}} 人报名，其中 {{App\Delegate::where('committee_id', $committee->id)->where('status', 'paid')->orWhere('status', 'oVerified')->count()}} 人已通过组织团队审核，{{$committee->delegates->where('status', 'paid')->count()}} 人已缴费。已缴费代表中，当前仍有 {{$committee->delegates->where('status', 'paid')->where('nation_id', null)->count()}} 人未分配席位。<br>
+                  <div class="col-sm-12 m-b-xs">本委员会有 {{$committee->delegates->count()}} 人报名，其中 {{$verified}} 人已通过组织团队审核，{{$committee->delegates->where('status', 'paid')->count()}} 人已缴费。已缴费代表中，当前仍有 {{$committee->delegates->where('status', 'paid')->where('nation_id', null)->count()}} 人未分配席位。<br>
                   @if ($mustAlloc > 0)
                     <strong class="text-danger">您必须为仍无席位的已缴费的 {{$mustAlloc}} 人分配席位，否则席位分配无法完成。</strong>
                   @else

@@ -466,6 +466,7 @@ class HomeController extends Controller
             'committee' => $mycommittee, 
             'mustAlloc' => $mycommittee->delegates->where('status', 'paid')->where('nation_id', null)->count(), 
             'emptyNations' => $mycommittee->emptyNations()->count(),
+            'verified' => Delegate::where(function($query) {$query->where('committee_id', Auth::user()->dais->committee->id)->where('status', 'paid');})->orWhere(function($query) {$query->where('committee_id', Auth::user()->dais->committee->id)->where('status', 'oVerified');})->count(),
             'isDouble' => true
         ]);
     }

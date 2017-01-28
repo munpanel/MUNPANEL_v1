@@ -114,4 +114,21 @@ class Delegate extends Model
         }
         return $result->unique()->sortBy('id');
     }
+
+    public function scopeDelegateGroup()
+    {
+        $prefix = '';
+        $scope = '';
+        if (isset($this->delegategroups))
+        {
+            $delegategroups = $this->delegategroups;
+            foreach($delegategroups as $delegategroup)
+            {
+                $scope .= $prefix . $delegategroup->display_name;
+                $prefix = ', ';
+            }
+        }
+        return $scope;
+    }
+
 }

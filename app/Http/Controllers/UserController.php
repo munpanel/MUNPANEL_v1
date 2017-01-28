@@ -12,6 +12,7 @@ use App\Permission;
 use App\Role;
 use App\Assignment;
 use App\Delegategroup;
+use App\Dais;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -184,28 +185,61 @@ class UserController extends Controller
 
     public function regSchool()
     {
-if (($handle = fopen("/var/www/munpanel/test.csv", "r")) !== FALSE) {
-    $resp = "";
-    while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
-        $num = count($data);
-        for ($c=0; $c < $num; $c++) {
-            $resp = $resp. $data[$c] . "<br />\n";
+        if (($handle = fopen("/var/www/munpanel/test.csv", "r")) !== FALSE) {
+            $resp = "";
+            while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+                $num = count($data);
+                for ($c=0; $c < $num; $c++) {
+                    $resp = $resp. $data[$c] . "<br />\n";
+                }
+                $user = new User;
+                $user->name = $data[0];
+                $user->password = Hash::make($data[1]);
+                $user->email = $data[0]. '@schools.bjmun.org';
+                $user->type = 'school';
+                $user->save();
+                $school = School::where('name', $data[0])->first();
+                $school->user_id =$user->id;
+                $school->save();
+                $resp = $resp. response()->json($user) . "<br />\n";
+                $resp = $resp. response()->json($school) . "<br />\n";
+            }
+            fclose($handle);
+            return $resp;
         }
-        $user = new User;
-        $user->name = $data[0];
-        $user->password = Hash::make($data[1]);
-        $user->email = $data[0]. '@schools.bjmun.org';
-        $user->type = 'school';
-        $user->save();
-        $school = School::where('name', $data[0])->first();
-        $school->user_id =$user->id;
-        $school->save();
-        $resp = $resp. response()->json($user) . "<br />\n";
-        $resp = $resp. response()->json($school) . "<br />\n";
     }
-    fclose($handle);
-    return $resp;
-}
+
+    public function regDais()
+    {
+         if (($handle = fopen("/var/www/munpanel/test.csv", "r")) !== FALSE) {
+            $resp = "";
+            while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+                $num = count($data);
+                for ($c=0; $c < $num; $c++) {
+                    $resp = $resp. $data[$c] . "<br />\n";
+                }
+                $user = User::firstOrNew(['email' => $data[1]]);
+                $user->name = $data[0];
+                $user->password = Hash::make(strtok($data[1], '@') . '2017');
+                $resp = $resp. 'pwd: ' . strtok($data[1], '@') . '2017' ."<br/>\n";
+                $user->email = $data[1];
+                Delegate::destroy($user->id);
+                Volunteer::destroy($user->id);
+                Observer::destroy($user->id);
+                $user->type = 'dais';
+                $user->save();
+                $dais = new Dais;
+                $dais->user_id = $user->id;
+                $dais->committee_id = Committee::where('name', '=', $data[2])->first()->id;
+                $dais->position = 'dm';
+                $dais->school_id = School::firstOrCreate(['name' => $data[3]])->id;
+                $dais->save();
+                $resp = $resp. response()->json($user) . "<br />\n";
+                $resp = $resp. response()->json($dais) . "<br />\n";
+            }
+            fclose($handle);
+            return $resp;
+        }       
     }
 
     public function doChangePwd(Request $request)
@@ -358,6 +392,25 @@ if (($handle = fopen("/var/www/munpanel/test.csv", "r")) !== FALSE) {
 
     public function test()
     {
+        //$delgroup = new Delegategroup;
+        //$delgroup->name = 'UNSC媒体';
+        //$delgroup->display_name = 'UNSC媒体代表';
+        //$delgroup->save();
+        //$delgroup = Delegategroup::find(5);
+        $delegates = Committee::find(2)->delegates;
+        foreach ($delegates as $delegate)
+        {
+                $delegate->committee_id = 1;//$delgroup->delegates()->attach($delegate);
+                $delegate->save();
+        }
+        /*$delgroup = new Delegategroup;
+        $delgroup->name = 'UNSC国家';
+        $delgroup->display_name = 'UNSC国家代表';
+        $delgroup->save();
+        $delegates = Committee::find(1)->delegates;
+        foreach ($delegates as $delegate)
+                $delgroup->delegates()->attach($delegate);*/
+        return 'Aloha';
         /*$schools = School::all();
         foreach($schools as $school)
         {

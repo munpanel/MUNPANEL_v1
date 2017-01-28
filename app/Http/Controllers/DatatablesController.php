@@ -441,10 +441,19 @@ class DatatablesController extends Controller //To-Do: Permission Check
                 'command' => '<button class="btn btn-xs btn-success addButton" del-id="' . $delegate->user->id . '"type="button">移入席位</button>'
             ]);
         $mycommittee = Auth::user()->dais->committee;
-        $delegates = Delegate::where('committee_id', $mycommittee->id)->where('status', 'paid')->orWhere('status', 'oVerified')->get(['user_id', 'school_id', 'nation_id', 'status']);
+        $delegates = Delegate::where(function($query) {
+            $query->where('committee_id', Auth::user()->dais->committee->id)
+            ->where('status', 'paid');
+        })->orWhere(function($query) {
+            $query->where('committee_id', Auth::user()->dais->committee->id)
+            ->where('status', 'oVerified');
+        })->get(['user_id', 'school_id', 'nation_id', 'status']);
         foreach($delegates as $delegate)
         {
             $name = $delegate->user->name;
+            $surfix = $delegate->scopeDelegateGroup();
+            if ($surfix != '')
+                $name .= ' (' . $surfix . ')';
             if ($delegate->status != 'paid')
                 $name .= '（未缴费）';
             $result->push([

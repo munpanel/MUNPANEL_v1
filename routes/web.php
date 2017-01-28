@@ -94,6 +94,7 @@ Route::get('/dais/delete/nation/{id}', 'RoleAllocController@deleteNation');
 
 //Route::get('/dais/assignments', 'HomeController@assignment');
 
+Route::get('/regDais', 'UserController@regDais');
 //Route::get('/regschools', 'UserController@regSchool');
 Route::get('/test', 'UserController@test');
 Route::get('/createPermissions', 'UserController@createPermissions');

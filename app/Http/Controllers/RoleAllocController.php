@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Committee;
+use App\Nation;
 use App\School;
 use App\Delegate;
 use App\User;
-use App\Nation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -62,4 +61,35 @@ class RoleAllocController extends Controller
         }
         return redirect(secure_url('/roleAlloc'));
     }
+
+    public function nationDetailsModal($id)
+    {
+        if (Auth::user()->type != 'dais')
+            return "Error";
+        if ($id == 'new')
+        {
+            $nation = new Nation;
+            $nation->name = 'New Nation';
+            $nation->committee_id = Auth::user()->dais->committee_id;
+            $nation->conpetence = 1;
+            $nation->veto_power = 0;
+            $nation->save();
+        }
+        else
+            $nation = Nation::findOrFail($id);
+        return view('dais.nationDetailsModal', ['nation' => $nation]);
+    }
+
+    public function updateNation(Request $request, $id)
+    {
+        if (Auth::user()->type != 'dais')
+            return 'Error';
+        $nation = Nation::findOrFail($id);
+        $name = $request->get('name');
+        $value = $request->get('value');
+        $nation->$name = $value;
+        $nation->save();
+    }
+
+
 }

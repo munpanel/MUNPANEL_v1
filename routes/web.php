@@ -88,6 +88,8 @@ Route::get('/dais/lockAlloc', 'RoleAllocController@lockAlloc');
 Route::get('/dais/removeSeat/{id}', 'RoleAllocController@removeDelegate');
 Route::post('/dais/addSeat/{id}', 'RoleAllocController@addDelegate');
 Route::get('/dais/freeNation/{id}', 'RoleAllocController@freeNation');
+Route::get('/dais/nationDetails.modal/{id}', 'RoleAllocController@nationDetailsModal');
+Route::post('/dais/update/nation/{id}', 'RoleAllocController@updateNation');
 
 //Route::get('/dais/assignments', 'HomeController@assignment');
 

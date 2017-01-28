@@ -91,12 +91,19 @@ class RoleAllocController extends Controller
         $nation->save();
     }
 
-    public function deleteNation(Request $request, $id)
+    public function deleteNation(Request $request, $id, $confirm = false)
     {
         if (Auth::user()->type != 'dais')
             return 'Error';
-        Nation::destroy($id);
-        return redirect(secure_url('/roleAlloc'));
+        if ($confirm)
+        {
+            Nation::destroy($id);
+            return redirect(secure_url('/roleAlloc'));
+	}
+	else
+	{
+            $name = Nation::findOrFail($id)->name;
+            return view('warningDialogModal', ['danger' => false, 'msg' => "您将要删除国家$name。确实要继续吗？", 'target' => secure_url("/dais/delete/nation/$id/true")]);
+	}
     }
-
 }

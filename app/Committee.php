@@ -25,6 +25,16 @@ class Committee extends Model
     {
         return $this->belongsToMany('App\Document');
     }
+
+    public function emptyNations() {
+        $nations = $this->nations;
+        return $nations->reject(function ($nation) {
+            return !$nation->delegates->isEmpty();
+        })
+        ->map(function ($nation) {
+                return $nation;
+        });
+    }
     
     public function hasDelegate($uid)
     {

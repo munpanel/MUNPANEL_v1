@@ -465,7 +465,7 @@ class HomeController extends Controller
         return view('dais.roleAlloc', [
             'committee' => $mycommittee, 
             'mustAlloc' => $mycommittee->delegates->where('status', 'paid')->where('nation_id', null)->count(), 
-            'emptyNations' => $mycommittee->nations->count(),
+            'emptyNations' => $mycommittee->emptyNations()->count(),
             'isDouble' => true
         ]);
     }

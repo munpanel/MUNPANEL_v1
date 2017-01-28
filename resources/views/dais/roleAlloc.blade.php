@@ -60,9 +60,9 @@
                   </div>
                   <div class="col-sm-3">
                     <div class="input-group">
-                      <input class="input-sm form-control" type="text" placeholder="搜索">
+                      <input class="input-sm form-control" type="text" id="delegate-searchBox" placeholder="搜索">
                       <span class="input-group-btn">
-                        <button class="btn btn-sm btn-white" type="button">Go!</button>
+                        <button class="btn btn-sm btn-white" type="button" id="delegate-searchButton">Go!</button>
                       </span>
                     </div>
                   </div>
@@ -96,7 +96,7 @@
                     <header class="panel-heading">
                   <a href="{{secure_url('/dais/nationDetails.modal/new')}}" class="btn btn-xs btn-white details-modal pull-right">添加席位</a>
                   @if ($emptyNations > 0)
-                    <span class="pull-right">&nbsp;</span><span class="badge bg-warning pull-right">6 个空席位</span>
+                    <span class="pull-right">&nbsp;</span><span class="badge bg-warning pull-right">{{$emptyNations}} 个空席位</span>
                   @endif
                   所有席位</header><div class="row text-sm wrapper">
                   <div class="col-sm-12 m-b-xs">本委员会有 {{$committee->nations->count()}} 个席位，剩余 {{$emptyNations}} 个席位未分配代表。<br>
@@ -127,9 +127,9 @@
                   </div>
                   <div class="col-sm-3">
                     <div class="input-group">
-                      <input class="input-sm form-control" type="text" placeholder="搜索">
+                      <input class="input-sm form-control" type="text" id="nation-searchBox" placeholder="搜索">
                       <span class="input-group-btn">
-                        <button class="btn btn-sm btn-white" type="button">Go!</button>
+                        <button class="btn btn-sm btn-white" type="button" id="nation-searchButton">Go!</button>
                       </span>
                     </div>
                   </div>
@@ -150,13 +150,13 @@
                     <footer class="footer bg-white b-t">
               <div class="row m-t-sm text-center-xs">
                 <div class="col-sm-4">
-                  <div class="dataTables_length" id="registration-table_length_new"><label>每页 <select name="registration-table_length" id="registration-length-select" aria-controls="registration-table"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> 项</label></div>
+                  <div class="dataTables_length" id="nation-table_length_new"><label>每页 <select name="nation-table_length" id="nation-length-select" aria-controls="nation-table"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> 项</label></div>
                 </div>
                 <div class="col-sm-4 text-center">
                   <small class="text-muted inline m-t-sm m-b-sm" id="nation-pageinfo"></small>
                 </div>
                 <div class="col-sm-4 text-right text-center-xs">                
-                  <ul class="pagination pagination-sm m-t-none m-b-none" id="registration-pagnination"><li><a tabindex="0" class="paginate_button previous disabled" id="registration-table_previous" aria-controls="registration-table" href="#" data-dt-idx="0"><i class="fa fa-chevron-left"></i></a></li><li><a tabindex="0" class="paginate_button current" aria-controls="registration-table" href="#" data-dt-idx="1">1</a></li><li><a tabindex="0" class="paginate_button next disabled" id="registration-table_next" aria-controls="registration-table" href="#" data-dt-idx="2"><i class="fa fa-chevron-right"></i></a></li></ul>
+                  <ul class="pagination pagination-sm m-t-none m-b-none" id="nation-pagnination"><li><a tabindex="0" class="paginate_button previous disabled" id="nation-table_previous" aria-controls="nation-table" href="#" data-dt-idx="0"><i class="fa fa-chevron-left"></i></a></li><li><a tabindex="0" class="paginate_button current" aria-controls="nation-table" href="#" data-dt-idx="1">1</a></li><li><a tabindex="0" class="paginate_button next disabled" id="nation-table_next" aria-controls="nation-table" href="#" data-dt-idx="2"><i class="fa fa-chevron-right"></i></a></li></ul>
                 </div>
               </div>
             </footer>

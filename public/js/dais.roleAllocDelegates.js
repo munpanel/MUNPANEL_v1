@@ -4,9 +4,9 @@ $(document).ready(function() {
         //serverSide: true,
         ajax: 'ajax/roleAllocDelegates',
         columns: [
-            {data: 'name', name: 'name', orderable: true},
+            {data: 'name', name: 'name', orderable: false},
             {data: 'school', name: 'school', orderable: false},
-            {data: 'nation', name: 'nation', orderable: true},
+            {data: 'nation', name: 'nation', orderable: false},
             {data: 'command', name: 'command', orderable: false}
             ],
             fnInitComplete: function(oSettings, json) {
@@ -28,12 +28,15 @@ $(document).ready(function() {
             $('#delegate-table').removeClass('no-footer');
             },
         "fnDrawCallback": function( oSettings ) {
-            $('#nation-pagnination').empty();
+            $('#delegate-pagnination').empty();
             $('.paginate_button').each(function (i) {
-                var li = $("<li></li>");
-                li.appendTo($('#nation-pagnination'));
-                $(this).attr({href: "#"});
-                $(this).appendTo(li);
+                if ($(this).attr('aria-controls') == 'delegate-table')
+                {
+                    var li = $("<li></li>");
+                    li.appendTo($('#delegate-pagnination'));
+                    $(this).attr({href: "#"});
+                    $(this).appendTo(li);
+                }
              });
             $('.paginate_button.previous').html("<i class='fa fa-chevron-left'></i>");
             $('.paginate_button.next').html("<i class='fa fa-chevron-right'></i>");
@@ -44,13 +47,13 @@ $(document).ready(function() {
             "infoEmpty": "无记录",
             "infoFiltered": "(从 _MAX_ 条记录过滤)"
         },
-        "order": [[1, "asc"]],
+        "bSort": false,
     });
-    var table=$('#delegate-table').DataTable();
-    $("#searchButton").click(function() {
-       table.search($('#searchbox').val()).draw();
+    var deltable=$('#delegate-table').DataTable();
+    $("#delegate-searchButton").click(function() {
+       deltable.search($('#delegate-searchBox').val()).draw();
     });    
-    $("#nation-length-select").change(function() {
-        table.page.len($(this).val()).draw();
+    $("#delegate-length-select").change(function() {
+        deltable.page.len($(this).val()).draw();
     });
 });

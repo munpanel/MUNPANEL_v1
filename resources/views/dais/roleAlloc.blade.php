@@ -27,15 +27,16 @@
                   <section class="panel">
                     <header class="panel-heading">
                       @if ($mustAlloc > 0)
-                        <span class="badge bg-danger pull-right">剩余 {{$mustAlloc}} 已缴费代表未分配</span>
+                        <span class="badge bg-danger pull-right">剩余 {{$mustAlloc}} 人必须分配</span>
                       @endif
                       所有代表</header>
                     <div class="row text-sm wrapper">
-                  <div class="col-sm-12 m-b-xs">本委员会有 {{$committee->delegates->count()}} 人报名，其中 {{App\Delegate::where('committee_id', $committee->id)->where('status', 'paid')->orWhere('status', 'oVerified')->count()}} 人已通过组织团队审核，{{$committee->delegates->where('status', 'paid')->count()}} 人已缴费。已缴费代表中，当前仍有 {{$committee->delegates->where('status', 'paid')->where('nation_id', null)->count()}} 人未分配席位。<br>
+		  <div class="col-sm-12 m-b-xs">本委员会有 {{$committee->delegates->count()}} 人报名，其中 {{App\Delegate::where('committee_id', $committee->id)->where('status', 'paid')->orWhere('status', 'oVerified')->count()}} 人已通过组织团队审核，{{$committee->delegates->where('status', 'paid')->count()}} 人已缴费。
                   @if ($mustAlloc > 0)
+                    已缴费代表中，当前仍有 {{$committee->delegates->where('status', 'paid')->where('nation_id', null)->count()}} 人未分配席位。<br>
                     <strong class="text-danger">您必须为仍无席位的已缴费的 {{$mustAlloc}} 人分配席位，否则席位分配无法完成。</strong>
                   @else
-                    <strong class="text-success">所有已缴费的代表均已分配席位，请点击“完成并锁定”按钮以完成席位分配。</strong>
+                    <br><strong class="text-success">所有已缴费的代表均已分配席位，请点击“完成并锁定”按钮以完成席位分配。</strong>
                   @endif
                   </div>
                     
@@ -105,7 +106,7 @@
                   @elseif ($emptyNations > 0)
                     <strong class="text-warning">如果您选择锁定席位分配，这 {{$emptyNations}} 个空席位将会删除。</strong>
                   @elseif ($mustAlloc > 0)
-                    <strong class="text-danger">所有席位均已分配代表，但仍有 {{$mustAlloc}} 名报名成功的代表需要分配席位。请添加更多的席位。</strong>
+                    <strong class="text-danger">所有席位均已分配代表，但仍有 {{$mustAlloc}} 名已缴费的代表需要分配席位。请添加更多的席位。</strong>
                   @else
                     <strong class="text-success">所有席位均已分配代表，请点击“完成并锁定”按钮以完成席位分配。</strong>
                   @endif

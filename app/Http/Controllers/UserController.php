@@ -402,14 +402,14 @@ class UserController extends Controller
             if ($user->type != 'delegate' && $user->type != 'observer' && $user->type != 'volunteer') continue;
             $specific = $user->specific();
             if (is_null($specific)) continue;
-            if ($user->type != 'dais' && isset($specific->roommatename))
+            if ($user->type != 'dais' && isset($specific->roommatename) && ($specific->status == 'oVerified' || $specific->status == 'paid'))
             {
                 $result1 .= $user->id ."&#09;". $specific->assignRoommateByName() . "<br>";
                 $room++;
             }
             if ($user->type == 'delegate')
             {
-                if (isset($user->delegate->partnername))
+                if (isset($user->delegate->partnername) && ($user->delegate->status == 'oVerified' || $user->delegate->status == 'paid'))
                 {
                     $result2 .= $user->id ."&#09;". $user->delegate->assignPartnerByName() . "<br>";
                     $part++;
@@ -421,6 +421,20 @@ class UserController extends Controller
 
     public function test()
     {
+        $users = User::all();
+        foreach($users as $user)
+        {
+            if ($user->type == 'delegate' && Delegate::find($user->id) == null)
+            {
+                $user->type = 'unregistered';
+                $user->save();
+            }
+            if ($user->type == 'volunteer' && Delegate::find($user->id) == null)
+            {
+                $user->type = 'unregistered';
+                $user->save();
+            }
+        }
         $assign = $this->autoAssign();
         return $assign;
         //$delgroup = new Delegategroup;

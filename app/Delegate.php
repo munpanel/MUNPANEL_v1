@@ -109,7 +109,7 @@ class Delegate extends Model
                     break;
                 }
             }
-            if ($partner->id != $this->user->id)                                 // 排除自我配对
+            if ($partner->id == $this->user->id)                                 // 排除自我配对
             {
                 if (isset($this->notes)) $this->notes .= "\n";
                 $this->notes .= "$myname" . "申报的搭档与报名者本人重合！";
@@ -151,13 +151,9 @@ class Delegate extends Model
             $this->save();
             $delpartner->partner_user_id = $this->user->id;
             $delpartner->save();
-            return $myname  ."&#09;".$partner->id . "&#09;搭档姓名$partner_name&#09;成功";
+//            return $myname  ."&#09;".$partner->id . "&#09;搭档姓名$partner_name&#09;成功";
         }
-        return $this->user->name . "&#09;未填写搭档姓名";
-    }
-    
-    public function partner() {
-        return $this->belongsTo('App\User', 'partner_user_id'); 
+//        return $this->user->name . "&#09;未填写搭档姓名";
     }
     
     public function assignRoommateByName() 
@@ -188,7 +184,7 @@ class Delegate extends Model
                     break;
                 }
             }
-            if ($roommate->id != $this->user->id)                               // 排除自我配对
+            if ($roommate->id == $this->user->id)                               // 排除自我配对
             {
                 if (isset($this->notes)) $this->notes .= "\n";
                 $this->notes .= "$myname" . "申报的室友与报名者本人重合！";
@@ -202,13 +198,20 @@ class Delegate extends Model
                 $this->save();
                 return $myname  ."&#09;".$roommate->id . "&#09;室友姓名$roommate_name&#09;未报名参会"; 
             }
+            if ($roommate->type != 'delegate' && $roommate->type != 'volunteer' )
+            {
+                if (isset($this->notes)) $this->notes .= "\n";
+                $this->notes .= "$roommate_name" . "组委/学团";
+                $this->save();
+                return $myname  ."&#09;".$roommate->id . "&#09;室友姓名$roommate_name&#09;组委/学团"; 
+            }
             $typedroommate = $roommate->specific();
             if ($typedroommate->status != 'paid' && $typedroommate->status != 'oVerified')   // 排除未通过审核室友
             {
                 if (isset($this->notes)) $this->notes .= "\n";
-                $this->notes .= "室友$partner_name" . "的报名未通过审核！";
+                $this->notes .= "室友$roommate_name" . "的报名未通过审核！";
                 $this->save();
-                return $myname  ."&#09;".$roommate->id . "&#09;室友姓名$partner_name&#09;未通过审核";
+                return $myname  ."&#09;".$roommate->id . "&#09;室友姓名$roommate_name&#09;未通过审核";
             }
             if (!$typedroommate->accomodate)                                    // 排除对方未申请住宿
             {
@@ -237,7 +240,7 @@ class Delegate extends Model
             $this->save();
             $typedroommate->roommate_user_id = $this->user->id;
             $typedroommate->save();
-            return $myname  ."&#09;".$roommate->id . "&#09;室友姓名$roommate_name&#09;成功";
+//            return $myname  ."&#09;".$roommate->id . "&#09;室友姓名$roommate_name&#09;成功";
         }
     }
     

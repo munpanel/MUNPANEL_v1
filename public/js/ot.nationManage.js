@@ -11,6 +11,7 @@ $(document).ready(function() {
             {data: 'conpetence', name: 'conpetence', orderable: true},
             {data: 'veto_power', name: 'veto_power', orderable: true},
             {data: 'nationgroup', name: 'nationgroup', orderable: false},
+            {data: 'delegate', name: 'delegate', orderable: false},
         ],
         fnInitComplete: function(oSettings, json) {
             $(document).on('click','.details-modal', function(e) {

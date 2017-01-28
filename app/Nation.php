@@ -37,7 +37,9 @@ class Nation extends Model
                 $prefix = ', ';
             }
         }
-        return $scope;
+        if ($scope != '')
+            return $scope;
+        return '无';
     }
 
     public function scopeNationGroup()
@@ -53,6 +55,8 @@ class Nation extends Model
                 $prefix = ', ';
             }
         }
-        return $scope;
+        if ($scope != '')
+            return $scope;
+        return '无';
     }
 }

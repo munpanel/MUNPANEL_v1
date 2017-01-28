@@ -50,6 +50,7 @@
                         <th width="20">C</th>
                         <th width="20">VP</th>
                         <th>所属国家组</th>
+                        <th>代表</th>
                       </tr>
                     </thead>
                   </table>

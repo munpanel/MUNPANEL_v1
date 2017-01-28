@@ -91,5 +91,12 @@ class RoleAllocController extends Controller
         $nation->save();
     }
 
+    public function deleteNation(Request $request, $id)
+    {
+        if (Auth::user()->type != 'dais')
+            return 'Error';
+        Nation::destroy($id);
+        return redirect(secure_url('/roleAlloc'));
+    }
 
 }

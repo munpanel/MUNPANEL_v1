@@ -421,6 +421,8 @@ class UserController extends Controller
 
     public function test()
     {
+        $assign = $this->autoAssign();
+        return $assign;
         //$delgroup = new Delegategroup;
         //$delgroup->name = 'UNSC媒体';
         //$delgroup->display_name = 'UNSC媒体代表';

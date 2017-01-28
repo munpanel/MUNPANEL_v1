@@ -417,7 +417,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
             $select .= '>';
             $command .= '">移出代表</a>
                         <a href="dais/nationDetails.modal/'. $nation->id .'" class="btn btn-xs btn-warning details-modal">编辑</a>
-                        <a href="dais/delete/nation/'. $nation->id .'" class="btn btn-xs btn-danger">删除</a>';
+                        <a href="dais/delete/nation/'. $nation->id .'" class="btn btn-xs btn-danger details-modal">删除</a>';
                         // To-Do: make all those HTTP requests of the buttons JS-based
             $result->push([
                 'select' => $select,

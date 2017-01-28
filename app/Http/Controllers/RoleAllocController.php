@@ -103,7 +103,7 @@ class RoleAllocController extends Controller
 	else
 	{
             $name = Nation::findOrFail($id)->name;
-            return view('warningDialogModal', ['danger' => false, 'msg' => "您将要删除国家$name。确实要继续吗？", 'target' => secure_url("/dais/delete/nation/$id/true")]);
+            return view('warningDialogModal', ['danger' => false, 'msg' => "您将要删除国家$name 。确实要继续吗？", 'target' => secure_url("/dais/delete/nation/$id/true")]);
 	}
     }
 }

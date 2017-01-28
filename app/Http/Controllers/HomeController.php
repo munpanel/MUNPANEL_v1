@@ -285,6 +285,16 @@ class HomeController extends Controller
             $handins = $assignment->handins;
         else if ($assignment->subject_type == 'nation')
             $handin = Handin::where('assignment_id', $id)->where('nation_id', Auth::user()->delegate->nation->id)->orderBy('id', 'desc')->first();
+        else if ($assignment->subject_type == 'partner')
+        {
+            if (isset(Auth::user()->delegate->partner)) $handin = Handin::where('assignment_id', $id)->where('user_id', Auth::user()->delegate->partner->id)->orderBy('id', 'desc')->first();
+            if (!isset($handin)) $handin = Handin::where('assignment_id', $id)->where('user_id', Auth::user()->id)->orderBy('id', 'desc')->first();
+            else
+            {
+                $handin1 = Handin::where('assignment_id', $id)->where('user_id', Auth::user()->id)->orderBy('id', 'desc')->first();
+                if (isset($handin1) && $handin1->id > $handin->id) $handin = $handin1;
+            }
+        }
         else
             $handin = Handin::where('assignment_id', $id)->where('user_id', Auth::user()->id)->orderBy('id', 'desc')->first();
         if ($action == 'info')
@@ -400,8 +410,10 @@ class HomeController extends Controller
         if (Auth::user()->type == 'unregistered' || Auth::user()->type == 'volunteer')
             return view('error', ['msg' => '您不是参会代表，无权访问该页面！']);
         else if (Auth::user()->type == 'delegate')
+        {
             if (!$document->belongsToDelegate(Auth::user()->id))
                 return view('error', ['msg' => '您不是此学术文件的分发对象，无权访问该页面！']);
+        }
         if ($action == "download")
         {
             $document->downloads++;

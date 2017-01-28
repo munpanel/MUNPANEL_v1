@@ -390,6 +390,35 @@ class UserController extends Controller
 
     }
 
+    public function autoAssign()
+    {
+        $users = User::all();
+        $room = 0;
+        $part = 0;
+        $result1 = "";
+        $result2 = "";
+        foreach($users as $user)
+        {
+            if ($user->type != 'delegate' && $user->type != 'observer' && $user->type != 'volunteer') continue;
+            $specific = $user->specific();
+            if (is_null($specific)) continue;
+            if ($user->type != 'dais' && isset($specific->roommatename))
+            {
+                $result1 .= $user->id ."&#09;". $specific->assignRoommateByName() . "<br>";
+                $room++;
+            }
+            if ($user->type == 'delegate')
+            {
+                if (isset($user->delegate->partnername))
+                {
+                    $result2 .= $user->id ."&#09;". $user->delegate->assignPartnerByName() . "<br>";
+                    $part++;
+                }
+            }
+        }
+        return "えるの室友配对遍历了$room" . "行记录<br>$result1<br>えるの搭档配对遍历了$part" . "行记录<br>$result2";
+    }
+
     public function test()
     {
         //$delgroup = new Delegategroup;
@@ -420,7 +449,21 @@ class UserController extends Controller
                 $school->save();
             }
         }
-        return 'ha';*/
+        return 'ha';
+        $delegates = Delegate::all();
+        $i = 0;
+        $result = "";
+        foreach($delegates as $delegate)
+        {
+            if (isset($delegate->partnername))
+            {
+                $result .= "ID\t".$delegate->user->id ."\t". $delegate->assignPartnerByName() . "\n***";
+                $i++;
+            }
+        }
+        return "えるの搭档配对遍历了$i" . "行记录\n$result";*/
+        $assign = $this->autoAssign();
+        return $assign;
         $assignment = new Assignment;
         $assignment->subject_type = 'nation';
         $assignment->handin_type = 'upload';

@@ -27,10 +27,13 @@ class CreateObserverInfoTable extends Migration
             $table->string('tel');
             $table->boolean('accomodate');
             $table->string('roommatename');
+            $table->integer('roommate_user_id')->nullable()->unsigned();
+            $table->string('notes')->nullable();
             $table->timestamps();
             $table->primary('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('school_id')->references('id')->on('schools')->onDelete('cascade');
+            $table->foreign('roommate_user_id')->references('id')->on('users')->onDelete('set null');
         });
     }
 

@@ -1,10 +1,10 @@
 @extends('layouts.app')
-@section('nationManage_active', 'active')
+@section('roleAlloc_active', 'active')
 @push('scripts')
     <script src="{{secure_url('/js/jquery.dataTables.min.js')}}"></script>
     <script src="{{secure_url('/js/datatables/fnReloadAjax.js')}}"></script>
     <script src="{{secure_url('/js/editable/bootstrap-editable.js')}}"></script>
-    <script src="{{secure_url('/js/ot.nationManage.js')}}"></script>
+    <!--script src="{{secure_url('/js/ot.nationManage.js')}}"></script-->
 @endpush
 @push('css')
     <link rel="stylesheet" href="{{secure_url('/css/jquery.dataTables.min.css')}}" type="text/css" />
@@ -15,9 +15,26 @@
             <header class="header bg-white b-b clearfix">
               <div class="row m-t-sm">
                 <div class="col-sm-6 m-b-xs">
-                  <!--a href="#subNav" data-toggle="class:hide" class="btn btn-sm btn-info"><i class="fa fa-caret-right text fa fa-large"></i><i class="fa fa-caret-left text-active fa fa-large"></i></a-->
-                  <a href="{{secure_url('/ot/nationDetails.modal/new')}}" class="btn btn-sm btn-success details-modal"><i class="fa fa-plus"></i> 新建</a>
-                  <a href="{{secure_url('/ot/nationDetails.modal/bulkAdd')}}" class="btn btn-sm btn-success details-modal"><i class="fa fa-plus"></i> 批量创建</a>
+                  <!-- NOTE: 添加国家 Modal 为批量添加 -->
+                  <a href="{{secure_url('/ot/nationDetails.modal/new')}}" class="btn btn-sm btn-white details-modal"><i class="fa fa-plus"></i> 添加国家</a>
+                  @if ($view == 'nation')
+                  <div class="btn-group">
+                    <a class="btn btn-sm btn-white details-modal"><i class="fa fa-address-book"></i> 查看代表名单</a>
+                    <a class="btn btn-sm btn-white dropdown-toggle" aria-expanded="false" data-toggle="dropdown"><span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                      <li><a href="#">以代表视图显示</a></li>
+                    </ul>
+                  </div>
+                  @else
+                  <div class="btn-group">
+                    <a class="btn btn-sm btn-white details-modal"><i class="fa fa-wheelchair"></i> 查看席位列表</a>
+                    <a class="btn btn-sm btn-white dropdown-toggle" aria-expanded="false" data-toggle="dropdown"><span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                      <li><a href="#">以席位视图显示</a></li>
+                    </ul>
+                  </div>
+                  @endif                  
+                  <a href="{{secure_url('/ot/nationDetails.modal/bulkAdd')}}" class="btn btn-sm btn-success details-modal disabled"><i class="fa fa-check"></i> 完成并锁定</a>                  
                 </div>
                 <div class="col-sm-6 m-b-xs">
                   <div class="input-group">
@@ -44,13 +61,13 @@
                             <i class="fa fa-sort"></i>
                           </span>
                         </th-->
-                        <th width="20">ID</th>
-                        <th width="150">委员会</th>
-                        <th width="150">名称</th>
+                        <th width="20">#</th>
+                        <th>名称</th>
                         <th width="20">C</th>
                         <th width="20">VP</th>
                         <th>所属国家组</th>
                         <th>代表</th>
+                        <th>学校</th>
                       </tr>
                     </thead>
                   </table>

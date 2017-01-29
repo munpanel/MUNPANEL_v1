@@ -285,6 +285,16 @@ class HomeController extends Controller
             $handins = $assignment->handins;
         else if ($assignment->subject_type == 'nation')
             $handin = Handin::where('assignment_id', $id)->where('nation_id', Auth::user()->delegate->nation->id)->orderBy('id', 'desc')->first();
+        else if ($assignment->subject_type == 'partner')
+        {
+            if (isset(Auth::user()->delegate->partner)) $handin = Handin::where('assignment_id', $id)->where('user_id', Auth::user()->delegate->partner->id)->orderBy('id', 'desc')->first();
+            if (!isset($handin)) $handin = Handin::where('assignment_id', $id)->where('user_id', Auth::user()->id)->orderBy('id', 'desc')->first();
+            else
+            {
+                $handin1 = Handin::where('assignment_id', $id)->where('user_id', Auth::user()->id)->orderBy('id', 'desc')->first();
+                if (isset($handin1) && $handin1->id > $handin->id) $handin = $handin1;
+            }
+        }
         else
             $handin = Handin::where('assignment_id', $id)->where('user_id', Auth::user()->id)->orderBy('id', 'desc')->first();
         if ($action == 'info')
@@ -391,9 +401,7 @@ class HomeController extends Controller
                 return view('error', ['msg' => '请先缴费！如果您已通过社团缴费，请等待组织团队确认']); 
         }
         $committee = Auth::user()->specific()->committee;
-        // TODO: 完成 document 清单页面
         return view('documentsList', ['type' => Auth::user()->type]);
-        //return view('error', ['msg' => '页面建筑中！']);
     }
     
     public function document($id, $action = "")
@@ -402,18 +410,32 @@ class HomeController extends Controller
         if (Auth::user()->type == 'unregistered' || Auth::user()->type == 'volunteer')
             return view('error', ['msg' => '您不是参会代表，无权访问该页面！']);
         else if (Auth::user()->type == 'delegate')
+        {
             if (!$document->belongsToDelegate(Auth::user()->id))
                 return view('error', ['msg' => '您不是此学术文件的分发对象，无权访问该页面！']);
+        }
         if ($action == "download")
         {
-            return response()->download(storage_path('/app/'.$document->path));
+            $document->downloads++;
+            $document->save();
+            return response()->download(storage_path('/app/'.$document->path), $document->title . '.' . File::extension(storage_path('/app/'.$document->path)));
         }
         else if ($action == "raw")
         {
             return response()->file(storage_path('/app/'.$document->path));
         }
+        else if ($action == "upload")
+        {
+            if (Auth::user()->type != 'ot' || Auth::user()->type != 'dais')
+                return view('error', ['msg' => '您不是该会议学术团队成员，无权对文件操作！']);
+            // $document->downloads = 0;
+            // $document->views = 0;
+            // TODO: 完成文件上传
+        }
         else
         {
+            $document->views++;
+            $document->save();
             return view('documentInfo', ['document' => $document]);
         }
     }
@@ -431,5 +453,33 @@ class HomeController extends Controller
         else
             $document = Document::findOrFail($id);
         return view('documentDetailsModal', ['document' => $document]);
+    }
+    
+    public function roleList($view = 'nation')
+    {
+        return view('roleList', ['view' => $view]);
+    }
+    
+    public function roleAlloc()
+    {
+        if (Auth::user()->type == 'delegate')
+        {
+            if (!Auth::user()->specific()->committee->is_allocated)
+                return view('error', ['msg' => '您不是该会议学术团队成员，无权进行席位分配！']);
+            else
+                return redirect(secure_url('/roleList'));
+        }
+        else if (Auth::user()->type == 'ot')
+            return redirect(secure_url('/nationManage'));
+        else if (Auth::user()->type != 'dais')
+            return view('error', ['msg' => '您不是该会议学术团队成员，无权进行席位分配！']);            
+        $mycommittee = Auth::user()->dais->committee;
+        return view('dais.roleAlloc', [
+            'committee' => $mycommittee, 
+            'mustAlloc' => $mycommittee->delegates->where('status', 'paid')->where('nation_id', null)->count(), 
+            'emptyNations' => $mycommittee->emptyNations()->count(),
+            'verified' => Delegate::where(function($query) {$query->where('committee_id', Auth::user()->dais->committee->id)->where('status', 'paid');})->orWhere(function($query) {$query->where('committee_id', Auth::user()->dais->committee->id)->where('status', 'oVerified');})->count(),
+            'isDouble' => true
+        ]);
     }
 }

@@ -12,6 +12,7 @@ use App\Permission;
 use App\Role;
 use App\Assignment;
 use App\Delegategroup;
+use App\Dais;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -184,28 +185,61 @@ class UserController extends Controller
 
     public function regSchool()
     {
-if (($handle = fopen("/var/www/munpanel/test.csv", "r")) !== FALSE) {
-    $resp = "";
-    while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
-        $num = count($data);
-        for ($c=0; $c < $num; $c++) {
-            $resp = $resp. $data[$c] . "<br />\n";
+        if (($handle = fopen("/var/www/munpanel/test.csv", "r")) !== FALSE) {
+            $resp = "";
+            while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+                $num = count($data);
+                for ($c=0; $c < $num; $c++) {
+                    $resp = $resp. $data[$c] . "<br />\n";
+                }
+                $user = new User;
+                $user->name = $data[0];
+                $user->password = Hash::make($data[1]);
+                $user->email = $data[0]. '@schools.bjmun.org';
+                $user->type = 'school';
+                $user->save();
+                $school = School::where('name', $data[0])->first();
+                $school->user_id =$user->id;
+                $school->save();
+                $resp = $resp. response()->json($user) . "<br />\n";
+                $resp = $resp. response()->json($school) . "<br />\n";
+            }
+            fclose($handle);
+            return $resp;
         }
-        $user = new User;
-        $user->name = $data[0];
-        $user->password = Hash::make($data[1]);
-        $user->email = $data[0]. '@schools.bjmun.org';
-        $user->type = 'school';
-        $user->save();
-        $school = School::where('name', $data[0])->first();
-        $school->user_id =$user->id;
-        $school->save();
-        $resp = $resp. response()->json($user) . "<br />\n";
-        $resp = $resp. response()->json($school) . "<br />\n";
     }
-    fclose($handle);
-    return $resp;
-}
+
+    public function regDais()
+    {
+         if (($handle = fopen("/var/www/munpanel/test.csv", "r")) !== FALSE) {
+            $resp = "";
+            while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+                $num = count($data);
+                for ($c=0; $c < $num; $c++) {
+                    $resp = $resp. $data[$c] . "<br />\n";
+                }
+                $user = User::firstOrNew(['email' => $data[1]]);
+                $user->name = $data[0];
+                $user->password = Hash::make(strtok($data[1], '@') . '2017');
+                $resp = $resp. 'pwd: ' . strtok($data[1], '@') . '2017' ."<br/>\n";
+                $user->email = $data[1];
+                Delegate::destroy($user->id);
+                Volunteer::destroy($user->id);
+                Observer::destroy($user->id);
+                $user->type = 'dais';
+                $user->save();
+                $dais = new Dais;
+                $dais->user_id = $user->id;
+                $dais->committee_id = Committee::where('name', '=', $data[2])->first()->id;
+                $dais->position = 'dm';
+                $dais->school_id = School::firstOrCreate(['name' => $data[3]])->id;
+                $dais->save();
+                $resp = $resp. response()->json($user) . "<br />\n";
+                $resp = $resp. response()->json($dais) . "<br />\n";
+            }
+            fclose($handle);
+            return $resp;
+        }       
     }
 
     public function doChangePwd(Request $request)
@@ -356,9 +390,73 @@ if (($handle = fopen("/var/www/munpanel/test.csv", "r")) !== FALSE) {
 
     }
 
+    public function autoAssign()
+    {
+        $users = User::all();
+        $room = 0;
+        $part = 0;
+        $result1 = "";
+        $result2 = "";
+        foreach($users as $user)
+        {
+            if ($user->type != 'delegate' && $user->type != 'observer' && $user->type != 'volunteer') continue;
+            $specific = $user->specific();
+            if (is_null($specific)) continue;
+            if ($user->type != 'dais' && isset($specific->roommatename) && ($specific->status == 'oVerified' || $specific->status == 'paid'))
+            {
+                $result1 .= $user->id ."&#09;". $specific->assignRoommateByName() . "<br>";
+                $room++;
+            }
+            if ($user->type == 'delegate')
+            {
+                if (isset($user->delegate->partnername) && ($user->delegate->status == 'oVerified' || $user->delegate->status == 'paid'))
+                {
+                    $result2 .= $user->id ."&#09;". $user->delegate->assignPartnerByName() . "<br>";
+                    $part++;
+                }
+            }
+        }
+        return "えるの室友配对遍历了$room" . "行记录<br>$result1<br>えるの搭档配对遍历了$part" . "行记录<br>$result2";
+    }
+
     public function test()
     {
-        $schools = School::all();
+        $users = User::all();
+        foreach($users as $user)
+        {
+            if ($user->type == 'delegate' && Delegate::find($user->id) == null)
+            {
+                $user->type = 'unregistered';
+                $user->save();
+            }
+            if ($user->type == 'volunteer' && Delegate::find($user->id) == null)
+            {
+                $user->type = 'unregistered';
+                $user->save();
+            }
+        }
+        $assign = $this->autoAssign();
+        return $assign;
+        //$delgroup = new Delegategroup;
+        //$delgroup->name = 'UNSC媒体';
+        //$delgroup->display_name = 'UNSC媒体代表';
+        //$delgroup->save();
+        //$delgroup = Delegategroup::find(5);
+        $delegates = Committee::find(2)->delegates;
+        foreach ($delegates as $delegate)
+        {
+                $delegate->committee_id = 1;//$delgroup->delegates()->attach($delegate);
+                $delegate->save();
+        }
+        /*$delgroup = new Delegategroup;
+        $delgroup->name = 'UNSC国家';
+        $delgroup->display_name = 'UNSC国家代表';
+        $delgroup->save();
+        $delegates = Committee::find(1)->delegates;
+        foreach ($delegates as $delegate)
+                $delgroup->delegates()->attach($delegate);*/
+        return 'Aloha';
+        /*$schools = School::all();
         foreach($schools as $school)
         {
             if ($school->user_id != 1)
@@ -368,13 +466,30 @@ if (($handle = fopen("/var/www/munpanel/test.csv", "r")) !== FALSE) {
             }
         }
         return 'ha';
+        $delegates = Delegate::all();
+        $i = 0;
+        $result = "";
+        foreach($delegates as $delegate)
+        {
+            if (isset($delegate->partnername))
+            {
+                $result .= "ID\t".$delegate->user->id ."\t". $delegate->assignPartnerByName() . "\n***";
+                $i++;
+            }
+        }
+        return "えるの搭档配对遍历了$i" . "行记录\n$result";*/
+        $assign = $this->autoAssign();
+        return $assign;
         $assignment = new Assignment;
-        $assignment->subject_type = 'individual';
+        $assignment->subject_type = 'nation';
         $assignment->handin_type = 'upload';
-        $assignment->title = '非成员校代表 ECOSOC报名学术测试';
-        $assignment->description = '<h4>学术测试题目</h4>城市及其他人类住区作为经济发展的引擎，推动减贫，带动区域经济的增长和发展。但与此同时，随着城市化水平的提高，环境污染、相应的基础设施不足、社会动荡等问题也日益凸显。请从可持续发展的角度，针对于城市化带来的三个不同方面的问题提出解决措施并分析理由。<br><br><h4>学术测试要求</h4>请有搭档的代表由二人合作共同完成一份学术测试，目前没有搭档的代表请自行完成本次测试。二人合作共同完成的，请在学术测试答案文件中注明双人姓名，仅需一个人提交系统即可。<br><br><h4>学术诚信要求</h4>本学术测试均请各位代表<u>独立</u>完成，学术测试的全部内容需是撰写学术测试者自行完成的结果，请勿使撰写学术测试者之外的任何人对于学术测试参与包括但不限于：撰写、部分撰写、修改、点评等影响学术测试的行为，一经发现将被视为学术不端进行处理。<br><br>在学术测试撰写时，鼓励各位代表进行各类资料的查阅。但主席团禁止任何形式的抄袭，若在学术测试的撰写过程中需要对于资料进行参考或引用，请在文中以脚注形式标注出引用文段，并在文后列举撰写过程中全部的参考资料。若对于学术资料进行引用但未标注，也会同样被认定为抄袭。<br><br><u>在学术测试当中，被发现有任何学术不端行为的代表将不予录取。</u><br><br><h4>参考与引用标注方式</h4>书籍类：作者：《文献名》，出版社，出版年，页码。<br>论文与报刊类：作者：《文献名》，《刊物名》和期数。<br>外文类：作者，文献名（斜体），出版地：出版社或报刊名，时间，页码。<br>网络内容：文章主题，网络链接<br>其他形式的参考引用内容请自行注明<br><br>学术测试将会在提交之后由主席团批阅后择优录取。';
-        $assignment->deadline = '2017-01-01 23:59:59';
+        $assignment->title = 'ECOSOC 背景指导学术作业';
+        $assignment->description = '<h4>题目</h4>1.请从工业化和基础设施建设中任选一角度，分析其对于城市发展的作用。<br>2.都市农业发展于20世纪上半叶，最初起源于日本与欧美等发达国家。日本的都市农业面积小且分散，但凭借其生产资料运输方便和经营者掌握高技术等优势在城市中具有强大的生命力。都市农业在城市中具有极为广泛的作用，例如保障城市居民的食品供应，改善周围的生态环境等。（下面a、b两问均需作答）<br>a.请简要叙述日本都市农业的形成原因（不多于500字）<br>b.请从可持续发展的角度分析日本都市农业的功能以及作用。（字数不限，请分条阐述）<br><br><h4>要求</h4>请每一对搭档共同完成一份学术作业，将两道题的作答写在一个.doc或.docx格式的文件中，于北京时间2017年1月21日晚23：59分前上传MUNPANEL系统。<br><br>本次会议学术作业均请各位代表独立完成，学术作业的全部内容需是撰写学术作业者自行完成的结果，请勿使撰写学术作业者之外的任何人对于学术作业参与包括但不限于：撰写、部分撰写、修改、点评等影响学术作业的行为，一经发现将被视为学术不端进行处理。<br><nt>在学术作业撰写时，鼓励各位代表进行各类资料的查阅。但主席团禁止任何形式的抄袭，若在学术作业的撰写过程中需要对于资料进行参考或引用，请在文中以脚注形式标注出引用文段，并在文后列举撰写过程中全部的参考资料。若对于学术资料进行引用但未标注，也会同样被认定为抄袭。<br><br>在本次会议中，被发现有任何学术不端行为的代表将被立即取消全部的评奖资格。<br><br>参考与引用标注方式如下：<br>书籍类：作者：《文献名》，出版社，出版年，页码。<br>论文与报刊类：作者：《文献名》，《刊物名》和期数。<br>外文类：作者，文献名（斜体），出版地：出版社或报刊名，时间，页码。<br>网络内容：文章主题，网络链接<br>其他形式的参考引用内容请自行注明';
+        $assignment->deadline = '2017-01-21 23:59:59';
         $assignment->save();
+        $committee = Committee::find(9);
+        $committee->assignments()->attach($assignment);
+        return 'aloha';
         $delegategroup = Delegategroup::find(4);
         $delegategroup->assignments()->attach($assignment);
         return '...';

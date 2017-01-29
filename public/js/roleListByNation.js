@@ -2,16 +2,16 @@ $(document).ready(function() {
    $('#nation-table').DataTable({
         //processing: true,
         //serverSide: true,
-        ajax: 'ajax/nations',
+        ajax: 'ajax/roleListByNation',
         columns: [
             {data: 'details', name: 'details', orderable: false},
             {data: 'id', name: 'id', orderable: true},
-            {data: 'committee', name: 'committee', orderable: true},
             {data: 'name', name: 'name', orderable: false},
             {data: 'conpetence', name: 'conpetence', orderable: true},
             {data: 'veto_power', name: 'veto_power', orderable: true},
             {data: 'nationgroup', name: 'nationgroup', orderable: false},
-            {data: 'delegate', name: 'delegate', orderable: false},
+            {data: 'delegate', name: 'delegate', orderable: true},
+            {data: 'school', name: 'school', orderable: false}
         ],
         fnInitComplete: function(oSettings, json) {
             $(document).on('click','.details-modal', function(e) {

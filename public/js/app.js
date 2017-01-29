@@ -241,3 +241,7 @@ $.ajaxSetup({
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     }
 });
+
+console.log('%cMUNPANEL', 'font-size:5em;color:green');
+console.log('%c加入我们，改变世界？请联系xuan@yiad.am', 'color:blue');
+console.log('%c让模联更美好！', 'color:grey');

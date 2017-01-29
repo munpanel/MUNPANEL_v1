@@ -1,8 +1,8 @@
 <div class="modal-dialog">
     <div class="modal-content">
         <div class="modal-body">
-            <h4>委员会ID {{$committee->id}}</h4><button id="enableEditable-{{$committee->id}}" class="btn btn-default pull-right">编辑模式</button><button id="deleteButton-{{$committee->id}}" class="btn btn-danger pull-right">删除</button>
-
+            <button id="enableEditable-{{$committee->id}}" class="btn btn-default pull-right">编辑模式</button><span class="pull-right">&nbsp;</span><button id="deleteButton-{{$committee->id}}" class="btn btn-danger pull-right">删除</button>
+            <h4>委员会ID {{$committee->id}}</h4>
             <table id="committee-{{$committee->id}}" class="table table-bordered table-striped" style="clear: both">
                 <tbody>
                     <tr>

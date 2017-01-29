@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Document extends Model
 {
     protected $table='documents';
-    protected $fillable = ['nationgroup_id', 'delegategroup_id', 'committee_id', 'title', 'description', 'path'];    
+    protected $fillable = ['nationgroup_id', 'delegategroup_id', 'committee_id', 'title', 'description', 'path', 'views', 'downloads'];    
 
     public function nationgroups()
     {

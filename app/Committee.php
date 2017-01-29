@@ -6,10 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Committee extends Model
 {
-    protected $fillable = array('name');
+    protected $fillable = ['name', 'display_name', 'topic_0', 'topic_1', 'topic_sel', 'language', 'rule', 'timeframe_start', 'timeframe_end', 'session', 'description'];
 
     public function delegates() {
         return $this->hasMany('App\Delegate');
+    }
+
+    public function nations() {
+        return $this->hasMany('App\Nation');
     }
 
     public function assignments()
@@ -20,6 +24,16 @@ class Committee extends Model
     public function documents()
     {
         return $this->belongsToMany('App\Document');
+    }
+
+    public function emptyNations() {
+        $nations = $this->nations;
+        return $nations->reject(function ($nation) {
+            return !$nation->delegates->isEmpty();
+        })
+        ->map(function ($nation) {
+                return $nation;
+        });
     }
     
     public function hasDelegate($uid)

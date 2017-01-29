@@ -2,16 +2,15 @@ $(document).ready(function() {
    $('#nation-table').DataTable({
         //processing: true,
         //serverSide: true,
-        ajax: 'ajax/nations',
+        ajax: 'ajax/roleListByDelegate',
         columns: [
             {data: 'details', name: 'details', orderable: false},
             {data: 'id', name: 'id', orderable: true},
-            {data: 'committee', name: 'committee', orderable: true},
-            {data: 'name', name: 'name', orderable: false},
-            {data: 'conpetence', name: 'conpetence', orderable: true},
-            {data: 'veto_power', name: 'veto_power', orderable: true},
-            {data: 'nationgroup', name: 'nationgroup', orderable: false},
-            {data: 'delegate', name: 'delegate', orderable: false},
+            {data: 'name', name: 'name', orderable: true},
+            {data: 'school', name: 'school', orderable: true},
+            {data: 'status', name: 'status', orderable: false},
+            {data: 'delegategroup', name: 'delegategroup', orderable: false},
+            {data: 'nation', name: 'nation', orderable: true},
         ],
         fnInitComplete: function(oSettings, json) {
             $(document).on('click','.details-modal', function(e) {

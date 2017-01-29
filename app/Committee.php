@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Committee extends Model
 {
-    protected $fillable = ['name', 'display_name', 'topic_0', 'topic_1', 'topic_sel', 'language', 'rule', 'timeframe_start', 'timeframe_end', 'session', 'description'];
+    protected $fillable = ['name', 'display_name', 'topic_0', 'topic_1', 'topic_sel', 'language', 'rule', 'timeframe_start', 'timeframe_end', 'session', 'description', 'is_allocated'];
 
     public function delegates() {
         return $this->hasMany('App\Delegate');

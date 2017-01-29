@@ -299,23 +299,47 @@ class DatatablesController extends Controller //To-Do: Permission Check
     public function nations()
     {
         $result = new Collection;
-        $nations = Nation::all();
+        if (Auth::user()->type == 'ot')
+        {
+            $nations = Nation::all();
+            foreach($nations as $nation)
+            {
+                $groups = '';
+                foreach ($nation->nationgroups as $ngroup)
+                {
+                    $groups = $groups . ' '. $ngroup->display_name;
+                }
+
+                $result->push([
+                    'details' => '<a href="ot/nationDetails.modal/'. $nation->id .'" data-toggle="ajaxModal" id="'. $nation->id .'" class="details-modal"><i class="fa fa-search-plus"></i></a>',
+                    'id' => $nation->id,
+                    'committee' => $nation->committee->name,
+                    'name' => $nation->name,
+                    'conpetence' => $nation->conpetence,
+                    'veto_power' => $nation->veto_power ? '是' : '否',
+                    'nationgroup' => $groups,
+                    'delegate' => $nation->scopeDelegate(),
+
+                ]);
+            }
+        }
+        $nations = Auth::user()->specific()->committee->nations;
         foreach($nations as $nation)
         {
-            $groups = '';
+            /*$groups = '';
             foreach ($nation->nationgroups as $ngroup)
             {
                 $groups = $groups . ' '. $ngroup->display_name;
-            }
+            }*/
 
             $result->push([
-                'details' => '<a href="ot/nationDetails.modal/'. $nation->id .'" data-toggle="ajaxModal" id="'. $nation->id .'" class="details-modal"><i class="fa fa-search-plus"></i></a>',
-                'id' => $nation->id,
-                'committee' => $nation->committee->name,
+                //'details' => '<a href="ot/nationDetails.modal/'. $nation->id .'" data-toggle="ajaxModal" id="'. $nation->id .'" class="details-modal"><i class="fa fa-search-plus"></i></a>',
+                //'id' => $nation->id,
+                //'committee' => $nation->committee->name,
                 'name' => $nation->name,
-                'conpetence' => $nation->conpetence,
-                'veto_power' => $nation->veto_power ? '是' : '否',
-                'nationgroup' => $groups,
+                //'conpetence' => $nation->conpetence,
+                //'veto_power' => $nation->veto_power ? '是' : '否',
+                'nationgroup' => $nation->scopeNationGroup(),
                 'delegate' => $nation->scopeDelegate(),
 
             ]);

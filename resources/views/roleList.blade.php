@@ -3,8 +3,7 @@
 @push('scripts')
     <script src="{{secure_url('/js/jquery.dataTables.min.js')}}"></script>
     <script src="{{secure_url('/js/datatables/fnReloadAjax.js')}}"></script>
-    <script src="{{secure_url('/js/editable/bootstrap-editable.js')}}"></script>
-    <!--script src="{{secure_url('/js/ot.nationManage.js')}}"></script-->
+    <script src="{{secure_url('/js/roleList.js')}}"></script>
 @endpush
 @push('css')
     <link rel="stylesheet" href="{{secure_url('/css/jquery.dataTables.min.css')}}" type="text/css" />
@@ -15,8 +14,7 @@
             <header class="header bg-white b-b clearfix">
               <div class="row m-t-sm">
                 <div class="col-sm-6 m-b-xs">
-                  <!-- NOTE: 添加国家 Modal 为批量添加 -->
-                  <a href="{{secure_url('/ot/nationDetails.modal/new')}}" class="btn btn-sm btn-white details-modal"><i class="fa fa-plus"></i> 添加国家</a>
+                  <!--a href="{{secure_url('/ot/nationDetails.modal/new')}}" class="btn btn-sm btn-white details-modal"><i class="fa fa-plus"></i> 添加国家</a>
                   @if ($view == 'nation')
                   <div class="btn-group">
                     <a class="btn btn-sm btn-white details-modal"><i class="fa fa-address-book"></i> 查看代表名单</a>
@@ -34,7 +32,7 @@
                     </ul>
                   </div>
                   @endif                  
-                  <a href="{{secure_url('/ot/nationDetails.modal/bulkAdd')}}" class="btn btn-sm btn-success details-modal disabled"><i class="fa fa-check"></i> 完成并锁定</a>                  
+                  <a href="{{secure_url('/ot/nationDetails.modal/bulkAdd')}}" class="btn btn-sm btn-success details-modal disabled"><i class="fa fa-check"></i> 完成并锁定</a-->                  
                 </div>
                 <div class="col-sm-6 m-b-xs">
                   <div class="input-group">
@@ -53,7 +51,7 @@
                     <thead>
                       <tr>
                         <!--th width="20"><input type="checkbox"></th-->
-                        <th width="20"></th>
+                        <!--th width="20"></th-->
                         <!--th class="th-sortable" data-toggle="class">Project
                           <span class="th-sort">
                             <i class="fa fa-sort-down text"></i>
@@ -61,13 +59,13 @@
                             <i class="fa fa-sort"></i>
                           </span>
                         </th-->
-                        <th width="20">#</th>
+                        <!--th width="20">#</th-->
                         <th>名称</th>
-                        <th width="20">C</th>
-                        <th width="20">VP</th>
+                        <!--th width="20">C</th>
+                        <th width="20">VP</th-->
                         <th>所属国家组</th>
                         <th>代表</th>
-                        <th>学校</th>
+                        <!--th>学校</th-->
                       </tr>
                     </thead>
                   </table>

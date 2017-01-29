@@ -15,7 +15,11 @@ class RoleAllocController extends Controller
 {
     public function lockAlloc()
     {
-        
+        if (Auth::user()->type != 'dais')
+            return 'Error';
+        Auth::user()->dais->committee->is_allocated = true;
+        Auth::user()->dais->committee->save();
+        return redirect(secure_url('/roleList'));
     }
 
     public function removeDelegate($id)

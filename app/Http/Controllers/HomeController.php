@@ -457,6 +457,8 @@ class HomeController extends Controller
     
     public function roleList($view = 'nation')
     {
+        if (Auth::user()->type == 'delegate' && Auth::user()->delegate->committee->is_allocated == false)
+            return view('error', ['msg' => '请等待席位分配发布！']);
         return view('roleList', ['view' => $view]);
     }
     
@@ -473,6 +475,8 @@ class HomeController extends Controller
             return redirect(secure_url('/nationManage'));
         else if (Auth::user()->type != 'dais')
             return view('error', ['msg' => '您不是该会议学术团队成员，无权进行席位分配！']);            
+        if (Auth::user()->specific()->committee->is_allocated)
+            return redirect(secure_url('/roleList'));
         $mycommittee = Auth::user()->dais->committee;
         return view('dais.roleAlloc', [
             'committee' => $mycommittee, 

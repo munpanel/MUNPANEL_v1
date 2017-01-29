@@ -38,6 +38,7 @@
                   @else
                     <br><strong class="text-success">所有已缴费的代表均已分配席位，请点击“完成并锁定”按钮以完成席位分配。</strong>
                   @endif
+                  <a href="{{secure_url('dais/linkPartner.modal')}}" class="btn btn-sm btn-danger details-modal">搭档配对有问题请点此</a>
                   </div>
                     
                   <div class="col-sm-9 m-b-xs">
@@ -70,6 +71,7 @@
                 </div><table class="table table-striped m-b-none text-sm" id="delegate-table">
                       <thead>
                         <tr>
+                          <th>UID</th>
                           <th>姓名</th>
                           <th>学校</th>
                           <th>席位</th>

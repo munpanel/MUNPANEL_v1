@@ -487,6 +487,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
             if ($delegate->status != 'paid')
                 $name .= '（未缴费）';
             $result->push([
+                'uid' => $delegate->user_id,
                 'name' => $name,
                 'school' => $delegate->school->name,
                 'nation' => isset($delegate->nation) ? $delegate->nation->name : '待分配',

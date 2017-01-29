@@ -91,6 +91,8 @@ Route::get('/dais/freeNation/{id}', 'RoleAllocController@freeNation');
 Route::get('/dais/nationDetails.modal/{id}', 'RoleAllocController@nationDetailsModal');
 Route::post('/dais/update/nation/{id}', 'RoleAllocController@updateNation');
 Route::get('/dais/delete/nation/{id}/{confirm?}', 'RoleAllocController@deleteNation');
+Route::get('/dais/linkPartner/{id1}/{id2}', 'RoleAllocController@linkPartner');
+Route::get('/dais/linkPartner.modal', 'RoleAllocController@linkPartnerModal');
 
 //Route::get('/dais/assignments', 'HomeController@assignment');
 

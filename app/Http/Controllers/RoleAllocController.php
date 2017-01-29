@@ -110,4 +110,30 @@ class RoleAllocController extends Controller
             return view('warningDialogModal', ['danger' => false, 'msg' => "您将要删除国家$name 。确实要继续吗？", 'target' => secure_url("/dais/delete/nation/$id/true")]);
 	}
     }
+
+    public function linkPartner($id1, $id2)
+    {
+        if (Auth::user()->type == 'dais')
+            $cid = Auth::user()->dais->committee->id;
+        else
+            return 'Error';
+        $del1 = Delegate::findOrFail($id1);
+        $del2 = Delegate::findOrFail($id2);
+        if ($del1->committee->id != $cid || $del2->committee->id != $cid)
+            return "UID对应代表并非您的委员会，请确认。";
+        if (isset($del1->partner_user_id) || isset($del2->partner_user_id))
+            return "用户已有搭档，无法重新分配。";
+        $del1->partner_user_id = $id2;
+        $del2->partner_user_id = $id1;
+        $del1->partnername = $del2->user->name;
+        $del2->partnername = $del1->user->name;
+        $del1->save();
+        $del2->save();
+        return redirect(secure_url('/roleAlloc'));
+    }
+
+    public function linkPartnerModal()
+    {
+        return view('dais.linkPartnerModal');
+    }
 }

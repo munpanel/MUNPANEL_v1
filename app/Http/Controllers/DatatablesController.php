@@ -322,27 +322,28 @@ class DatatablesController extends Controller //To-Do: Permission Check
 
                 ]);
             }
-        }
-        $nations = Auth::user()->specific()->committee->nations;
-        foreach($nations as $nation)
-        {
-            /*$groups = '';
-            foreach ($nation->nationgroups as $ngroup)
+        } else {
+            $nations = Auth::user()->specific()->committee->nations;
+            foreach($nations as $nation)
             {
-                $groups = $groups . ' '. $ngroup->display_name;
-            }*/
+                /*$groups = '';
+                foreach ($nation->nationgroups as $ngroup)
+                {
+                    $groups = $groups . ' '. $ngroup->display_name;
+                }*/
 
-            $result->push([
-                //'details' => '<a href="ot/nationDetails.modal/'. $nation->id .'" data-toggle="ajaxModal" id="'. $nation->id .'" class="details-modal"><i class="fa fa-search-plus"></i></a>',
-                //'id' => $nation->id,
-                //'committee' => $nation->committee->name,
-                'name' => $nation->name,
-                //'conpetence' => $nation->conpetence,
-                //'veto_power' => $nation->veto_power ? '是' : '否',
-                'nationgroup' => $nation->scopeNationGroup(),
-                'delegate' => $nation->scopeDelegate(),
+                $result->push([
+                    //'details' => '<a href="ot/nationDetails.modal/'. $nation->id .'" data-toggle="ajaxModal" id="'. $nation->id .'" class="details-modal"><i class="fa fa-search-plus"></i></a>',
+                    //'id' => $nation->id,
+                    //'committee' => $nation->committee->name,
+                    'name' => $nation->name,
+                    //'conpetence' => $nation->conpetence,
+                    //'veto_power' => $nation->veto_power ? '是' : '否',
+                    'nationgroup' => $nation->scopeNationGroup(),
+                    'delegate' => $nation->scopeDelegate(),
 
-            ]);
+                ]);
+            }
         }
         return Datatables::of($result)->make(true);
     }

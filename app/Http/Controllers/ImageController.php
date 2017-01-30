@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Card;
-use User;
+use App\Card;
+use App\User;
+use App\Committee;
+use App\Delegate;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use \Imagick;
@@ -16,7 +18,7 @@ use Metzli\Encoder\AztecCode;
 
 class ImageController extends Controller
 {
-    private function addText($draw, $x, $y, $str, $size, $color, $fontCN, $fontEN)
+    private static function addText($draw, $x, $y, $str, $size, $color, $fontCN, $fontEN)
     {
         if (preg_match("/[\x7f-\xff]/", $str)) // if contains Chinese
         {
@@ -31,7 +33,7 @@ class ImageController extends Controller
         $draw->annotation($x, $y, $str);
     }
 
-    private function render(AztecCode $code, $sizeX, $sizeY) // Rewritten according to Metzli\Renderer\PngRenderer, by Adam Yi
+    private static function render(AztecCode $code, $sizeX, $sizeY) // Rewritten according to Metzli\Renderer\PngRenderer, by Adam Yi
     {
         $matrix = $code->getMatrix();
         $factorX = $sizeX / $matrix->getWidth();
@@ -55,7 +57,7 @@ class ImageController extends Controller
         return $img;
     }
 
-    public function generateBadge($template = 'Delegate', $name, $school, $role, $title, $mode = 'RGB')
+    public static function generateBadge($template = 'Delegate', $name, $school, $role, $title, $mode = 'RGB', $filename = 'output', $cardid = 'INVALID')
     {
         $img = new Imagick();
         $draw = new ImagickDraw();
@@ -68,7 +70,8 @@ class ImageController extends Controller
         ImageController::addText($draw, $w, 953, $role, 24, '#FFFFFF', 'PingHeiBold.ttf', 'MyriadSetProSemibold.ttf');
         ImageController::addText($draw, $w, 1105, $name, 21, '#000000', 'PingHeiSemibold.ttf', 'MyriadSetProSemibold.ttf');
         ImageController::addText($draw, $w, 1175, $school, 12, '#000000', 'PingHeiLight.ttf', 'MyriadProLight.otf');
-        $code = Encoder::encode(uniqid());
+        //$code = Encoder::encode(uniqid());
+        $code = Encoder::encode($cardid);
         //$renderer = new PngRenderer();
         //$aztec = new Imagick();
         //$aztec->readImageBlob($renderer->render($code));
@@ -81,7 +84,26 @@ class ImageController extends Controller
         $img->compositeImage($aztec, Imagick::COMPOSITE_MATHEMATICS, $w - $codeSize / 2, 1315 - $codeSize / 2);
         if ($mode == 'CMYK')
             $aztec->setImageColorspace (imagick::COLORSPACE_CMYK);
-        return response($img)->header('Content-Type', 'image/jpg');
-        $img->writeImage('test.jpg');
+        if ($filename == 'output')
+            return response($img)->header('Content-Type', 'image/jpg');
+        $img->writeImage(storage_path('app/images/badges/'.$filename));
+    }
+
+    public function committeeBadge($cid)
+    {
+        //$committee = Committee::findOrFail($cid);
+        //$delegates = $committee->delegates->count();//->where('status', 'paid')->count();
+        //return $delegates;
+        $delegates = Delegate::where('status', 'paid')->get();
+        $return = '';   
+        foreach($delegates as $delegate)
+        {
+            if ($delegate->committee->is_allocated)
+            {
+                ImageController::generateBadge('Delegate', $delegate->user->name, $delegate->school->name, $delegate->nation->name, $delegate->committee->name, 'CMYK', $delegate->committee->name.'_'.$delegate->user_id.'_'.$delegate->user->name.'.jpg');
+                $return .= $delegate->committee->name.'_'.$delegate->user_id.'_'.$delegate->user->name.'.jpg<br>';
+            }
+        }
+        return $return;
     }
 }

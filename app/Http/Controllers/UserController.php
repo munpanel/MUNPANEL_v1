@@ -12,6 +12,7 @@ use App\Permission;
 use App\Role;
 use App\Assignment;
 use App\Delegategroup;
+use App\Card;
 use App\Dais;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;

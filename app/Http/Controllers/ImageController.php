@@ -18,19 +18,82 @@ use Metzli\Encoder\AztecCode;
 
 class ImageController extends Controller
 {
-    private static function addText($draw, $x, $y, $str, $size, $color, $fontCN, $fontEN)
+    private static function addText($image, $draw, $x, $y, $str, $size, $color, $fontCN, $fontEN, $space = false)
     {
         if (preg_match("/[\x7f-\xff]/", $str)) // if contains Chinese
         {
             $draw->setFont(storage_path('app/images/templates/fonts/' . $fontCN));
+            $words = preg_split('/(?<!^)(?!$)/u', $str);
+            if ($space) {
+                switch(count($words))
+                {
+                    // Excel Version by Jiazhao Xu:
+                    //=IF(LEN(A8)=2,MID(A8,1,1)&"      "&MID(A8,2,1),IF(LEN(A8)=3,MID(A8,1,1)&"  "&MID(A8,2,1)&"  "&MID(A8,3,1),IF(LEN(A8)=4,MID(A8,1,1)&" "&MID(A8,2,1)&" "&MID(A8,3,1)&" "&MID(A8,4,1),IF(LEN(A8)>4,A8))))
+                    case 2: $space = "      "; break;
+                    case 3: $space = " "; break;
+                    case 4: $space = " "; break;
+                    default: $space= "";
+                }
+            }
+            else $space = '';
         }
         else
         {
             $draw->setFont(storage_path('app/images/templates/fonts/' . $fontEN));
+            $words = preg_split('% %', $str);
+            $space = ' ';
         }
         $draw->setFillColor($color);
         $draw->setFontSize($size * 25 / 6); // for 300 ppi
-        $draw->annotation($x, $y, $str);
+
+        $font_size = $size * 25 / 6;
+        $max_height = 99999;
+
+        $max_width = $image->getImageWidth() / 131 * 125;
+        
+        // Holds calculated height of lines with given font, font size
+        $total_height = 0;
+
+        // Run until we find a font size that doesn't exceed $max_height in pixels
+        while ( 0 == $total_height || $total_height > $max_height ) {
+            if ( $total_height > 0 ) $font_size--; // we're still over height, decrement font size and try again
+
+            $draw->setFontSize($font_size);
+
+            // Calculate number of lines / line height
+            // Props users Sarke / BMiner: http://stackoverflow.com/questions/5746537/how-can-i-wrap-text-using-imagick-in-php-so-that-it-is-drawn-as-multiline-text
+            //$words = preg_split('%\s%', $str);//, PREG_SPLIT_NO_EMPTY);
+            $lines = array();
+            $l = count($words);
+            $i = $l;
+            $line_height_ratio = 1;
+            
+            $line_height = 0;
+
+            while ( $l > 0 ) { 
+                $metrics = $image->queryFontMetrics( $draw, implode($space, array_slice($words, --$i - 1) ) );
+                $line_height = max( $metrics['textHeight'], $line_height );
+                if ( $metrics['textWidth'] > $max_width || $i < 1 ) {
+                    $lines[] = implode($space, array_slice($words, ++$i - 1) );
+                    if ($i == 1)
+                        break;
+                    $words = array_slice( $words, 0, --$i);
+                    $l = $i ;
+                }
+            }
+
+            $total_height = count($lines) * $line_height * $line_height_ratio;
+
+
+
+            if ( $total_height === 0 ) return false; // don't run endlessly if something goes wrong
+        }
+
+        // Writes text to image
+        for( $i = 0; $i < count($lines); $i++ ) {
+            $draw->annotation($x, $y - ($i * $line_height * $line_height_ratio), $lines[$i] );
+        }
+//        $draw->annotation($x, $y, $str);
     }
 
     private static function render(AztecCode $code, $sizeX, $sizeY) // Rewritten according to Metzli\Renderer\PngRenderer, by Adam Yi
@@ -57,7 +120,7 @@ class ImageController extends Controller
         return $img;
     }
 
-    public static function generateBadge($template = 'Delegate', $name, $school, $role, $title, $mode = 'RGB', $filename = 'output', $cardid = 'INVALID')
+    public static function generateBadge($template = 'Delegate', $name, $school, $role, $title, $mode = 'RGB', $filename = 'output', $cardid = 'INVALID', $blank = false)
     {
         $img = new Imagick();
         $draw = new ImagickDraw();
@@ -66,24 +129,28 @@ class ImageController extends Controller
         //$draw->setStrokeWidth(5);
         //$img->setImageColorspace (imagick::COLORSPACE_CMYK);
         $w = $img->getImageWidth() / 2;
-        ImageController::addText($draw, $w, 605, "BJMUNC 2017\n" . $title, 12, '#FFFFFF', 'PingHeiLight.ttf', 'DINPRORegular.otf');
-        ImageController::addText($draw, $w, 953, $role, 24, '#FFFFFF', 'PingHeiBold.ttf', 'MyriadSetProSemibold.ttf');
-        ImageController::addText($draw, $w, 1105, $name, 21, '#000000', 'PingHeiSemibold.ttf', 'MyriadSetProSemibold.ttf');
-        ImageController::addText($draw, $w, 1175, $school, 12, '#000000', 'PingHeiLight.ttf', 'MyriadProLight.otf');
-        //$code = Encoder::encode(uniqid());
-        $code = Encoder::encode($cardid);
-        //$renderer = new PngRenderer();
-        //$aztec = new Imagick();
-        //$aztec->readImageBlob($renderer->render($code));
-        $codeSize = 45 * 25 /6 ;
-        $aztec = ImageController::render($code, $codeSize, $codeSize);
-        //return response($aztec->getImageBlob())->header('Content-Type', 'image/png');
-        //return response($renderer->render($code))->header('Content-Type', 'image/png');
-        //$aztec->setImageColorspace (imagick::COLORSPACE_CMYK); 
-        $img->drawImage($draw);
-        $img->compositeImage($aztec, Imagick::COMPOSITE_MATHEMATICS, $w - $codeSize / 2, 1315 - $codeSize / 2);
-        if ($mode == 'CMYK')
-            $aztec->setImageColorspace (imagick::COLORSPACE_CMYK);
+        if (!$blank)
+        {
+            ImageController::addText($img, $draw, $w, 605, "BJMUNC 2017\n" . $title, 12, '#FFFFFF', 'PingHeiLight.ttf', 'DINPRORegular.otf');
+            ImageController::addText($img, $draw, $w, 953, $role, 24, '#FFFFFF', 'PingFang Heavy.ttf', 'MyriadSetProSemibold.ttf', true);
+            ImageController::addText($img, $draw, $w, 1105, $name, 21, '#000000', 'PingFang Bold.ttf', 'MyriadSetProSemibold.ttf');
+            ImageController::addText($img, $draw, $w, 1175, $school, 12, '#000000', 'PingFang Regular.ttf', 'MyriadProLight.otf');
+            //$code = Encoder::encode(uniqid());
+            $code = Encoder::encode($cardid);
+            //$renderer = new PngRenderer();
+            //$aztec = new Imagick();
+            //$aztec->readImageBlob($renderer->render($code));
+            $codeSize = 45 * 25 /6 ;
+            $aztec = ImageController::render($code, $codeSize, $codeSize);
+            //return response($aztec->getImageBlob())->header('Content-Type', 'image/png');
+            //return response($renderer->render($code))->header('Content-Type', 'image/png');
+            //$aztec->setImageColorspace (imagick::COLORSPACE_CMYK); 
+            $img->drawImage($draw);
+            $img->compositeImage($aztec, Imagick::COMPOSITE_MATHEMATICS, $w - $codeSize / 2, 1315 - $codeSize / 2);
+        }
+        //Color is reversed to transform to CMYK, will try other methods
+        //if ($mode == 'CMYK')
+        //    $img->setImageColorspace (imagick::COLORSPACE_CMYK);
         if ($filename == 'output')
             return response($img)->header('Content-Type', 'image/jpg');
         $img->writeImage(storage_path('app/images/badges/'.$filename));

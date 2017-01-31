@@ -39,6 +39,10 @@ class Delegate extends Model
         return $this->belongstoMany('App\Delegategroup');
     }
 
+    public function cards() {
+        return $this->hasMany('App\Card', 'user_id');
+    }
+
     public function partner() {
         return $this->belongsTo('App\User', 'partner_user_id');
     }

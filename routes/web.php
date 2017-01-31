@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 /*
 |--------------------------------------------------------------------------
@@ -93,6 +93,7 @@ Route::post('/dais/update/nation/{id}', 'RoleAllocController@updateNation');
 Route::get('/dais/delete/nation/{id}/{confirm?}', 'RoleAllocController@deleteNation');
 Route::get('/dais/linkPartner/{id1}/{id2}', 'RoleAllocController@linkPartner');
 Route::get('/dais/linkPartner.modal', 'RoleAllocController@linkPartnerModal');
+Route::get('/roleList/delBizCard.modal/{id}', 'RoleAllocController@getDelegateBizcard');
 
 //Route::get('/dais/assignments', 'HomeController@assignment');
 

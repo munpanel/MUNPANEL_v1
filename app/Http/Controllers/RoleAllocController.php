@@ -136,4 +136,10 @@ class RoleAllocController extends Controller
     {
         return view('dais.linkPartnerModal');
     }
+    
+    public function getDelegateBizcard($id)
+    {
+        $del = Delegate::findOrFail($id);
+        return view('delegateBizCard', ['delegate' => $del]);
+    }
 }

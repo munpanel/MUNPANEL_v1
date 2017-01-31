@@ -122,6 +122,7 @@ Route::get('/ot/generateCardsVolunteers', 'CardController@generateCardsVolunteer
 Route::get('/ot/generateCardBadges', 'CardController@generateCardbadges');
 Route::get('/ot/card/new/{template}/{uid}/{name}/{school}/{role}/{title}', 'CardController@newCard');
 Route::get('/ot/importCards', 'CardController@importCards');
+Route::get('/ot/regenerateCardBadge/{id}', 'CardController@regenerateCardBadge');
 Route::get('/ajax/roleAllocNations', 'DatatablesController@roleAllocNations');
 Route::get('/ajax/roleAllocDelegates', 'DatatablesController@roleAllocDelegates');
 Route::get('/ajax/roleListByNation', 'DatatablesController@roleListByNation');

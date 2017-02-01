@@ -516,4 +516,9 @@ class UserController extends Controller
         return Auth::user()->invoiceItems();
         return "gou";
     }
+
+    public function show($id)
+    {
+        return User::findOrFail($id);
+    }
 }

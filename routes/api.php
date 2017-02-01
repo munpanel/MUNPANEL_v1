@@ -13,8 +13,18 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:api');
+//Route::get('/user', function (Request $request) {
+//    return $request->user();
+//})->middleware('auth:api');
 
 Route::post('/payNotify', 'PayController@payNotify');
+
+$api = app('Dingo\Api\Routing\Router');
+
+$api->version('v1', function ($api) {
+    $api->get('users/{id}', 'App\Http\Controllers\ApiController@getUser');
+    $api->get('cards/{id}', 'App\Http\Controllers\ApiController@getCard');
+    $api->get('test', function () {
+        return 'It is ok';
+    });
+});

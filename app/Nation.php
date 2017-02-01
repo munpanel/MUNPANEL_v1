@@ -24,7 +24,7 @@ class Nation extends Model
         return $this->belongstoMany('App\Nationgroup', 'nationgroup_nation');
     }
     
-    public function scopeDelegate()
+    public function scopeDelegate($withBizCard = false)
     {
         $prefix = '';
         $scope = '';
@@ -33,7 +33,9 @@ class Nation extends Model
             $delegates = $this->delegates;
             foreach($delegates as $delegate)
             {
+                if ($withBizCard) $scope .= '<a href="'.secure_url('/rolelist/delBizCard.modal/'.$delegate->user->id).'" class="details-modal" data-toggle="ajaxModal">';
                 $scope .= $prefix . $delegate->user->name;
+                if ($withBizCard) $scope .= '</a>';
                 $prefix = ', ';
             }
         }

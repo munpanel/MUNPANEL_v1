@@ -340,7 +340,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
                     //'conpetence' => $nation->conpetence,
                     //'veto_power' => $nation->veto_power ? '是' : '否',
                     'nationgroup' => $nation->scopeNationGroup(),
-                    'delegate' => $nation->scopeDelegate(),
+                    'delegate' => $nation->scopeDelegate(true),
 
                 ]);
             }

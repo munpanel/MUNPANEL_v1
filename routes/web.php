@@ -84,7 +84,7 @@ Route::get('/ot/delete/school/{id}', ['middleware' => ['permission:edit-schools'
 Route::get('/ot/delete/committee/{id}', ['middleware' => ['permission:edit-committees'], 'uses' => 'UserController@deleteCommittee']);
 
 // TODO: 添加权限控制
-Route::get('/dais/lockAlloc', 'RoleAllocController@lockAlloc');
+Route::get('/dais/lockAlloc/{confirm?}', 'RoleAllocController@lockAlloc');
 Route::get('/dais/removeSeat/{id}', 'RoleAllocController@removeDelegate');
 Route::post('/dais/addSeat/{id}', 'RoleAllocController@addDelegate');
 Route::get('/dais/freeNation/{id}', 'RoleAllocController@freeNation');

@@ -46,7 +46,7 @@ class Volunteer extends Model
                     break;
                 }
             }
-            if ($roommate->id != $this->user->id)                               // 排除自我配对
+            if ($roommate->id == $this->user->id)                               // 排除自我配对
             {
                 if (isset($this->notes)) $this->notes .= "\n";
                 $this->notes .= "$myname" . "申报的室友与报名者本人重合！";

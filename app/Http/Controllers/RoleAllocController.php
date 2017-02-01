@@ -13,13 +13,20 @@ use Config;
 
 class RoleAllocController extends Controller
 {
-    public function lockAlloc()
+    public function lockAlloc($confirm = false)
     {
         if (Auth::user()->type != 'dais')
             return 'Error';
-        Auth::user()->dais->committee->is_allocated = true;
-        Auth::user()->dais->committee->save();
-        return redirect(secure_url('/roleList'));
+        if ($confirm)
+        {
+            Auth::user()->dais->committee->is_allocated = true;
+            Auth::user()->dais->committee->save();
+            return redirect(secure_url('/roleList'));
+        }
+        else
+        {
+            return view('warningDialogModal', ['danger' => false, 'msg' => "您将要完成并锁定本委员会的国家分配，此操作将不可撤销。确实要继续吗？", 'target' => secure_url("/dais/lockAlloc/true")]);
+        }
     }
 
     public function removeDelegate($id)

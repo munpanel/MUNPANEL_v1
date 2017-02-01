@@ -7,11 +7,11 @@ $(document).ready(function() {
             //{data: 'details', name: 'details', orderable: false},
             //{data: 'id', name: 'id', orderable: true},
             //{data: 'committee', name: 'committee', orderable: true},
-            {data: 'name', name: 'name', orderable: false},
+            {data: 'name', name: 'name', orderable: true},
             //{data: 'conpetence', name: 'conpetence', orderable: true},
             //{data: 'veto_power', name: 'veto_power', orderable: true},
-            {data: 'nationgroup', name: 'nationgroup', orderable: false},
-            {data: 'delegate', name: 'delegate', orderable: false},
+            {data: 'nationgroup', name: 'nationgroup', orderable: true},
+            {data: 'delegate', name: 'delegate', orderable: true},
         ],
         fnInitComplete: function(oSettings, json) {
             $(document).on('click','.details-modal', function(e) {

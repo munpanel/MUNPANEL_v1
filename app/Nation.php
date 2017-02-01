@@ -33,8 +33,9 @@ class Nation extends Model
             $delegates = $this->delegates;
             foreach($delegates as $delegate)
             {
-                if ($withBizCard) $scope .= '<a href="'.secure_url('/rolelist/delBizCard.modal/'.$delegate->user->id).'" class="details-modal" data-toggle="ajaxModal">';
-                $scope .= $prefix . $delegate->user->name;
+                $scope .= $prefix;
+                if ($withBizCard) $scope .= '<a href="'.secure_url('/delBizCard.modal/'.$delegate->user->id).'" class="details-modal" data-toggle="ajaxModal">';
+                $scope .= $delegate->user->name;
                 if ($withBizCard) $scope .= '</a>';
                 $prefix = ', ';
             }

@@ -62,14 +62,8 @@ Route::post('/saveRegDel', 'UserController@regSaveDel');
 Route::post('/saveRegVol', 'UserController@regSaveVol');
 Route::post('/saveRegObs', 'UserController@regSaveObs');
 
-
-Route::get('/roleAlloc', function() {
-    return view('notavailable');
-});
-
-Route::get('/assignmentManage', function() {
-    return view('notavailable');
-});
+Route::get('/roleList', 'HomeController@roleList');
+Route::get('/roleAlloc', 'HomeController@roleAlloc');
 
 Route::get('/regManage', 'HomeController@regManage');
 Route::get('/regManage/imexport.modal', 'HomeController@imexportRegistrations');
@@ -91,9 +85,18 @@ Route::get('/ot/delete/user/{id}', ['middleware' => ['permission:edit-users'], '
 Route::get('/ot/delete/school/{id}', ['middleware' => ['permission:edit-schools'], 'uses' => 'UserController@deleteSchool']);
 Route::get('/ot/delete/committee/{id}', ['middleware' => ['permission:edit-committees'], 'uses' => 'UserController@deleteCommittee']);
 
+// TODO: 添加权限控制
+Route::get('/dais/lockAlloc', 'RoleAllocController@lockAlloc');
+Route::get('/dais/removeSeat/{id}', 'RoleAllocController@removeDelegate');
+Route::post('/dais/addSeat/{id}', 'RoleAllocController@addDelegate');
+Route::get('/dais/freeNation/{id}', 'RoleAllocController@freeNation');
+Route::get('/dais/nationDetails.modal/{id}', 'RoleAllocController@nationDetailsModal');
+Route::post('/dais/update/nation/{id}', 'RoleAllocController@updateNation');
+Route::get('/dais/delete/nation/{id}/{confirm?}', 'RoleAllocController@deleteNation');
 
 //Route::get('/dais/assignments', 'HomeController@assignment');
 
+Route::get('/regDais', 'UserController@regDais');
 //Route::get('/regschools', 'UserController@regSchool');
 //Route::get('/test', 'UserController@test');
 //Route::get('/createPermissions', 'UserController@createPermissions');
@@ -111,6 +114,7 @@ Route::get('/store/cart/remove/{id}', 'StoreController@removeCart');
 Route::get('/store/cart/empty', 'StoreController@emptyCart');
 Route::get('/store/order/{id}', 'StoreController@displayOrder');
 Route::get('/store/checkout', 'StoreController@checkout');
+Route::get('/store/shipment.modal', 'StoreController@shipmentModal');
 Route::post('/store/doCheckout', 'StoreController@doCheckout');
 Route::get('/goodimg/{id}', 'StoreController@goodImage');
 
@@ -123,3 +127,8 @@ Route::get('/ajax/nations', ['middleware' => ['permission:edit-nations'], 'uses'
 Route::get('/ajax/assignments', 'DatatablesController@assignments');
 Route::get('/ajax/store', 'DatatablesController@goods');
 Route::get('/ajax/documents', 'DatatablesController@documents');
+Route::get('/ot/generateBadge/{template}/{name}/{school}/{role}/{title}/{mode?}', 'ImageController@generateBadge');
+Route::get('/ajax/roleAllocNations', 'DatatablesController@roleAllocNations');
+Route::get('/ajax/roleAllocDelegates', 'DatatablesController@roleAllocDelegates');
+Route::get('/ajax/roleListByNation', 'DatatablesController@roleListByNation');
+Route::get('/ajax/roleListByDelegate', 'DatatablesController@roleListByDelegate');

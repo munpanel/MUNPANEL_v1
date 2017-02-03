@@ -11,7 +11,7 @@
 <section class="vbox">
   <header class="header b-b bg-white">
     @if ($type == 'dais')
-      <a href="{{secure_url('/dais/documentDetails.modal/new')}}" class="btn btn-sm btn-success details-modal"><i class="fa fa-plus"></i> 新建</a>
+      <a href="{{secure_url('/documentDetails.modal/new')}}" class="btn btn-sm btn-success details-modal"><i class="fa fa-plus"></i> 新建</a>
     @else
       <p>您的学术文件列表</p>
     @endif

@@ -1,7 +1,8 @@
 <div class="modal-dialog">
     <div class="modal-content">
         <div class="modal-body">
-            <h4>学术作业 ID {{$assignment->id}}</h4><button id="enableEditable-{{$assignment->id}}" class="btn btn-default pull-right">编辑模式</button><button id="deleteButton-{{$assignment->id}}" class="btn btn-danger pull-right">删除</button>
+            <button id="enableEditable-{{$assignment->id}}" class="btn btn-default pull-right">编辑模式</button><span class="pull-right">&nbsp;</span><button id="deleteButton-{{$assignment->id}}" class="btn btn-danger pull-right">删除</button>
+            <h4>学术作业 ID {{$assignment->id}}</h4>
             <table id="assignment-{{$assignment->id}}" class="table table-bordered table-striped" style="clear: both">
                 <tbody>
                     <tr>

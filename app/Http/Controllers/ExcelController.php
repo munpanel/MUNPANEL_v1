@@ -154,7 +154,10 @@ class ExcelController extends Controller
                         $user->password = Hash::make($row['密码不改留空']);
                     if (!isset($row['委员会志愿者观察员']))
                     {
-                        $user->save(); // no change of other data; if new user, default status is unregistered
+                        if ($user->specific() != null){
+                        $user->specific()->roommatename = ExcelController::mapData($row, $user->specific()->roommatename, '室友姓名'); 
+                        $user->specific()->save();}
+                        //$user->save(); // no change of other data; if new user, default status is unregistered
                         continue;
                     }
                     if ($row['委员会志愿者观察员'] == '志愿者') 

@@ -179,6 +179,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         //ChumPer\Zipper\ZipperServiceProvider::class,
         Gloudemans\Shoppingcart\ShoppingcartServiceProvider::class,
+        Dingo\Api\Provider\LaravelServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
         Yajra\Datatables\DatatablesServiceProvider::class,
         Zizaco\Entrust\EntrustServiceProvider::class,

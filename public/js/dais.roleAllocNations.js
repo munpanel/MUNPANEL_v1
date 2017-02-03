@@ -2,16 +2,13 @@ $(document).ready(function() {
    $('#nation-table').DataTable({
         //processing: true,
         //serverSide: true,
-        ajax: 'ajax/nations',
+        ajax: 'ajax/roleAllocNations',
         columns: [
-            {data: 'details', name: 'details', orderable: false},
-            {data: 'id', name: 'id', orderable: true},
-            {data: 'committee', name: 'committee', orderable: true},
+            {data: 'select', name: 'select', orderable: false},
             {data: 'name', name: 'name', orderable: false},
-            {data: 'conpetence', name: 'conpetence', orderable: true},
-            {data: 'veto_power', name: 'veto_power', orderable: true},
             {data: 'nationgroup', name: 'nationgroup', orderable: false},
             {data: 'delegate', name: 'delegate', orderable: false},
+            {data: 'command', name: 'command', orderable: false}
         ],
         fnInitComplete: function(oSettings, json) {
             $(document).on('click','.details-modal', function(e) {
@@ -36,10 +33,13 @@ $(document).ready(function() {
         "fnDrawCallback": function( oSettings ) {
             $('#nation-pagnination').empty();
             $('.paginate_button').each(function (i) {
-                var li = $("<li></li>");
-                li.appendTo($('#nation-pagnination'));
-                $(this).attr({href: "#"});
-                $(this).appendTo(li);
+                if ($(this).attr('aria-controls') == 'nation-table')
+                {
+                    var li = $("<li></li>");
+                    li.appendTo($('#nation-pagnination'));
+                    $(this).attr({href: "#"});
+                    $(this).appendTo(li);
+                }
              });
             $('.paginate_button.previous').html("<i class='fa fa-chevron-left'></i>");
             $('.paginate_button.next').html("<i class='fa fa-chevron-right'></i>");
@@ -50,13 +50,13 @@ $(document).ready(function() {
             "infoEmpty": "无记录",
             "infoFiltered": "(从 _MAX_ 条记录过滤)"
         },
-        "order": [[1, "asc"]],
+        "bSort": false,
     });
-    var table=$('#nation-table').DataTable();
-    $("#searchButton").click(function() {
-       table.search($('#searchbox').val()).draw();
+    var nattable=$('#nation-table').DataTable();
+    $("#nation-searchButton").click(function() {
+       nattable.search($('#nation-searchBox').val()).draw();
     });    
     $("#nation-length-select").change(function() {
-        table.page.len($(this).val()).draw();
+        nattable.page.len($(this).val()).draw();
     });
 });

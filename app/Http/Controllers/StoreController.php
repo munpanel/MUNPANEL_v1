@@ -15,13 +15,14 @@ class StoreController extends Controller
 
     public function displayCart()
     {
-        return response()->json(Cart::content());
+        //return response()->json(Cart::content());
+        return view('cart');
     }
 
     public function addCart(Request $request, $id)
     {
         Cart::add(Good::findOrFail($id), $request->num);
-        return redirect(secure_url('/store')); //TODO: 添加操作成功提示
+        return redirect(secure_url('/store/cart')); //TODO: 添加操作成功提示
     }
 
     public function removeCart($id)
@@ -48,6 +49,11 @@ class StoreController extends Controller
 
     public function doCheckout(Request $request)
     {
+    }
+
+    public function shipmentModal()
+    {
+        return view('shipmentModal');
     }
         
     public function goodImage($id)

@@ -50,6 +50,11 @@ class StoreController extends Controller
     public function doCheckout(Request $request)
     {
     }
+
+    public function shipmentModal()
+    {
+        return view('shipmentModal');
+    }
         
     public function goodImage($id)
     {

@@ -58,7 +58,7 @@
 
 
 <div class="clearfix"></div>
-<a class="order" href="#">Place Order</a>
+<a class="order" data-toggle="ajaxModal" href="{{secure_url('/store/shipment.modal')}}">Place Order</a>
 <div class="total-item">
 <h3>OPTIONS</h3>
 <h4>COUPONS</h4>

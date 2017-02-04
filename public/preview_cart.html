@@ -1,0 +1,294 @@
+﻿<html lang="en" class=" js no-touch no-android chrome no-firefox no-iemobile no-ie no-ie10 no-ie11 no-ios no-ios7 ipad"><head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="7XcO4MaDxnMgaPeLHPbqXmSjRzTWTaae20euDxqz">
+
+    <title>MUNPANEL</title>
+
+    <link rel="icon" href="https://dev.yiad.am/munpanel/images/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="https://dev.yiad.am/munpanel/images/favicon.ico" type="image/x-icon">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="https://dev.yiad.am/munpanel/css/bootstrap.css" type="text/css">
+    <link rel="stylesheet" href="https://dev.yiad.am/munpanel/css/animate.css" type="text/css">
+    <link rel="stylesheet" href="https://dev.yiad.am/munpanel/css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="https://dev.yiad.am/munpanel/css/font.css" type="text/css" cache="false">
+    <link rel="stylesheet" href="https://dev.yiad.am/munpanel/css/plugin.css" type="text/css">
+    <link rel="stylesheet" href="https://dev.yiad.am/munpanel/css/munpanel.css" type="text/css">
+    <link rel="stylesheet" href="https://dev.yiad.am/munpanel/css/app.css">
+    <link href="https://dev.yiad.am/munpanel/css/store.css" rel="stylesheet" type="text/css">
+
+    <!-- Scripts -->
+    <script>
+        window.Laravel = {"csrfToken":"7XcO4MaDxnMgaPeLHPbqXmSjRzTWTaae20euDxqz"}    </script>
+    <!--[if lt IE 9]>
+      <script src="https://dev.yiad.am/munpanel/js/ie/respond.min.js" cache="false"></script>
+      <script src="https://dev.yiad.am/munpanel/js/ie/html5.js" cache="false"></script>
+      <script src="https://dev.yiad.am/munpanel/js/ie/excanvas.js" cache="false"></script>
+      <script src="https://dev.yiad.am/munpanel/js/ie/fix.js" cache="false"></script>
+    <![endif]-->
+</head>
+<body>
+  <section class="hbox stretch">
+    <!-- .aside -->
+    <aside class="bg-info aside-sm" id="nav">
+      <section class="vbox">
+        <header class="dker nav-bar nav-bar-fixed-top">
+          <a class="btn btn-link visible-xs" data-toggle="class:nav-off-screen" data-target="#nav">
+            <i class="fa fa-bars"></i>
+          </a>
+          <a href="#" class="nav-brand" data-toggle="fullscreen">BJMUN</a>
+          <a class="btn btn-link visible-xs" data-toggle="class:show" data-target=".nav-user">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </header>
+        <section class="w-f">
+          <!-- user -->
+          <div class="bg-success nav-user hidden-xs pos-rlt">
+            <div class="nav-avatar pos-rlt">
+              <a href="#" class="thumb-sm avatar animated rollIn" data-toggle="dropdown">
+                <img src="https://www.gravatar.com/avatar/3a5e22d9383f28a2f17203fd15fd342d?d=https://www.munpanel.com/images/avatar.jpg&amp;s=320" alt="" class="">
+                <span class="caret caret-white"></span>
+              </a>
+              <ul class="dropdown-menu m-t-sm animated fadeInLeft">
+              	<span class="arrow top"></span>
+                <!--li>
+                  <a href="#">Settings</a>
+                </li>
+                <li>
+                  <a href="profile.html">Profile</a>
+                </li>
+                <li>
+                  <a href="#">
+                    <span class="badge bg-danger pull-right">3</span>
+                    Notifications
+                  </a>
+                </li>
+                <li class="divider"></li>
+                <li>
+                  <a href="help.html">Help</a>
+                </li-->
+                <li>
+                  <a href="https://dev.yiad.am/munpanel/changePwd.modal" data-toggle="ajaxModal">修改密码</a>
+                  <a href="https://dev.yiad.am/munpanel/help.html">帮助</a>
+                  <a href="https://dev.yiad.am/munpanel/logout" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">注销</a>
+                </li>
+              </ul>
+              <div class="visible-xs m-t m-b">
+                <a href="#" class="h3">千反田える</a>
+              </div>
+            </div>
+            <!--div class="nav-msg">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                <b class="badge badge-white count-n">2</b>
+              </a>
+              <section class="dropdown-menu m-l-sm pull-left animated fadeInRight">
+                <div class="arrow left"></div>
+                <section class="panel bg-white">
+                  <header class="panel-heading">
+                    <strong>You have <span class="count-n">2</span> notifications</strong>
+                  </header>
+                  <div class="list-group">
+                    <a href="#" class="media list-group-item">
+                      <span class="pull-left thumb-sm">
+                        <img src="images/avatar.jpg" alt="John said" class="img-circle">
+                      </span>
+                      <span class="media-body block m-b-none">
+                        MUNPANEL is awesome<br>
+                        <small class="text-muted">30 Jan 16</small>
+                      </span>
+                    </a>
+                    <a href="#" class="media list-group-item">
+                      <span class="media-body block m-b-none">
+                        Hello World!<br>
+                        <small class="text-muted">30 Jan 16</small>
+                      </span>
+                    </a>
+                  </div>
+                  <footer class="panel-footer text-sm">
+                    <a href="#" class="pull-right"><i class="fa fa-cog"></i></a>
+                    <a href="#">See all the notifications</a>
+                  </footer>
+                </section>
+              </section>
+            </div-->
+          </div>
+          <!-- / user -->
+          <!-- nav -->
+          <nav class="nav-primary hidden-xs">
+            <ul class="nav">
+                                <li class="">
+                <a href="https://dev.yiad.am/munpanel/home">
+                  <i class="fa fa-home"></i>
+                  <span>Home</span>
+                </a>
+              </li>
+              <li class="">
+                <a href="https://dev.yiad.am/munpanel/pay/invoice">
+                  <i class="fa fa-money"></i>
+                  <span>Invoice</span>
+                </a>
+              </li>
+              <li class="dropdown-submenu ">
+                <a href="https://dev.yiad.am/munpanel/assignments" class="dropdown-toggle"> <!-- data-toggle="dropdown"-->
+                  <i class="fa fa-flask"></i>
+                  <span>Assignments</span>
+                </a>
+                <!--ul class="dropdown-menu">
+                  <li>
+                    <a href="assign_detail.html">
+                      Academic Test
+                    </a>
+                  </li>
+                  <li>
+                    <a href="assign_detail.html">
+                      <b class="badge pull-right">FB</b>Position Paper
+                    </a>
+                  </li>
+                  <li>
+                    <a href="assign_detail.html">
+                      <b class="badge bg-danger pull-right">ND</b>Topic Division
+                    </a>
+                  </li>
+                </ul-->
+              </li>
+              <li class="">
+                <a href="https://dev.yiad.am/munpanel/documents">
+                  <i class="fa fa-file-text"></i>
+                  <span>Documents</span>
+                </a>
+              </li>
+              <li class="">
+                <a href="https://dev.yiad.am/munpanel/pages">
+                  <!--b class="badge bg-info pull-right">3</b-->
+                  <i class="fa fa-envelope-o"></i>
+                  <span>E-Pages</span>
+                </a>
+              </li>
+              <li class="">
+                <a href="https://dev.yiad.am/munpanel/chair">
+                  <i class="fa fa-tasks"></i>
+                  <span>Live Screen</span>
+                </a>
+              </li>
+              <li class="active">
+                <a href="https://dev.yiad.am/munpanel/store">
+                  <i class="fa fa-shopping-bag"></i>
+                  <span>Souvenir Store</span>
+                </a>
+              </li>
+              <li class="">
+                <a href="https://dev.yiad.am/munpanel/fb">
+                  <i class="fa fa-pencil"></i>
+                  <span>Feedback</span>
+                </a>
+              </li>
+              <li class="">
+                <a href="https://dev.yiad.am/munpanel/ddltimer">
+                  <i class="fa fa-clock-o"></i>
+                  <span>Deadline</span>
+                </a>
+              </li>
+                            </ul>
+          </nav>
+          <!-- / nav -->
+          <!-- note -->
+          <div class="bg-danger wrapper hidden-vertical animated fadeInUp text-sm">
+              <a href="#" data-dismiss="alert" class="pull-right m-r-n-sm m-t-n-sm"><i class="fa fa-times"></i></a>
+              Hi, welcome to MUNPANEL,  isn't it awesome?
+          </div>
+          <!-- / note -->
+        </section>
+        <footer class="footer bg-gradient hidden-xs">
+          <a href="modal.lockme.html" data-toggle="ajaxModal" class="btn btn-sm btn-link m-r-n-xs pull-right">
+            <i class="fa fa-power-off"></i>
+          </a>
+          <a href="#nav" data-toggle="class:nav-vertical" class="btn btn-sm btn-link m-l-n-sm">
+            <i class="fa fa-bars"></i>
+          </a>
+        </footer>
+      </section>
+    </aside>
+    <!-- /.aside -->
+    <!-- .vbox -->
+    <section id="content">
+  <header class="header b-b bg-white">
+    <p>我的购物车 ({{Cart::count()}})</p>
+  </header>
+        <section class="scrollable wrapper">
+<div class="col-lg-9 cart-items">
+<section class="panel">
+<div class="close"> </div>
+<div class="panel-heading">
+
+<strong>卖方：北京市高中生模拟联合国协会</strong></div><table class="table table-striped m-b-none dataTable" id="assignment-table" role="grid" aria-describedby="assignment-table_info" style="">
+            <tbody><tr role="row" class="odd">
+  <td style="width:20px">1</td>
+  <td style="width:160px">
+    <img src="https://dev.yiad.am/munpanel/goodimg/1" class="shop-image-small" alt="">
+  </td>
+  <td>北陆新干线E7系电车</td>
+  <td>￥860,000,000.00</td>
+  <td>3</td>
+  <td>2,580,000,000.00</td><td>移出购物车</td>
+  
+  </tr>
+</tbody></table></section>
+<div class="clearfix"></div>
+
+
+
+</div>
+<div class="col-lg-3 cart-total">
+<section class="panel price-details">
+<div class="panel-heading">已选的商品价格</div>
+<div class="panel-body">
+<span>小计</span>
+<span class="total1">2,580,000,000.00</span>
+<span>折扣</span>
+<span class="total1">---</span>
+<span>运费</span>
+<span class="total1">500,000.00</span>
+<div class="clearfix">
+</div>
+<ul class="total_price">
+<li class="last_price"> <strong>合计</strong></li>
+<li class="last_price"><span>2,580,500,000.00</span></li>
+<div class="clearfix"> </div>
+</ul>
+<div class="clearfix"> </div>
+<a class="btn btn-success btn-block" data-toggle="ajaxModal" href="https://dev.yiad.am/munpanel/store/shipment.modal">结算</a>
+<div class="total-item">
+<h3>OPTIONS</h3>
+<h4>COUPONS</h4>
+<a class="cpns" href="#">Apply Coupons</a>
+</div>
+</div>
+
+<div class="clearfix"> </div>
+</div>
+</section> 
+</section>
+      </section>
+      <a href="#" class="hide nav-off-screen-block" data-toggle="class:nav-off-screen" data-target="#nav"></a>
+    </section>
+    <!-- /.vbox -->
+  
+  <form id="logout-form" action="https://dev.yiad.am/munpanel/logout" method="POST" style="display: none;"> <input type="hidden" name="_token" value="7XcO4MaDxnMgaPeLHPbqXmSjRzTWTaae20euDxqz"> </form>
+	<script src="https://dev.yiad.am/munpanel/js/jquery.min.js"></script>
+  <!-- Bootstrap -->
+  <script src="https://dev.yiad.am/munpanel/js/bootstrap.js"></script>
+ <!-- App -->
+  <script src="https://dev.yiad.am/munpanel/js/app.js"></script>
+  <script src="https://dev.yiad.am/munpanel/js/app.plugin.js"></script>
+  <script src="https://dev.yiad.am/munpanel/js/app.data.js"></script>
+  <!-- Parsley -->
+  <script src="https://dev.yiad.am/munpanel/js/parsley/parsley.min.js"></script>
+  <script src="https://dev.yiad.am/munpanel/js/parsley/parsley.extend.js"></script>
+    
+
+
+</body></html>

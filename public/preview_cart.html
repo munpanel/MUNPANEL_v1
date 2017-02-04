@@ -216,7 +216,8 @@
     <!-- .vbox -->
     <section id="content">
   <header class="header b-b bg-white">
-    <p>我的购物车 ({{Cart::count()}})</p>
+    <p>&nbsp;我的购物车 ({{Cart::count()}})</p>
+    <a href="#" class="btn btn-sm btn-white pull-left"><i class="fa fa-reply"></i> 返回商店</a>
   </header>
         <section class="scrollable wrapper">
 <div class="col-lg-9 cart-items">
@@ -261,14 +262,16 @@
 </ul>
 <div class="clearfix"> </div>
 <a class="btn btn-success btn-block" data-toggle="ajaxModal" href="https://dev.yiad.am/munpanel/store/shipment.modal">结算</a>
-<div class="total-item">
-<h3>OPTIONS</h3>
-<h4>COUPONS</h4>
-<a class="cpns" href="#">Apply Coupons</a>
-</div>
-</div>
-
-<div class="clearfix"> </div>
+                <div class="total-item">
+                  <h3>优惠</h3>
+                  <form class="form-inline" role="form">
+                    <div class="form-group">
+                      <label class="sr-only" for="exampleInputEmail2">输入优惠代码</label>
+                      <input type="email" class="form-control" id="exampleInputEmail2" placeholder="输入优惠代码">
+                    </div>
+                    <a href="#modal-form" class="btn btn-info" data-toggle="modal">添加优惠券</a>
+                  </form>
+                </div>
 </div>
 </section> 
 </section>

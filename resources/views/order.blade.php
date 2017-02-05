@@ -7,6 +7,8 @@
           <p class="pull-right">&nbsp;&nbsp;&nbsp;</p> 
           @if ($order->status == 'unpaid')
             <a href="{{ secure_url('/pay/checkout.modal') }}" data-toggle="ajaxModal" class="btn btn-sm btn-success pull-right">支付</a>
+            <p class="pull-right">&nbsp;&nbsp;&nbsp;</p> 
+            <a href="{{ secure_url('/store/deleteOrder/'.$order->id) }}" data-toggle="ajaxModal" class="btn btn-sm btn-white pull-right"><span class="text-danger">取消订单</span></a>
           @endif
           <p>订单详情</p>
         </header>
@@ -27,13 +29,13 @@
                 <strong>付款人:</strong>
                 <h4>{{Auth::user()->name}}</h4>
                 <p>
-                  {{Auth::user()->specific()->school->name}}<br>
+                  <!--{{Auth::user()->specific()->school->name}}为便于用ot号测试把学校先注释掉<br-->
                   @if ($order->shipment_method == 'mail')
                   Address: {{$order->address}}<br>
                   @elseif ($order->shipment_method == 'conference')
-                  会议期间取货
+                  会议期间取货<br>
                   @endif
-                  Phone: {{Auth::user()->specific()->tel}}<br>
+                  <!--Phone: {{Auth::user()->specific()->tel}}同样先注释掉<br-->
                   Email: {{Auth::user()->email}}<br>
                 </p>
               </div>
@@ -73,8 +75,8 @@
               <tr>
                 <td>{{$item['name']}}</td>
                 <td>¥{{number_format($item['price'], 2)}}</td>
-                <td>{{$item['amount']}}</td>
-                <td>¥{{number_format($item['amount'] * $item['price'], 2)}}</td>
+                <td>{{$item['qty']}}</td>
+                <td>¥{{number_format($item['qty'] * $item['price'], 2)}}</td>
               </tr>
               @endforeach
               <tr>

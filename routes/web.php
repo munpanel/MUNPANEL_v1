@@ -115,6 +115,7 @@ Route::post('/store/cart/add/{id}', 'StoreController@addCart');
 Route::get('/store/cart/remove/{id}', 'StoreController@removeCart');
 Route::get('/store/cart/empty', 'StoreController@emptyCart');
 Route::get('/store/order/{id}', 'StoreController@displayOrder');
+Route::get('/store/deleteOrder/{id}/{confirm?}', 'StoreController@deleteOrder');
 Route::get('/store/checkout', 'StoreController@checkout');
 Route::get('/store/shipment.modal', 'StoreController@shipmentModal');
 Route::post('/store/doCheckout', 'StoreController@doCheckout');

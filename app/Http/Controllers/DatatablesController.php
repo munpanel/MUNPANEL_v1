@@ -13,16 +13,8 @@ use App\Committee;
 use App\Assignment;
 use App\Handin;
 use App\Nation;
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 6c554dcf75e7477a74e53d6a128947a9bde9c21f
 use App\Good;
 use App\Document;
-<<<<<<< HEAD
->>>>>>> c7d70d3e2907ef65e26e3c561846acb920e29175
-=======
->>>>>>> 6c554dcf75e7477a74e53d6a128947a9bde9c21f
 use Config;
 use Illuminate\Support\Facades\Auth;
 

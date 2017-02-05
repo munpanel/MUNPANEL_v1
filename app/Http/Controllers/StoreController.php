@@ -43,6 +43,10 @@ class StoreController extends Controller
         return view('order', ['order' => $order, 'orderItems' => $order->items()]);
     }
 
+    public function deleteOrder($id, $confirm = false)
+    {
+    }
+
     public function checkout()
     {
     }
@@ -53,8 +57,10 @@ class StoreController extends Controller
         $order->id = date("YmdHis");
         $order->user_id = Auth::user()->id;
         $order->content = Cart::content();
-        $order->shipment_method = $request->method;
-        $order->price = Cart::subtotal();
+        $method = $request->method;
+        $order->shipment_method = $method;
+        $price = str_replace(",", "", Cart::subtotal());
+        $order->price = floatval($price);
         if ($method == 'mail')
             $order->address = $request->address;
         $order->save();

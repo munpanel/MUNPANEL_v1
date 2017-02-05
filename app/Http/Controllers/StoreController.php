@@ -45,6 +45,15 @@ class StoreController extends Controller
 
     public function deleteOrder($id, $confirm = false)
     {
+        if ($confirm) 
+        { 
+            Order::destroy($id);
+            return redirect(secure_url('/store')); 
+        } 
+        else 
+        { 
+            return view('warningDialogModal', ['danger' => false, 'msg' => "您确实要删除该订单吗？", 'target' => secure_url("/store/deleteOrder/" . $id . "/true")]); 
+        }
     }
 
     public function checkout()
@@ -80,6 +89,6 @@ class StoreController extends Controller
     
     public function home()
     {
-        return view('store');
+        return view('store', ['orders' => Auth::user()->orders]);
     }
 }

@@ -50,7 +50,7 @@ class StoreController extends Controller
     public function doCheckout(Request $request)
     {
         $order = new Order;
-        $order->id = date("ymdHis");
+        $order->id = date("YmdHis");
         $order->user_id = Auth::user()->id;
         $order->content = Cart::content();
         $order->shipment_method = $request->method;

@@ -21,7 +21,11 @@
           <div class="modal-body">
             <div class="row">
               <div class="col-sm-12 b-r">
-                苟
+                <form role="form" id="delform" data-validate="parsley" action="{{ secure_url('/store/doCheckout') }}" method="post">
+                  {{ csrf_field() }}
+                  <input type="hidden" name="method" value="conference">
+                  <button type="submit" class="btn btn-success pull-right text-uc m-t-n-xs">提交并支付订单</button>
+                </form>
               </div>
             </div>
           </div>          
@@ -30,7 +34,12 @@
           <div class="modal-body">
             <div class="row">
               <div class="col-sm-12 b-r">
-                利
+                <form role="form" id="delform" data-validate="parsley" action="{{ secure_url('/store/doCheckout') }}" method="post">
+                  {{ csrf_field() }}
+                  <input type="hidden" name="method" value="mail">
+                  <input type="text" name="address" data-required="true">
+                  <button type="submit" class="btn btn-success pull-right text-uc m-t-n-xs">提交并支付订单</button>
+                </form>
               </div>
             </div>
           </div>          

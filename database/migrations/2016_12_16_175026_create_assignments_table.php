@@ -15,7 +15,7 @@ class CreateAssignmentsTable extends Migration
     {
         Schema::create('assignments', function (Blueprint $table) {
             $table->increments('id');
-			$table->enum('subject_type', ['individual', 'nation']);
+			$table->enum('subject_type', ['individual', 'nation', 'partner']);
 			$table->enum('handin_type', ['upload', 'text']);
 			$table->string('title');
 			$table->mediumText('description');

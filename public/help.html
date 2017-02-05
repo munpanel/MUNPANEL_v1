@@ -28,7 +28,7 @@
           <a class="btn btn-link visible-xs" data-toggle="class:show" data-target=".nav-primary">
             <i class="fa fa-bars"></i>
           </a>
-          <a href="index.html" class="nav-brand">MUNPANEL</a>
+          <a href="home" class="nav-brand">MUNPANEL</a>
         </header>
         <footer class="footer b-r bg-gradient hidden-xs text-center">
           <p class="text-sm">&copy; Console iT 2017</p>
@@ -54,6 +54,7 @@
               <li><a href="#assignments">提交学术作业</a></li>
               <li><a href="#documents">查看学术文件</a></li>
               <li><a href="#pages">收发意向条</a></li>
+              <li><a href="#buy-souvnirs">购买会议纪念品</a></li>
               <li><a href="#mycerts">下载参会证明和奖状</a></li>
               <li class="dropdown-header b-b"><em>成为社团管理人</em></li>
               <li><a href="#add-new-muner">接收新社员</a></li>
@@ -74,6 +75,7 @@
               <li><a href="#cmtmanage">划分委员会</a></li>
               <li><a href="#announce">发布通告</a></li>
               <li><a href="#regmanage">开放并管理报名</a></li>
+              <li><a href="#sell-souvnirs">售卖会议纪念品</a></li>
               <li><a href="#natmanage">掌握会议全局</a></li>
               <li class="dropdown-header b-b"><em>尾声</em></li>
               <li><a href="#faq">常见问题</a></li>
@@ -317,34 +319,18 @@
               <p>Check more details on <a href="http://www.oesmith.co.uk/morris.js/"><strong>Morris</strong></a>. </p>
               
               <h4 id="assignments" class="m-t-lg">提交学术作业</h4>
-              <p>Change the button state when click on it. add <code>.text</code> <code>.text-active</code></p>
-              <h5><strong>Example</strong></h5>
-              <button class="btn btn-white m-b" data-toggle="button">
-                <span class="text">More</span>
-                <span class="text-active">Less</span>
-              </button>
-        <pre><code class="html"><button class="btn btn-white" data-toggle="button">
-        <span class="text">More</span>
-        <span class="text-active">Less</span>
-        </button></code></pre>
-              <h5><strong>With icons</strong></h5>
-              <button class="btn btn-white m-b" data-toggle="button">
-                <span class="text">
-                  <i class="fa fa-thumbs-up text-success"></i> 25
-                </span>
-                <span class="text-active">
-                  <i class="fa fa-thumbs-down text-danger"></i> 10
-                </span>
-              </button>
-        <pre><code class="html"><button class="btn btn-white" data-toggle="button">
-        <span class="text">
-          <i class="fa fa-thumbs-up text-success"></i> 25
-        </span>
-        <span class="text-active">
-          <i class="fa fa-thumbs-down text-danger"></i> 10
-        </span>
-        </button></code></pre>
-
+              <p>在代表后台页面，点击左侧的“<i class="fa fa-flask"></i> Assignments”查看当前已下发的学术作业。如果您有尚未提交的学术作业，相关项目将会被显著标记 <b class="badge bg-danger">未提交</b>。</p>
+              <p>点击表格第一列的“<i class="fa fa-search-plus"></i>”打开该作业。学术作业页的左侧显示该作业的详细信息。</p>
+              <p>当前版本的 MUNPANEL 仅支持文件上传模式。您在外部程序完成学术作业之后，应按照以下步骤提交您的学术作业：</p>
+              <ol>
+                <li>通过学术作业页右侧的上传按钮选择您的文件，并点击 <a class="btn btn-white btn-xs">Next</a>。</li>
+                <li>在文本框中添加您对该提交的补充信息，并点击 <a class="btn btn-white btn-xs">Next</a>。</li>
+                <li>确认所有信息准确无误，点击 <a class="btn btn-white btn-xs">Finish</a> 完成提交流程。</li>
+              </ol>
+              <p class="text-warning"><strong>注意：一旦错过提交期限，您将无法再提交您的学术作业。请合理安排好您的作业时间，切勿过晚提交作业。</strong></p>
+              <p>在作业提交成功之后，学术作业页的左侧将会增加关于您的提交的信息，同时您也可以在学术作业页的右侧下载您提交的学术作业。如果某项作业以搭档或国家为提交单位，那么您的搭档也将可以看到和下载您的提交。</p>
+              <p>在提交期限之前，您可以随时对该项学术作业重新提交。只需点击学术作业页右侧的 <a class="badge bg-primary" href="#">重新提交</a>，即可按照上述步骤重新提交您的作业。</p>
+              
               <h4 id="documents" class="m-t-lg">查看学术文件</h4>
               <p>在代表后台页面，点击左侧的“<i class="fa fa-file-text"></i> Documents”查看当前已发布的学术文件。点击表格第一列的“<i class="fa fa-search-plus"></i>”打开该文件。</p>
               <p>您可以在学术文件页面中在线浏览文件，也可以点击右上角的 <a class="btn btn-sm btn-success" href="#"><i class="fa fa-download"></i> 下载该文件</a> 将文件下载到本地。您还可以点击 <a class="btn btn-sm btn-white" href="#"><i class="fa fa-info"></i> 信息</a> 查看该文件的补充说明和其他属性。</p>
@@ -354,6 +340,11 @@
               <p>Check the file input plugin on <a href="http://github.com/grevory/bootstrap-file-input"><strong>File input</strong></a> for more details.</p>
               <input type="file" title="Browse" class="btn btn-sm btn-info file-input">
 
+              <h4 id="buy-souvnirs" class="m-t-lg">购买会议纪念品</h4>
+              <p>某些会议可能开通了 MUNPANEL 的纪念品商店功能并通过商店发售会议纪念品。在代表后台页面，点击左侧的“<i class="fa fa-shopping-bag"></i> Souvenir store”查看本会议的在售纪念品。</p>
+              <p>如果您在在售纪念品列表中找到了中意的纪念品，请在项目的右侧选择数量 (单品最多 5 件，且不超过库存数量)，并点击 <a class="btn btn-success" href="#"><i class="fa fa-plus"></i> 加入购物车</a> 以加入购物车。您还可以点击商品的图片或品名查看该商品的详细信息。</p>
+              <p>其他项目有待添加……</p>
+              
               <h4 id="mycerts" class="m-t-lg">下载参会证明和奖状</h4>
               <p>Check more details on <a href="http://omnipotent.net/jquery.sparkline/"><strong>Sparkline</strong></a>.</p>
               <h5><strong>Useage</strong></h5>
@@ -553,6 +544,13 @@
               <p class="text-warning"><strong>注意：在通过编辑数据表修改参会人员信息时，需严格遵循以上规则，否则在导入后将会导致出现数据错误、重复等意外情况。</strong></p>
               <p>如需导入参会人员数据，请点击页面顶栏的 <a class="btn btn-sm btn-success details-modal" href="#"><i class="fa fa-plus"></i> 批量管理</a> ，选择“导入”选项卡，选中编辑过的数据表文件并上传。MUNPANEL 将自动处理这些数据并更新参会人员信息。</p>
               <p>数据导入功能仅支持通过 MUNPANEL 生成的数据表或空表。组织团队成员应检查数据表内的值是否含有错误大小写、多余或遗漏的空格等易引发数据错误、重复等的问题。</p>
+              
+              <h4 id="sell-souvnirs" class="m-t-lg">售卖会议纪念品</h4>
+              <p>要想通过 MUNPANEL 的纪念品商店功能发售会议纪念品，您需要先开通纪念品商店功能。</p>
+              <p>在组织团队后台页面，点击左侧的“<i class="fa fa-shopping-bag"></i> Souvenir store”查看和管理本会议的在售纪念品。如果您希望以个人身份购买纪念品，请参阅<strong><a href="#buy-souvnirs">购买会议纪念品</a></strong>一节。</p>
+              <p>添加商品部分有待添加……</p>
+              <p>点击商品的图片或品名查看和修改该商品的详细信息。</p>
+              <p>其他项目有待添加……</p>
               
               <h4 id="natmanage" class="m-t-lg">掌握会议全局</h4>
               <p>有待添加……</p>

@@ -13,7 +13,11 @@ use App\Committee;
 use App\Assignment;
 use App\Handin;
 use App\Nation;
+<<<<<<< HEAD
 use App\Good;
+=======
+use App\Document;
+>>>>>>> c7d70d3e2907ef65e26e3c561846acb920e29175
 use Config;
 use Illuminate\Support\Facades\Auth;
 
@@ -255,21 +259,40 @@ class DatatablesController extends Controller //To-Do: Permission Check
     public function assignments()
     {
         $result = new Collection;
-        $assignments = Auth::user()->delegate->assignments();//Assignment::all();//get(['id', 'title', 'deadline']);
+        if (Auth::user()->type == 'dais')
+            $assignments = /*Auth::user()->dais->Assignment();*/Assignment::all(); // TODO: get docs per committee 
+        else 
+            $assignments = Auth::user()->delegate->assignments();//Assignment::all();//get(['id', 'title', 'deadline']);
         $i = 0;
         foreach($assignments as $assignment)
         {
-            if ($assignment->subject_type == 'nation')
-                $handin = Handin::where('assignment_id', $assignment->id)->where('nation_id', Auth::user()->delegate->nation->id)->first();
-            else
-                $handin = Handin::where('assignment_id', $assignment->id)->where('user_id', Auth::user()->id)->first();
             $title = $assignment->title;
-            if (is_null($handin)) //TO-DO: ddl check
-                $title = $title."<b class=\"badge bg-danger pull-right\">未提交</b>";
+            $detailline = '<a href="assignment/'. $assignment->id.'"><i class="fa fa-search-plus"></i></a>';
+            if (Auth::user()->type == 'delegate')
+            {
+                if ($assignment->subject_type == 'nation')
+                    $handin = Handin::where('assignment_id', $assignment->id)->where('nation_id', Auth::user()->delegate->nation->id)->first();
+                else if ($assignment->subject_type == 'partner')
+                {
+                    if (isset(Auth::user()->delegate->partner)) $handin = Handin::where('assignment_id', $assignment->id)->where('user_id', Auth::user()->delegate->partner->id)->orderBy('id', 'desc')->first();
+                    if (!isset($handin)) $handin = Handin::where('assignment_id', $assignment->id)->where('user_id', Auth::user()->id)->orderBy('id', 'desc')->first();                
+                }
+                else
+                    $handin = Handin::where('assignment_id', $assignment->id)->where('user_id', Auth::user()->id)->orderBy('id', 'desc')->first();                
+                if (is_null($handin)) //TO-DO: ddl check
+                    $title = $title."<b class=\"badge bg-danger pull-right\">未提交</b>";
+            }
+            else
+            {
+                $detailline = '<a href="assignment/'. $assignment->id . '/handins"><i class="fa fa-folder-open"></i></a>';
+                $detailline .= '&nbsp;<a href="assignmentDetails.modal/'. $assignment->id.'"><i class="fa fa-pencil"></i></a>';
+                $handin = Handin::where('assignment_id', $assignment->id)->count(); //TODO: 构建排除重复提交的查询数字
+                $title = $title."<b class=\"badge bg-danger pull-right\">" . $handin . " 份提交</b>"; 
+            }
             $result->push([
                 //'id' => $assignment->id,
                 'id' => ++$i, // We don't want to use the actual assignment id in the database because it may not be continuous for a delegate, and is hence not user-friendly.
-                'details' => '<a href="assignment/'. $assignment->id.'"><i class="fa fa-search-plus"></i></a>',
+                'details' => $detailline,
                 'title' => $title,
                 'deadline' => $assignment->deadline,
             ]);
@@ -280,23 +303,74 @@ class DatatablesController extends Controller //To-Do: Permission Check
     public function nations()
     {
         $result = new Collection;
-        $nations = Nation::all();
-        foreach($nations as $nation)
+        if (Auth::user()->type == 'ot')
         {
-            $groups = '';
-            foreach ($nation->nationgroups as $ngroup)
+            $nations = Nation::all();
+            foreach($nations as $nation)
             {
-                $groups = $groups . ' '. $ngroup->display_name;
-            }
+                $groups = '';
+                foreach ($nation->nationgroups as $ngroup)
+                {
+                    $groups = $groups . ' '. $ngroup->display_name;
+                }
 
+                $result->push([
+                    'details' => '<a href="ot/nationDetails.modal/'. $nation->id .'" data-toggle="ajaxModal" id="'. $nation->id .'" class="details-modal"><i class="fa fa-search-plus"></i></a>',
+                    'id' => $nation->id,
+                    'committee' => $nation->committee->name,
+                    'name' => $nation->name,
+                    'conpetence' => $nation->conpetence,
+                    'veto_power' => $nation->veto_power ? '是' : '否',
+                    'nationgroup' => $groups,
+                    'delegate' => $nation->scopeDelegate(),
+
+                ]);
+            }
+        } else {
+            $nations = Auth::user()->specific()->committee->nations;
+            foreach($nations as $nation)
+            {
+                /*$groups = '';
+                foreach ($nation->nationgroups as $ngroup)
+                {
+                    $groups = $groups . ' '. $ngroup->display_name;
+                }*/
+
+                $result->push([
+                    //'details' => '<a href="ot/nationDetails.modal/'. $nation->id .'" data-toggle="ajaxModal" id="'. $nation->id .'" class="details-modal"><i class="fa fa-search-plus"></i></a>',
+                    //'id' => $nation->id,
+                    //'committee' => $nation->committee->name,
+                    'name' => $nation->name,
+                    //'conpetence' => $nation->conpetence,
+                    //'veto_power' => $nation->veto_power ? '是' : '否',
+                    'nationgroup' => $nation->scopeNationGroup(),
+                    'delegate' => $nation->scopeDelegate(),
+
+                ]);
+            }
+        }
+        return Datatables::of($result)->make(true);
+    }
+    
+    public function documents()
+    {
+        $result = new Collection;
+        if (Auth::user()->type == 'dais')
+            $documents = /*Auth::user()->dais->documents();*/Document::all(); // TODO: get docs per committee
+        else
+            $documents = Auth::user()->delegate->documents();//Assignment::all();//get(['id', 'title', 'deadline']);
+        $i = 0;
+        foreach($documents as $document)
+        {
+            $detailline = '<a href="document/'. $document->id.'"><i class="fa fa-search-plus"></i></a>';
+            if (Auth::user()->type == 'dais')
+                $detailline = $detailline . '&nbsp;<a href="documentDetails.modal/'. $document->id.'" data-toggle="ajaxModal"><i class="fa fa-pencil"></i></a>';
             $result->push([
-                'details' => '<a href="ot/nationDetails.modal/'. $nation->id .'" data-toggle="ajaxModal" id="'. $nation->id .'" class="details-modal"><i class="fa fa-search-plus"></i></a>',
-                'id' => $nation->id,
-                'committee' => $nation->committee->name,
-                'name' => $nation->name,
-                'conpetence' => $nation->conpetence,
-                'veto_power' => $nation->veto_power ? '是' : '否',
-                'nationgroup' => $groups,
+                //'id' => $document->id,
+                'details' => $detailline,
+                'id' => ++$i, // We don't want to use the actual document id in the database because it may not be continuous for a delegate, and is hence not user-friendly.
+                'title' => $document->title,
+                'deadline' => date('Y年n月j日', strtotime($document->created_at)),
             ]);
         }
         return Datatables::of($result)->make(true);
@@ -324,6 +398,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
         }
         return Datatables::of($result)->make(true);
     }
+<<<<<<< HEAD
     
     public function goods()
     {
@@ -357,9 +432,108 @@ class DatatablesController extends Controller //To-Do: Permission Check
                 'title' => '<a href="good.modal/'. $good->id.'" data-toggle="ajaxModal">'.$good->name.'</a>',
                 'price' => '¥' . number_format($good->price, 2),
                 'command' => $command,
+=======
+        
+    public function roleListByNation()
+    {
+        $result = new Collection;
+        
+        return Datatables::of($result)->make(true);
+    }
+    
+    public function roleListByDelegate()
+    {
+        $result = new Collection;
+        
+        return Datatables::of($result)->make(true);
+    }
+    
+    public function roleAllocNations()
+    {
+        $result = new Collection;
+        if (Auth::user()->type != 'dais')
+            $result->push([
+                'select' => '*',
+                'name' => '错误',
+                'nationgroup' => '您没有权限',
+                'delegate' => '进行该操作！',
+                'command' => '<button class="btn btn-xs btn-white disabled" type="button">移出代表</button>
+                              <button class="btn btn-xs btn-warning disabled" type="button">编辑</button>
+                              <button class="btn btn-xs btn-danger disabled" type="button">删除</button>'
+            ]);
+        $mycommittee = Auth::user()->dais->committee;
+        $nations = Nation::where('committee_id', $mycommittee->id)->get();
+        $autosel = false;
+        foreach($nations as $nation)
+        {
+            $select = '<input name="nation" type="radio" value="' . $nation->id . '"';
+            $delnames = '无';
+            $command = '<a href="' . secure_url('/dais/freeNation/' . $nation->id) . '" class="btn btn-xs btn-white';
+            if (!$nation->delegates->isEmpty())
+            {
+                $select .= ' disabled="disabled"';
+                $delnames = $nation->scopeDelegate();
+            }            
+            else
+            {
+                $command .= ' disabled';
+                if (!$autosel)
+                {
+                    $select .= ' checked="true"';
+                    $autosel = true;
+                }
+            }
+            $select .= '>';
+            $command .= '">移出代表</a>
+                        <a href="dais/nationDetails.modal/'. $nation->id .'" class="btn btn-xs btn-warning details-modal">编辑</a>
+                        <a href="dais/delete/nation/'. $nation->id .'" class="btn btn-xs btn-danger details-modal">删除</a>';
+                        // To-Do: make all those HTTP requests of the buttons JS-based
+            $result->push([
+                'select' => $select,
+                'name' => $nation->name,
+                'nationgroup' => isset($nation->nationgroups) ? $nation->scopeNationGroup() : '无',
+                'delegate' => $delnames,
+                'command' => $command
             ]);
         }
         return Datatables::of($result)->make(true);
     }
-
+    
+    public function roleAllocDelegates()
+    {
+        $result = new Collection;
+        if (Auth::user()->type != 'dais')
+            $result->push([
+                'name' => '错误',
+                'school' => '您没有权限',
+                'nation' => '进行该操作！',
+                'command' => '<button class="btn btn-xs btn-success addButton" del-id="' . $delegate->user->id . '"type="button">移入席位</button>'
+            ]);
+        $mycommittee = Auth::user()->dais->committee;
+        $delegates = Delegate::where(function($query) {
+            $query->where('committee_id', Auth::user()->dais->committee->id)
+            ->where('status', 'paid');
+        })->orWhere(function($query) {
+            $query->where('committee_id', Auth::user()->dais->committee->id)
+            ->where('status', 'oVerified');
+        })->get(['user_id', 'school_id', 'nation_id', 'status']);
+        foreach($delegates as $delegate)
+        {
+            $name = $delegate->user->name;
+            $surfix = $delegate->scopeDelegateGroup();
+            if ($surfix != '')
+                $name .= ' (' . $surfix . ')';
+            if ($delegate->status != 'paid')
+                $name .= '（未缴费）';
+            $result->push([
+                'uid' => $delegate->user_id,
+                'name' => $name,
+                'school' => $delegate->school->name,
+                'nation' => isset($delegate->nation) ? $delegate->nation->name : '待分配',
+                'command' => isset($delegate->nation) ? '<a href="'.secure_url('/dais/removeSeat/'.$delegate->user->id).'" class="btn btn-xs btn-white" type="button">移出席位</a>'
+                                                      : '<button class="btn btn-xs btn-success addButton" del-id="' . $delegate->user->id . '"type="button">移入席位</button>'
+            ]);
+        }
+        return Datatables::of($result)->make(true);
+    }
 }

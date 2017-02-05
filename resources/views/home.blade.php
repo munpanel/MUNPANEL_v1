@@ -90,32 +90,34 @@
                  @if (Config::get('munpanel.registration_enabled'))
                  <center><b>Welcome to BJMUNC2017!</b></center><br>您的报名类型为<b> {{ Auth::user()->type == 'unregistered' ? '未注册' : (Auth::user()->type == 'delegate' ? '代表' : (Auth::user()->type == 'volunteer' ? '志愿者':'观察员')) }} </b>，如需查看当前报名信息或修改信息，请点击下方的表单按钮。<br>请注意，如您已通过审核，重新编辑信息将导致您回到待审核状态。<br>如有任何其他问题，请联系official@bjmun.org。<br>再次感谢您对北京市高中生模拟联合国协会的关注与支持。
                  @else
-                  <center><b>Welcome to BJMUNC2017!</b></center><br>您的报名类型为<b> {{ Auth::user()->type == 'unregistered' ? '未注册' : (Auth::user()->type == 'delegate' ? '代表' : (Auth::user()->type == 'volunteer' ? '志愿者':'观察员')) }} </b>。当前报名已截止，您无法编辑报名信息，如需查看当前报名信息，请点击下方的表单按钮。
+                  <center><b>Welcome to BJMUNC2017!</b></center><br>您的报名类型为<b> {{ Auth::user()->type == 'unregistered' ? '未注册' : (Auth::user()->type == 'delegate' ? '代表' : (Auth::user()->type == 'volunteer' ? '志愿者':'观察员')) }} </b>。目前已结束报名环节。
                  @endif
                 </footer>
               </section>
+              @if (Auth::user()->type == 'delegate')
                     <section class="panel bg-warning no-borders">
                       <div class="row">
                         <div class="col-xs-6">
                           <div class="wrapper">
-                            <p>报名</p>
-                            <p class="h4 font-bold">{{ $status }}</p>
-                            <div class="progress progress-xs progress-striped active m-b-sm">
+                            <p>席位分配</p>
+                            <p class="h4 font-bold">{{ Auth::user()->delegate->committee->is_allocated ? Auth::user()->delegate->nation->name : '未分配' }}</p>
+                            <!--div class="progress progress-xs progress-striped active m-b-sm">
                               <div class="progress-bar progress-bar-warning" data-toggle="tooltip" data-original-title="{{ $percent }}%" style="width: {{ $percent }}%"></div>
-                            </div>
-                              <div class="text-sm">点击下方按钮进入报名表单：</div>
-                              <a href="{{ secure_url('/reg.modal') }}" data-toggle="ajaxModal" class="btn btn-danger">报名</a>
+                            </div-->
+                              <div class="text-sm">点击下方按钮查看完整席位分配：</div>
+                              <a href="{{ secure_url('/roleList') }}" class="btn btn-danger">席位分配</a>
                           </div>
                         </div>
                         <div class="col-xs-6 wrapper text-center">
                           <div class="inline m-t-sm">
-                            <div class="easypiechart" data-percent="{{ $percent }}" data-line-width="8" data-bar-color="#ffffff" data-track-Color="#c79d43" data-scale-Color="false" data-size="100">
-                              <span class="h2">{{ $percent }}</span>%
+                            <div class="easypiechart" data-percent="{{ Auth::user()->delegate->committee->is_allocated ? '100' : '0' }}" data-line-width="8" data-bar-color="#ffffff" data-track-Color="#c79d43" data-scale-Color="false" data-size="100">
+                              <span class="h2">{{ Auth::user()->delegate->committee->is_allocated ? '100' : '0' }}</span>%
                             </div>
                           </div>
                         </div>
                       </div>
                     </section>
+              @endif
               <section class="panel clearfix">
                 <div class="panel-body">
                   <div class="clear">

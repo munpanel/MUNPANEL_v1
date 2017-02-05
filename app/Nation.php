@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Nation extends Model
 {
     protected $table='nations';
-    protected $fillable = ['committee_id', 'name', 'nationgroup_id','conpetence', 'veto_power', 'attendance'];    
+    protected $fillable = ['committee_id', 'name', 'conpetence', 'veto_power', 'attendance'];    
 
     public function committee() 
     {
@@ -16,11 +16,47 @@ class Nation extends Model
 
     public function delegates()
     {
-        return $this->hasMany('App\NationDel');
+        return $this->hasMany('App\Delegate');
     }
     
     public function nationgroups()
     {
         return $this->belongstoMany('App\Nationgroup', 'nationgroup_nation');
+    }
+    
+    public function scopeDelegate()
+    {
+        $prefix = '';
+        $scope = '';
+        if (isset($this->delegates))
+        {
+            $delegates = $this->delegates;
+            foreach($delegates as $delegate)
+            {
+                $scope .= $prefix . $delegate->user->name;
+                $prefix = ', ';
+            }
+        }
+        if ($scope != '')
+            return $scope;
+        return '无';
+    }
+
+    public function scopeNationGroup()
+    {
+        $prefix = '';
+        $scope = '';
+        if (isset($this->nationgroups))
+        {
+            $nationgroups = $this->nationgroups;
+            foreach($nationgroups as $nationgroup)
+            {
+                $scope .= $prefix . $nationgroup->display_name;
+                $prefix = ', ';
+            }
+        }
+        if ($scope != '')
+            return $scope;
+        return '无';
     }
 }

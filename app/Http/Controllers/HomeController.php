@@ -10,6 +10,7 @@ use App\Observer;
 use App\User;
 use App\Assignment;
 use App\Handin;
+use App\Document;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -262,12 +263,17 @@ class HomeController extends Controller
     
     public function assignmentsList()
     {
-        if (Auth::user()->type != 'delegate')
-            return view('error', ['msg' => '您不是参会代表，无权访问该页面！']);
-        if (Auth::user()->specific()->status == 'reg')//TO-DO: parameters for this
-            return view('error', ['msg' => '请等待审核']);
+        if (Auth::user()->type == 'unregistered')
+            return view('error', ['msg' => '您无权访问该页面！']);
+        if (Auth::user()->type == 'delegate')
+        {
+            if (Auth::user()->specific()->status == 'reg')//TO-DO: parameters for this
+                return view('error', ['msg' => '请等待学校和/或组织团队审核！']);  
+            if (Auth::user()->specific()->status != 'paid')//TO-DO: parameters for this  
+                return view('error', ['msg' => '请先缴费！如果您已通过社团缴费，请等待组织团队确认']); 
+        }
         $committee = Auth::user()->specific()->committee;
-        return view('assignmentsList', ['committee' => $committee]);
+        return view('assignmentsList', ['committee' => $committee, 'type' => Auth::user()->type]);
     }
 
     public function assignment($id, $action = 'info')
@@ -279,6 +285,16 @@ class HomeController extends Controller
             $handins = $assignment->handins;
         else if ($assignment->subject_type == 'nation')
             $handin = Handin::where('assignment_id', $id)->where('nation_id', Auth::user()->delegate->nation->id)->orderBy('id', 'desc')->first();
+        else if ($assignment->subject_type == 'partner')
+        {
+            if (isset(Auth::user()->delegate->partner)) $handin = Handin::where('assignment_id', $id)->where('user_id', Auth::user()->delegate->partner->id)->orderBy('id', 'desc')->first();
+            if (!isset($handin)) $handin = Handin::where('assignment_id', $id)->where('user_id', Auth::user()->id)->orderBy('id', 'desc')->first();
+            else
+            {
+                $handin1 = Handin::where('assignment_id', $id)->where('user_id', Auth::user()->id)->orderBy('id', 'desc')->first();
+                if (isset($handin1) && $handin1->id > $handin->id) $handin = $handin1;
+            }
+        }
         else
             $handin = Handin::where('assignment_id', $id)->where('user_id', Auth::user()->id)->orderBy('id', 'desc')->first();
         if ($action == 'info')
@@ -367,10 +383,107 @@ class HomeController extends Controller
             return "Error";
         }
     }
-
+    
     public function imexportRegistrations()
     {
         return view('ot.imexportModal', ['importURL' => secure_url('/regManage/import'), 'exportURL' => secure_url('/regManage/export')]);
     }
 
+    public function documentsList()
+    {
+        if (Auth::user()->type == 'unregistered')
+            return view('error', ['msg' => '您无权访问该页面！']);
+        if (Auth::user()->type == 'delegate')
+        {
+            if (Auth::user()->specific()->status == 'reg')//TO-DO: parameters for this
+                return view('error', ['msg' => '请等待学校和/或组织团队审核！']);  
+            if (Auth::user()->specific()->status != 'paid')//TO-DO: parameters for this  
+                return view('error', ['msg' => '请先缴费！如果您已通过社团缴费，请等待组织团队确认']); 
+        }
+        $committee = Auth::user()->specific()->committee;
+        return view('documentsList', ['type' => Auth::user()->type]);
+    }
+    
+    public function document($id, $action = "")
+    {
+        $document = Document::findOrFail($id);
+        if (Auth::user()->type == 'unregistered' || Auth::user()->type == 'volunteer')
+            return view('error', ['msg' => '您不是参会代表，无权访问该页面！']);
+        else if (Auth::user()->type == 'delegate')
+        {
+            if (!$document->belongsToDelegate(Auth::user()->id))
+                return view('error', ['msg' => '您不是此学术文件的分发对象，无权访问该页面！']);
+        }
+        if ($action == "download")
+        {
+            $document->downloads++;
+            $document->save();
+            return response()->download(storage_path('/app/'.$document->path), $document->title . '.' . File::extension(storage_path('/app/'.$document->path)));
+        }
+        else if ($action == "raw")
+        {
+            return response()->file(storage_path('/app/'.$document->path));
+        }
+        else if ($action == "upload")
+        {
+            if (Auth::user()->type != 'ot' || Auth::user()->type != 'dais')
+                return view('error', ['msg' => '您不是该会议学术团队成员，无权对文件操作！']);
+            // $document->downloads = 0;
+            // $document->views = 0;
+            // TODO: 完成文件上传
+        }
+        else
+        {
+            $document->views++;
+            $document->save();
+            return view('documentInfo', ['document' => $document]);
+        }
+    }
+    
+    public function documentDetailsModal($id)
+    {
+        if ($id == 'new')
+        {
+            $document = new Document;
+            $document->title = 'New document';
+            $document->description = '请在此输入对该学术文件的描述';
+            $document->path = 'default/no-docs.pdf';
+            $document->save();
+        }
+        else
+            $document = Document::findOrFail($id);
+        return view('documentDetailsModal', ['document' => $document]);
+    }
+    
+    public function roleList($view = 'nation')
+    {
+        if (Auth::user()->type == 'delegate' && Auth::user()->delegate->committee->is_allocated == false)
+            return view('error', ['msg' => '请等待席位分配发布！']);
+        return view('roleList', ['view' => $view]);
+    }
+    
+    public function roleAlloc()
+    {
+        if (Auth::user()->type == 'delegate')
+        {
+            if (!Auth::user()->specific()->committee->is_allocated)
+                return view('error', ['msg' => '您不是该会议学术团队成员，无权进行席位分配！']);
+            else
+                return redirect(secure_url('/roleList'));
+        }
+        else if (Auth::user()->type == 'ot')
+            return redirect(secure_url('/nationManage'));
+        else if (Auth::user()->type != 'dais')
+            return view('error', ['msg' => '您不是该会议学术团队成员，无权进行席位分配！']);            
+        if (Auth::user()->specific()->committee->is_allocated)
+            return redirect(secure_url('/roleList'));
+        $mycommittee = Auth::user()->dais->committee;
+        return view('dais.roleAlloc', [
+            'committee' => $mycommittee, 
+            'mustAlloc' => $mycommittee->delegates->where('status', 'paid')->where('nation_id', null)->count(), 
+            'emptyNations' => $mycommittee->emptyNations()->count(),
+            'verified' => Delegate::where(function($query) {$query->where('committee_id', Auth::user()->dais->committee->id)->where('status', 'paid');})->orWhere(function($query) {$query->where('committee_id', Auth::user()->dais->committee->id)->where('status', 'oVerified');})->count(),
+            'isDouble' => true
+        ]);
+    }
 }

@@ -25,6 +25,7 @@ class CreateCommitteesTable extends Migration
 			//时间节点默认取会议起止日
 			$table->date('timeframe_start');
 			$table->date('timeframe_end');
+            $table->boolean('is_allocated')->default(false);
 			$table->integer('session')->unsigned();
 			$table->text('description');
             $table->timestamps()->nullable();

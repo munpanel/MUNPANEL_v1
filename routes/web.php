@@ -111,11 +111,12 @@ Route::get('/pay/checkout.modal', 'HomeController@checkout');
 
 Route::get('/store', 'StoreController@home');
 Route::get('/store/cart', 'StoreController@displayCart');
-Route::get('/store/cart/add/{id}/{num}', 'StoreController@addCart'); //感觉这个应该做成post
+Route::post('/store/cart/add/{id}', 'StoreController@addCart');
 Route::get('/store/cart/remove/{id}', 'StoreController@removeCart');
 Route::get('/store/cart/empty', 'StoreController@emptyCart');
 Route::get('/store/order/{id}', 'StoreController@displayOrder');
 Route::get('/store/checkout', 'StoreController@checkout');
+Route::get('/store/shipment.modal', 'StoreController@shipmentModal');
 Route::post('/store/doCheckout', 'StoreController@doCheckout');
 Route::get('/goodimg/{id}', 'StoreController@goodImage');
 

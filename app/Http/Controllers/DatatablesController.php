@@ -14,10 +14,15 @@ use App\Assignment;
 use App\Handin;
 use App\Nation;
 <<<<<<< HEAD
-use App\Good;
+<<<<<<< HEAD
 =======
+>>>>>>> 6c554dcf75e7477a74e53d6a128947a9bde9c21f
+use App\Good;
 use App\Document;
+<<<<<<< HEAD
 >>>>>>> c7d70d3e2907ef65e26e3c561846acb920e29175
+=======
+>>>>>>> 6c554dcf75e7477a74e53d6a128947a9bde9c21f
 use Config;
 use Illuminate\Support\Facades\Auth;
 
@@ -398,7 +403,6 @@ class DatatablesController extends Controller //To-Do: Permission Check
         }
         return Datatables::of($result)->make(true);
     }
-<<<<<<< HEAD
     
     public function goods()
     {
@@ -414,8 +418,10 @@ class DatatablesController extends Controller //To-Do: Permission Check
             if ($remain == 0) $command = '<p class="text-muted">已售罄</p>';
             else
             {
-                $command = '<form class="form-inline"><span>数量： </span><div id="MySpinner" class="spinner input-group shop-spinner" data-min="1" data-max="'.$remain.'">
-                      <input type="text" class="form-control spinner-input" value="1" name="spinner" maxlength="2">
+                $command = '<form class="form-inline" action="'.secure_url('/store/cart/add/'.$good->id).'" method="post">
+                      <span>数量： </span><div id="MySpinner" class="spinner input-group shop-spinner" data-min="1" data-max="'.$remain.'">'.
+                      csrf_field().'
+                      <input type="text" class="form-control spinner-input" value="1" name="num" maxlength="2">
                       <div class="btn-group btn-group-vertical input-group-btn">
                         <button type="button" class="btn btn-white spinner-up">
                           <i class="fa fa-chevron-up text-muted"></i>
@@ -424,7 +430,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
                           <i class="fa fa-chevron-down text-muted"></i>
                         </button>
                       </div>
-                    </div>&nbsp;<a href="'.secure_url('/store/cart/add/'.$good->id).'" class="btn btn-sm btn-success details-modal"><i class="fa fa-plus"></i> 加入购物车</a></form>';
+                    </div>&nbsp;<button class="btn btn-success details-modal" type="submit"><i class="fa fa-plus"></i> 加入购物车</button></form>';
             }
             $result->push([
                 'id' => ++$i, 
@@ -432,7 +438,10 @@ class DatatablesController extends Controller //To-Do: Permission Check
                 'title' => '<a href="good.modal/'. $good->id.'" data-toggle="ajaxModal">'.$good->name.'</a>',
                 'price' => '¥' . number_format($good->price, 2),
                 'command' => $command,
-=======
+            ]);
+        }
+        return Datatables::of($result)->make(true);
+    }
         
     public function roleListByNation()
     {

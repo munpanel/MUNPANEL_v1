@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 namespace App\Http\Controllers;
 
@@ -15,12 +15,14 @@ class StoreController extends Controller
 
     public function displayCart()
     {
-        return response()->json(Cart::content());
+        //return response()->json(Cart::content());
+        return view('cart');
     }
 
-    public function addCart($id, $num)
+    public function addCart(Request $request, $id)
     {
-        Cart::add(Good::findOrFail($id), $num);
+        Cart::add(Good::findOrFail($id), $request->num);
+        return redirect(secure_url('/store/cart')); //TODO: 添加操作成功提示
     }
 
     public function removeCart($id)
@@ -47,6 +49,21 @@ class StoreController extends Controller
 
     public function doCheckout(Request $request)
     {
+        $order = new Order;
+        $order->id = date("ymdHis");
+        $order->user_id = Auth::user()->id;
+        $order->content = Cart::content();
+        $order->shipment_method = $request->method;
+        $order->price = Cart::subtotal();
+        if ($method == 'mail')
+            $order->address = $request->address;
+        $order->save();
+        return redirect(secure_url('/store/order/' . $order->id));
+    }
+
+    public function shipmentModal()
+    {
+        return view('shipmentModal');
     }
         
     public function goodImage($id)

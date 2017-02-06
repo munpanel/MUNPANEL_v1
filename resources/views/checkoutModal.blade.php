@@ -12,7 +12,7 @@
           <div class="modal-body">
             <div class="row">
               <div class="col-sm-12 b-r">
-                <div class="alert alert-info"><b>请选择支付方式。目前支持微信、支付宝，如需传统银行转帐，请联系official@bjmun.org。</b></div>
+                <div class="alert alert-info"><b>请选择支付方式。目前支持微信、支付宝。</b></div>
               </div>
             </div>
           </div>          

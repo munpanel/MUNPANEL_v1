@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('invoice_active', 'active')
+@section('store_active', 'active')
 @section('content')
       <section class="vbox bg-white">
         <header class="header b-b hidden-print">

@@ -20,7 +20,7 @@ class CreateOrdersTable extends Migration
             $table->enum('shipment_method', ['mail', 'conference', 'none'])->nullable(); //快递；会议领取；虚拟商品
             $table->string('address')->nullable();
             $table->string('shipment_no')->nullable();
-            $table->string('content'); //JSON
+            $table->text('content'); //JSON; string sucks
             /*** TEEGON ***/
             $table->string('charge_id')->nullable();//流水号
             $table->string('buyer')->nullable();//支付方(微信ID/支付宝手机号)

@@ -43,6 +43,7 @@ $(document).ready(function() {
              });
             $('.paginate_button.previous').html("<i class='fa fa-chevron-left'></i>");
             $('.paginate_button.next').html("<i class='fa fa-chevron-right'></i>");
+            $('.details-popover').popover();
         },
         "language": {
             "zeroRecords": "没有找到记录",

@@ -47,12 +47,17 @@ class StoreController extends Controller
     {
         if ($confirm) 
         { 
-            Order::destroy($id);
+            $order = Order::findOrFail($id);
+            if ($order->user_id != Auth::user()->id)
+                return view('error', ['msg' => '该订单不属于您！']);
+            $order->status = 'cancelled';
+            $order->save();
+            //Order::destroy($id);
             return redirect(secure_url('/store')); 
         } 
         else 
         { 
-            return view('warningDialogModal', ['danger' => false, 'msg' => "您确实要删除该订单吗？", 'target' => secure_url("/store/deleteOrder/" . $id . "/true")]); 
+            return view('warningDialogModal', ['danger' => false, 'msg' => "您确实要取消该订单吗？", 'target' => secure_url("/store/deleteOrder/" . $id . "/true")]); 
         }
     }
 
@@ -65,14 +70,18 @@ class StoreController extends Controller
         $order = new Order;
         $order->id = date("YmdHis");
         $order->user_id = Auth::user()->id;
-        $order->content = Cart::content();
         $method = $request->method;
         $order->shipment_method = $method;
-        $price = str_replace(",", "", Cart::subtotal());
+        $price = str_replace(",", "", Cart::total());
         $order->price = floatval($price);
         if ($method == 'mail')
+        {
+            Cart::add('NID_shipping', '运费', 1, 15);
             $order->address = $request->address;
+        }
+        $order->content = Cart::content();
         $order->save();
+        Cart::destroy();
         return redirect(secure_url('/store/order/' . $order->id));
     }
 

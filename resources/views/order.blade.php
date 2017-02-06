@@ -29,13 +29,17 @@
                 <strong>付款人:</strong>
                 <h4>{{Auth::user()->name}}</h4>
                 <p>
-                  <!--{{Auth::user()->specific()->school->name}}为便于用ot号测试把学校先注释掉<br-->
+                  @if (is_object(Auth::user()->specific()) && is_object(Auth::user()->specific()->school))
+                  {{Auth::user()->specific()->school->name}}
+                  @endif
                   @if ($order->shipment_method == 'mail')
                   Address: {{$order->address}}<br>
                   @elseif ($order->shipment_method == 'conference')
                   会议期间取货<br>
                   @endif
-                  <!--Phone: {{Auth::user()->specific()->tel}}同样先注释掉<br-->
+                  @if (is_object(Auth::user()->specific()) && is_object(Auth::user()->specific()->tel))
+                  Phone: {{Auth::user()->specific()->tel}}
+                  @endif
                   Email: {{Auth::user()->email}}<br>
                 </p>
               </div>
@@ -51,9 +55,12 @@
             </div>
           </div>
           <p class="m-t m-b">
-          @if ($order->status == 'unpaid')
+          @if ($order->status == 'cancelled')
+              单状态: <span class="label bg-danger">已取消</span><br>
+          @elseif ($order->status == 'unpaid')
               订单状态: <span class="label bg-danger">未支付</span><br>
           @else
+          {{-- To-Do: Shipped --}}
               订单状态: <span class="label bg-success">待发货</span><br>
           @endif
               订单ID: <strong>{{$order->id}}</strong><br>

@@ -28,11 +28,13 @@ class StoreController extends Controller
     public function removeCart($id)
     {
         Cart::remove($id); //ID is rowID instead of goodID
+        return redirect(secure_url('/store/cart')); //TODO: 添加操作成功提示
     }
 
     public function emptyCart()
     {
         Cart::destroy();
+        return redirect(secure_url('/store'));
     }
 
     public function displayOrder($id)

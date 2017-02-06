@@ -23,6 +23,7 @@
 <li><p>Subtotal: {{number_format($row->subtotal, 2)}}</p></li>
 
 </ul>
+<a href='{{secure_url("store/cart/remove/$row->rowId")}}'>Click <u>here</u> to remove from cart</a>
 
 <!--div class="delivery">
 <p>Provided by BJMUN</p>

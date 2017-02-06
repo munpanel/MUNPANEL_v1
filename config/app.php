@@ -177,7 +177,8 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-
+        //ChumPer\Zipper\ZipperServiceProvider::class,
+        Gloudemans\Shoppingcart\ShoppingcartServiceProvider::class,
         Chumper\Zipper\ZipperServiceProvider::class,
         Dingo\Api\Provider\LaravelServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
@@ -205,6 +206,7 @@ return [
         'Blade' => Illuminate\Support\Facades\Blade::class,
         'Bus' => Illuminate\Support\Facades\Bus::class,
         'Cache' => Illuminate\Support\Facades\Cache::class,
+        'Cart' => Gloudemans\Shoppingcart\Facades\Cart::class,
         'Config' => Illuminate\Support\Facades\Config::class,
         'Cookie' => Illuminate\Support\Facades\Cookie::class,
         'Crypt' => Illuminate\Support\Facades\Crypt::class,
@@ -233,7 +235,7 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-        'Zipper' => Chumper\Zipper\Zipper::class,
+        //'Zipper' => Chumper\Zipper\Zipper::class,
 
     ],
 

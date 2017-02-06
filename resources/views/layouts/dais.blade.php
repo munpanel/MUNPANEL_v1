@@ -35,3 +35,9 @@
                   <span>Console</span>
                 </a>
               </li>
+              <li class="@yield('store_active')">
+                <a href="{{ secure_url('/store') }}">
+                  <i class="fa fa-shopping-bag"></i>
+                  <span>Souvenir Store</span>
+                </a>
+              </li>

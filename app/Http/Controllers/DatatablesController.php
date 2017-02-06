@@ -13,6 +13,7 @@ use App\Committee;
 use App\Assignment;
 use App\Handin;
 use App\Nation;
+use App\Good;
 use App\Document;
 use Config;
 use Illuminate\Support\Facades\Auth;
@@ -390,6 +391,45 @@ class DatatablesController extends Controller //To-Do: Permission Check
                 'conpetence' => $nation->conpetence,
                 'veto_power' => $nation->veto_power ? '是' : '否',
                 'nationgroup' => $groups,
+            ]);
+        }
+        return Datatables::of($result)->make(true);
+    }
+    
+    public function goods()
+    {
+        $result = new Collection;
+        $goods = Good::all();//get(['id', 'title', 'deadline']);
+        $i = 0;
+        foreach($goods as $good)
+        {
+            if (!$good->enabled) continue;
+            $remain = $good->remains;
+            if ($remain == -1) $remain = 5;
+            if ($remain > 5) $remain = 5;
+            if ($remain == 0) $command = '<p class="text-muted">已售罄</p>';
+            else
+            {
+                $command = '<form class="form-inline" action="'.secure_url('/store/cart/add/'.$good->id).'" method="post">
+                      <span>数量： </span><div id="MySpinner" class="spinner input-group shop-spinner" data-min="1" data-max="'.$remain.'">'.
+                      csrf_field().'
+                      <input type="text" class="form-control spinner-input" value="1" name="num" maxlength="2">
+                      <div class="btn-group btn-group-vertical input-group-btn">
+                        <button type="button" class="btn btn-white spinner-up">
+                          <i class="fa fa-chevron-up text-muted"></i>
+                        </button>
+                        <button type="button" class="btn btn-white spinner-down">
+                          <i class="fa fa-chevron-down text-muted"></i>
+                        </button>
+                      </div>
+                    </div>&nbsp;<button class="btn btn-success details-modal" type="submit"><i class="fa fa-plus"></i> 加入购物车</button></form>';
+            }
+            $result->push([
+                'id' => ++$i, 
+                'image' => '<a href="good.modal/'. $good->id.'" data-toggle="ajaxModal"><img src="goodimg/' . $good->id . '" class="shop-image-small"></a>',
+                'title' => '<a href="good.modal/'. $good->id.'" data-toggle="ajaxModal">'.$good->name.'</a>',
+                'price' => '¥' . number_format($good->price, 2),
+                'command' => $command,
             ]);
         }
         return Datatables::of($result)->make(true);

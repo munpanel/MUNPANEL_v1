@@ -51,6 +51,8 @@ Route::get('/ddltimer', function() {
     return view('notavailable');
 });
 
+
+
 Route::get('/reg.modal/{id?}', 'HomeController@regModal');
 Route::get('/ot/userDetails.modal/{id}', ['middleware' => ['permission:edit-users'], 'uses' => 'HomeController@userDetailsModal']);
 Route::get('/ot/schoolDetails.modal/{id}', ['middleware' => ['permission:edit-schools'], 'uses' => 'HomeController@schoolDetailsModal']);
@@ -99,14 +101,27 @@ Route::get('/delBizCard.modal/{id}', 'RoleAllocController@getDelegateBizcard');
 
 Route::get('/regDais', 'UserController@regDais');
 //Route::get('/regschools', 'UserController@regSchool');
-Route::get('/test', 'UserController@test');
-Route::get('/createPermissions', 'UserController@createPermissions');
+//Route::get('/test', 'UserController@test');
+//Route::get('/createPermissions', 'UserController@createPermissions');
 
 Route::get('/school/payment', 'HomeController@schoolPay');
 Route::get('/school/pay/change/{method}', 'HomeController@changeSchoolPaymentMethod');
 Route::post('/pay/info', 'PayController@payInfo');
 Route::get('/pay/invoice', 'HomeController@invoice');
-Route::get('/pay/checkout.modal', 'HomeController@checkout');
+Route::get('/pay/checkout.modal/{id}', 'HomeController@checkout');
+
+Route::get('/store', 'StoreController@home');
+Route::get('/store/cart', 'StoreController@displayCart');
+Route::post('/store/cart/add/{id}', 'StoreController@addCart');
+Route::get('/store/cart/remove/{id}', 'StoreController@removeCart');
+Route::get('/store/cart/empty', 'StoreController@emptyCart');
+Route::get('/store/order/{id}', 'StoreController@displayOrder');
+Route::get('/store/deleteOrder/{id}/{confirm?}', 'StoreController@deleteOrder');
+Route::get('/store/checkout', 'StoreController@checkout');
+Route::get('/store/shipment.modal', 'StoreController@shipmentModal');
+Route::post('/store/doCheckout', 'StoreController@doCheckout');
+Route::get('/goodimg/{id}', 'StoreController@goodImage');
+
 
 Route::get('/ajax/registrations', 'DatatablesController@registrations');
 Route::get('/ajax/users', ['middleware' => ['permission:edit-users'], 'uses' => 'DatatablesController@users']);
@@ -114,6 +129,7 @@ Route::get('/ajax/schools', ['middleware' => ['permission:edit-schools'], 'uses'
 Route::get('/ajax/committees', ['middleware' => ['permission:edit-committees'], 'uses' => 'DatatablesController@committees']);
 Route::get('/ajax/nations', 'DatatablesController@nations');
 Route::get('/ajax/assignments', 'DatatablesController@assignments');
+Route::get('/ajax/store', 'DatatablesController@goods');
 Route::get('/ajax/documents', 'DatatablesController@documents');
 Route::get('/ot/generateBadge/{template}/{name}/{school}/{role}/{title}/{mode?}', 'ImageController@generateBadge');
 Route::get('/ot/generateBadgeCommittee/{cid}', 'ImageController@committeeBadge');
@@ -123,6 +139,7 @@ Route::get('/ot/generateCardsVolunteers', 'CardController@generateCardsVolunteer
 Route::get('/ot/generateCardBadges', 'CardController@generateCardbadges');
 Route::get('/ot/card/new/{template}/{uid}/{name}/{school}/{role}/{title}', 'CardController@newCard');
 Route::get('/ot/importCards', 'CardController@importCards');
+Route::get('/ot/regenerateCardBadge/{id}', 'CardController@regenerateCardBadge');
 Route::get('/ajax/roleAllocNations', 'DatatablesController@roleAllocNations');
 Route::get('/ajax/roleAllocDelegates', 'DatatablesController@roleAllocDelegates');
 Route::get('/ajax/roleListByNation', 'DatatablesController@roleListByNation');

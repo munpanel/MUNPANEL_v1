@@ -53,6 +53,10 @@ class User extends Authenticatable
         return $this->specific->belongsTo('App\Committee');
     }
 
+    public function orders() {
+        return $this->hasMany('App\Order');
+    }
+
     public function specific() {
         if ($this->type == 'delegate')
             return $this->delegate;

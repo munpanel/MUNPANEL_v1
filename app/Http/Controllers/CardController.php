@@ -100,6 +100,12 @@ class CardController extends Controller
         }
     }
 
+    public function regenerateCardBadge($id)
+    {
+        $card = Card::findOrFail($id);
+        ImageController::generateBadge($card->template, $card->name, $card->school, $card->role, $card->title, 'CMYK', $card->template.'.'.$card->title.'.'.$card->id.'.'.$card->user_id.'.'.$card->name.'.jpg', $card->id, $card->blank);
+    }
+
     public function newCard($template, $uid, $name, $school, $role, $title)
     {
         $card = new Card;

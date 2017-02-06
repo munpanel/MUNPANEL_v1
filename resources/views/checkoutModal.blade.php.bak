@@ -12,7 +12,7 @@
           <div class="modal-body">
             <div class="row">
               <div class="col-sm-12 b-r">
-                <div class="alert alert-info"><b>请选择支付方式。目前支持微信、支付宝。</b></div>
+                <div class="alert alert-info"><b>请选择支付方式。目前支持微信、支付宝，如需传统银行转帐，请联系official@bjmun.org。</b></div>
               </div>
             </div>
           </div>          
@@ -42,7 +42,7 @@ var client_id = "{{Config::get('teegon.client_id')}}";
         $('#pay').toggleClass('active', true);
         $.ajax({
             url: "{{secure_url('/pay/info')}}",
-            data: "_token={{ csrf_token() }}&oid={{$id}}&channel="+$(e.target).attr('channel')+"&return="+window.location,
+            data: "_token={{ csrf_token() }}&channel="+$(e.target).attr('channel')+"&return="+window.location,
             method:'post'
         }).done(tee.charge);
 

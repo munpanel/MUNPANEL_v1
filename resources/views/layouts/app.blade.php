@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="{{secure_url('/css/font-awesome.min.css')}}" type="text/css" />
     <link rel="stylesheet" href="{{secure_url('/css/font.css')}}" type="text/css" cache="false" />
     <link rel="stylesheet" href="{{secure_url('/css/plugin.css')}}" type="text/css" />
+    <link rel="stylesheet" href="{{secure_url('/css/munpanel.css')}}" type="text/css" />
     <link rel="stylesheet" href="{{secure_url('/css/app.css')}}" rel="stylesheet" />
     @stack('css')
 

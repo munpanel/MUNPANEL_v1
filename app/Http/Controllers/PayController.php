@@ -48,13 +48,15 @@ class PayController extends Controller
     {
         //UPDATE1: verification in PHP API (no official documentation for that, but will do)  --- Adam Yi Feb 6 2017
         //TO UPDATE: verification for security purposes (Teegon is still working on it. Update after they update lol). Payment status is strongly recommended to be manually checked now.
-        file_put_contents("/var/www/munpanel/storage/t", 'a'.var_export($request,true));
-        if (TeegonService::verify_return())
+        //file_put_contents("/var/www/munpanel/storage/t", 'a'.var_export($request,true));
+        $srv = new TeegonService(Config::get('teegon.api_url'));
+        $meta = json_decode($request->metadata);
+        if ($srv->verify_return())
         {
             if (isset($meta->oid))
             {
                 $amount = $request->amount;
-                $meta = json_decode($request->metadata);
+                //$meta = json_decode($request->metadata);
                 //$user = User::find($meta->uid);
                 $order = Order::find($meta->oid);
                 //VERIFY AMOUNT
@@ -64,8 +66,18 @@ class PayController extends Controller
                 if ($order->status == 'unpaid' || $order->status == 'cancelled') //even if it's cancelled, we should still set the order as paid as the user wants the order again
                 {
                     $order->status ='paid';
-                    $otder->payed_at = date('Y-m-d H:i:s');
+                    $order->payed_at = date('Y-m-d H:i:s');
                 }
+                /*
+                migration:
+                $table->string('charge_id')->nullable();//流水号
+                $table->string('buyer')->nullable();//支付方(微信ID/支付宝手机号)
+                $table->string('payment_no')->nullable();//第三方交易单号
+                */
+                $order->charge_id = $request->charge_id;
+                $order->buyer = $request->buyer;
+                $order->payment_no = $request->payment_no;
+                $order->save();
             }
             else //this should not be used. Fees for participating should be created as order as well. This section will be removed in the future.
             {

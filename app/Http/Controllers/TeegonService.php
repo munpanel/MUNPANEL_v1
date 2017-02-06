@@ -39,17 +39,17 @@ class TeegonService extends Controller{
     }
 
     function verify_return(){
-        if($_GET['charge_id']){
-            if(empty($_GET['sign'])){
-                return false; //return array('status'=>"1",'error_msg'=>'<h1>天工服务端返回签名信息错误!</h1><hr ><pre>','param'=>$_GET);
+        if($_REQUEST['charge_id']){
+            if(empty($_REQUEST['sign'])){
+                return false; //return array('status'=>"1",'error_msg'=>'<h1>天工服务端返回签名信息错误!</h1><hr ><pre>','param'=>$_REQUEST);
             }
 
-            if(!$this->get_sign_veryfy($_GET,$_GET['sign'])){
-                return false; //return array('status'=>"2",'error_msg'=>'<h1>签名验证错误请检查签名算法!</h1><hr ><pre>','param'=>$_GET);
+            if(!$this->get_sign_veryfy($_REQUEST,$_REQUEST['sign'])){
+                return false; //return array('status'=>"2",'error_msg'=>'<h1>签名验证错误请检查签名算法!</h1><hr ><pre>','param'=>$_REQUEST);
             }
 
             return true;
-            return array('status'=>"0",'error_msg'=>'','param'=>$_GET);
+            return array('status'=>"0",'error_msg'=>'','param'=>$_REQUEST);
         }
     }
 

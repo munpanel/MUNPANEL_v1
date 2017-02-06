@@ -72,14 +72,14 @@ class StoreController extends Controller
         $order->user_id = Auth::user()->id;
         $method = $request->method;
         $order->shipment_method = $method;
-        $price = str_replace(",", "", Cart::total());
-        $order->price = floatval($price);
         if ($method == 'mail')
         {
             Cart::add('NID_shipping', '运费', 1, 15);
             $order->address = $request->address;
         }
         $order->content = Cart::content();
+        $price = str_replace(",", "", Cart::total());
+        $order->price = floatval($price);
         $order->save();
         Cart::destroy();
         return redirect(secure_url('/store/order/' . $order->id));

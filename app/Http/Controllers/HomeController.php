@@ -256,9 +256,9 @@ class HomeController extends Controller
         return redirect(secure_url('/school/payment'));
     }
 
-    public function checkout()
+    public function checkout($id)
     {
-        return view('checkoutModal');
+        return view('checkoutModal', ['id' => $id]);
     }
     
     public function assignmentsList()

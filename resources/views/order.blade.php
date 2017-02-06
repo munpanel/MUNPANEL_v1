@@ -6,7 +6,7 @@
           <button href="#" class="btn btn-sm btn-info pull-right" onClick="window.print();">打印</button>
           <p class="pull-right">&nbsp;&nbsp;&nbsp;</p> 
           @if ($order->status == 'unpaid')
-            <a href="{{ secure_url('/pay/checkout.modal') }}" data-toggle="ajaxModal" class="btn btn-sm btn-success pull-right">支付</a>
+            <a href="{{ secure_url('/pay/checkout.modal/'.$order->id) }}" data-toggle="ajaxModal" class="btn btn-sm btn-success pull-right">支付</a>
             <p class="pull-right">&nbsp;&nbsp;&nbsp;</p> 
             <a href="{{ secure_url('/store/deleteOrder/'.$order->id) }}" data-toggle="ajaxModal" class="btn btn-sm btn-white pull-right"><span class="text-danger">取消订单</span></a>
           @endif

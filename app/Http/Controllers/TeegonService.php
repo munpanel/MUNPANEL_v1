@@ -12,7 +12,7 @@ class TeegonService extends Controller{
     }
 
     function pay($param,$result_decode = true){
-        if(empty($param['order_no'])){
+        if(empty($param['out_order_no'])){
             return "订单号错误";
         }
 
@@ -41,13 +41,14 @@ class TeegonService extends Controller{
     function verify_return(){
         if($_GET['charge_id']){
             if(empty($_GET['sign'])){
-                return array('status'=>"1",'error_msg'=>'<h1>天工服务端返回签名信息错误!</h1><hr ><pre>','param'=>$_GET);
+                return false; //return array('status'=>"1",'error_msg'=>'<h1>天工服务端返回签名信息错误!</h1><hr ><pre>','param'=>$_GET);
             }
 
             if(!$this->get_sign_veryfy($_GET,$_GET['sign'])){
-                return array('status'=>"2",'error_msg'=>'<h1>签名验证错误请检查签名算法!</h1><hr ><pre>','param'=>$_GET);
+                return false; //return array('status'=>"2",'error_msg'=>'<h1>签名验证错误请检查签名算法!</h1><hr ><pre>','param'=>$_GET);
             }
 
+            return true;
             return array('status'=>"0",'error_msg'=>'','param'=>$_GET);
         }
     }
@@ -103,6 +104,8 @@ class TeegonService extends Controller{
         curl_setopt_array($ch, $options);
         if( ! $result = curl_exec($ch))
         {
+            //dd(curl_error($ch));
+            // Error Number 77 -> check SSL. Just as a remind
             $this->on_error(curl_error($ch));
         }
         curl_close($ch);

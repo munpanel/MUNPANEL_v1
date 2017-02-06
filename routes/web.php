@@ -107,7 +107,7 @@ Route::get('/school/payment', 'HomeController@schoolPay');
 Route::get('/school/pay/change/{method}', 'HomeController@changeSchoolPaymentMethod');
 Route::post('/pay/info', 'PayController@payInfo');
 Route::get('/pay/invoice', 'HomeController@invoice');
-Route::get('/pay/checkout.modal', 'HomeController@checkout');
+Route::get('/pay/checkout.modal/{id}', 'HomeController@checkout');
 
 Route::get('/store', 'StoreController@home');
 Route::get('/store/cart', 'StoreController@displayCart');

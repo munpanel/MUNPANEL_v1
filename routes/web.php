@@ -100,7 +100,7 @@ Route::get('/dais/linkPartner.modal', 'RoleAllocController@linkPartnerModal');
 
 Route::get('/regDais', 'UserController@regDais');
 //Route::get('/regschools', 'UserController@regSchool');
-//Route::get('/test', 'UserController@test');
+Route::get('/test', 'UserController@test');
 //Route::get('/createPermissions', 'UserController@createPermissions');
 
 Route::get('/school/payment', 'HomeController@schoolPay');

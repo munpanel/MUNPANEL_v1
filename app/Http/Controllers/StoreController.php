@@ -82,8 +82,26 @@ class StoreController extends Controller
         $order->content = Cart::content();
         $price = str_replace(",", "", Cart::total());
         $order->price = floatval($price);
-        $order->save();
         Cart::destroy();
+        foreach ($order->content as $row)
+        {
+            $id = $row->id;
+            if (substr($id, 0, 4) == 'NID_')
+                continue;
+            $good = Good::find($id);
+            if (is_object($good))
+            {
+                if ($good->remains > 0) {
+                    $good->remains--;
+                    $good->save();
+                } else {
+                    return view('error', ['msg' => '您的购物车中有商品已售空']);
+                }
+            } else {
+                return view('error', ['msg' => '您的购物车中有商品已下架']);
+            }
+        }
+        $order->save();
         return redirect(secure_url('/store/order/' . $order->id));
     }
 

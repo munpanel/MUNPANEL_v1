@@ -13,7 +13,8 @@
         "chumper/zipper": "0.6.x",
         "gloudemans/shoppingcart": "*",
         "dingo/api": "1.0.*@dev",
-        "z38/metzli": "^1.0"
+        "z38/metzli": "^1.0",
+        "vinkla/pusher": "^2.5"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

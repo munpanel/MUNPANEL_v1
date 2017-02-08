@@ -143,3 +143,13 @@ Route::get('/ajax/roleAllocNations', 'DatatablesController@roleAllocNations');
 Route::get('/ajax/roleAllocDelegates', 'DatatablesController@roleAllocDelegates');
 Route::get('/ajax/roleListByNation', 'DatatablesController@roleListByNation');
 Route::get('/ajax/roleListByDelegate', 'DatatablesController@roleListByDelegate');
+
+Route::get('/chat', 'ChatController@getIndex');
+Route::post('/chat/message', 'ChatController@postMessage');
+
+Route::get('/bridge', function() {
+    Vinkla\Pusher\Facades\Pusher::trigger('my-channel', 'my-event', ['message' => 'gou']);
+
+
+    return view('home');
+});

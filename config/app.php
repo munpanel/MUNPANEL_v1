@@ -182,6 +182,7 @@ return [
         Chumper\Zipper\ZipperServiceProvider::class,
         Dingo\Api\Provider\LaravelServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
+        Vinkla\Pusher\PusherServiceProvider::class,
         Yajra\Datatables\DatatablesServiceProvider::class,
         Zizaco\Entrust\EntrustServiceProvider::class,
 

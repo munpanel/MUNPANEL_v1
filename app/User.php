@@ -50,7 +50,7 @@ class User extends Authenticatable
     }
 
     public function committee() {
-        return $this->specific->belongsTo('App\Committee');
+        return $this->specific()->belongsTo('App\Committee');
     }
 
     public function orders() {

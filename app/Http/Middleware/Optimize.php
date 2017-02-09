@@ -49,7 +49,8 @@ public function handle($request, Closure $next)
         // so the 1+1=? won't be executed
         $buffer = preg_replace(array_keys($replace), array_values($replace), $buffer);
         $response->setContent($buffer);
-        ini_set('zlib.output_compression', 'On');
+        //ini_set('zlib.output_compression', 'On');
+        // Works not so well with nginx, disable zlib
         return $response;
     }
   }

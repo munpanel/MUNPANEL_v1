@@ -426,8 +426,8 @@ class DatatablesController extends Controller //To-Do: Permission Check
             }
             $result->push([
                 'id' => ++$i, 
-                'image' => '<a href="good.modal/'. $good->id.'" data-toggle="ajaxModal"><img src="goodimg/' . $good->id . '" class="shop-image-small"></a>',
-                'title' => '<a href="good.modal/'. $good->id.'" data-toggle="ajaxModal">'.$good->name.'</a>',
+                'image' => '<a href="'. secure_url('/store/good.modal/'.$good->id).'" data-toggle="ajaxModal" class="details-modal"><img src="'. secure_url('/store/goodimg/' . $good->id) . '" class="shop-image-small"></a>',
+                'title' => '<a href="'. secure_url('/store/good.modal/'.$good->id).'" data-toggle="ajaxModal" class="details-modal">'.$good->name.'</a>',
                 'price' => '¥' . number_format($good->price, 2),
                 'command' => $command,
             ]);

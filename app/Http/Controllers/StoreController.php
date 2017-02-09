@@ -109,6 +109,14 @@ class StoreController extends Controller
     {
         return view('shipmentModal');
     }
+
+    public function goodModal($id)
+    {
+        $good = Good::findOrFail($id);
+        if ($good->enabled == false)
+            return 'error';
+        return view('goodModal', ['good' => $good]);
+    }
         
     public function goodImage($id)
     {

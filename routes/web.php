@@ -119,7 +119,8 @@ Route::get('/store/deleteOrder/{id}/{confirm?}', 'StoreController@deleteOrder');
 Route::get('/store/checkout', 'StoreController@checkout');
 Route::get('/store/shipment.modal', 'StoreController@shipmentModal');
 Route::post('/store/doCheckout', 'StoreController@doCheckout');
-Route::get('/goodimg/{id}', 'StoreController@goodImage');
+Route::get('/store/goodimg/{id}', 'StoreController@goodImage');
+Route::get('/store/good.modal/{id}', 'StoreController@goodModal');
 
 
 Route::get('/ajax/registrations', 'DatatablesController@registrations');

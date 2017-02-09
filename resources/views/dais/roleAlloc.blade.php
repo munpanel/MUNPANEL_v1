@@ -17,7 +17,7 @@
 
       <section class="vbox">
             <header class="header bg-white b-b clearfix">
-              <a href="{{secure_url('dais/lockAlloc')}}" class="btn btn-sm btn-success {{$mustAlloc > 0 ? 'disabled ': ''}}pull-right" id="ra-confirm"><i class="fa fa-check"></i> 完成并锁定</a> 
+              <a href="{{secure_url('dais/lockAlloc')}}" class="btn btn-sm btn-success {{$mustAlloc > 0 ? 'disabled ': ''}}pull-right details-modal"  id="ra-confirm"><i class="fa fa-check"></i> 完成并锁定</a> 
               <p>BJMUNC2017 {{$committee->display_name}} 席位分配</p>
             </header><section class="scrollable wrapper">
           <div class="tab-content">
@@ -31,7 +31,7 @@
                       @endif
                       所有代表</header>
                     <div class="row text-sm wrapper">
-                  <div class="col-sm-12 m-b-xs">本委员会有 {{$committee->delegates->count()}} 人报名，其中 {{$verified}} 人已通过组织团队审核，{{$committee->delegates->where('status', 'paid')->count()}} 人已缴费。已缴费代表中，当前仍有 {{$committee->delegates->where('status', 'paid')->where('nation_id', null)->count()}} 人未分配席位。<br>
+                  <div class="col-sm-12 m-b-xs">本委员会有 {{$committee->delegates->count()}} 人报名，其中 {{$verified}} 人已通过组织团队审核，{{$committee->delegates->where('status', 'paid')->count()}} 人已缴费。
                   @if ($mustAlloc > 0)
                     已缴费代表中，当前仍有 {{$committee->delegates->where('status', 'paid')->where('nation_id', null)->count()}} 人未分配席位。<br>
                     <strong class="text-danger">您必须为仍无席位的已缴费的 {{$mustAlloc}} 人分配席位，否则席位分配无法完成。</strong>

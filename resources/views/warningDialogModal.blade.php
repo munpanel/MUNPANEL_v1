@@ -11,8 +11,9 @@
          </p> 
          <p class="checkbox m-t-lg"> 
            <!-- TODO: 点击关闭对话框 -->  
-           <a href="" class="btn btn-sm btn-danger text-uc m-t-n-xs"><i class="fa fa-arrow-left"></i> 否</a> 
-           <a href="{{$target}}" class="btn btn-sm btn-success text-uc m-t-n-xs"><i class="fa fa-arrow-left"></i> 是</a> 
+           <a href="" class="btn btn-sm btn-danger text-uc m-t-n-xs pull-right"><i class="fa fa-times"></i> 否</a> 
+           <span class="pull-right">&nbsp;</span>
+           <a href="{{$target}}" class="btn btn-sm btn-success text-uc m-t-n-xs pull-right"><i class="fa fa-check"></i> 是</a> 
          </p> 
        </div> 
      </div> 

@@ -1,5 +1,9 @@
 @extends('layouts.app')
-@section('roleAlloc_active', 'active')
+@if (Auth::user()->type == 'delegate')
+    @section('home_active', 'active')
+@else
+    @section('roles_active', 'active')
+@endif
 @push('scripts')
     <script src="{{secure_url('/js/jquery.dataTables.min.js')}}"></script>
     <script src="{{secure_url('/js/datatables/fnReloadAjax.js')}}"></script>
@@ -14,6 +18,11 @@
             <header class="header bg-white b-b clearfix">
               <div class="row m-t-sm">
                 <div class="col-sm-6 m-b-xs">
+                  @if (Auth::user()->type == 'delegate')
+                  <a href="{{secure_url('/home')}}" class="btn btn-sm btn-success"><i class="fa fa-arrow-left"></i> 返回首页</a>
+                  @else
+                  <p>BJMUNC2017 {{Auth::user()->specific()->committee->display_name}} 席位分配表</p>
+                  @endif
                   <!--a href="{{secure_url('/ot/nationDetails.modal/new')}}" class="btn btn-sm btn-white details-modal"><i class="fa fa-plus"></i> 添加国家</a>
                   @if ($view == 'nation')
                   <div class="btn-group">
@@ -31,8 +40,7 @@
                       <li><a href="#">以席位视图显示</a></li>
                     </ul>
                   </div>
-                  @endif                  
-                  <a href="{{secure_url('/ot/nationDetails.modal/bulkAdd')}}" class="btn btn-sm btn-success details-modal disabled"><i class="fa fa-check"></i> 完成并锁定</a-->                  
+                  @endif-->                  
                 </div>
                 <div class="col-sm-6 m-b-xs">
                   <div class="input-group">

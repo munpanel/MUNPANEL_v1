@@ -121,7 +121,7 @@ class StoreController extends Controller
     public function goodImage($id)
     {
         $item = Good::findOrFail($id);
-        return response()->download(storage_path('/app/'.$item->image));
+        return response()->file(storage_path('/app/'.$item->image));
     }
     
     public function home()

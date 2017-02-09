@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 /*
 |--------------------------------------------------------------------------
@@ -86,7 +86,7 @@ Route::get('/ot/delete/school/{id}', ['middleware' => ['permission:edit-schools'
 Route::get('/ot/delete/committee/{id}', ['middleware' => ['permission:edit-committees'], 'uses' => 'UserController@deleteCommittee']);
 
 // TODO: 添加权限控制
-Route::get('/dais/lockAlloc/{confirm?}', 'RoleAllocController@lockAlloc');
+Route::get('/dais/lockAlloc', 'RoleAllocController@lockAlloc');
 Route::get('/dais/removeSeat/{id}', 'RoleAllocController@removeDelegate');
 Route::post('/dais/addSeat/{id}', 'RoleAllocController@addDelegate');
 Route::get('/dais/freeNation/{id}', 'RoleAllocController@freeNation');
@@ -95,7 +95,6 @@ Route::post('/dais/update/nation/{id}', 'RoleAllocController@updateNation');
 Route::get('/dais/delete/nation/{id}/{confirm?}', 'RoleAllocController@deleteNation');
 Route::get('/dais/linkPartner/{id1}/{id2}', 'RoleAllocController@linkPartner');
 Route::get('/dais/linkPartner.modal', 'RoleAllocController@linkPartnerModal');
-Route::get('/delBizCard.modal/{id}', 'RoleAllocController@getDelegateBizcard');
 
 //Route::get('/dais/assignments', 'HomeController@assignment');
 

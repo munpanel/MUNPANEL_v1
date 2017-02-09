@@ -1,4 +1,4 @@
-﻿<div class="modal-dialog">
+<div class="modal-dialog">
     <div class="modal-content">
         <div class="modal-body">
             @if (Auth::user()->type == 'ot' || Auth::user()->type == 'dais') 

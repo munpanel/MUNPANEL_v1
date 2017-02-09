@@ -422,7 +422,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
                           <i class="fa fa-chevron-down text-muted"></i>
                         </button>
                       </div>
-                    </div>&nbsp;<button class="btn btn-success details-modal" type="submit"><i class="fa fa-plus"></i> 加入购物车</button></form>';
+                    </div>&nbsp;<button class="btn btn-success" type="submit"><i class="fa fa-plus"></i> 加入购物车</button></form>';
             }
             $result->push([
                 'id' => ++$i, 

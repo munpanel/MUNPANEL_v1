@@ -27,7 +27,7 @@ class CreateOrdersTable extends Migration
             $table->string('payment_no')->nullable();//第三方交易单号
             /*** TEEGON ***/
             $table->double('price');//冗余，空间换时间
-            $table->string('payment_channel');//wxpay, alipay  为方便扩展，天工可能开发新接口如Apple Pay等，不做成enum
+            $table->string('payment_channel')->nullable();//wxpay, alipay  为方便扩展，天工可能开发新接口如Apple Pay等，不做成enum
             $table->dateTime('payed_at')->nullable();
             $table->dateTime('shipped_at')->nullable();
             $table->timestamps();

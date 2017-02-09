@@ -13,7 +13,7 @@
 <div class="close"> </div>
 <div class="cart-sec simpleCart_shelfItem">
 <div class="cart-item cyc">
-<img src='{{secure_url("goodimg/$row->id")}}' class="img-responsive" alt="">
+<img src='{{secure_url("store/goodimg/$row->id")}}' class="img-responsive" alt="">
 </div>
 <div class="cart-item-info">
 <h3><a href="#">{{$row->name}}</a><!--ispan>Powered by Adam Yi LOL</span--></h3>

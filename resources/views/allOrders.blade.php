@@ -9,35 +9,34 @@
           <!--i class="fa fa-apple fa fa-3x"></i-->       
           <div class="well m-t">
             <div class="row">
-              <strong>付款人:</strong>
-              <h4>{{$user->name}}</h4>
-              <p>
-                @if (is_object($user->specific()) && is_object($user->specific()->school))
-                {{$user->specific()->school->name}}<br>
-                @endif
-                @if (is_object($user->specific()) && is_object($user->specific()->tel))
-                Phone: {{$user->specific()->tel}}<br>
-                @endif
-                Email: {{$user->email}}<br>
-              </p>
+              <div class="col-xs-12">
+                <strong>付款人:</strong>
+                <h4>{{$user->name}}</h4>
+                <p>
+                  @if (is_object($user->specific()) && is_object($user->specific()->school))
+                  {{$user->specific()->school->name}}<br>
+                  @endif
+                  @if (is_object($user->specific()) && is_object($user->specific()->tel))
+                  Phone: {{$user->specific()->tel}}<br>
+                  @endif
+                  Email: {{$user->email}}<br>
+                </p>
+              </div>
             </div>
           </div>
           @foreach($orders as $order)
           <div class="line"></div>
+          <button href="{{secure_url('/shipOrder/'.$order->id)}}" class="btn btn-sm btn-info pull-right" onClick="window.print();">发货</button>
           <h4>订单编号 {{$order->id}}</h4>
           <p class="m-t m-b">
-          @if ($order->shipment_method == 'mail')
-              送货地址: {{$order->address}}<br>
-          @elseif ($order->shipment_method == 'conference')
-              会议期间取货<br>
-          @endif
           @if ($order->status == 'cancelled')
               订单状态: <span class="label bg-danger">已取消</span><br>
           @elseif ($order->status == 'unpaid')
               订单状态: <span class="label bg-danger">未支付</span><br>
+          @elseif ($order->status == 'paid')
+              订单状态: <span class="label bg-info">待发货</span><br>
           @else
-          {{-- To-Do: Shipped --}}
-              订单状态: <span class="label bg-success">待发货</span><br>
+              订单状态: <span class="label bg-success">已发货</span><br>
           @endif
               付款时间：{{isset($order->payed_at)?$order->payed_at:'未付款'}}<br>
               发货时间：{{isset($order->shipped_at)?$order->shipped_at:'未发货'}}

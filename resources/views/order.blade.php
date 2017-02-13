@@ -59,9 +59,10 @@
               订单状态: <span class="label bg-danger">已取消</span><br>
           @elseif ($order->status == 'unpaid')
               订单状态: <span class="label bg-danger">未支付</span><br>
+          @elseif ($order->status == 'paid')
+              订单状态: <span class="label bg-info">待发货</span><br>
           @else
-          {{-- To-Do: Shipped --}}
-              订单状态: <span class="label bg-success">待发货</span><br>
+              订单状态: <span class="label bg-success">已发货</span><br>
           @endif
               订单ID: <strong>{{$order->id}}</strong><br>
               付款时间：{{isset($order->payed_at)?$order->payed_at:'未付款'}}<br>

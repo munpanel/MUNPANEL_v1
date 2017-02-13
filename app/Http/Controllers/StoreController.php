@@ -124,7 +124,17 @@ class StoreController extends Controller
     public function viewAllOrders($id)
     {
         $user = User::findOrFail($id);
-        $orders = $user->orders;
+        $orders = $user->orders->where('status', 'paid');
         return view('allOrders', ['user' => $user, 'orders' => $orders]);
+    }
+    
+    public function shipOrder($id)
+    {
+        $order = Order::findOrFail($id);
+        $order->status = 'done';
+        //$order->shipped_at = ; // TODO: 添加 shipped_at 值
+        $order->save();
+        // TODO: 原页面刷新
+        return '2333';
     }
 }

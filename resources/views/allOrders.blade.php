@@ -1,6 +1,6 @@
       <section class="vbox bg-white">
         <header class="header b-b hidden-print">
-          <p>{{$user->name}}的所有订单</p>
+          <p>{{$user->name}}的所有待发货订单</p>
         </header>
         <section class="scrollable wrapper">
           <!--i class="fa fa-apple fa fa-3x"></i-->       

@@ -132,9 +132,8 @@ class StoreController extends Controller
     {
         $order = Order::findOrFail($id);
         $order->status = 'done';
-        //$order->shipped_at = ; // TODO: 添加 shipped_at 值
+        $order->shipped_at = date('Y-m-d H:i:s');
         $order->save();
-        // TODO: 原页面刷新
-        return '2333';
+        return redirect(secure_url('/allOrders/' . $order->user_id));
     }
 }

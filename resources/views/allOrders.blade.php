@@ -26,6 +26,12 @@
           <a href="{{secure_url('/shipOrder/'.$order->id)}}" class="btn btn-sm btn-info pull-right">发货</a>
           <h4>订单编号 {{$order->id}}</h4>
           <p class="m-t m-b">
+          @if ($order->shipment_method == 'mail')
+          快递至: {{$order->address}}<br>
+          @elseif ($order->shipment_method == 'conference')
+          会议期间取货<br>
+          @endif
+          {{--
           @if ($order->status == 'cancelled')
               订单状态: <span class="label bg-danger">已取消</span><br>
           @elseif ($order->status == 'unpaid')
@@ -35,8 +41,9 @@
           @else
               订单状态: <span class="label bg-success">已发货</span><br>
           @endif
+          --}}
               付款时间：{{isset($order->payed_at)?$order->payed_at:'未付款'}}<br>
-              发货时间：{{isset($order->shipped_at)?$order->shipped_at:'未发货'}}
+              {{-- 发货时间：{{isset($order->shipped_at)?$order->shipped_at:'未发货'}} --}}
           </p>
           <?php $orderItems = $order->items(); ?>
           <table class="table">

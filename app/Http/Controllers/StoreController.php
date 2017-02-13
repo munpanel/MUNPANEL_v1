@@ -120,4 +120,11 @@ class StoreController extends Controller
     {
         return view('store', ['orders' => Auth::user()->orders]);
     }
+    
+    public function viewAllOrders($id)
+    {
+        $user = User::findOrFail($id);
+        $orders = $user->orders;
+        return view('allOrders', ['user' => $user, 'orders' => $orders]);
+    }
 }

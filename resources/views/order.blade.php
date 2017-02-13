@@ -30,7 +30,7 @@
                 <h4>{{Auth::user()->name}}</h4>
                 <p>
                   @if (is_object(Auth::user()->specific()) && is_object(Auth::user()->specific()->school))
-                  {{Auth::user()->specific()->school->name}}
+                  {{Auth::user()->specific()->school->name}}<br>
                   @endif
                   @if ($order->shipment_method == 'mail')
                   Address: {{$order->address}}<br>
@@ -38,9 +38,9 @@
                   会议期间取货<br>
                   @endif
                   @if (is_object(Auth::user()->specific()) && is_object(Auth::user()->specific()->tel))
-                  Phone: {{Auth::user()->specific()->tel}}
+                  Phone: {{Auth::user()->specific()->tel}}<br>
                   @endif
-                  Email: {{Auth::user()->email}}<br>
+                  Email: {{Auth::user()->email}}
                 </p>
               </div>
               <div class="col-xs-6">
@@ -56,12 +56,13 @@
           </div>
           <p class="m-t m-b">
           @if ($order->status == 'cancelled')
-              单状态: <span class="label bg-danger">已取消</span><br>
+              订单状态: <span class="label bg-danger">已取消</span><br>
           @elseif ($order->status == 'unpaid')
               订单状态: <span class="label bg-danger">未支付</span><br>
+          @elseif ($order->status == 'paid')
+              订单状态: <span class="label bg-info">待发货</span><br>
           @else
-          {{-- To-Do: Shipped --}}
-              订单状态: <span class="label bg-success">待发货</span><br>
+              订单状态: <span class="label bg-success">已发货</span><br>
           @endif
               订单ID: <strong>{{$order->id}}</strong><br>
               付款时间：{{isset($order->payed_at)?$order->payed_at:'未付款'}}<br>

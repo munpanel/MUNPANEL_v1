@@ -128,4 +128,20 @@ class StoreController extends Controller
     {
         return view('store', ['orders' => Auth::user()->orders]);
     }
+    
+    public function viewAllOrders($id)
+    {
+        $user = User::findOrFail($id);
+        $orders = $user->orders->where('status', 'paid');
+        return view('allOrders', ['user' => $user, 'orders' => $orders]);
+    }
+    
+    public function shipOrder($id)
+    {
+        $order = Order::findOrFail($id);
+        $order->status = 'done';
+        $order->shipped_at = date('Y-m-d H:i:s');
+        $order->save();
+        return redirect(secure_url('/allOrders/' . $order->user_id));
+    }
 }

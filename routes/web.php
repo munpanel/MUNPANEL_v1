@@ -122,8 +122,8 @@ Route::get('/store/shipment.modal', 'StoreController@shipmentModal');
 Route::post('/store/doCheckout', 'StoreController@doCheckout');
 Route::get('/store/goodimg/{id}', 'StoreController@goodImage');
 Route::get('/store/good.modal/{id}', 'StoreController@goodModal');
-
-
+Route::get('/allOrders/{id}', 'StoreController@viewAllOrders');
+Route::get('/shipOrder/{id}', 'StoreController@shipOrder');
 Route::get('/ajax/registrations', 'DatatablesController@registrations');
 Route::get('/ajax/users', ['middleware' => ['permission:edit-users'], 'uses' => 'DatatablesController@users']);
 Route::get('/ajax/schools', ['middleware' => ['permission:edit-schools'], 'uses' => 'DatatablesController@schools']);

@@ -1,6 +1,3 @@
-@extends('layouts.app')
-@section('store_active', 'active')
-@section('content')
       <section class="vbox bg-white">
         <header class="header b-b hidden-print">
           <p>{{$user->name}}的所有订单</p>
@@ -26,7 +23,7 @@
           </div>
           @foreach($orders as $order)
           <div class="line"></div>
-          <button href="{{secure_url('/shipOrder/'.$order->id)}}" class="btn btn-sm btn-info pull-right" onClick="window.print();">发货</button>
+          <a href="{{secure_url('/shipOrder/'.$order->id)}}" class="btn btn-sm btn-info pull-right">发货</a>
           <h4>订单编号 {{$order->id}}</h4>
           <p class="m-t m-b">
           @if ($order->status == 'cancelled')
@@ -72,5 +69,3 @@
       </section>
       <a href="#" class="hide nav-off-screen-block" data-toggle="class:nav-off-screen" data-target="#nav"></a>
     </section>
-
-@endsection

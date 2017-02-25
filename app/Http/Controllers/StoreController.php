@@ -6,6 +6,7 @@ use Config;
 use App\User;
 use App\Good;
 use App\Order;
+use App\Card;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Cart;
@@ -131,8 +132,12 @@ class StoreController extends Controller
     
     public function viewAllOrders($id)
     {
-        $user = User::findOrFail($id);
+        if (is_numeric($id))
+            $user = User::find($id);
+        else
+            $user = Card::findOrFail($id)->user;
         $orders = $user->orders->where('status', 'paid');
+        //$orders = Order::where('status', 'paid')->where('shipment_method', 'mail')->get();
         return view('allOrders', ['user' => $user, 'orders' => $orders]);
     }
     

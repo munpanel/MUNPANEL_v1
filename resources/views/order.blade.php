@@ -37,7 +37,7 @@
                   @elseif ($order->shipment_method == 'conference')
                   会议期间取货<br>
                   @endif
-                  @if (is_object(Auth::user()->specific()) && is_object(Auth::user()->specific()->tel))
+                  @if (is_object(Auth::user()->specific()) && isset(Auth::user()->specific()->tel))
                   Phone: {{Auth::user()->specific()->tel}}<br>
                   @endif
                   Email: {{Auth::user()->email}}

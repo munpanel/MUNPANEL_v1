@@ -13,7 +13,7 @@
 <section class="vbox">
       <header class="header b-b bg-white">          
         <p>BJMUNC 2017 纪念品商店</p>
-        <a href="{{secure_url('/store/cart')}}" class="btn btn-sm btn-info details-modal pull-right"><i class="fa fa-shopping-cart"></i> 我的购物车</a>
+        <a href="{{secure_url('/store/cart')}}" class="btn btn-sm btn-info pull-right"><i class="fa fa-shopping-cart"></i> 我的购物车</a>
         <p class="pull-right">&nbsp;</p>
         <div class="btn-group pull-right">
           <button class="btn btn-white btn-sm dropdown-toggle" aria-expanded="false" data-toggle="dropdown"><i class="fa fa-money"></i> 我的订单 ({{$orders->count()}}) <span class="caret"></span></button>

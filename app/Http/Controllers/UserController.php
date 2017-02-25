@@ -15,6 +15,7 @@ use App\Delegategroup;
 use App\Card;
 use App\Dais;
 use App\Good;
+use App\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -423,6 +424,43 @@ class UserController extends Controller
 
     public function test()
     {
+        if (($handle = fopen("/var/www/munpanel/test.csv", "r")) !== FALSE) {
+            $resp = "";
+            while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+                $user = User::where('name', $data[0])->get();
+                $resp .= json_encode($user) . '<br>';
+            }
+            fclose($handle);
+            return $resp;
+        }
+
+        $orders = Order::all();
+        foreach ($orders as $order)
+        {
+            if ($order->status != 'paid')
+                continue;
+                $c = json_decode($order->content);
+             foreach ($c as $row)
+        {
+            $id = $row->id;
+            if (substr($id, 0, 4) == 'NID_')
+                continue;
+            $good = Good::find($id);
+            if (is_object($good))
+            {
+                //if ($good->remains > 0) {
+                    $good->remains -= $row->qty;
+                    $good->save();
+                //} else {
+                 //   return view('error', ['msg' => '您的购物车中有商品已售空']);
+                //}
+            } else {
+                //return view('error', ['msg' => '您的购物车中有商品已下架']);
+            }
+        }
+
+        }
+        return '...';
         $good = new Good;
         $good->name = 'BJMUN 徽章（小）';
         $good->image = 'storeitem/badge1.jpeg';

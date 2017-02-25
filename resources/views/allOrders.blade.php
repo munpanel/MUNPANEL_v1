@@ -13,7 +13,7 @@
                   @if (is_object($user->specific()) && is_object($user->specific()->school))
                   {{$user->specific()->school->name}}<br>
                   @endif
-                  @if (is_object($user->specific()) && is_object($user->specific()->tel))
+                  @if (is_object($user->specific()) && isset($user->specific()->tel))
                   Phone: {{$user->specific()->tel}}<br>
                   @endif
                   Email: {{$user->email}}<br>

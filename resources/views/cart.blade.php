@@ -59,7 +59,11 @@
 
 
 <div class="clearfix"></div>
+@if (Config::get('munpanel.store_checkout'))
 <a class="order" data-toggle="ajaxModal" href="{{secure_url('/store/shipment.modal')}}">Place Order</a>
+@else
+<a class="order" href="#">购买通道已关闭</a>
+@endif
 <div class="total-item">
 <h3>OPTIONS</h3>
 <h4>COUPONS</h4>

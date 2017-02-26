@@ -132,6 +132,11 @@ class HomeController extends Controller
             $changable = true;
         return view('regModal', ['committees' => Committee::all(), 'schools' => $schools, 'id' => $id, 'user' => $user, 'delegate' => $user->delegate, 'volunteer' => $user->volunteer, 'observer' => $user->observer, 'changable' => $changable]);
     }
+    
+    public function reg2Modal()
+    {
+        return view('reg2Modal', ['committees' => Committee::where('conference_id', 2)]);        
+    }
 
     public function regManage()
     {

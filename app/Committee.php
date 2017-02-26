@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Committee extends Model
 {
-    protected $fillable = ['name', 'display_name', 'topic_0', 'topic_1', 'topic_sel', 'language', 'rule', 'timeframe_start', 'timeframe_end', 'session', 'description', 'is_allocated'];
+    protected $fillable = ['conference_id', 'name', 'display_name', 'topic_0', 'topic_1', 'topic_sel', 'language', 'rule', 'father_committee_id', 'timeframe_start', 'timeframe_end', 'session', 'description', 'is_allocated'];
 
     public function delegates() {
         return $this->hasMany('App\Delegate');
@@ -24,6 +24,11 @@ class Committee extends Model
     public function documents()
     {
         return $this->belongsToMany('App\Document');
+    }
+
+    public function conference()
+    {
+        return $this->belongsTo('App\Conference');
     }
 
     public function emptyNations() {

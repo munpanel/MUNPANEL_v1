@@ -10,6 +10,7 @@
   <link href="js/fuelux/fuelux.css" rel="stylesheet" type="text/css">
   <link href="css/plugin.css" rel="stylesheet" type="text/css">
   <link href="css/app.css" rel="stylesheet" type="text/css">
+  <link href="css/munpanel.css" rel="stylesheet" type="text/css">
   <!--[if lt IE 9]>
     <script src="js/ie/respond.min.js" cache="false"></script>
     <script src="js/ie/html5.js" cache="false"></script>
@@ -55,7 +56,7 @@
                   </label>
                 </div>
                 <label>　出生日期</label>
-                <input class="input datepicker form-control" type="text" size="16" value="1996-07-26" data-date-format="yyyy-mm-dd">
+                <input name="dateofbirth" class="datepicker-input form-control input" type="text" size="16" placeholder="yyyy-mm-dd" data-date-format="yyyy-mm-dd" data-required="true">
                 <label>　省份</label>
                 <select name="province" class="form-control" data-required="true">
                   <option value="99" selected="">海外</option>
@@ -75,8 +76,8 @@
                 <div class="col-sm-4">
                 <label>证件类型及号码</label>
                  <select name="typeDocument" class="form-control" data-required="true">
-                   <option value="1">居民身份证</option>
-                   <option value="2" selected="">护照 (Passport)</option>
+                   <option value="1" selected="">居民身份证</option>
+                   <option value="2">护照 (Passport)</option>
                    <option value="3">港澳回乡证</option>
                    <option value="4">台胞证</option>
                  </select>
@@ -131,7 +132,7 @@
                 <table class="table table-striped b-t text-sm">
                 <thead>
                   <tr>
-                    <th width="20"><input type="checkbox"></th>
+                    <th width="20"><i class="fa fa-check-circle-o"></i></th>
                     <th>会议</th>
                     <th>委员会</th>
                     <th>席位</th>
@@ -431,10 +432,13 @@
               </div>
               <div class="form-group">
                 <label>MUNPANEL 密码</label>
-                <input name="password2" class="form-control" type="password" placeholder="输入密码以创建或验证您的 MUNPANEL 账号">
+                <input name="password2" class="form-control" type="password" placeholder="输入密码以创建或验证您的 MUNPANEL 账号" data-required="true">
               </div>
             </div>                
           </form>
+          <div class="step-pane" id="step5">
+            <p>您的报名已成功完成</p>
+          </div>
           <div class="actions pull-left">
             <button class="btn btn-white btn-sm btn-prev" disabled="" type="button">Prev</button>
             <button class="btn btn-white btn-sm btn-next" type="button" data-last="Finish">Next</button>
@@ -445,8 +449,8 @@
   </div><!-- /.modal-dialog -->
 </div>
 <div class="modal-backdrop in"></div>
-<div class="datepicker dropdown-menu"><div class="datepicker-days" style="display: block;"><table class=" table-condensed"><thead><tr><th class="prev">‹</th><th class="switch" colspan="5">February 2013</th><th class="next">›</th></tr><tr><th class="dow">Su</th><th class="dow">Mo</th><th class="dow">Tu</th><th class="dow">We</th><th class="dow">Th</th><th class="dow">Fr</th><th class="dow">Sa</th></tr></thead><tbody><tr><td class="day  old">27</td><td class="day  old">28</td><td class="day  old">29</td><td class="day  old">30</td><td class="day  old">31</td><td class="day ">1</td><td class="day ">2</td></tr><tr><td class="day ">3</td><td class="day ">4</td><td class="day ">5</td><td class="day ">6</td><td class="day ">7</td><td class="day ">8</td><td class="day ">9</td></tr><tr><td class="day ">10</td><td class="day ">11</td><td class="day  active">12</td><td class="day ">13</td><td class="day ">14</td><td class="day ">15</td><td class="day ">16</td></tr><tr><td class="day ">17</td><td class="day ">18</td><td class="day ">19</td><td class="day ">20</td><td class="day ">21</td><td class="day ">22</td><td class="day ">23</td></tr><tr><td class="day ">24</td><td class="day ">25</td><td class="day ">26</td><td class="day ">27</td><td class="day ">28</td><td class="day  new">1</td><td class="day  new">2</td></tr><tr><td class="day  new">3</td><td class="day  new">4</td><td class="day  new">5</td><td class="day  new">6</td><td class="day  new">7</td><td class="day  new">8</td><td class="day  new">9</td></tr></tbody></table></div><div class="datepicker-months" style="display: none;"><table class="table-condensed"><thead><tr><th class="prev">‹</th><th class="switch" colspan="5">2013</th><th class="next">›</th></tr></thead><tbody><tr><td colspan="7"><span class="month">Jan</span><span class="month active">Feb</span><span class="month">Mar</span><span class="month">Apr</span><span class="month">May</span><span class="month">Jun</span><span class="month">Jul</span><span class="month">Aug</span><span class="month">Sep</span><span class="month">Oct</span><span class="month">Nov</span><span class="month">Dec</span></td></tr></tbody></table></div><div class="datepicker-years" style="display: none;"><table class="table-condensed"><thead><tr><th class="prev">‹</th><th class="switch" colspan="5">2010-2019</th><th class="next">›</th></tr></thead><tbody><tr><td colspan="7"><span class="year old">2009</span><span class="year">2010</span><span class="year">2011</span><span class="year">2012</span><span class="year active">2013</span><span class="year">2014</span><span class="year">2015</span><span class="year">2016</span><span class="year">2017</span><span class="year">2018</span><span class="year">2019</span><span class="year old">2020</span></td></tr></tbody></table></div></div>
-	<script src="js/jquery.min.js"></script>
+  
+  <script src="js/jquery.min.js"></script>
   <!-- Bootstrap -->
   <script src="js/bootstrap.js"></script>
   <!-- App -->
@@ -456,4 +460,6 @@
   <!-- Fuelux -->
   <script src="js/fuelux/fuelux.js"></script>
   <script src="js/datepicker/bootstrap-datepicker.js"></script>
+  <script src="js/parsley/parsley.min.js"></script>
+  <script src="js/parsley/parsley.extend.js"></script>
 </body>

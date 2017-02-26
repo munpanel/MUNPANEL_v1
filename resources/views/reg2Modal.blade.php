@@ -1,0 +1,484 @@
+<div class="modal-dialog">
+  <div class="modal-content">
+    <div class="panel wizard">
+      <div class="wizard-steps clearfix">
+        <ul class="steps">
+          <li class="active" data-target="#step1"><span class="badge badge-info">1</span>个人信息</li>
+          <li data-target="#step2"><span class="badge">2</span>参会经历</li>
+          <li data-target="#step3"><span class="badge">3</span>会议信息</li>
+          <li data-target="#step4"><span class="badge">4</span>确认</li>
+          <li data-target="#step5"><span class="badge">5</span>完成</li>
+        </ul>
+      </div>
+      <div class="step-content clearfix">
+        <form class="m-b-sm">
+          <div class="step-pane active" id="step1">
+            {{csrf_field()}}
+            @if (isset($id))
+            <input type="hidden" name="id" value="{{ $id }}">
+            @endif
+            <div class="form-group">
+              <label>姓名</label>
+              @if (Auth::check())
+              <input name="name" disabled="" class="form-control" type="text" value="{{ Auth::user()->name }}" data-required="true" data-trigger="change">
+              <span class="help-block m-b-none">如需编辑请退出登录或联系客服</span>
+              @else
+              <input name="name" class="form-control" type="text" value="" data-required="true" data-trigger="change">              
+              @endif
+            </div>
+            <div class="form-group">
+              <label>邮箱</label>
+              @if (Auth::check())
+              <input name="email" disabled="" class="form-control" type="text" value="{{ Auth::user()->email }}" data-type="email" data-required="true" data-trigger="change">
+              <span class="help-block m-b-none">如需编辑请退出登录或联系客服</span>
+              @else
+              <input name="email" class="form-control" type="text" value="" data-type="email" data-required="true" data-trigger="change">
+              @endif
+            </div>
+            <div class="form-group form-inline">
+              <label>性别</label>
+              <div class="btn-group" data-toggle="buttons">
+                <label class="btn btn-sm btn-info">
+                  <input name="gender" id="male" type="radio" value="male"> <i class="fa fa-check text-active"></i>男
+                </label>
+                <label class="btn btn-sm btn-success active">
+                  <input name="gender" id="female" type="radio" value="female"> <i class="fa fa-check text-active"></i>女
+                </label>
+              </div>
+              <label>　出生日期</label>
+              <input name="dateofbirth" class="datepicker-input form-control input" type="text" size="16" placeholder="yyyy-mm-dd" data-date-format="yyyy-mm-dd" data-required="true">
+              <label>　省份</label>
+              <select name="province" class="form-control" data-required="true">
+                <option value="99" selected="">海外</option>
+              </select>
+            </div>
+            <div class="form-group pull-in clearfix">
+              <div class="col-sm-9">
+              <label>学校</label>
+                <input name="school" class="form-control" type="text" value="" data-required="true">
+              </div>
+              <div class="col-sm-3">
+                <label>毕业年份</label>
+                <input name="yearGraduate" class="form-control" type="text" value="" data-required="true">
+              </div>
+            </div>
+            <div class="form-group pull-in clearfix">
+              <div class="col-sm-4">
+              <label>证件类型及号码</label>
+               <select name="typeDocument" class="form-control" data-required="true">
+                 <option value="1" selected="">居民身份证</option>
+                 <option value="2">护照 (Passport)</option>
+                 <option value="3">港澳回乡证</option>
+                 <option value="4">台胞证</option>
+               </select>
+              </div>
+              <div class="col-sm-8">
+                <label>&nbsp;</label>
+                <input name="sfz" class="form-control" type="text" value="" data-required="true">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>电话</label>
+              <input name="tel" class="form-control" type="text" value="" data-required="true">
+            </div>
+            <div class="form-group">
+              <label>备用电话</label>
+              <input name="tel2" class="form-control" type="text" placeholder="选填；如果您的主电话号码无法使用，我们将通过备用电话联系您" value="">
+            </div>
+            <div class="form-group">
+              <label>QQ</label>
+              <input name="qq" class="form-control" type="text" value="" data-required="true">
+            </div>
+            <div class="form-group">
+              <label>Skype</label>
+              <input name="skype" class="form-control" type="text" value="">
+            </div>
+            <div class="form-group">
+              <label>微信</label>
+              <input name="wechat" class="form-control" type="text" value="">
+            </div>
+            <div class="form-group pull-in clearfix">
+              <div class="col-sm-6">
+              <label>紧急联络人</label>
+                <input name="parentname" class="form-control" type="text" value="" data-required="true">
+              </div>
+              <div class="col-sm-6">
+                <label>与紧急联络人关系</label>
+                <input name="parentrelation" class="form-control" type="text" value="" data-required="true">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>紧急联络人电话</label>
+              <input name="parenttel" class="form-control" type="text" value="" data-required="true">
+            </div>
+          </div>
+          <div class="step-pane" id="step2">
+            <div class="form-group">
+              <label>首次参加模拟联合国活动的年份</label>
+              <input name="yearJoin" class="form-control" type="text" placeholder="您在哪一年第一次参会呢？请回答 4 位数年份" value="" data-required="true">
+            </div>
+            @if (regType == 'delegate')
+            <div class="form-group">
+              <label>请选择您希望展示的参会经历 (限选 3 项)</label>
+              <table class="table table-striped b-t text-sm">
+              <thead>
+                <tr>
+                  <th width="20"><i class="fa fa-check-circle-o"></i></th>
+                  <th>会议</th>
+                  <th>委员会</th>
+                  <th>席位</th>
+                  <th>奖项</th>
+                  <th>参会日期</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><input name="post[]" type="checkbox" value="2"></td>
+                  <td>BJMUNC2017</td>
+                  <td>LOCARNO (en)</td>
+                  <td>munpanel test</td>
+                  <td>无</td>
+                  <td>2017年2月</td>
+                </tr>
+              </tbody>
+            </table>
+            </div>
+            <div class="form-group">
+              <label>请添加未在 MUNPANEL 收录的参会经历 (最多 3 项)</label>
+              <div class="form-group pull-in clearfix">
+                <div class="col-sm-6">
+                 <select name="level1" class="form-control" data-required="true">
+                   <option value="" selected="">请选择会议级别</option>
+                   <option value="1">全国及以上级别会议</option>
+                   <option value="2">地区级会议</option>
+                   <option value="3">校际会</option>
+                   <option value="4">校内会</option>
+                 </select>
+                </div>
+                <div class="col-sm-6">
+                  <input name="date1" class="form-control" type="text" placeholder="会议的举办时间 (例：2017年2月)" value="2017年2月" data-required="true">
+                </div>
+              </div>
+              <div class="form-group">
+                <input name="name1" class="form-control" type="text" placeholder="会议名称" value="BJMUNC2017" data-required="true">
+              </div>
+              <div class="form-group pull-in clearfix">
+                <div class="col-sm-6">
+                  <input name="role1" class="form-control" type="text" placeholder="您的角色" value="munpanel test" data-required="true">
+                </div>
+                <div class="col-sm-6">
+                  <input name="award1" class="form-control" type="text" placeholder="所获奖项 (如果有)" value="">
+                </div>
+              </div>
+            <div class="form-group">
+              <input name="others1" class="form-control" type="text" placeholder="备注">
+            </div>
+            </div>
+            <div class="form-group">
+              <label>&nbsp;</label>
+              <div class="form-group pull-in clearfix">
+                <div class="col-sm-6">
+                 <select name="level2" class="form-control">
+                   <option value="" selected="">请选择会议级别</option>
+                   <option value="1">全国及以上级别会议</option>
+                   <option value="2">地区级会议</option>
+                   <option value="3">校际会</option>
+                   <option value="4">校内会</option>
+                 </select>
+                </div>
+                <div class="col-sm-6">
+                  <input name="date2" class="form-control" type="text" placeholder="会议的举办时间 (例：2017年2月)" value="">
+                </div>
+              </div>
+              <div class="form-group">
+                <input name="name2" class="form-control" type="text" placeholder="会议名称" value="">
+              </div>
+              <div class="form-group pull-in clearfix">
+                <div class="col-sm-6">
+                  <input name="role2" class="form-control" type="text" placeholder="您的角色" value="">
+                </div>
+                <div class="col-sm-6">
+                  <input name="award2" class="form-control" type="text" placeholder="所获奖项 (如果有)" value="">
+                </div>
+              </div>
+            <div class="form-group">
+              <input name="others2" class="form-control" type="text" placeholder="备注">
+            </div>
+            </div>
+            <div class="form-group">
+              <label>&nbsp;</label>
+              <div class="form-group pull-in clearfix">
+                <div class="col-sm-6">
+                 <select name="level3" class="form-control">
+                   <option value="" selected="">请选择会议级别</option>
+                   <option value="1">全国及以上级别会议</option>
+                   <option value="2">地区级会议</option>
+                   <option value="3">校际会</option>
+                   <option value="4">校内会</option>
+                 </select>
+                </div>
+                <div class="col-sm-6">
+                  <input name="date3" class="form-control" type="text" placeholder="会议的举办时间 (例：2017年2月)" value="">
+                </div>
+              </div>
+              <div class="form-group">
+                <input name="name3" class="form-control" type="text" placeholder="会议名称" value="">
+              </div>
+              <div class="form-group pull-in clearfix">
+                <div class="col-sm-6">
+                  <input name="role3" class="form-control" type="text" placeholder="您的角色" value="">
+                </div>
+                <div class="col-sm-6">
+                  <input name="award3" class="form-control" type="text" placeholder="所获奖项 (如果有)" value="">
+                </div>
+              </div>
+            <div class="form-group">
+              <input name="others3" class="form-control" type="text" placeholder="备注">
+            </div>
+            </div>
+            @endif
+          </div>
+          <div class="step-pane" id="step3">
+            <div class="form-group">
+              <label>委员会意向 (第一顺位)</label>
+              <select name="committee1" class="form-control" data-required="true">
+                <option value="" selected="">请选择</option>
+                @foreach ($committees as $committee)
+                  @if (!isset($committee->father_committee_id) && $committee->option_limit >= 1)
+                    <option value="{{ $committee->id }}">{{ $committee->name }}</option>
+                  @endif
+                @endforeach
+              </select>
+            </div>
+            <div class="form-group" id="committee1branch">
+              <label>会场意向</label>
+              <select name="branch1" class="form-control m-b" data-required="true">
+                <option value="" selected="">请选择</option>
+                <option value="17">中国内阁 PRC Cabinet</option>
+                <option value="18">俄罗斯内阁 Russian Cabinet</option>
+                <option value="19">美国内阁 US Cabinet</option>
+                <option value="20">外长团 Foreign Ministers Group</option>
+                <option value="21">联合国安全理事会 United Nations Security Council</option>
+                <option value="22">阿拉伯国家联盟 League of Arab States</option>
+                <option value="23">欧洲联盟 European Union</option>
+                <option value="24">舆论媒体 Media &amp; Press</option>
+              </select>
+              <select name="branch2" class="form-control">
+                <option value="">请选择备选会场</option>
+                <option value="17">中国内阁 PRC Cabinet</option>
+                <option value="18">俄罗斯内阁 Russian Cabinet</option>
+                <option value="19">美国内阁 US Cabinet</option>
+                <option value="20">外长团 Foreign Ministers Group</option>
+                <option value="21">联合国安全理事会 United Nations Security Council</option>
+                <option value="22">阿拉伯国家联盟 League of Arab States</option>
+                <option value="23">欧洲联盟 European Union</option>
+                <option value="24">舆论媒体 Media &amp; Press</option>
+              </select>
+            </div>
+            <div class="form-group" id="committee2branch">
+              <label>委员会意向 (第二顺位)</label>
+              <select name="committee2" class="form-control">
+                <option value="" selected="">请选择</option>
+                @foreach ($committees as $committee)
+                  @if (!isset($committee->father_committee_id) && $committee->option_limit >= 2)
+                    <option value="{{ $committee->id }}">{{ $committee->name }}</option>
+                  @endif
+                @endforeach
+              </select>
+            </div>
+            <div class="form-group">
+              <label>会场意向</label>
+              <select name="branch3" class="form-control m-b">
+                <option value="" selected="">请选择</option>
+                <option value="25">東晉朝廷</option>
+                <option value="26">桓溫幕府</option>
+                <option value="27">前燕朝廷</option>
+                <option value="28">前秦朝廷</option>
+              </select>
+              <select name="branch4" class="form-control">
+                <option value="" selected="">请选择备选会场</option>
+                <option value="25">東晉朝廷</option>
+                <option value="26">桓溫幕府</option>
+                <option value="27">前燕朝廷</option>
+                <option value="28">前秦朝廷</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>委员会意向 (第三顺位)</label>
+              <select name="committee3" class="form-control" data-required="true">
+                <option value="" selected="">请选择</option>
+                @foreach ($committees as $committee)
+                  @if (!isset($committee->father_committee_id) && $committee->option_limit >= 3)
+                    <option value="{{ $committee->id }}">{{ $committee->name }}</option>
+                  @endif
+                @endforeach
+              </select>
+            </div>
+            @if (regType == 'delegate')
+            <div class="form-group">
+              <label>面试联络方式</label>
+              <select name="typeInterview" class="form-control">
+                <option value="" selected="">请选择</option>
+                <option value="1">电话 (包括备用电话)</option>
+                <option value="2">QQ</option>
+                <option value="3">Skype</option>
+                <option value="4">微信</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>面试选项</label>
+              <div class="checkbox">
+                <label class="checkbox-custom">
+                  <input name="smsInterview" type="checkbox" checked="checked">
+                  <i class="fa fa-square-o"></i>
+                  开通面试短信提醒服务 (需另行付费)
+                </label>
+              </div>
+              <div class="checkbox">
+                <label class="checkbox-custom">
+                  <input name="offlineInterview" type="checkbox">
+                  <i class="fa fa-square-o"></i>
+                  接受线下面试
+                </label>
+              </div>
+              <div class="form-group" id="isInterviewCity">
+                <label>如果希望进行线下面试，请输入可进行面试的城市</label>
+                <input name="interviewCity" class="form-control" type="text" value="">
+              </div>
+            </div>
+            @endif
+            <div class="form-group">
+              <label>团队报名选项</label>
+              <div class="radio">
+                <label class="radio-custom">
+                  <input name="groupOption" value="personal" type="radio" checked="checked">
+                  <i class="fa fa-circle-o checked"></i>
+                  我以个人身份报名
+                </label>
+              </div>
+              <div class="radio">
+                <label class="radio-custom">
+                  <input name="groupOption" value="group" type="radio">
+                  <i class="fa fa-circle-o"></i>
+                  我跟随团队报名
+                </label>
+              </div>
+              <div class="radio">
+                <label class="radio-custom">
+                  <input name="groupOption" value="leader" type="radio">
+                  <i class="fa fa-circle-o"></i>
+                  我是团队报名的领队
+                </label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>备注</label>
+              <textarea name="others" class="form-control" placeholder="任何其他说明" type="text"></textarea>
+            </div>
+          </div>
+          <div class="step-pane" id="step4">
+            <label>确认您的报名信息</label>
+            <p>千反田える，您将以<strong>{{ regType == 'delegate' ? '代表' : (regType == 'observer' ? '观察员' : '志愿者') }}</strong>身份报名参加2017年环梦模拟联合国年度会议。<br>请确认以下报名信息是否准确无误。</p>
+            <section class="panel text-sm">
+              <div class="panel-body">
+                <label>个人信息</label>
+                <p><i>姓名</i><br>&emsp;&emsp;千反田える</p>
+                <p><i>邮箱</i><br>&emsp;&emsp;info@munpanel.com</p>
+                <p><i>性别及出生日期</i><br>&emsp;&emsp;女 / 1996-07-26</p>
+                <p><i>省份</i><br>&emsp;&emsp;海外</p>
+                <p><i>学校及毕业年份</i><br>&emsp;&emsp;岐阜县立斐太高等学校 / 2015</p>
+                <p><i>证件类型及号码</i><br>&emsp;&emsp;护照 (Passport) / MA1234567</p>
+                <p><i>电话</i><br>&emsp;&emsp;0081577355678</p>
+                <p><i>QQ</i><br>&emsp;&emsp;123456789</p>                      
+                <p><i>Skype</i><br>&emsp;&emsp;chitanda-eru</p>
+                <p><i>微信</i><br>&emsp;&emsp;chitanda-eru</p>
+                <p><i>紧急联络人</i><br>&emsp;&emsp;千反田铁吾</p>
+                <p><i>与紧急联络人关系</i><br>&emsp;&emsp;父亲</p>
+                <p><i>紧急联络人电话</i><br>&emsp;&emsp;0081577357000</p>
+                <label>参会经历</label>
+                <p><i>首次参加模拟联合国活动的年份</i><br>&emsp;&emsp;2012</p>
+                <p><i>参会经历 1</i><br>&emsp;&emsp;BJMUNC2017 (地区级会议, 2017年2月)<br>&emsp;&emsp;munpanel test, 无奖项</p>
+                <label>会议信息</label>
+                <p><i>委员会意向 1</i><br>&emsp;&emsp;危机联动体系<br>&emsp;&emsp;会场意向: 外长团 Foreign Ministers Group, 联合国安全理事会 United Nations Security Council</p>
+                <p><i>委员会意向 2</i><br>&emsp;&emsp;東晉縱橫<br>&emsp;&emsp;会场意向: 前秦朝廷</p>
+                <p><i>委员会意向 3</i><br>&emsp;&emsp;联合国大会社会、人道主义和文化委员会</p>
+                <p><i>面试联络方式</i><br>&emsp;&emsp;Skype</p>
+                <p><i>面试选项</i><br>&emsp;&emsp;开通面试短信提醒服务</p>
+                <p><i>团队报名选项</i><br>&emsp;&emsp;我以个人身份报名</p>
+              </div>
+            </section>
+            <div class="checkbox">
+              <label class="checkbox-custom">
+                <input name="correct" type="checkbox" checked="checked" data-required="true">
+                <i class="fa fa-square-o"></i>
+                我确认以上报名信息准确无误
+              </label>
+            </div>
+            <div class="checkbox">
+              <label class="checkbox-custom">
+                <input name="agreement" type="checkbox" checked="checked" data-required="true">
+                <i class="fa fa-square-o"></i>
+                我同意环梦模拟联合国参会协议和 MUNPANEL 使用协议 (虽然并没有这两样东西)
+              </label>
+            </div>
+            <div class="form-group">
+              <label>MUNPANEL 密码</label>
+              <input name="password2" class="form-control" type="password" placeholder="输入密码以创建或验证您的 MUNPANEL 账号" data-required="true">
+            </div>
+          </div>                
+        </form>
+        <div class="step-pane" id="step5">
+          <p>您的报名已成功完成</p>
+        </div>
+        <div class="actions pull-left">
+          <button class="btn btn-white btn-sm btn-prev" disabled="" type="button">Prev</button>
+          <button class="btn btn-white btn-sm btn-next" type="button" data-last="Finish">Next</button>
+        </div>
+      </div>
+    </div>
+  </div><!-- /.modal-content -->
+</div><!-- /.modal-dialog -->
+
+@if ($changable)
+<script>
+$('#delform').submit(function(e){
+    e.preventDefault();
+    if ($( '#delform' ).parsley( 'validate' )) {
+        $.post("{{ secure_url('/saveRegDel') }}", $('#delform').serialize(), function(receivedData){
+            //if (receivedData == "success")
+                $('#ajaxModal').modal('hide');
+                @if (Auth::user()->type != 'ot' && Auth::user()->type != 'school')
+                location.reaload();
+                @endif
+            //useTheResponseData(receivedData);
+        });
+    }
+});
+$('#volform').submit(function(e){
+    e.preventDefault();
+    if ($( '#volform' ).parsley( 'validate' )) {
+        $.post("{{ secure_url('/saveRegVol') }}", $('#volform').serialize(), function(receivedData){
+            //if (receivedData == "success")
+                $('#ajaxModal').modal('hide');
+                @if (Auth::user()->type != 'ot' && Auth::user()->type != 'school')
+                location.reaload();
+                @endif
+           //useTheResponseData(receivedData);
+        });
+    }
+});
+$('#obsform').submit(function(e){
+    e.preventDefault();
+    if ($( '#obsform' ).parsley( 'validate' )) {
+        $.post("{{ secure_url('/saveRegObs') }}", $('#obsform').serialize(), function(receivedData){
+            //if (receivedData == "success")
+                $('#ajaxModal').modal('hide');
+                @if (Auth::user()->type != 'ot' && Auth::user()->type != 'school')
+                location.reaload();
+                @endif
+            //useTheResponseData(receivedData);
+        });
+    }
+});
+</script>
+@endif

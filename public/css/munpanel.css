@@ -5,3 +5,11 @@
 .shop-image-small{
     width: 160px;
 }
+
+.modal {
+    z-index: 950;
+}
+
+.modal-backdrop {
+    z-index: 940;
+}

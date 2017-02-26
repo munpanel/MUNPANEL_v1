@@ -112,12 +112,15 @@
               <input name="parenttel" class="form-control" type="text" value="" data-required="true">
             </div>
           </div>
+          @if (isset($customTable->experience) && array_search($regType, $customTable->experience->uses))
           <div class="step-pane" id="step2">
+            @if (array_search($regType, $customTable->experience->startYear))
             <div class="form-group">
               <label>首次参加模拟联合国活动的年份</label>
               <input name="yearJoin" class="form-control" type="text" placeholder="您在哪一年第一次参会呢？请回答 4 位数年份" value="" data-required="true">
             </div>
-            @if (regType == 'delegate')
+            @endif
+            @if (array_search($regType, $customTable->experience->select))
             <div class="form-group">
               <label>请选择您希望展示的参会经历 (限选 3 项)</label>
               <table class="table table-striped b-t text-sm">
@@ -143,6 +146,8 @@
               </tbody>
             </table>
             </div>
+            @endif
+            @if (array_search($regType, $customTable->experience->custom))
             <div class="form-group">
               <label>请添加未在 MUNPANEL 收录的参会经历 (最多 3 项)</label>
               <div class="form-group pull-in clearfix">
@@ -156,15 +161,15 @@
                  </select>
                 </div>
                 <div class="col-sm-6">
-                  <input name="date1" class="form-control" type="text" placeholder="会议的举办时间 (例：2017年2月)" value="2017年2月" data-required="true">
+                  <input name="date1" class="form-control" type="text" placeholder="会议的举办时间 (例：2017年2月)" value="" data-required="true">
                 </div>
               </div>
               <div class="form-group">
-                <input name="name1" class="form-control" type="text" placeholder="会议名称" value="BJMUNC2017" data-required="true">
+                <input name="name1" class="form-control" type="text" placeholder="会议名称" value="" data-required="true">
               </div>
               <div class="form-group pull-in clearfix">
                 <div class="col-sm-6">
-                  <input name="role1" class="form-control" type="text" placeholder="您的角色" value="munpanel test" data-required="true">
+                  <input name="role1" class="form-control" type="text" placeholder="您的角色" value="" data-required="true">
                 </div>
                 <div class="col-sm-6">
                   <input name="award1" class="form-control" type="text" placeholder="所获奖项 (如果有)" value="">
@@ -238,13 +243,14 @@
             </div>
             @endif
           </div>
+          @endif
           <div class="step-pane" id="step3">
             <div class="form-group">
               <label>委员会意向 (第一顺位)</label>
               <select name="committee1" class="form-control" data-required="true">
                 <option value="" selected="">请选择</option>
                 @foreach ($committees as $committee)
-                  @if (!isset($committee->father_committee_id) && $committee->option_limit >= 1)
+                  @if (true) {{--!isset($committee->father_committee_id) && $committee->option_limit >= 1)--}}
                     <option value="{{ $committee->id }}">{{ $committee->name }}</option>
                   @endif
                 @endforeach
@@ -314,7 +320,7 @@
                 @endforeach
               </select>
             </div>
-            @if (regType == 'delegate')
+            @if ($regType == 'delegate')
             <div class="form-group">
               <label>面试联络方式</label>
               <select name="typeInterview" class="form-control">
@@ -378,7 +384,7 @@
           </div>
           <div class="step-pane" id="step4">
             <label>确认您的报名信息</label>
-            <p>千反田える，您将以<strong>{{ regType == 'delegate' ? '代表' : (regType == 'observer' ? '观察员' : '志愿者') }}</strong>身份报名参加2017年环梦模拟联合国年度会议。<br>请确认以下报名信息是否准确无误。</p>
+            <p>千反田える，您将以<strong>{{ $regType == 'delegate' ? '代表' : ($regType == 'observer' ? '观察员' : '志愿者') }}</strong>身份报名参加2017年环梦模拟联合国年度会议。<br>请确认以下报名信息是否准确无误。</p>
             <section class="panel text-sm">
               <div class="panel-body">
                 <label>个人信息</label>
@@ -439,7 +445,7 @@
   </div><!-- /.modal-content -->
 </div><!-- /.modal-dialog -->
 
-@if ($changable)
+@if (isset($changable))
 <script>
 $('#delform').submit(function(e){
     e.preventDefault();

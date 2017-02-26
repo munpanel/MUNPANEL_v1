@@ -135,7 +135,16 @@ class HomeController extends Controller
     
     public function reg2Modal()
     {
-        return view('reg2Modal', ['committees' => Committee::where('conference_id', 2)]);        
+        $customTableJson = '{"experience":{
+        "uses":["delegate","observer"],
+        "startYear":["delegate","observer"],
+        "select":["delegate"],
+        "custom":["delegate"]},
+        "conference":"2333"
+        }';
+        $customTable = json_decode($customTableJson);
+        $committees = Committee::where('conference_id', 2);
+        return view('reg2Modal', ['committees' => $committees, 'regType' => 'delegate', 'customTable' => $customTable]);        
     }
 
     public function regManage()

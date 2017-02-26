@@ -105,7 +105,7 @@
                               <div class="progress-bar progress-bar-warning" data-toggle="tooltip" data-original-title="{{ $percent }}%" style="width: {{ $percent }}%"></div>
                             </div-->
                               <div class="text-sm">点击下方按钮查看完整席位分配：</div>
-                              <a href="{{ secure_url('/roleList') }}" class="btn btn-danger">席位分配</a>
+                              <a href="{{ secure_url('/reg2.modal') }}" data-toggle="ajaxModal" class="btn btn-danger">预览 reg2.modal</a>
                           </div>
                         </div>
                         <div class="col-xs-6 wrapper text-center">

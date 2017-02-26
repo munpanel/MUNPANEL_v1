@@ -13,3 +13,8 @@
 .modal-backdrop {
     z-index: 940;
 }
+
+.vbox > footer {
+    top: auto;
+    z-index: 900;
+}

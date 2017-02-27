@@ -2,6 +2,11 @@
 @section('home_active', 'active')
 @push('scripts')
     <script src="{{secure_url('js/charts/easypiechart/jquery.easy-pie-chart.js')}}"></script>
+    <script src="{{secure_url('/js/fuelux/fuelux.js')}}"></script>
+    <script src="{{secure_url('/js/datepicker/bootstrap-datepicker.js')}}"></script>
+@endpush
+@push('css')
+    <link href="{{secure_url('/js/fuelux/fuelux.css')}}" rel="stylesheet">
 @endpush
 @section('content')
       <section class="vbox">

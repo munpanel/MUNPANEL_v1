@@ -19,8 +19,8 @@
     <link rel="stylesheet" href="{{secure_url('/css/font-awesome.min.css')}}" type="text/css" />
     <link rel="stylesheet" href="{{secure_url('/css/font.css')}}" type="text/css" cache="false" />
     <link rel="stylesheet" href="{{secure_url('/css/plugin.css')}}" type="text/css" />
-    <link rel="stylesheet" href="{{secure_url('/css/munpanel.css')}}" type="text/css" />
     <link rel="stylesheet" href="{{secure_url('/css/app.css')}}" rel="stylesheet" />
+    <link rel="stylesheet" href="{{secure_url('/css/munpanel.css')}}" type="text/css" />
     @stack('css')
 
     <!-- Scripts -->
@@ -184,8 +184,6 @@
   <script src="{{secure_url('/js/app.js')}}"></script>
   <script src="{{secure_url('/js/app.plugin.js')}}"></script>
   <script src="{{secure_url('/js/app.data.js')}}"></script>
-  <script src="{{secure_url('/js/fuelux/fuelux.js')}}"></script>
-  <script src="{{secure_url('/js/datepicker/bootstrap-datepicker.js')}}"></script>
   <!-- Parsley -->
   <script src="{{secure_url('/js/parsley/parsley.min.js')}}"></script>
   <script src="{{secure_url('/js/parsley/parsley.extend.js')}}"></script>

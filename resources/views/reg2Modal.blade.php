@@ -1,13 +1,22 @@
+@php
+$isExperience = isset($customTable->experience) && in_array($regType, $customTable->experience->uses)
+@endphp
 <div class="modal-dialog">
   <div class="modal-content">
     <div class="panel wizard">
       <div class="wizard-steps clearfix">
         <ul class="steps">
           <li class="active" data-target="#step1"><span class="badge badge-info">1</span>个人信息</li>
+          @if ($isExperience)
           <li data-target="#step2"><span class="badge">2</span>参会经历</li>
           <li data-target="#step3"><span class="badge">3</span>会议信息</li>
           <li data-target="#step4"><span class="badge">4</span>确认</li>
           <li data-target="#step5"><span class="badge">5</span>完成</li>
+          @else
+          <li data-target="#step2"><span class="badge">2</span>会议信息</li>
+          <li data-target="#step3"><span class="badge">3</span>确认</li>
+          <li data-target="#step4"><span class="badge">4</span>完成</li>
+          @endif
         </ul>
       </div>
       <div class="step-content clearfix">
@@ -112,15 +121,15 @@
               <input name="parenttel" class="form-control" type="text" value="" data-required="true">
             </div>
           </div>
-          @if (isset($customTable->experience) && array_search($regType, $customTable->experience->uses))
+          @if ($isExperience){{--(isset($customTable->experience) && in_array($regType, $customTable->experience->uses))--}}
           <div class="step-pane" id="step2">
-            @if (array_search($regType, $customTable->experience->startYear))
+            @if (in_array($regType, $customTable->experience->startYear))
             <div class="form-group">
               <label>首次参加模拟联合国活动的年份</label>
               <input name="yearJoin" class="form-control" type="text" placeholder="您在哪一年第一次参会呢？请回答 4 位数年份" value="" data-required="true">
             </div>
             @endif
-            @if (array_search($regType, $customTable->experience->select))
+            @if (in_array($regType, $customTable->experience->select))
             <div class="form-group">
               <label>请选择您希望展示的参会经历 (限选 3 项)</label>
               <table class="table table-striped b-t text-sm">
@@ -147,7 +156,7 @@
             </table>
             </div>
             @endif
-            @if (array_search($regType, $customTable->experience->custom))
+            @if (in_array($regType, $customTable->experience->custom))
             <div class="form-group">
               <label>请添加未在 MUNPANEL 收录的参会经历 (最多 3 项)</label>
               <div class="form-group pull-in clearfix">
@@ -244,13 +253,13 @@
             @endif
           </div>
           @endif
-          <div class="step-pane" id="step3">
-            <div class="form-group">
+          <div class="step-pane" id="{{$isExperience ? 'step3' : 'step2'}}">
+            <div class="form-group" id="committee1">
               <label>委员会意向 (第一顺位)</label>
               <select name="committee1" class="form-control" data-required="true">
                 <option value="" selected="">请选择</option>
                 @foreach ($committees as $committee)
-                  @if (true) {{--!isset($committee->father_committee_id) && $committee->option_limit >= 1)--}}
+                  @if (true) {{--is_null($committee->father_committee_id) && $committee->option_limit >= 1)--}}
                     <option value="{{ $committee->id }}">{{ $committee->name }}</option>
                   @endif
                 @endforeach
@@ -320,39 +329,35 @@
                 @endforeach
               </select>
             </div>
-            @if ($regType == 'delegate')
-            <div class="form-group">
-              <label>面试联络方式</label>
-              <select name="typeInterview" class="form-control">
-                <option value="" selected="">请选择</option>
-                <option value="1">电话 (包括备用电话)</option>
-                <option value="2">QQ</option>
-                <option value="3">Skype</option>
-                <option value="4">微信</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label>面试选项</label>
+            @foreach ($customTable->conference->items as $item)
+              @if (in_array($regType, $item->uses))
+                @if (isset($item->title))
+                <label>{{$item->title}}</label>
+                @endif
+                <?php
+                switch ($item->type)
+                {
+                  // 自定义的表单项
+                  case 'select': echo '
+                  <select name="'.$item->name.'" class="form-control m-b">
+                    <option value="" selected="">请选择</option>';
+                    foreach ($item->options as $option)
+                      echo '<option value="'.$option->value.'">'.$option->text.'</option>';
+                  echo '</select> ';
+                  break;
+                  case 'checkbox': echo '
               <div class="checkbox">
                 <label class="checkbox-custom">
-                  <input name="smsInterview" type="checkbox" checked="checked">
-                  <i class="fa fa-square-o"></i>
-                  开通面试短信提醒服务 (需另行付费)
+                  <input name="'.$item->name.'" type="checkbox">
+                  <i class="fa fa-square-o"></i>'.
+                  $item->text.'
                 </label>
-              </div>
-              <div class="checkbox">
-                <label class="checkbox-custom">
-                  <input name="offlineInterview" type="checkbox">
-                  <i class="fa fa-square-o"></i>
-                  接受线下面试
-                </label>
-              </div>
-              <div class="form-group" id="isInterviewCity">
-                <label>如果希望进行线下面试，请输入可进行面试的城市</label>
-                <input name="interviewCity" class="form-control" type="text" value="">
-              </div>
-            </div>
-            @endif
+              </div>';
+                  break;
+                  case 'text': echo '<input name="'.$item->name.'" class="form-control m-b" type="text" value="">';
+                  break;
+                  // 预设的表单项
+                  case 'preGroupOptions': echo'
             <div class="form-group">
               <label>团队报名选项</label>
               <div class="radio">
@@ -376,13 +381,20 @@
                   我是团队报名的领队
                 </label>
               </div>
-            </div>
+            </div>';
+                  break;
+                  case 'preRemarks': echo'
             <div class="form-group">
               <label>备注</label>
               <textarea name="others" class="form-control" placeholder="任何其他说明" type="text"></textarea>
-            </div>
+            </div>';
+                  break;
+                }
+                ?>
+              @endif
+            @endforeach
           </div>
-          <div class="step-pane" id="step4">
+          <div class="step-pane" id="{{$isExperience ? 'step4' : 'step3'}}">
             <label>确认您的报名信息</label>
             <p>千反田える，您将以<strong>{{ $regType == 'delegate' ? '代表' : ($regType == 'observer' ? '观察员' : '志愿者') }}</strong>身份报名参加2017年环梦模拟联合国年度会议。<br>请确认以下报名信息是否准确无误。</p>
             <section class="panel text-sm">
@@ -429,11 +441,11 @@
             </div>
             <div class="form-group">
               <label>MUNPANEL 密码</label>
-              <input name="password2" class="form-control" type="password" placeholder="输入密码以创建或验证您的 MUNPANEL 账号" data-required="true">
+              <input name="password2" class="form-control" type="password" placeholder="输入密码以创建、登录或验证您的 MUNPANEL 账号" data-required="true">
             </div>
           </div>                
         </form>
-        <div class="step-pane" id="step5">
+        <div class="step-pane" id="{{$isExperience ? 'step5' : 'step4'}}">
           <p>您的报名已成功完成</p>
         </div>
         <div class="actions pull-left">

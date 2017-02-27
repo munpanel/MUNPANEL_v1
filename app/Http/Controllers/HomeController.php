@@ -133,18 +133,48 @@ class HomeController extends Controller
         return view('regModal', ['committees' => Committee::all(), 'schools' => $schools, 'id' => $id, 'user' => $user, 'delegate' => $user->delegate, 'volunteer' => $user->volunteer, 'observer' => $user->observer, 'changable' => $changable]);
     }
     
-    public function reg2Modal()
+    public function reg2Modal($regType)
     {
         $customTableJson = '{"experience":{
         "uses":["delegate","observer"],
         "startYear":["delegate","observer"],
         "select":["delegate"],
         "custom":["delegate"]},
-        "conference":"2333"
-        }';
+        "conference":{
+        "items":[{
+        "uses":["delegate"],
+        "title":"面试联络方式",
+        "type":"select",
+        "name":"typeInterview",
+        "data_required":"true",
+        "options":[{"value":"1","text":"电话 (包括备用电话)"},{"value":"2","text":"QQ"},{"value":"3","text":"Skype"},{"value":"4","text":"微信"}]
+        },{
+        "uses":["delegate"],
+        "title":"面试选项",
+        "type":"checkbox",
+        "name":"smsInterview",
+        "text":"开通面试短信提醒服务 (需另行付费)"
+        },{
+        "uses":["delegate"],
+        "type":"checkbox",
+        "name":"offlineInterview",
+        "text":"接受线下面试"
+        },{
+        "uses":["delegate"],
+        "title":"如果希望进行线下面试，请输入可进行面试的城市",
+        "type":"text",
+        "name":"interviewCity"
+        },{
+        "uses":["delegate","observer","volunteer"],
+        "type":"preGroupOptions"
+        },{
+        "uses":["delegate","observer","volunteer"],
+        "type":"preRemarks"
+        }]
+        }}';
         $customTable = json_decode($customTableJson);
         $committees = Committee::where('conference_id', 2);
-        return view('reg2Modal', ['committees' => $committees, 'regType' => 'delegate', 'customTable' => $customTable]);        
+        return view('reg2Modal', ['committees' => $committees, 'regType' => $regType, 'customTable' => $customTable]);
     }
 
     public function regManage()

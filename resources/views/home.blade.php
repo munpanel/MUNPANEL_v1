@@ -105,7 +105,9 @@
                               <div class="progress-bar progress-bar-warning" data-toggle="tooltip" data-original-title="{{ $percent }}%" style="width: {{ $percent }}%"></div>
                             </div-->
                               <div class="text-sm">点击下方按钮查看完整席位分配：</div>
-                              <a href="{{ secure_url('/reg2.modal') }}" data-toggle="ajaxModal" class="btn btn-danger">预览 reg2.modal</a>
+                              <a href="{{ secure_url('/reg2.modal/delegate') }}" data-toggle="ajaxModal" class="btn btn-danger">预览 reg2.modal (代表)</a>
+                              <a href="{{ secure_url('/reg2.modal/observer') }}" data-toggle="ajaxModal" class="btn btn-danger">预览 reg2.modal (观察员)</a>
+                              <a href="{{ secure_url('/reg2.modal/volunteer') }}" data-toggle="ajaxModal" class="btn btn-danger">预览 reg2.modal (志愿者)</a>
                           </div>
                         </div>
                         <div class="col-xs-6 wrapper text-center">

@@ -21,6 +21,7 @@ class CreateConferencesTable extends Migration
             $table->date('date_start');
             $table->date('date_end');
             $table->text('description');
+            $table->text('tableSettings');
             $table->timestamps();
         });
     }

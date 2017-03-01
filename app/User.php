@@ -57,6 +57,10 @@ class User extends Authenticatable
         return $this->hasMany('App\Order');
     }
 
+    public function regs() {
+        return $this->hasMany('App\Reg');
+    }
+    
     public function specific() {
         if ($this->type == 'delegate')
             return $this->delegate;

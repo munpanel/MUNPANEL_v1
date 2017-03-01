@@ -59,6 +59,7 @@ Route::get('/ot/userDetails.modal/{id}', ['middleware' => ['permission:edit-user
 Route::get('/ot/schoolDetails.modal/{id}', ['middleware' => ['permission:edit-schools'], 'uses' => 'HomeController@schoolDetailsModal']);
 Route::get('/ot/committeeDetails.modal/{id}', ['middleware' => ['permission:edit-committees'], 'uses' => 'HomeController@committeeDetailsModal']);
 
+Route::post('/saveReg2', 'UserController@reg2');
 Route::post('/saveRegDel', 'UserController@regSaveDel');
 Route::post('/saveRegVol', 'UserController@regSaveVol');
 Route::post('/saveRegObs', 'UserController@regSaveObs');

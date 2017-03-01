@@ -10,17 +10,17 @@ $isExperience = isset($customTable->experience) && in_array($regType, $customTab
           @if ($isExperience)
           <li data-target="#step2"><span class="badge">2</span>参会经历</li>
           <li data-target="#step3"><span class="badge">3</span>会议信息</li>
-          <li data-target="#step4"><span class="badge">4</span>确认</li>
-          <!--li data-target="#step5"><span class="badge">5</span>完成</li-->
+          <!--li data-target="#step4"><span class="badge">4</span>确认</li>
+          <li data-target="#step5"><span class="badge">5</span>完成</li-->
           @else
           <li data-target="#step2"><span class="badge">2</span>会议信息</li>
-          <li data-target="#step3"><span class="badge">3</span>确认</li>
-          <!--li data-target="#step4"><span class="badge">4</span>完成</li-->
+          <!--li data-target="#step3"><span class="badge">3</span>确认</li>
+          <li data-target="#step4"><span class="badge">4</span>完成</li-->
           @endif
         </ul>
       </div>
       <div class="step-content clearfix">
-        <form class="m-b-sm">
+        <form class="m-b-sm" action="{{ secure_url('/saveReg2') }}" method="post">
           <div class="step-pane active" id="step1">
             {{csrf_field()}}
             <input type="hidden" name="conference_id" value="2">
@@ -90,22 +90,30 @@ $isExperience = isset($customTable->experience) && in_array($regType, $customTab
               <label>电话</label>
               <input name="tel" class="form-control" type="text" value="" data-required="true">
             </div>
+            @if (isset($customTable->info->contact->alt_phone))
             <div class="form-group">
               <label>备用电话</label>
-              <input name="tel2" class="form-control" type="text" placeholder="选填；如果您的主电话号码无法使用，我们将通过备用电话联系您" value="">
+              <input name="tel2" class="form-control" type="text" placeholder="选填；如果您的主电话号码无法使用，我们将通过备用电话联系您" value="" {{$customTable->info->contact->alt_phone == 'mandatory' ? 'data-required="true"' : ''}}>
             </div>
+            @endif
+            @if (isset($customTable->info->contact->qq))
             <div class="form-group">
               <label>QQ</label>
-              <input name="qq" class="form-control" type="text" value="" data-required="true">
+              <input name="qq" class="form-control" type="text" value="" {{$customTable->info->contact->qq == 'mandatory' ? 'data-required="true"' : ''}}>
             </div>
+            @endif
+            @if (isset($customTable->info->contact->skype))
             <div class="form-group">
               <label>Skype</label>
-              <input name="skype" class="form-control" type="text" value="">
+              <input name="skype" class="form-control" type="text" value="" {{$customTable->info->contact->skype == 'mandatory' ? 'data-required="true"' : ''}}>
             </div>
+            @endif
+            @if (isset($customTable->info->contact->wechat))
             <div class="form-group">
               <label>微信</label>
-              <input name="wechat" class="form-control" type="text" value="">
+              <input name="wechat" class="form-control" type="text" value="" {{$customTable->info->contact->wechat == 'mandatory' ? 'data-required="true"' : ''}}>
             </div>
+            @endif
             <div class="form-group pull-in clearfix">
               <div class="col-sm-6">
               <label>紧急联络人</label>
@@ -373,7 +381,7 @@ $isExperience = isset($customTable->experience) && in_array($regType, $customTab
                 ?>
               @endif
             @endforeach
-          </div>
+          {{--<!--/div>
           <div class="step-pane" id="{{$isExperience ? 'step4' : 'step3'}}">
             <label>确认您的报名信息</label>
             <p>千反田える，您将以<strong>{{ $regType == 'delegate' ? '代表' : ($regType == 'observer' ? '观察员' : '志愿者') }}</strong>身份报名参加2017年环梦模拟联合国年度会议。<br>请确认以下报名信息是否准确无误。</p>
@@ -404,7 +412,7 @@ $isExperience = isset($customTable->experience) && in_array($regType, $customTab
                 <p><i>面试选项</i><br>&emsp;&emsp;开通面试短信提醒服务</p>
                 <p><i>团队报名选项</i><br>&emsp;&emsp;我以个人身份报名</p>
               </div>
-            </section>
+          </section-->--}}
                 <input name="correct" type="checkbox" data-required="true">
                 <!--i class="fa fa-square-o"></i-->
                 我确认以上报名信息准确无误<br>
@@ -419,15 +427,17 @@ $isExperience = isset($customTable->experience) && in_array($regType, $customTab
               <label class="checkbox-custom">
               </label>
             </div-->
+            @if (!Auth::check())
             <div class="form-group">
               <label>MUNPANEL 密码</label>
-              <input name="password2" class="form-control" type="password" placeholder="输入密码以创建、登录或验证您的 MUNPANEL 账号" data-required="true" autocomplete="new-password">
+              <input name="password2" class="form-control" type="password" placeholder="输入密码以创建您的 MUNPANEL 账号" data-required="true" autocomplete="new-password">
             </div>
+            @endif
           </div>                
         </form>
-        <!--div class="step-pane" id="{{$isExperience ? 'step5' : 'step4'}}">
+        {{--<!--div class="step-pane" id="{{$isExperience ? 'step5' : 'step4'}}">
           <p>您的报名已成功完成</p>
-        </div-->
+        </div-->--}}
         <div class="actions pull-left">
           <button class="btn btn-white btn-sm btn-prev" disabled="" type="button">Prev</button>
           <button class="btn btn-white btn-sm btn-next" type="button" data-last="Finish">Next</button>
@@ -436,47 +446,3 @@ $isExperience = isset($customTable->experience) && in_array($regType, $customTab
     </div>
   </div><!-- /.modal-content -->
 </div><!-- /.modal-dialog -->
-
-@if (isset($changable))
-<script>
-$('#delform').submit(function(e){
-    e.preventDefault();
-    if ($( '#delform' ).parsley( 'validate' )) {
-        $.post("{{ secure_url('/saveRegDel') }}", $('#delform').serialize(), function(receivedData){
-            //if (receivedData == "success")
-                $('#ajaxModal').modal('hide');
-                @if (Auth::user()->type != 'ot' && Auth::user()->type != 'school')
-                location.reaload();
-                @endif
-            //useTheResponseData(receivedData);
-        });
-    }
-});
-$('#volform').submit(function(e){
-    e.preventDefault();
-    if ($( '#volform' ).parsley( 'validate' )) {
-        $.post("{{ secure_url('/saveRegVol') }}", $('#volform').serialize(), function(receivedData){
-            //if (receivedData == "success")
-                $('#ajaxModal').modal('hide');
-                @if (Auth::user()->type != 'ot' && Auth::user()->type != 'school')
-                location.reaload();
-                @endif
-           //useTheResponseData(receivedData);
-        });
-    }
-});
-$('#obsform').submit(function(e){
-    e.preventDefault();
-    if ($( '#obsform' ).parsley( 'validate' )) {
-        $.post("{{ secure_url('/saveRegObs') }}", $('#obsform').serialize(), function(receivedData){
-            //if (receivedData == "success")
-                $('#ajaxModal').modal('hide');
-                @if (Auth::user()->type != 'ot' && Auth::user()->type != 'school')
-                location.reaload();
-                @endif
-            //useTheResponseData(receivedData);
-        });
-    }
-});
-</script>
-@endif

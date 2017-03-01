@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Conference;
 use App\Committee;
 use App\School;
 use App\Delegate;
@@ -135,84 +136,7 @@ class HomeController extends Controller
     
     public function reg2Modal($regType)
     {
-        $committees = Committee::where('conference_id', 2);
-        $committeeOptions = '';
-        $cOption1 = '';
-        $cOption2 = '';
-        for ($i = 12; $i < 17; $i++)
-        {
-            if ($i > 12) $committeeOptions .= ',';
-            $committee = Committee::findOrFail($i);
-            $committeeOptions .= '{"value":"'.$committee->id.'","text":"'.$committee->name.'"}';
-        }
-        $committee = Committee::findOrFail(10);
-        foreach ($committee->childCommittees as $child)
-            $cOption1 .= '{"value":"'.$child->id.'","text":"'.$committee->name.' -> '.$child->name.'"},';
-        $committee = Committee::findOrFail(11);
-        foreach ($committee->childCommittees as $child)
-            $cOption2 .= '{"value":"'.$child->id.'","text":"'.$committee->name.' -> '.$child->name.'"},';
-        $customTableJson = '{"info":{
-        "contact":{
-        {"alt_phone":"use","qq":"mandatory","skype":"use","wechat":"use"}},
-        "experience":{
-        "uses":["delegate","observer"],
-        "startYear":["delegate","observer"],
-        "select":["delegate"],
-        "custom":["delegate"]},
-        "conference":{
-        "items":[{
-        "uses":["delegate","observer"],
-        "title":"委员会意向 (第一顺位)",
-        "type":"select",
-        "name":"committee1",
-        "data_required":"true",
-        "options":['.$cOption1.$cOption2.$committeeOptions.']
-        },{
-        "uses":["delegate","observer"],
-        "title":"委员会意向 (第二顺位)",
-        "type":"select",
-        "name":"committee2",
-        "data_required":"true",
-        "options":['.$cOption2.$committeeOptions.']
-        },{
-        "uses":["delegate","observer"],
-        "title":"委员会意向 (第三顺位)",
-        "type":"select",
-        "name":"committee3",
-        "data_required":"true",
-        "options":['.$committeeOptions.']
-        },{
-        "uses":["delegate"],
-        "title":"面试联络方式",
-        "type":"select",
-        "name":"typeInterview",
-        "data_required":"true",
-        "options":[{"value":"1","text":"电话 (包括备用电话)"},{"value":"2","text":"QQ"},{"value":"3","text":"Skype"},{"value":"4","text":"微信"}]
-        },{
-        "uses":["delegate"],
-        "title":"面试选项",
-        "type":"checkbox",
-        "name":"smsInterview",
-        "text":"开通面试短信提醒服务 (需另行付费)"
-        },{
-        "uses":["delegate"],
-        "type":"checkbox",
-        "name":"offlineInterview",
-        "text":"接受线下面试<br><br>"
-        },{
-        "uses":["delegate"],
-        "title":"如果希望进行线下面试，请输入可进行面试的城市",
-        "type":"text",
-        "name":"interviewCity"
-        },{
-        "uses":["delegate","observer","volunteer"],
-        "type":"preGroupOptions"
-        },{
-        "uses":["delegate","observer","volunteer"],
-        "type":"preRemarks"
-        }]
-        }}';
-        $customTable = json_decode($customTableJson);
+        $customTable = json_decode(Conference::findOrFail(2)->tableSettings)->regTable;
         return view('reg2Modal', ['committees' => $committees, 'regType' => $regType, 'customTable' => $customTable]);
     }
 

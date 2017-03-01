@@ -31,6 +31,16 @@ class Committee extends Model
         return $this->belongsTo('App\Conference');
     }
 
+    public function childCommittees()
+    {
+        return $this->hasMany('App\Committee', 'father_committee_id');
+    }
+
+    public function parentCommittee()
+    {
+        return $this->belongsTo('App\Committee', 'father_committee_id');
+    }
+
     public function emptyNations() {
         $nations = $this->nations;
         return $nations->reject(function ($nation) {

@@ -135,13 +135,53 @@ class HomeController extends Controller
     
     public function reg2Modal($regType)
     {
-        $customTableJson = '{"experience":{
+        $committees = Committee::where('conference_id', 2);
+        $committeeOptions = '';
+        $cOption1 = '';
+        $cOption2 = '';
+        for ($i = 12; $i < 17; $i++)
+        {
+            if ($i > 12) $committeeOptions .= ',';
+            $committee = Committee::findOrFail($i);
+            $committeeOptions .= '{"value":"'.$committee->id.'","text":"'.$committee->name.'"}';
+        }
+        $committee = Committee::findOrFail(10);
+        foreach ($committee->childCommittees as $child)
+            $cOption1 .= '{"value":"'.$child->id.'","text":"'.$committee->name.' -> '.$child->name.'"},';
+        $committee = Committee::findOrFail(11);
+        foreach ($committee->childCommittees as $child)
+            $cOption2 .= '{"value":"'.$child->id.'","text":"'.$committee->name.' -> '.$child->name.'"},';
+        $customTableJson = '{"info":{
+        "contact":{
+        {"alt_phone":"use","qq":"mandatory","skype":"use","wechat":"use"}},
+        "experience":{
         "uses":["delegate","observer"],
         "startYear":["delegate","observer"],
         "select":["delegate"],
         "custom":["delegate"]},
         "conference":{
         "items":[{
+        "uses":["delegate","observer"],
+        "title":"委员会意向 (第一顺位)",
+        "type":"select",
+        "name":"committee1",
+        "data_required":"true",
+        "options":['.$cOption1.$cOption2.$committeeOptions.']
+        },{
+        "uses":["delegate","observer"],
+        "title":"委员会意向 (第二顺位)",
+        "type":"select",
+        "name":"committee2",
+        "data_required":"true",
+        "options":['.$cOption2.$committeeOptions.']
+        },{
+        "uses":["delegate","observer"],
+        "title":"委员会意向 (第三顺位)",
+        "type":"select",
+        "name":"committee3",
+        "data_required":"true",
+        "options":['.$committeeOptions.']
+        },{
         "uses":["delegate"],
         "title":"面试联络方式",
         "type":"select",
@@ -158,7 +198,7 @@ class HomeController extends Controller
         "uses":["delegate"],
         "type":"checkbox",
         "name":"offlineInterview",
-        "text":"接受线下面试"
+        "text":"接受线下面试<br><br>"
         },{
         "uses":["delegate"],
         "title":"如果希望进行线下面试，请输入可进行面试的城市",
@@ -173,7 +213,6 @@ class HomeController extends Controller
         }]
         }}';
         $customTable = json_decode($customTableJson);
-        $committees = Committee::where('conference_id', 2);
         return view('reg2Modal', ['committees' => $committees, 'regType' => $regType, 'customTable' => $customTable]);
     }
 

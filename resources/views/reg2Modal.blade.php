@@ -11,11 +11,11 @@ $isExperience = isset($customTable->experience) && in_array($regType, $customTab
           <li data-target="#step2"><span class="badge">2</span>参会经历</li>
           <li data-target="#step3"><span class="badge">3</span>会议信息</li>
           <li data-target="#step4"><span class="badge">4</span>确认</li>
-          <li data-target="#step5"><span class="badge">5</span>完成</li>
+          <!--li data-target="#step5"><span class="badge">5</span>完成</li-->
           @else
           <li data-target="#step2"><span class="badge">2</span>会议信息</li>
           <li data-target="#step3"><span class="badge">3</span>确认</li>
-          <li data-target="#step4"><span class="badge">4</span>完成</li>
+          <!--li data-target="#step4"><span class="badge">4</span>完成</li-->
           @endif
         </ul>
       </div>
@@ -23,12 +23,12 @@ $isExperience = isset($customTable->experience) && in_array($regType, $customTab
         <form class="m-b-sm">
           <div class="step-pane active" id="step1">
             {{csrf_field()}}
-            @if (isset($id))
-            <input type="hidden" name="id" value="{{ $id }}">
-            @endif
+            <input type="hidden" name="conference_id" value="2">
+            <input type="hidden" name="type" value="{{ $regType }}">
             <div class="form-group">
               <label>姓名</label>
               @if (Auth::check())
+              <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
               <input name="name" disabled="" class="form-control" type="text" value="{{ Auth::user()->name }}" data-required="true" data-trigger="change">
               <span class="help-block m-b-none">如需编辑请退出登录或联系客服</span>
               @else
@@ -254,18 +254,7 @@ $isExperience = isset($customTable->experience) && in_array($regType, $customTab
           </div>
           @endif
           <div class="step-pane" id="{{$isExperience ? 'step3' : 'step2'}}">
-            <div class="form-group" id="committee1">
-              <label>委员会意向 (第一顺位)</label>
-              <select name="committee1" class="form-control" data-required="true">
-                <option value="" selected="">请选择</option>
-                @foreach ($committees as $committee)
-                  @if (true) {{--is_null($committee->father_committee_id) && $committee->option_limit >= 1)--}}
-                    <option value="{{ $committee->id }}">{{ $committee->name }}</option>
-                  @endif
-                @endforeach
-              </select>
-            </div>
-            <div class="form-group" id="committee1branch">
+            {{--<div class="form-group" id="committee1branch">
               <label>会场意向</label>
               <select name="branch1" class="form-control m-b" data-required="true">
                 <option value="" selected="">请选择</option>
@@ -328,12 +317,14 @@ $isExperience = isset($customTable->experience) && in_array($regType, $customTab
                   @endif
                 @endforeach
               </select>
-            </div>
+            </div>--}}
             @foreach ($customTable->conference->items as $item)
               @if (in_array($regType, $item->uses))
                 @if (isset($item->title))
                 <label>{{$item->title}}</label>
                 @endif
+{{-- http://stackoverflow.com/questions/29897508/switch-in-laravel-5-blade --}}
+{{-- 烦死了这破玩意 --}}
                 <?php
                 switch ($item->type)
                 {
@@ -345,41 +336,30 @@ $isExperience = isset($customTable->experience) && in_array($regType, $customTab
                       echo '<option value="'.$option->value.'">'.$option->text.'</option>';
                   echo '</select> ';
                   break;
-                  case 'checkbox': echo '
-              <div class="checkbox">
-                <label class="checkbox-custom">
-                  <input name="'.$item->name.'" type="checkbox">
-                  <i class="fa fa-square-o"></i>'.
-                  $item->text.'
-                </label>
-              </div>';
+                  case 'checkbox': echo '<br><input name="'.$item->name.'" type="checkbox">'.$item->text;
                   break;
                   case 'text': echo '<input name="'.$item->name.'" class="form-control m-b" type="text" value="">';
+                  break;
+                  case 'selectCommittee': echo '
+              <label>'.$item->title.'</label>
+              <select name="committee1" class="form-control"'. isset($item->data_required) ? 'data-required="true"' : '' .'>
+                <option value="" selected="">请选择</option>';
+                  foreach ($committees as $committee)
+                    if (is_null($committee->father_committee_id) && $committee->option_limit >= 1)
+                      echo '<option value="'. $committee->id .'">'. $committee->name .'</option>';
+                  echo '</select>';
                   break;
                   // 预设的表单项
                   case 'preGroupOptions': echo'
             <div class="form-group">
               <label>团队报名选项</label>
-              <div class="radio">
-                <label class="radio-custom">
+              <div>
                   <input name="groupOption" value="personal" type="radio" checked="checked">
-                  <i class="fa fa-circle-o checked"></i>
-                  我以个人身份报名
-                </label>
-              </div>
-              <div class="radio">
-                <label class="radio-custom">
+                  我以个人身份报名<br>
                   <input name="groupOption" value="group" type="radio">
-                  <i class="fa fa-circle-o"></i>
-                  我跟随团队报名
-                </label>
-              </div>
-              <div class="radio">
-                <label class="radio-custom">
+                  我跟随团队报名<br>
                   <input name="groupOption" value="leader" type="radio">
-                  <i class="fa fa-circle-o"></i>
-                  我是团队报名的领队
-                </label>
+                  我是团队报名的领队<br>
               </div>
             </div>';
                   break;
@@ -425,29 +405,29 @@ $isExperience = isset($customTable->experience) && in_array($regType, $customTab
                 <p><i>团队报名选项</i><br>&emsp;&emsp;我以个人身份报名</p>
               </div>
             </section>
-            <div class="checkbox">
+                <input name="correct" type="checkbox" data-required="true">
+                <!--i class="fa fa-square-o"></i-->
+                我确认以上报名信息准确无误<br>
+                <input name="agreement" type="checkbox" data-required="true">
+                <!--i class="fa fa-square-o"></i-->
+                我同意环梦模拟联合国参会协议和 MUNPANEL 使用协议 (虽然并没有这两样东西)<br><br>
+            <!--div class="checkbox">
               <label class="checkbox-custom">
-                <input name="correct" type="checkbox" checked="checked" data-required="true">
-                <i class="fa fa-square-o"></i>
-                我确认以上报名信息准确无误
               </label>
             </div>
             <div class="checkbox">
               <label class="checkbox-custom">
-                <input name="agreement" type="checkbox" checked="checked" data-required="true">
-                <i class="fa fa-square-o"></i>
-                我同意环梦模拟联合国参会协议和 MUNPANEL 使用协议 (虽然并没有这两样东西)
               </label>
-            </div>
+            </div-->
             <div class="form-group">
               <label>MUNPANEL 密码</label>
-              <input name="password2" class="form-control" type="password" placeholder="输入密码以创建、登录或验证您的 MUNPANEL 账号" data-required="true">
+              <input name="password2" class="form-control" type="password" placeholder="输入密码以创建、登录或验证您的 MUNPANEL 账号" data-required="true" autocomplete="new-password">
             </div>
           </div>                
         </form>
-        <div class="step-pane" id="{{$isExperience ? 'step5' : 'step4'}}">
+        <!--div class="step-pane" id="{{$isExperience ? 'step5' : 'step4'}}">
           <p>您的报名已成功完成</p>
-        </div>
+        </div-->
         <div class="actions pull-left">
           <button class="btn btn-white btn-sm btn-prev" disabled="" type="button">Prev</button>
           <button class="btn btn-white btn-sm btn-next" type="button" data-last="Finish">Next</button>

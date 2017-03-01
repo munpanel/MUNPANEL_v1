@@ -15,6 +15,7 @@ class CreateConferencesTable extends Migration
     {
         Schema::create('conferences', function (Blueprint $table) {
             $table->increments('id');
+            $table->enum('status', array('init','daisreg','prep','reg','regstop','onhold','finish','cancelled'));
             $table->string('name');
             $table->string('fullname');
             $table->date('date_start');

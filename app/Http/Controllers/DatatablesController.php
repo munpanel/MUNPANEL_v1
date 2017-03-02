@@ -52,7 +52,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
                         $status = '<a href="#" class="approval-status active" data-id="'. $delegate->user_id .'"><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i></a>';
                 }
                 $result->push([
-                    'details' => '<a href="reg.modal/'. $delegate->user_id .'" data-toggle="ajaxModal" id="'. $delegate->user_id .'" class="details-modal"><i class="fa fa-search-plus"></i></a>',
+                    'details' => '<a href="/ot/regInfo.modal/'. $delegate->user_id .'" data-toggle="ajaxModal" id="'. $delegate->user_id .'" class="details-modal"><i class="fa fa-search-plus"></i></a>',
                     'name' => $delegate->user->name,
                     'committee' => $delegate->committee->name,
                     'partner' => $partner,

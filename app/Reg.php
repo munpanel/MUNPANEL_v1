@@ -139,4 +139,10 @@ class Reg extends Model
         }
         return $scope;
     }
+
+    public function addEvent(, $icon, $)
+    {
+        $event = new Event;
+
+    }
 }

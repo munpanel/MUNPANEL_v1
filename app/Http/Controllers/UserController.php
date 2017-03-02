@@ -161,9 +161,13 @@ class UserController extends Controller
         $customTable = json_decode(Conference::findOrFail(2)->tableSettings)->regTable;
         if (!Auth::check())
         {
+            if (is_object(User::where('email', $request->email)->first()))
+            {
+                //To-Do: error!
+            }
             $user = new User;
             $user->name = $request->name;
-            $user->email = $request->email; // TODO: 电邮是否已被注册？需要校验
+            $user->email = $request->email; 
             $user->password = Hash::make($request->password2);
             $user->type = 'unregistered';
             $user->save();

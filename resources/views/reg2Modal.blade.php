@@ -333,6 +333,7 @@ $isExperience = isset($customTable->experience) && in_array($regType, $customTab
                 @endif
 {{-- http://stackoverflow.com/questions/29897508/switch-in-laravel-5-blade --}}
 {{-- 烦死了这破玩意 --}}
+{{-- Consider move this rendering process back to Controller instead of in a blade. Adam Yi --}}
                 <?php
                 switch ($item->type)
                 {

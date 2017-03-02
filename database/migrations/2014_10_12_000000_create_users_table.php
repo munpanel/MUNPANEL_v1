@@ -17,8 +17,11 @@ class CreateUsersTable extends Migration
             $table->increments('id');
             $table->string('name');
 	        $table->string('email')->unique();
-            $table->enum('type', ['unregistered', 'ot', 'dais', 'school', 'delegate', 'observer', 'volunteer']);
+            $table->string('tel')->nullable();
+            //$table->enum('type', ['unregistered', 'ot', 'dais', 'school', 'delegate', 'observer', 'volunteer']);
             $table->string('password');
+            $table->string('emailVerificationToken');
+            $table->integer('telVerifications')->default(5);
             $table->rememberToken();
             $table->timestamps();
         });

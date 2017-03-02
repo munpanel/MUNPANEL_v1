@@ -137,7 +137,7 @@ class HomeController extends Controller
     public function reg2Modal($regType)
     {
         $customTable = json_decode(Conference::findOrFail(2)->tableSettings)->regTable;
-        return view('reg2Modal', ['committees' => $committees, 'regType' => $regType, 'customTable' => $customTable]);
+        return view('reg2Modal', ['regType' => $regType, 'customTable' => $customTable]);
     }
 
     public function regManage()

@@ -20,7 +20,7 @@ $isExperience = isset($customTable->experience) && in_array($regType, $customTab
         </ul>
       </div>
       <div class="step-content clearfix">
-        <form class="m-b-sm" action="{{ secure_url('/saveReg2') }}" method="post">
+        <form id="reg2Form" class="m-b-sm" action="{{ secure_url('/saveReg2') }}" method="post">
           <div class="step-pane active" id="step1">
             {{csrf_field()}}
             <input type="hidden" name="conference_id" value="2">

@@ -39,7 +39,7 @@
           <header class="panel-heading text-center">
             请验证您的电话号码
           </header>
-            <div class="panel-body"><div class="alert alert-info">感谢您使用MUNPANEL！请在下方填写您的中国大陆手机号，我们将给您拨打一个电话并告知验证码以激活您的账户。未激活的账户将不能使用任何 MUNPANEL 服务，会议组织团队亦不可查看您的报名信息。<br>当前账户剩余 <b>{{Auth::user()->telVerifications}}</b> 次验证机会。如您无验证机会，请联系客服或重新注册新账户，感谢。</div></div>
+            <div class="panel-body"><div class="alert alert-info">感谢您使用MUNPANEL！请在下方填写您的中国大陆手机号，我们将给您发送一条短信或拨打一个电话并告知验证码以激活您的账户。未激活的账户将不能使用任何 MUNPANEL 服务，会议组织团队亦不可查看您的报名信息。<br>当前账户剩余 <b>{{Auth::user()->telVerifications}}</b> 次验证机会。如您无验证机会，请联系客服或重新注册新账户，感谢。</div></div>
           <form action="{{ secure_url('/login') }}" method="post" class="panel-body" data-validate="parsley">
             {{ csrf_field() }}
             <div class="form-group">

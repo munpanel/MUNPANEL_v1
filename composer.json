@@ -15,7 +15,8 @@
         "dingo/api": "1.0.*@dev",
         "z38/metzli": "^1.0",
         "vinkla/pusher": "^2.5",
-        "predis/predis": "^1.1"
+        "predis/predis": "^1.1",
+        "wpb/string-blade-compiler": "^3.3"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

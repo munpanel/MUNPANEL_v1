@@ -12,7 +12,7 @@
           <div class="modal-body">
             <div class="row">
               <div class="col-sm-12 b-r">
-              {{json_encode($delegate)}}
+              {{json_encode($reg)}}
               </div>
             </div>
           </div>
@@ -21,7 +21,20 @@
           <div class="modal-body">
             <div class="row">
               <div class="col-sm-12 b-r">
-              事件
+                <ul class="timeline timeline-small">
+                  @foreach($reg->events as $event)
+                  <li>
+                    <div class="timeline-badge {{$event->eventtype->level}}"><i class="fa fa-{{$event->eventtype->icon}} fa-fw"></i></div>
+                    <div class="timeline-panel">
+                      <div class="timeline-heading">
+                        <h4 class="timeline-title">{{$event->eventtype->title}}<small class="text-muted"><i class="fa fa-clock-o fa-fw"></i>{{$event->created_at}}</small></h4>
+                      </div>
+                      <div class="timeline-body">
+                        {{$event->text()}}
+                      </div>
+                    </div>
+                  </li>
+                  @endforeach
               </div>
             </div>
           </div>          
@@ -38,28 +51,3 @@
         </div>
       </div><!-- /.modal-content -->
 </div>
-<script>
-$('#uploadForm').submit(function(e){
-    e.preventDefault();
-    if ($('#uploadForm').parsley('validate')) 
-    {
-        var formData = new FormData($( "#uploadForm" )[0]);
-        //$.post("{{$eventsURL}}", $('#uploadForm').serialize());
-        $.ajax({  
-            url:  '{{$eventsURL}}',
-            type: 'POST',  
-            data: formData,  
-            async: false,  
-            cache: false,  
-            contentType: false,  
-            processData: false,  
-            success: function (returndata) {  
-                location.reload();
-            },  
-            error: function (returndata) {  
-                alert('An error occured while eventsing.');
-            }  
-       });  
-    }
-});
-</script>

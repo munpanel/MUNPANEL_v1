@@ -13,6 +13,7 @@ use App\Assignment;
 use App\Handin;
 use App\Document;
 use App\Email;
+use App\Reg;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -206,6 +207,14 @@ class HomeController extends Controller
         else
             $user = User::findOrFail($id);
         return view('ot.userDetailsModal', ['user' => $user]);
+    }
+
+    public function regInfoModal($id)
+    {
+        if (Auth::user()->type != 'ot')
+            return "Error";
+        $reg = Reg::findOrFail($id);
+        return view('ot.regInfoModal', ['reg' => $reg]);
     }
 
     public function schoolDetailsModal($id)

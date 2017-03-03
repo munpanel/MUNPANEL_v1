@@ -44,6 +44,10 @@ class Reg extends Model
         return $this->hasMany('App\Card', 'user_id');
     }
 
+    public function events() {
+        return $this->hasMany('App\Event');
+    }
+
     public function partner() {
         return $this->belongsTo('App\User', 'partner_user_id');
     }
@@ -140,7 +144,7 @@ class Reg extends Model
         return $scope;
     }
 
-    public function addEvent(, $icon, $)
+    public function addEvent()
     {
         $event = new Event;
 

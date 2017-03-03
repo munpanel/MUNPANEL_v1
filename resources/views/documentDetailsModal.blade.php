@@ -19,7 +19,7 @@
                     </tr>
                     <tr>
                         <td width="35%">创建日期</td>
-                        <td width="65%">{{$document->created_at}}</td>
+                        <td width="65%">{{nicetime($document->created_at)}}</td>
                     </tr>
                     <tr>
                         <td width="35%">描述</td>

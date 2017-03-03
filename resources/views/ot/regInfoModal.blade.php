@@ -27,7 +27,7 @@
                     <div class="timeline-badge {{$event->eventtype->level}}"><i class="fa fa-{{$event->eventtype->icon}} fa-fw"></i></div>
                     <div class="timeline-panel">
                       <div class="timeline-heading">
-                        <h4 class="timeline-title">{{$event->eventtype->title}}<small class="text-muted"><i class="fa fa-clock-o fa-fw"></i>{{$event->created_at}}</small></h4>
+                        <h4 class="timeline-title">{{$event->eventtype->title}}<small class="text-muted"><i class="fa fa-clock-o fa-fw"></i>{{nicetime($event->created_at)}}</small></h4>
                       </div>
                       <div class="timeline-body">
                         {{$event->text()}}

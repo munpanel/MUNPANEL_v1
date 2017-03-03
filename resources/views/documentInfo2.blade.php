@@ -29,7 +29,7 @@
                   </div>
                   <div id="collapseOne" class="panel-collapse in">
                     <div class="panel-body text-sm">
-                      <b>文件标题: </b>{{$document->title}}<br><b>分发对象: </b>{{$document->scope()}}<br><b>发布日期: </b>{{$document->created_at}}<br>
+                      <b>文件标题: </b>{{$document->title}}<br><b>分发对象: </b>{{$document->scope()}}<br><b>发布日期: </b>{{nicetime($document->created_at)}}<br>
                     </div>
                   </div>
                 </div>

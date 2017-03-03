@@ -45,7 +45,7 @@
 @else
   搭档
 @endif
-为单位)<br><b>提交形式: </b>{{$assignment->handin_type == 'upload' ? '文件上传' : '在线文本编辑器'}}<br><b>提交期限: </b>{{$assignment->deadline}}<br><b>最近一次提交: </b>{{$handin->user->name}}提交于{{$handin->updated_at}}
+为单位)<br><b>提交形式: </b>{{$assignment->handin_type == 'upload' ? '文件上传' : '在线文本编辑器'}}<br><b>提交期限: </b>{{$assignment->deadline}}<br><b>最近一次提交: </b>{{$handin->user->name}}提交于{{nicetime($handin->updated_at)}}
                     </div>
                   </div>
                 </div>

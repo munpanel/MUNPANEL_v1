@@ -19,7 +19,7 @@ class CardController extends Controller
             {
                 $card = new Card;
                 //$card->id = uniqid();
-                $card->id = HelperController::generateID();
+                $card->id = generateID();
                 $card->user_id = $delegate->user_id;
                 $card->template = 'Delegate';
                 $card->name = $delegate->user->name;
@@ -37,7 +37,7 @@ class CardController extends Controller
         foreach ($dais as $d)
         {
             $card = new Card;
-            $card->id = HelperController::generateID();
+            $card->id = generateID();
             $card->user_id = $d->user_id;
             $card->template = 'Dais';
             $card->name = $d->user->name;
@@ -54,7 +54,7 @@ class CardController extends Controller
         foreach ($volunteers as $d)
         {
             $card = new Card;
-            $card->id = HelperController::generateID();
+            $card->id = generateID();
             $card->user_id = $d->user_id;
             $card->template = 'Volunteer';
             $card->name = $d->user->name;
@@ -84,7 +84,7 @@ class CardController extends Controller
     public function newCard($template, $uid, $name, $school, $role, $title)
     {
         $card = new Card;
-        $card->id = HelperController::generateID();
+        $card->id = generateID();
         $card->user_id = $uid;
         $card->template = $template;
         $card->name = $name;
@@ -104,7 +104,7 @@ class CardController extends Controller
                     $resp = $resp. $data[$c] . "<br />\n";
                 }
                 $card = new Card;
-                $card->id = HelperController::generateID();
+                $card->id = generateID();
                 $card->user_id = $data[0];
                 $card->template = $data[1];
                 $card->title = $data[2];

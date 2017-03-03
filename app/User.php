@@ -96,7 +96,7 @@ class User extends Authenticatable
     public function sendVerificationEmail() {
         $url = secure_url('/verifyEmail/'.$this->email.'/'.$this->emailVerificationToken);
         $mail = new Email;
-        $mail->id = HelperController::generateID();
+        $mail->id = generateID();
         $mail->conference_id = 2; //ToDo
         $mail->title = 'MUNPANEL 账号验证';
         $mail->setReceiver($this);

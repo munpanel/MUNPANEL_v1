@@ -101,7 +101,7 @@ class User extends Authenticatable
         $mail->title = 'MUNPANEL 账号验证';
         $mail->setReceiver($this);
         $mail->sender = 'MUNPANEL Team';
-        $mail->content = '感谢您使用 MUNPANEL 系统！请点击以下链接验证您的电子邮箱：<br/><a href="'.$url.'">'.$url.'</a>';
+        $mail->content = '感谢您使用 MUNPANEL 系统！请点击以下链接验证您的电子邮箱：<br/><pre><a href="'.$url.'">'.$url.'</a></pre>';
         $mail->send();
         $mail->save();
     }

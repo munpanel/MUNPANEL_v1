@@ -15,7 +15,7 @@ class Email extends Model
 
     public function setReceiver($user)
     {
-        $this->receiverArray = ['address' => 'adamxuanyi@163.com', 'name' => $user->name];
+        $this->receiverArray = ['address' => $user->email, 'name' => $user->name];
         $this->receiver = json_encode($this->receiverArray);
     }
 

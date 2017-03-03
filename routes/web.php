@@ -23,10 +23,10 @@ Auth::routes();
 
 Route::get('/verifyEmail', 'HomeController@verifyEmail');
 Route::get('/verifyTel', 'HomeController@verifyTel');
-Route::get('/verifyEmail/{email}/{token}', 'HomeController@doVerifyEmail');
-Route::get('/verifyTel.modal/{method}/{tel}', 'HomeController@verifyTelModal');
-Route::post('/verifyTel', 'HomeController@doVerifyTel');
-Route::get('/verifyEmail/resend', 'HomeController@resendRegMail');
+Route::get('/verifyEmail/{email}/{token}', 'UserController@doVerifyEmail');
+Route::get('/verifyTel.modal/{method}/{tel}', 'UserController@verifyTelModal');
+Route::post('/verifyTel', 'UserController@doVerifyTel');
+Route::get('/verifyEmail/resend', 'UserController@resendRegMail');
 
 Route::get('/home', 'HomeController@index');
 Route::get('/changePwd.modal', 'HomeController@changePwd');

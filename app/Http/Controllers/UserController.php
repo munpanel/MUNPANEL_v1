@@ -744,4 +744,54 @@ class UserController extends Controller
     {
         return User::findOrFail($id);
     }
+
+    public function doVerifyEmail($email, $token)
+    {
+        $user = User::where('email', $email)->firstOrFail();
+        if ($user->emailVerificationToken == 'success' || $user->emailVerificationToken == $token)
+        {
+            $user->emailVerificationToken = 'success';
+            $user->save();
+            return redirect('/home');
+        }
+        return 'Token mismatch!';
+    }
+
+    public function verifyTelModal(Request $request, $method, $tel)
+    {
+        $user = Auth::user();
+        if ($user->telVerifications > 0)
+            $user->telVerifications--;
+        else
+            return 'error';
+        $user->tel = $tel;
+        $user->save();
+        $code = mt_rand(1000, 9999);
+        $request->session()->flash('code', $code);
+        if ($method == 'sms')
+            SmsController::send([$tel], '尊敬的'.$user->name.'，感谢您使用 MUNPANEL 系统。您的验证码为'.$code.'。【MUNPANEL】');
+        else if ($method == 'call')
+            SmsController::call($tel, $code);
+        else
+            return 'error';
+        return view('/verifyTelModal');
+    }
+
+    public function doVerifyTel(Request $request)
+    {
+        $correct = $request->session()->get('code');
+        $code = $request->code;
+        if (isset($correct) && $correct == $code)
+        {
+            $user = Auth::user();
+            $user->telVerifications = -1;
+            $user->save();
+            return redirect('/home');
+        } else {
+            return redirect('/verifyTel'); //To-Do: error prompt
+        }
+    }
+
+    public function resendRegMail()
+    {
 }

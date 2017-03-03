@@ -92,4 +92,17 @@ class User extends Authenticatable
         }
         return $sum;
     }
+
+    public function sendVerificationEmail() {
+        $url = secure_url('/verifyEmail/'.$this->email.'/'.$this->emailVerificationToken);
+        $mail = new Email;
+        $mail->id = HelperController::generateID();
+        $mail->conference_id = 2; //ToDo
+        $mail->title = 'MUNPANEL 账号验证';
+        $mail->setReceiver($this);
+        $mail->sender = 'MUNPANEL Team';
+        $mail->content = '感谢您使用 MUNPANEL 系统！请点击以下链接验证您的电子邮箱：<br/><a href="'.$url.'">'.$url.'</a>';
+        $mail->send();
+        $mail->save();
+    }
 }

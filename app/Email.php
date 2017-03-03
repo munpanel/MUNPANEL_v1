@@ -22,6 +22,6 @@ class Email extends Model
     public function send()
     {
         $this->content = '尊敬的'.$this->receiverArray['name'].'，您好！<br><br>'.$this->content;
-        Mail::to($this->receiverArray['address'], $this->receiverArray['name'])->send(new GeneralMail($this));
+        Mail::to($this->receiverArray['address'], $this->receiverArray['name'])->queue(new GeneralMail($this));
     }
 }

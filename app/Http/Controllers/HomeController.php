@@ -497,11 +497,15 @@ class HomeController extends Controller
 
     public function verifyEmail()
     {
+        if ($request->user()->emailVerificationToken == 'success')
+            return redirect('/home');
         return view('verifyEmail');
     }
 
     public function verifyTel()
     {
+        if ($request->user()->telVerifications == -1) //3/2/1: tries left; -1: activated
+            return redirect(secure_url('/home'));
         return view('verifyTel');
     }
 

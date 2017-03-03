@@ -794,4 +794,8 @@ class UserController extends Controller
 
     public function resendRegMail()
     {
+        $user = Auth::user();
+        $user->sendVerificationEmail();
+        return redirect('/verifyEmail');
+    }
 }

@@ -31,13 +31,14 @@ class GeneralMail extends Mailable
      */
     public function build()
     {
-        return $this->view('emailTemplate')
+        return $this->subject($this->email->title)
+                    ->view('emailTemplate')
                     ->with([
                         'id' => $this->email->id,
                         'title' => $this->email->title,
                         'content' => $this->email->content,
                         'sender' => $this->email->sender,
-                        'receiver' => $this->email->receiver,
+                        'receiver' => json_decode($this->email->receiver),
                     ]);
     }
 }

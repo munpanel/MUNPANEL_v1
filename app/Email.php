@@ -2,14 +2,26 @@
 
 namespace App;
 
+use App\User;
+use App\Mail\GeneralMail;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Mail;
 
 class Email extends Model
 {
-    private $guarded = [];
+    public $incrementing = false;
+    protected $guarded = [];
+    private $receiverArray;
+
+    public function setReceiver($user)
+    {
+        $this->receiverArray = ['address' => 'adamxuanyi@163.com', 'name' => $user->name];
+        $this->receiver = json_encode($this->receiverArray);
+    }
 
     public function send()
     {
-        Mail::to($this->receiver)->queue($this);
+        $this->content = '尊敬的'.$this->receiverArray['name'].'，您好！<br><br>'.$this->content;
+        Mail::to($this->receiverArray['address'], $this->receiverArray['name'])->send(new GeneralMail($this));
     }
 }

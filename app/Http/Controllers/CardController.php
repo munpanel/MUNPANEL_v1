@@ -10,31 +10,6 @@ use Illuminate\Http\Request;
 
 class CardController extends Controller
 {
-    private static function crypto_rand_secure($min, $max) {
-        $range = $max - $min;
-        if ($range < 0) return $min; // not so random...
-        $log = log($range, 2);
-        $bytes = (int) ($log / 8) + 1; // length in bytes
-        $bits = (int) $log + 1; // length in bits
-        $filter = (int) (1 << $bits) - 1; // set all lower bits to 1
-        do {
-            $rnd = hexdec(bin2hex(openssl_random_pseudo_bytes($bytes)));
-            $rnd = $rnd & $filter; // discard irrelevant bits
-        } while ($rnd >= $range);
-        return $min + $rnd;
-    }
-
-    public static function generateID($length=16){
-        $token = "";
-        $codeAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        $codeAlphabet.= "abcdefghijklmnopqrstuvwxyz";
-        $codeAlphabet.= "0123456789";
-        for($i=0;$i<$length;$i++){
-            $token .= $codeAlphabet[CardController::crypto_rand_secure(0,strlen($codeAlphabet))];
-        }
-        return $token;
-    }
-
     public function generateCardsDelegates()
     {
         $delegates = Delegate::where('status', 'paid')->get();
@@ -44,7 +19,7 @@ class CardController extends Controller
             {
                 $card = new Card;
                 //$card->id = uniqid();
-                $card->id = CardController::generateID();
+                $card->id = HelperController::generateID();
                 $card->user_id = $delegate->user_id;
                 $card->template = 'Delegate';
                 $card->name = $delegate->user->name;
@@ -62,7 +37,7 @@ class CardController extends Controller
         foreach ($dais as $d)
         {
             $card = new Card;
-            $card->id = CardController::generateID();
+            $card->id = HelperController::generateID();
             $card->user_id = $d->user_id;
             $card->template = 'Dais';
             $card->name = $d->user->name;
@@ -79,7 +54,7 @@ class CardController extends Controller
         foreach ($volunteers as $d)
         {
             $card = new Card;
-            $card->id = CardController::generateID();
+            $card->id = HelperController::generateID();
             $card->user_id = $d->user_id;
             $card->template = 'Volunteer';
             $card->name = $d->user->name;
@@ -109,7 +84,7 @@ class CardController extends Controller
     public function newCard($template, $uid, $name, $school, $role, $title)
     {
         $card = new Card;
-        $card->id = CardController::generateID();
+        $card->id = HelperController::generateID();
         $card->user_id = $uid;
         $card->template = $template;
         $card->name = $name;
@@ -129,7 +104,7 @@ class CardController extends Controller
                     $resp = $resp. $data[$c] . "<br />\n";
                 }
                 $card = new Card;
-                $card->id = CardController::generateID();
+                $card->id = HelperController::generateID();
                 $card->user_id = $data[0];
                 $card->template = $data[1];
                 $card->title = $data[2];

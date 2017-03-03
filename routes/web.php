@@ -26,6 +26,7 @@ Route::get('/verifyTel', 'HomeController@verifyTel');
 Route::get('/verifyEmail/{email}/{token}', 'HomeController@doVerifyEmail');
 Route::get('/verifyTel.modal/{method}/{tel}', 'HomeController@verifyTelModal');
 Route::post('/verifyTel', 'HomeController@doVerifyTel');
+Route::get('/verifyEmail/resend', 'HomeController@resendRegMail');
 
 Route::get('/home', 'HomeController@index');
 Route::get('/changePwd.modal', 'HomeController@changePwd');

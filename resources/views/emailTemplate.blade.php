@@ -129,7 +129,7 @@
                       <!--[if mso | IE]>
       <table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td style="vertical-align:middle;width:600px;">
       <![endif]-->
-                      <div class="mj-column-per-66 outlook-group-fix" style="vertical-align:middle;display:inline-block;direction:ltr;font-size:13px;text-align:left;width:100%;">
+                      <div class="mj-column-per-66 outlook-group-fix" style="vertical-align:middle;display:inline-block;direction:ltr;font-size:13px;text-align:left;width:66%;">
                         <table role="presentation" cellpadding="0" cellspacing="0" style="vertical-align:middle;" width="100%" border="0">
                           <tbody>
                             <tr>
@@ -143,7 +143,7 @@
                       <!--[if mso | IE]>
       </td><td style="vertical-align:middle;width:600px;">
       <![endif]-->
-                      <div class="mj-column-per-33 outlook-group-fix" style="vertical-align:middle;display:inline-block;direction:ltr;font-size:13px;text-align:left;width:100%;">
+                      <div class="mj-column-per-33 outlook-group-fix" style="vertical-align:middle;display:inline-block;direction:ltr;font-size:13px;text-align:left;width:33%;">
                         <table role="presentation" cellpadding="0" cellspacing="0" style="vertical-align:middle;" width="100%" border="0">
                           <tbody>
                             <tr>
@@ -231,7 +231,7 @@
               <!--[if mso | IE]>
       <table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td style="vertical-align:top;width:600px;">
       <![endif]-->
-              <div class="mj-column-per-33 outlook-group-fix" style="vertical-align:top;display:inline-block;direction:ltr;font-size:13px;text-align:left;width:100%;">
+              <div class="mj-column-per-33 outlook-group-fix" style="vertical-align:top;display:inline-block;direction:ltr;font-size:13px;text-align:left;width:33%;">
                 <table role="presentation" cellpadding="0" cellspacing="0" style="vertical-align:top;" width="100%" border="0">
                   <tbody>
                     <tr>
@@ -251,7 +251,7 @@
               <!--[if mso | IE]>
       </td><td style="vertical-align:top;width:600px;">
       <![endif]-->
-              <div class="mj-column-per-67 outlook-group-fix" style="vertical-align:top;display:inline-block;direction:ltr;font-size:13px;text-align:left;width:100%;">
+              <div class="mj-column-per-67 outlook-group-fix" style="vertical-align:top;display:inline-block;direction:ltr;font-size:13px;text-align:left;width:67%;">
                 <table role="presentation" cellpadding="0" cellspacing="0" style="vertical-align:top;" width="100%" border="0">
                   <tbody>
                     <tr>
@@ -295,7 +295,7 @@
                   <tbody>
                     <tr>
                       <td style="word-break:break-word;font-size:0px;padding:10px 25px;padding-top:0px;padding-bottom:0px;padding-right:25px;padding-left:25px;" align="center">
-                        <div class="" style="cursor:auto;color:#000000;font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:13px;line-height:22px;text-align:center;"><span style="font-size:14.666666666666666px;font-family:Arial;color:#000000;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;"><span style="font-family: Lato, Helvetica, Arial, sans-serif;"><span style="color: rgb(250, 183, 0);"><strong><span style="font-size: 25px;">{{$title}}</span></strong>
+                        <div class="" style="cursor:auto;color:#000000;font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:13px;line-height:22px;text-align:center;"><span style="font-size:14.666666666666666px;font-family:Arial;color:#000000;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;"><span style="font-family: Lato, Helvetica, Arial, sans-serif;"><span style="color: rgb(250, 183, 0);"><strong><span style="font-size: 25px;">{{$title}}<br/><br/><br/></span></strong>
                           </span>
                           </span>
                           </span>
@@ -306,7 +306,7 @@
                       <td style="word-break:break-word;font-size:0px;padding:10px 25px;padding-top:0px;padding-bottom:0px;padding-right:25px;padding-left:25px;" align="left">
                         <div class="" style="cursor:auto;color:#000000;font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:13px;line-height:22px;text-align:left;">
                           <p></p>
-                          <p style="line-height:1.38;margin-top:0pt;margin-bottom:0pt;"><span style="font-size:14.666666666666666px;font-family:Arial;color:#000000;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;"><span style="font-family: Lato, Helvetica, Arial, sans-serif;"><span style="color: rgb(235, 96, 38);"><span style="font-size: 18px;">{{$content}} </span>
+                          <p style="line-height:1.38;margin-top:0pt;margin-bottom:0pt;"><span style="font-size:14.666666666666666px;font-family:Arial;color:#000000;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;"><span style="font-family: Lato, Helvetica, Arial, sans-serif;"><span style="color: rgb(235, 96, 38);"><span style="font-size: 14px;">{!!$content!!} </span>
                             </span>
                             </span>
                             </span>
@@ -427,7 +427,7 @@
                             <tr>
                               <td style="word-break:break-word;font-size:0px;padding:10px 25px;padding-top:0px;padding-bottom:0px;padding-right:25px;padding-left:25px;" align="center">
                                 <div class="" style="cursor:auto;color:#000000;font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:11px;line-height:22px;text-align:center;">
-                                  <p style="font-size: 11px">Sent to {{$receiver}} by MUNPANEL System.<br>Automatic email. Do not reply.</p>
+                                  <p style="font-size: 11px">Sent to {{$receiver->name.' '.$receiver->address}} by MUNPANEL System.<br>Automatic email. Do not reply.</p>
                                 </div>
                               </td>
                             </tr>

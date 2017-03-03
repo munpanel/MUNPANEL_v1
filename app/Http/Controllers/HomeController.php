@@ -12,6 +12,7 @@ use App\User;
 use App\Assignment;
 use App\Handin;
 use App\Document;
+use App\Email;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -549,5 +550,20 @@ class HomeController extends Controller
         } else {
             return redirect('/verifyTel'); //To-Do: error prompt
         }
+    }
+
+    public function resendRegMail()
+    {
+        $user = Auth::user();
+        $url = secure_url('/verifyEmail/'.$user->email.'/'.$user->emailVerificationToken);
+        $mail = new Email;
+        $mail->id = HelperController::generateID();
+        $mail->conference_id = 2; //ToDo
+        $mail->title = 'MUNPANEL 账号验证';
+        $mail->setReceiver($user);
+        $mail->sender = 'MUNPANEL Team';
+        $mail->content = '感谢您使用 MUNPANEL 系统！请点击以下链接验证您的电子邮箱：<br/><a href="'.$url.'">'.$url.'</a>';
+        $mail->send();
+        $mail->save();
     }
 }

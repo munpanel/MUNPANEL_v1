@@ -17,6 +17,7 @@ class CheckVerification
      */
     public function handle($request, Closure $next)
     {
+//        return $next($request);
         if (null !== $request->user()) // if user is not logged in, the Auth middleware will do the job.
         {
             $route = $request->route()->uri;

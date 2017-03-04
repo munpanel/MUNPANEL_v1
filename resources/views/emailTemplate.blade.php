@@ -5,6 +5,7 @@
   margin-left: auto;
   margin-right: auto;
   width: 550px;
+  max-width: 100%;
   border-radius: 5px;
   box-shadow: #CCC 0 4px 6px;
   overflow: hidden;
@@ -29,6 +30,7 @@
   padding: 40px;
   border: #DDD 1px solid;
   border-radius: 0 0 5px 5px;
+  word-break: break-word;
 }
 
 .body > h1 {
@@ -62,7 +64,7 @@
   background: #EEE;
   border: #DDD 1px solid;
   white-space: pre-wrap;
-  word-wrap: break-word;
+  word-break: break-word;
 }
 
 .body > .footer {

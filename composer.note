@@ -1,2 +1,0 @@
-Need to change ./vendor/chumper/zipper/src/Chumper/Zipper/ZipperServiceProvider.php
-As share() is removed in Laravel 5.4.

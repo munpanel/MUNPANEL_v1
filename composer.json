@@ -6,22 +6,22 @@
     "type": "project",
     "require": {
         "php": ">=5.6.4",
-        "laravel/framework": "5.3.*",
+        "laravel/framework": "5.4.*",
         "yajra/laravel-datatables-oracle": "^6.0",
         "zizaco/entrust": "dev-master",
         "maatwebsite/excel": "~2.1.0",
-        "chumper/zipper": "0.6.x",
+        "chumper/zipper": "0.6.x", 
         "gloudemans/shoppingcart": "*",
         "dingo/api": "1.0.*@dev",
         "z38/metzli": "^1.0",
         "vinkla/pusher": "^2.5",
         "predis/predis": "^1.1",
-        "wpb/string-blade-compiler": "^3.3"
+        "wpb/string-blade-compiler": "3.4.x-dev"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
         "mockery/mockery": "0.9.*",
-        "phpunit/phpunit": "~5.0",
+        "phpunit/phpunit": "~5.7",
         "symfony/css-selector": "3.1.*",
         "symfony/dom-crawler": "3.1.*"
     },

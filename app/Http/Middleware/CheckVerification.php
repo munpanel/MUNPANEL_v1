@@ -19,7 +19,7 @@ class CheckVerification
     {
         if (null !== $request->user()) // if user is not logged in, the Auth middleware will do the job.
         {
-            $route = $request->route()->getPath();
+            $route = $request->route()->uri;
             if (substr($route, 0, 6) != 'verify') {
                 if ($request->user()->emailVerificationToken != 'success')
                     return redirect(secure_url('/verifyEmail'));

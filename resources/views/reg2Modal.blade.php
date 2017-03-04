@@ -32,7 +32,7 @@ $isExperience = isset($customTable->experience) && in_array($regType, $customTab
               <input name="name" disabled="" class="form-control" type="text" value="{{ Auth::user()->name }}" data-required="true" data-trigger="change">
               <span class="help-block m-b-none">如需编辑请退出登录或联系客服</span>
               @else
-              <input name="name" class="form-control" type="text" value="" data-required="true" data-trigger="change">              
+              <input name="name" class="form-control" type="text" data-required="true" data-trigger="change">              
               @endif
             </div>
             <div class="form-group">
@@ -41,7 +41,7 @@ $isExperience = isset($customTable->experience) && in_array($regType, $customTab
               <input name="email" disabled="" class="form-control" type="text" value="{{ Auth::user()->email }}" data-type="email" data-required="true" data-trigger="change">
               <span class="help-block m-b-none">如需编辑请退出登录或联系客服</span>
               @else
-              <input name="email" class="form-control" type="text" value="" data-type="email" data-required="true" data-trigger="change">
+              <input name="email" class="form-control" type="text" data-type="email" data-required="true" data-trigger="change">
               @endif
             </div>
             <div class="form-group form-inline">
@@ -64,11 +64,11 @@ $isExperience = isset($customTable->experience) && in_array($regType, $customTab
             <div class="form-group pull-in clearfix">
               <div class="col-sm-9">
               <label>学校</label>
-                <input name="school" class="form-control" type="text" value="" data-required="true">
+                <input name="school" class="form-control" type="text" data-required="true">
               </div>
               <div class="col-sm-3">
                 <label>毕业年份</label>
-                <input name="yearGraduate" class="form-control" type="text" value="" data-required="true">
+                <input name="yearGraduate" class="form-control" type="text" data-required="true">
               </div>
             </div>
             <div class="form-group pull-in clearfix">
@@ -83,50 +83,50 @@ $isExperience = isset($customTable->experience) && in_array($regType, $customTab
               </div>
               <div class="col-sm-8">
                 <label>&nbsp;</label>
-                <input name="sfz" class="form-control" type="text" value="" data-required="true">
+                <input name="sfz" class="form-control" type="text" data-required="true">
               </div>
             </div>
             <div class="form-group">
               <label>电话</label>
-              <input name="tel" class="form-control" type="text" value="" data-required="true">
+              <input name="tel" class="form-control" type="text" data-required="true">
             </div>
             @if (isset($customTable->info->contact->alt_phone))
             <div class="form-group">
               <label>备用电话</label>
-              <input name="tel2" class="form-control" type="text" placeholder="选填；如果您的主电话号码无法使用，我们将通过备用电话联系您" value="" {{$customTable->info->contact->alt_phone == 'mandatory' ? 'data-required="true"' : ''}}>
+              <input name="tel2" class="form-control" type="text" placeholder="选填；如果您的主电话号码无法使用，我们将通过备用电话联系您" {{$customTable->info->contact->alt_phone == 'mandatory' ? 'data-required="true"' : ''}}>
             </div>
             @endif
             @if (isset($customTable->info->contact->qq))
             <div class="form-group">
               <label>QQ</label>
-              <input name="qq" class="form-control" type="text" value="" {{$customTable->info->contact->qq == 'mandatory' ? 'data-required="true"' : ''}}>
+              <input name="qq" class="form-control" type="text" {{$customTable->info->contact->qq == 'mandatory' ? 'data-required="true"' : ''}}>
             </div>
             @endif
             @if (isset($customTable->info->contact->skype))
             <div class="form-group">
               <label>Skype</label>
-              <input name="skype" class="form-control" type="text" value="" {{$customTable->info->contact->skype == 'mandatory' ? 'data-required="true"' : ''}}>
+              <input name="skype" class="form-control" type="text" {{$customTable->info->contact->skype == 'mandatory' ? 'data-required="true"' : ''}}>
             </div>
             @endif
             @if (isset($customTable->info->contact->wechat))
             <div class="form-group">
               <label>微信</label>
-              <input name="wechat" class="form-control" type="text" value="" {{$customTable->info->contact->wechat == 'mandatory' ? 'data-required="true"' : ''}}>
+              <input name="wechat" class="form-control" type="text" {{$customTable->info->contact->wechat == 'mandatory' ? 'data-required="true"' : ''}}>
             </div>
             @endif
             <div class="form-group pull-in clearfix">
               <div class="col-sm-6">
               <label>紧急联络人</label>
-                <input name="parentname" class="form-control" type="text" value="" data-required="true">
+                <input name="parentname" class="form-control" type="text" data-required="true">
               </div>
               <div class="col-sm-6">
                 <label>与紧急联络人关系</label>
-                <input name="parentrelation" class="form-control" type="text" value="" data-required="true">
+                <input name="parentrelation" class="form-control" type="text" data-required="true">
               </div>
             </div>
             <div class="form-group">
               <label>紧急联络人电话</label>
-              <input name="parenttel" class="form-control" type="text" value="" data-required="true">
+              <input name="parenttel" class="form-control" type="text" data-required="true">
             </div>
           </div>
           @if ($isExperience){{--(isset($customTable->experience) && in_array($regType, $customTable->experience->uses))--}}
@@ -134,7 +134,7 @@ $isExperience = isset($customTable->experience) && in_array($regType, $customTab
             @if (in_array($regType, $customTable->experience->startYear))
             <div class="form-group">
               <label>首次参加模拟联合国活动的年份</label>
-              <input name="yearJoin" class="form-control" type="text" placeholder="您在哪一年第一次参会呢？请回答 4 位数年份" value="" data-required="true">
+              <input name="startYear" class="form-control" type="text" placeholder="您在哪一年第一次参会呢？请回答 4 位数年份" data-required="true">
             </div>
             @endif
             @if (in_array($regType, $customTable->experience->select))
@@ -178,18 +178,18 @@ $isExperience = isset($customTable->experience) && in_array($regType, $customTab
                  </select>
                 </div>
                 <div class="col-sm-6">
-                  <input name="date1" class="form-control" type="text" placeholder="会议的举办时间 (例：2017年2月)" value="" data-required="true">
+                  <input name="date1" class="form-control" type="text" placeholder="会议的举办时间 (例：2017年2月)" data-required="true">
                 </div>
               </div>
               <div class="form-group">
-                <input name="name1" class="form-control" type="text" placeholder="会议名称" value="" data-required="true">
+                <input name="name1" class="form-control" type="text" placeholder="会议名称" data-required="true">
               </div>
               <div class="form-group pull-in clearfix">
                 <div class="col-sm-6">
-                  <input name="role1" class="form-control" type="text" placeholder="您的角色" value="" data-required="true">
+                  <input name="role1" class="form-control" type="text" placeholder="您的角色" data-required="true">
                 </div>
                 <div class="col-sm-6">
-                  <input name="award1" class="form-control" type="text" placeholder="所获奖项 (如果有)" value="">
+                  <input name="award1" class="form-control" type="text" placeholder="所获奖项 (如果有)">
                 </div>
               </div>
             <div class="form-group">
@@ -209,18 +209,18 @@ $isExperience = isset($customTable->experience) && in_array($regType, $customTab
                  </select>
                 </div>
                 <div class="col-sm-6">
-                  <input name="date2" class="form-control" type="text" placeholder="会议的举办时间 (例：2017年2月)" value="">
+                  <input name="date2" class="form-control" type="text" placeholder="会议的举办时间 (例：2017年2月)"> 
                 </div>
               </div>
               <div class="form-group">
-                <input name="name2" class="form-control" type="text" placeholder="会议名称" value="">
+                <input name="name2" class="form-control" type="text" placeholder="会议名称">
               </div>
               <div class="form-group pull-in clearfix">
                 <div class="col-sm-6">
-                  <input name="role2" class="form-control" type="text" placeholder="您的角色" value="">
+                  <input name="role2" class="form-control" type="text" placeholder="您的角色">
                 </div>
                 <div class="col-sm-6">
-                  <input name="award2" class="form-control" type="text" placeholder="所获奖项 (如果有)" value="">
+                  <input name="award2" class="form-control" type="text" placeholder="所获奖项 (如果有)">
                 </div>
               </div>
             <div class="form-group">
@@ -240,18 +240,18 @@ $isExperience = isset($customTable->experience) && in_array($regType, $customTab
                  </select>
                 </div>
                 <div class="col-sm-6">
-                  <input name="date3" class="form-control" type="text" placeholder="会议的举办时间 (例：2017年2月)" value="">
+                  <input name="date3" class="form-control" type="text" placeholder="会议的举办时间 (例：2017年2月)">
                 </div>
               </div>
               <div class="form-group">
-                <input name="name3" class="form-control" type="text" placeholder="会议名称" value="">
+                <input name="name3" class="form-control" type="text" placeholder="会议名称">
               </div>
               <div class="form-group pull-in clearfix">
                 <div class="col-sm-6">
-                  <input name="role3" class="form-control" type="text" placeholder="您的角色" value="">
+                  <input name="role3" class="form-control" type="text" placeholder="您的角色">
                 </div>
                 <div class="col-sm-6">
-                  <input name="award3" class="form-control" type="text" placeholder="所获奖项 (如果有)" value="">
+                  <input name="award3" class="form-control" type="text" placeholder="所获奖项 (如果有)">
                 </div>
               </div>
             <div class="form-group">
@@ -434,7 +434,8 @@ $isExperience = isset($customTable->experience) && in_array($regType, $customTab
               <input name="password2" class="form-control" type="password" placeholder="输入密码以创建您的 MUNPANEL 账号" data-required="true" autocomplete="new-password">
             </div>
             @endif
-          </div>                
+            <button type="submit" class="btn btn-sm btn-success pull-right text-uc m-t-n-xs"><strong>保存</strong></button>
+          </div>
         </form>
         {{--<!--div class="step-pane" id="{{$isExperience ? 'step5' : 'step4'}}">
           <p>您的报名已成功完成</p>
@@ -447,3 +448,18 @@ $isExperience = isset($customTable->experience) && in_array($regType, $customTab
     </div>
   </div><!-- /.modal-content -->
 </div><!-- /.modal-dialog -->
+<script>
+$('#delform').submit(function(e){
+    e.preventDefault();
+    if ($( '#reg2Form' ).parsley( 'validate' )) {
+        $.post("{{ secure_url('/saveReg2') }}", $('#reg2Form').serialize(), function(receivedData){
+            //if (receivedData == "success")
+            $('#ajaxModal').modal('hide');
+            @if (Auth::user()->type != 'ot' && Auth::user()->type != 'school')
+            location.reaload();
+            @endif
+            //useTheResponseData(receivedData);
+        });
+    }
+});
+</script>

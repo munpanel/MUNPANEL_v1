@@ -12,4 +12,9 @@ class Conference extends Model
     {
         return $this->hasMany('App\Committee');
     }
+
+    public function forms()
+    {
+        return $this->hasMany('App\Form');
+    }
 }

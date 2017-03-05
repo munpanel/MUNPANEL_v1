@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateAssignmentsTable extends Migration
+class CreateFormsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,17 +13,13 @@ class CreateAssignmentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('assignments', function (Blueprint $table) {
+        Schema::create('forms', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('conference_id')->unsigned();
-            $table->enum('subject_type', ['individual', 'nation', 'partner']);
-            $table->enum('handin_type', ['upload', 'text', 'form']);
-            $table->boolean('reg_assignment')->default(false);
-            $table->string('title');
-            $table->mediumText('description');
-            $table->dateTime('deadline');
+            $table->string('name');
+            $table->text('content');
             $table->timestamps();
-            $table->unique(['title', 'conference_id']);
+            $table->unique(['conference_id', 'name']);
             $table->foreign('conference_id')->references('id')->on('conferences')->onDelete('cascade');
         });
     }
@@ -35,6 +31,6 @@ class CreateAssignmentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('assignments');
+        Schema::dropIfExists('forms');
     }
 }

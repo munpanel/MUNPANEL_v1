@@ -28,7 +28,7 @@ $isExperience = isset($customTable->experience) && in_array($regType, $customTab
             <div class="form-group">
               <label>姓名</label>
               @if (Auth::check())
-              <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
+              <input type="hidden" name="user_id" value="{{ Auth::id() }}">
               <input name="name" disabled="" class="form-control" type="text" value="{{ Auth::user()->name }}" data-required="true" data-trigger="change">
               <span class="help-block m-b-none">如需编辑请退出登录或联系客服</span>
               @else
@@ -262,79 +262,8 @@ $isExperience = isset($customTable->experience) && in_array($regType, $customTab
           </div>
           @endif
           <div class="step-pane" id="{{$isExperience ? 'step3' : 'step2'}}">
-            {{--<div class="form-group" id="committee1branch">
-              <label>会场意向</label>
-              <select name="branch1" class="form-control m-b" data-required="true">
-                <option value="" selected="">请选择</option>
-                <option value="17">中国内阁 PRC Cabinet</option>
-                <option value="18">俄罗斯内阁 Russian Cabinet</option>
-                <option value="19">美国内阁 US Cabinet</option>
-                <option value="20">外长团 Foreign Ministers Group</option>
-                <option value="21">联合国安全理事会 United Nations Security Council</option>
-                <option value="22">阿拉伯国家联盟 League of Arab States</option>
-                <option value="23">欧洲联盟 European Union</option>
-                <option value="24">舆论媒体 Media &amp; Press</option>
-              </select>
-              <select name="branch2" class="form-control">
-                <option value="">请选择备选会场</option>
-                <option value="17">中国内阁 PRC Cabinet</option>
-                <option value="18">俄罗斯内阁 Russian Cabinet</option>
-                <option value="19">美国内阁 US Cabinet</option>
-                <option value="20">外长团 Foreign Ministers Group</option>
-                <option value="21">联合国安全理事会 United Nations Security Council</option>
-                <option value="22">阿拉伯国家联盟 League of Arab States</option>
-                <option value="23">欧洲联盟 European Union</option>
-                <option value="24">舆论媒体 Media &amp; Press</option>
-              </select>
-            </div>
-            <div class="form-group" id="committee2branch">
-              <label>委员会意向 (第二顺位)</label>
-              <select name="committee2" class="form-control">
-                <option value="" selected="">请选择</option>
-                @foreach ($committees as $committee)
-                  @if (!isset($committee->father_committee_id) && $committee->option_limit >= 2)
-                    <option value="{{ $committee->id }}">{{ $committee->name }}</option>
-                  @endif
-                @endforeach
-              </select>
-            </div>
-            <div class="form-group">
-              <label>会场意向</label>
-              <select name="branch3" class="form-control m-b">
-                <option value="" selected="">请选择</option>
-                <option value="25">東晉朝廷</option>
-                <option value="26">桓溫幕府</option>
-                <option value="27">前燕朝廷</option>
-                <option value="28">前秦朝廷</option>
-              </select>
-              <select name="branch4" class="form-control">
-                <option value="" selected="">请选择备选会场</option>
-                <option value="25">東晉朝廷</option>
-                <option value="26">桓溫幕府</option>
-                <option value="27">前燕朝廷</option>
-                <option value="28">前秦朝廷</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label>委员会意向 (第三顺位)</label>
-              <select name="committee3" class="form-control" data-required="true">
-                <option value="" selected="">请选择</option>
-                @foreach ($committees as $committee)
-                  @if (!isset($committee->father_committee_id) && $committee->option_limit >= 3)
-                    <option value="{{ $committee->id }}">{{ $committee->name }}</option>
-                  @endif
-                @endforeach
-              </select>
-            </div>--}}
-            @foreach ($customTable->conference->items as $item)
-              @if (in_array($regType, $item->uses))
-                @if (isset($item->title))
-                <label>{{$item->title}}</label>
-                @endif
-{{-- http://stackoverflow.com/questions/29897508/switch-in-laravel-5-blade --}}
-{{-- 烦死了这破玩意 --}}
-{{-- Consider move this rendering process back to Controller instead of in a blade. Adam Yi --}}
-                <?php
+            {!!$confForm!!}{{--
+                <!--?php
                 switch ($item->type)
                 {
                   // 自定义的表单项
@@ -379,10 +308,8 @@ $isExperience = isset($customTable->experience) && in_array($regType, $customTab
             </div>';
                   break;
                 }
-                ?>
-              @endif
-            @endforeach
-          {{--<!--/div>
+                ?-->
+          <!--/div>
           <div class="step-pane" id="{{$isExperience ? 'step4' : 'step3'}}">
             <label>确认您的报名信息</label>
             <p>千反田える，您将以<strong>{{ $regType == 'delegate' ? '代表' : ($regType == 'observer' ? '观察员' : '志愿者') }}</strong>身份报名参加2017年环梦模拟联合国年度会议。<br>请确认以下报名信息是否准确无误。</p>

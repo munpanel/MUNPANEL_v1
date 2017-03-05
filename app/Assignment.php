@@ -27,7 +27,17 @@ class Assignment extends Model
     public function handins()
     {
         return $this->hasMany('App\Handin');
-    }   
+    }
+
+    public function conference()
+    {
+        return $this->belongsTo('App\Conference');
+    }
+
+    public function form()
+    {
+        return $this->hasMany('App\Form');
+    }
 
     public function scope()
     {

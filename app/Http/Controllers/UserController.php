@@ -163,7 +163,7 @@ class UserController extends Controller
         {
             if (is_object(User::where('email', $request->email)->first()))
             {
-                //To-Do: error!
+                //To-Do: error! 建议用 JS 判断
             }
             $user = new User;
             $user->name = $request->name;

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Collection;
 use Yajra\Datatables\Datatables;
 use App\User;
+use App\Reg;
 use App\Delegate;
 use App\Volunteer;
 use App\School;
@@ -171,6 +172,70 @@ class DatatablesController extends Controller //To-Do: Permission Check
         }
         else
             return "Error";
+        return Datatables::of($result)->make(true);
+    }
+
+    public function reg2Table()
+    {
+        $user = Auth::user();
+        $conf = 2;
+        if ($user->type=='ot')
+        {
+            if (!Auth::user()->can('view-regs'))
+                return "ERROR";
+            $result = new Collection;
+            $regs = Reg::where('conference_id', 2)->with(['user' => function($q) {$q->select('name', 'id');}, 'committee' => function($q) {$q->select('name', 'id');}])->get(['id', 'user_id', 'committee_id', 'status', 'type']);
+            foreach ($regs as $reg)
+            {
+                if ($reg->type == 'unregistered')
+                    $type = '未报名';
+                else if ($reg->type == 'ot')
+                    $type = '组织团队';
+                else if ($reg->type == 'dais')
+                    $type = '学术团队';
+                else if ($reg->type == 'delegate')
+                    $type = '代表';
+                else if ($reg->type == 'volunteer')
+                    $type = '志愿者';
+                else if ($reg->type == 'observer')
+                    $type = '观察员';
+                else if ($reg->type == 'school')
+                    $type = '学校';
+                else
+                    $type = '未知';
+                if ($reg->status == 'paid')
+                    $statusbar = 'has-success';
+                else if ($reg->status == 'oVerified')
+                    $statusbar = 'has-warning';
+                else if ($reg->status == 'sVerified')
+                    $statusbar = '';
+                else
+                    $statusbar = 'has-error';
+                if ($reg->status == 'paid' && (!$user->can('approve-regs-pay')))
+                    $status = '成功';
+                else if ($user->can('approve-regs'))
+                    $status = '<div class="status-select '.$statusbar.'" uid="'. $reg->user_id .'">'.$reg->status."</div>";
+                else if ($reg->status == 'reg')
+                    $status = '等待学校审核';
+                else if ($reg->status == 'sVerified')
+                    $status = '等待组委审核';
+                 else if ($reg->status == 'oVerified')
+                    $status = '待缴费';
+                 else if ($reg->status == 'paid')
+                    $status = '成功';
+                 else if ($reg->status == 'init')
+                    $status = '报名学测未完成';
+                $school = null !== json_decode($reg->reginfo)? json_decode($reg->reginfo)->school: '未填写';
+                $result->push([
+                    'details' => '<a href="ot/regInfo.modal/'. $reg->id .'" data-toggle="ajaxModal" id="'. $reg->id .'" class="details-modal"><i class="fa fa-search-plus"></i></a>',
+                    'name' => $reg->user->name,
+                    'school' => $school,
+                    'committee' => $reg->committee->name,
+                    'partner' => $type,
+                    'status' => $status,
+                ]);
+            }
+        }
         return Datatables::of($result)->make(true);
     }
 

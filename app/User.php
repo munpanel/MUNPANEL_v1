@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Zizaco\Entrust\Traits\EntrustUserTrait;
+use PragmaRX\Google2FA\Contracts\Google2FA;
 
 class User extends Authenticatable
 {
@@ -104,5 +105,19 @@ class User extends Authenticatable
         $mail->content = '感谢您使用 MUNPANEL 系统！请点击以下链接验证您的电子邮箱：<br/><pre><a href="'.$url.'">'.$url.'</a></pre>';
         $mail->send();
         $mail->save();
+    }
+
+    public function generate2FAkey() {
+        $this->google2fa_secret = Google2FA::generateSecretKey(16, $this->id);
+        $this->save();
+        return $this->google2fa_secret;
+    }
+
+    public function generate2FAqr() {
+        return Google2FA::getQRCodeInline('MUNPANEL', $this->email, $this->generate2FAkey());
+    }
+
+    public function verify2FAkey($secret) {
+        return Google2FA::verifyKey($this->google2fa_secret, $secret);
     }
 }

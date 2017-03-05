@@ -16,7 +16,9 @@
         "z38/metzli": "^1.0",
         "vinkla/pusher": "^2.5",
         "predis/predis": "^1.1",
-        "wpb/string-blade-compiler": "3.4.x-dev"
+        "wpb/string-blade-compiler": "3.4.x-dev",
+        "pragmarx/google2fa": "^1.0",
+        "bacon/bacon-qr-code": "~1.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

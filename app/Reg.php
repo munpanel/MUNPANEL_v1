@@ -144,9 +144,13 @@ class Reg extends Model
         return $scope;
     }
 
-    public function addEvent()
+    public function addEvent($type, $content)
     {
         $event = new Event;
-
+	$event->eventtype_id = $type;
+	$event->content = $content;
+	$event->reg_id = $this->id;
+	$event->save();
+	return $event;
     }
 }

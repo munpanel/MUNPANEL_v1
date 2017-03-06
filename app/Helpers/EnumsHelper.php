@@ -57,7 +57,7 @@ function provinceSelect($selected = null)
     $result = '<select name="province" class="form-control" data-required="true">';
     $arr = [11, 12, 13, 14, 15, 21, 22, 23, 31, 32, 33, 34, 35, 36, 37, 41, 42, 43, 44, 45, 46, 50, 51, 52, 53, 54, 61, 62, 63, 64, 65, 71, 81, 82, 99];
     foreach ($arr as $item)
-        $result .= '<option value="' . $item . '"' . ($selected = $item ? 'selected=""' : '') . '>' . province($item) . '</option>'
+        $result .= '<option value="' . $item . '"' . ($selected == $item ? 'selected=""' : '') . '>' . province($item) . '</option>';
     $result .= '</select>';
     return $result;
 }

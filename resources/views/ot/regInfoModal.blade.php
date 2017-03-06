@@ -1,7 +1,6 @@
 @php
 $i = 0;
 $regInfo = json_decode($reg->reginfo);
-$isExperience = isset($customTable->experience) && in_array($regType, $customTable->experience->uses)
 @endphp
 <div class="modal-dialog">
       <div class="modal-content">
@@ -28,7 +27,7 @@ $isExperience = isset($customTable->experience) && in_array($regType, $customTab
                     <p><i>证件类型及号码</i><br>&emsp;&emsp;{{typeID($regInfo->personinfo->typeDocument)}} / {{$regInfo->personinfo->sfz}} </p>
                     <p><i>电话</i><br>&emsp;&emsp;{{$regInfo->personinfo->tel}}</p>
                     @if (isset($regInfo->personinfo->alt_phone))                
-                    <p><i>备用电话</i><br>&emsp;&emsp;{{$regInfo->personinfo->alt_phone)}}</p>
+                    <p><i>备用电话</i><br>&emsp;&emsp;{{$regInfo->personinfo->alt_phone}}</p>
                     @endif
                     @if (isset($regInfo->personinfo->qq)) 
                     <p><i>QQ</i><br>&emsp;&emsp;{{$regInfo->personinfo->qq}}</p>
@@ -42,23 +41,25 @@ $isExperience = isset($customTable->experience) && in_array($regType, $customTab
                     <p><i>紧急联络人</i><br>&emsp;&emsp;{{$regInfo->personinfo->parentname}}</p>
                     <p><i>与紧急联络人关系</i><br>&emsp;&emsp;{{$regInfo->personinfo->parentrelation}}</p>
                     <p><i>紧急联络人电话</i><br>&emsp;&emsp;{{$regInfo->personinfo->parenttel}}</p>
-                    @if (isExperience)
+                    @if (isset($regInfo->experience))
                     <label>参会经历</label>
-                      @if (in_array($regType, $customTable->experience->startYear))
+                      @if (isset($regInfo->experience->startYear))
                       <p><i>首次参加模拟联合国活动的年份</i><br>&emsp;&emsp;{{$regInfo->experience->startYear}}</p>
                       @endif
-                      @if (in_array($regType, $customTable->experience->select))
+                      @if (isset($regInfo->experience->item))
                         @foreach ($regInfo->experience->item as $item)
-                        <p><i>参会经历 {{++$i}}</i><br>&emsp;&emsp;{{$item->name}} ({{levelOfConfs($item->level)}}, {{$item->date}})<br>&emsp;&emsp;{{$item->role}}, {{$item->award or '无奖项'}}</p>
+                        <p><i>参会经历 {{++$i}}</i><br>&emsp;&emsp;{{$item->name}} ({{levelOfConfs($item->level)}}, {{$item->dates}})<br>&emsp;&emsp;{{$item->role}}, {{$item->award or '无奖项'}}</p>
                         @endforeach
                       @endif                
                     @endif
                     <label>会议信息</label>
-                    <p><i>委员会意向 1</i><br>&emsp;&emsp;{{Conference::find($regInfo->conference->committee)->name}}</p>
-                    <p><i>委员会意向 2</i><br>&emsp;&emsp;{{Conference::find($regInfo->conference->committee2)->name}}</p>
-                    <p><i>委员会意向 3</i><br>&emsp;&emsp;{{Conference::find($regInfo->conference->committee3)->name}}</p>
+                    <p><i>委员会意向 1</i><br>&emsp;&emsp;{{App\Committee::find($regInfo->conference->committee)->name}}</p>
+                    <p><i>委员会意向 2</i><br>&emsp;&emsp;{{App\Committee::find($regInfo->conference->committee2)->name}}</p>
+                    <p><i>委员会意向 3</i><br>&emsp;&emsp;{{App\Committee::find($regInfo->conference->committee3)->name}}</p>
                     <p><i>面试联络方式</i><br>&emsp;&emsp;{{typeInterview($regInfo->conference->typeInterview)}}</p>
-                    <p><i>面试选项</i><br>&emsp;&emsp;{{($regInfo->conference->smsInterview) ? '开通面试短信提醒服务' : ''}}{{($regInfo->conference->smsInterview && $regInfo->conference->offlineInterview) ? ', ' : ''}}{{($regInfo->conference->offlineInterview) ? '接受线下面试' : ''}}</p>
+                    @if (isset($regInfo->conference->smsInterview) || isset($regInfo->conference->offlineInterview))
+		    <p><i>面试选项</i><br>&emsp;&emsp;{{isset($regInfo->conference->smsInterview) ? '开通面试短信提醒服务' : ''}}{{isset($regInfo->conference->smsInterview) && isset($regInfo->conference->offlineInterview) ? ', ' : ''}}{{isset($regInfo->conference->offlineInterview) ? '接受线下面试' : ''}}</p>
+                    @endif
                     @if (isset($regInfo->conference->groupOption))
                     <p><i>团队报名选项</i><br>&emsp;&emsp;{{groupOption($regInfo->conference->groupOption)}}</p>
                     @endif

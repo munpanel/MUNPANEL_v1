@@ -13,6 +13,12 @@ use Config;
 
 class RoleAllocController extends Controller
 {
+    /**
+     * Lock the seat allocation of a committee
+     *
+     * @param boolean $confirm whether to lock or to prompt an warning
+     * @return \Illuminate\Http\Response
+     */
     public function lockAlloc($confirm = false)
     {
         if (Auth::user()->type != 'dais')
@@ -29,6 +35,12 @@ class RoleAllocController extends Controller
         }
     }
 
+    /**
+     * Remove a delegate from its original seat
+     *
+     * @param int $id the id of the delegate
+     * return \Illuminate\Http\Response
+     */
     public function removeDelegate($id)
     {
         $user = User::findOrFail($id);
@@ -44,6 +56,13 @@ class RoleAllocController extends Controller
         return redirect(secure_url('/roleAlloc'));
     }
 
+    /**
+     * Assign a delegate to a new seat
+     *
+     * @param Request $request
+     * @param int $id the id of the delegate
+     * @return \Illuminate\Http\Response
+     */
     public function addDelegate(Request $request, $id)
     {
         $user = User::findOrFail($id);
@@ -61,6 +80,13 @@ class RoleAllocController extends Controller
         //return redirect(secure_url('/roleAlloc'));
     }
 
+    /**
+     * Clear out one seat so that all delegates assigned to it are removed
+     * from this seat.
+     *
+     * @param int $id the id of the seat
+     * @return \Illuminate\Http\Response
+     */
     public function freeNation($id)
     {
         $nation = Nation::findOrFail($id);
@@ -73,6 +99,12 @@ class RoleAllocController extends Controller
         return redirect(secure_url('/roleAlloc'));
     }
 
+    /**
+     * Display the details modal of a nation.
+     *
+     * @param int $id the id of the nation
+     * @return \Illuminate\Http\Response
+     */
     public function nationDetailsModal($id)
     {
         if (Auth::user()->type != 'dais')
@@ -91,6 +123,13 @@ class RoleAllocController extends Controller
         return view('dais.nationDetailsModal', ['nation' => $nation]);
     }
 
+    /**
+     * Update a property of a nation
+     *
+     * @param Request $request
+     * @param int $id the id of the nation updated
+     * @return void
+     */
     public function updateNation(Request $request, $id)
     {
         if (Auth::user()->type != 'dais')
@@ -102,6 +141,14 @@ class RoleAllocController extends Controller
         $nation->save();
     }
 
+    /**
+     * Delete a nation from database
+     * 
+     * @param Request $request
+     * @param int $id the id of the nation to be removed
+     * @param boolean $confirm whether to remove the nation or to show a prompt
+     * @return void
+     */
     public function deleteNation(Request $request, $id, $confirm = false)
     {
         if (Auth::user()->type != 'dais')
@@ -118,6 +165,13 @@ class RoleAllocController extends Controller
 	}
     }
 
+    /**
+     * Link two delegates as partner
+     *
+     * @param int $id1 the id of the first delegate
+     * @param int $id2 the id of the second delegate
+     * @return \Illuminate\Http\Response
+     */
     public function linkPartner($id1, $id2)
     {
         if (Auth::user()->type == 'dais')
@@ -139,11 +193,21 @@ class RoleAllocController extends Controller
         return redirect(secure_url('/roleAlloc'));
     }
 
+    /**
+     * Show the modal in which dais can link partners.
+     *
+     * @return void
+     */
     public function linkPartnerModal()
     {
         return view('dais.linkPartnerModal');
     }
 
+    /**
+     * Show the biz card of a delegate.
+     *
+     * @param int $id the id of the delegate
+     * @return \Illuminate\Http\Response
     public function getDelegateBizcard($id)
     {
         $del = Delegate::findOrFail($id);

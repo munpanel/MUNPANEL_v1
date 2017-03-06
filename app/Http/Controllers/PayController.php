@@ -10,6 +10,12 @@ use Illuminate\Support\Facades\Auth;
 
 class PayController extends Controller
 {
+    /**
+     * Get the payment info given certain order id.
+     * 
+     * @param Request $request
+     * @return string the info of the payment
+     */
     public function payInfo(Request $request)
     {
         $srv = new TeegonService(Config::get('teegon.api_url'));
@@ -44,6 +50,14 @@ class PayController extends Controller
         return $srv->pay($param,false);
  
     }
+
+    /**
+     * Mark an order as paid. This function is called
+     * by Teegon server.
+     *
+     * @param Request $request
+     * @return void
+     */
     public function payNotify(Request $request)
     {
         //UPDATE1: verification in PHP API (no official documentation for that, but will do)  --- Adam Yi Feb 6 2017

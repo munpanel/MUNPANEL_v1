@@ -1,4 +1,7 @@
 <?php
+// Teegon's Official API
+// To-Do1: merge this with PayController
+// To-Do2: own payment API module
 namespace App\Http\Controllers;
 use Config;
 use Illuminate\Http\Requests;

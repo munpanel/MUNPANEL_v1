@@ -18,6 +18,24 @@ use Metzli\Encoder\AztecCode;
 
 class ImageController extends Controller
 {
+    /**
+     * Add text to an ImagickDraw in order to draw text on an Imagick graph with
+     * fonts options for both Chinese and English fonts as well as automatic 
+     * spacing options for generating badge. Auto wrap is enabled in this function,
+     * so if text is too long it will automatically be wrapped from below to top.
+     * From top to below wrapping mode will be developed in the future.
+     *
+     * @param Imagick $image the image to be drawed on (It will not draw on that image, but on $draw instead)
+     * @param ImagickDraw $draw the instance will the annotation will be applied
+     * @param int $x the X position of the center of the text
+     * @param int $y the Y position of the center of the text
+     * @param string $str the text to be annotated
+     * @param int $size the size of the text to be annotated (in pt)
+     * @param string $fontCN the name of the font used for Chinese characters
+     * @param string $fontEN the name of the font used for English characters
+     * @param bool $space whether to automatically add space between characters
+     * @return ImagickDraw the instance with text annotated
+     */
     private static function addText($image, $draw, $x, $y, $str, $size, $color, $fontCN, $fontEN, $space = false)
     {
         if (preg_match("/[\x7f-\xff]/", $str)) // if contains Chinese
@@ -56,7 +74,7 @@ class ImageController extends Controller
 
         // Run until we find a font size that doesn't exceed $max_height in pixels
         while ( 0 == $total_height || $total_height > $max_height ) {
-            if ( $total_height > 0 ) $font_size--; // we're still over height, decrement font size and try again
+            if ( $total_height > 0 ) $font_size--; // we're still over height, decrease font size and try again
 
             $draw->setFontSize($font_size);
 
@@ -94,9 +112,19 @@ class ImageController extends Controller
             $draw->annotation($x, $y - ($i * $line_height * $line_height_ratio), $lines[$i] );
         }
 //        $draw->annotation($x, $y, $str);
+        return $draw;
     }
 
-    private static function render(AztecCode $code, $sizeX, $sizeY) // Rewritten according to Metzli\Renderer\PngRenderer, by Adam Yi
+    /**
+     * Render an aztec code to a image
+     * Rewritten according to Metzli\Renderer\PngRenderer, by Adam Yi
+     *
+     * @param AztecCode $code the aztec code to be rendered
+     * @param int $sizeX the X size of the generated image
+     * @param int $sizeY the Y size of the generated image
+     * @return Imagick the image generated
+     */
+    private static function render(AztecCode $code, $sizeX, $sizeY)
     {
         $matrix = $code->getMatrix();
         $factorX = $sizeX / $matrix->getWidth();
@@ -120,6 +148,20 @@ class ImageController extends Controller
         return $img;
     }
 
+    /**
+     * Generate a badge image.
+     *
+     * @param string $template the name of the template of the badge used
+     * @param string $name the name of the person printed in the badge
+     * @param string $school the name of the school printed in the badge
+     * @param string $role the name of the role printed in the badge
+     * @param string $title the title text printed in the badge
+     * @param string $mode the output mode of the image (RGB/CMYK)
+     * @param string $filename the output filename of the image (or 'output' for displaying without saving)
+     * @param string $cardid the ID of the card used to generate the Aztec Code in the badge
+     * @param boolean $blank whether this is a blank badge
+     * @return \Illuminate\Http\Response|string the image to display or "success"
+     */
     public static function generateBadge($template = 'Delegate', $name, $school, $role, $title, $mode = 'RGB', $filename = 'output', $cardid = 'INVALID', $blank = false)
     {
         $img = new Imagick();
@@ -154,8 +196,18 @@ class ImageController extends Controller
         if ($filename == 'output')
             return response($img)->header('Content-Type', 'image/jpg');
         $img->writeImage(storage_path('app/images/badges/'.$filename));
+	return 'success';
     }
 
+    /**
+     * (Deprecated) Generate the badge images for a committee
+     * Please note that this method does not generate valid cards
+     * since it does not use the Card class and all card IDs are
+     * "INVALID".
+     * Do not use this method. It will be removed in future versions.
+     *
+     * @param int $cid the ID of the committee of which delegates' badge images are generated
+     * @return string generating results
     public function committeeBadge($cid)
     {
         //$committee = Committee::findOrFail($cid);

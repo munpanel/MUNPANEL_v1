@@ -1,4 +1,5 @@
 <?php
+// To-Do: own SMS API
 
 namespace App\Http\Controllers;
 
@@ -7,7 +8,15 @@ use Illuminate\Http\Request;
 
 class SmsController extends Controller
 {
+    /**
+     * Send an SMS message to one/multiple mobile number(s).
+     *
+     * @param array $mobileList a list of mobile numbers to send message to
+     * @param string $message the content of the SMS
+     * @return void
+     */
     static public function send($mobileList, $message) {
+	//To-Do: store all messages sent
         if (count($mobileList) == 0)
             return false;
         else if (count($mobileList) == 1) { // single send
@@ -46,6 +55,14 @@ class SmsController extends Controller
             curl_close( $ch );
         }
     }
+
+    /**
+     * Call a user to give a verification code (4-6 digits).
+     *
+     * @param string $mobile the number to call
+     * @param int $code the verification code
+     * @return void
+     */
 
     static public function call($mobile, $code) {
         $ch = curl_init();

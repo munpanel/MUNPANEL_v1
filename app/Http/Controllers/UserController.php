@@ -34,6 +34,12 @@ class UserController extends Controller
         $this->middleware('auth');
     }
 
+    /**
+     * (Deprecated) Save delegate registration form.
+     *
+     * @param Request $request
+     * return void
+     */
     public function regSaveDel(Request $request)
     {
         //$user = Auth::user();
@@ -77,6 +83,12 @@ class UserController extends Controller
         Observer::destroy($user->id);
     }
 
+    /**
+     * (Deprecated) Save volunteer registration form.
+     *
+     * @param Request $request
+     * return void
+     */ 
     public function regSaveVol(Request $request)
     {
         //$user = Auth::user();
@@ -118,6 +130,12 @@ class UserController extends Controller
         Observer::destroy($user->id);
     }
 
+    /**
+     * (Deprecated) Save observer registration form.
+     *
+     * @param Request $request
+     * return void
+     */
     public function regSaveObs(Request $request)
     {
         //$user = Auth::user();
@@ -155,7 +173,13 @@ class UserController extends Controller
         Delegate::destroy($user->id);
         Volunteer::destroy($user->id);
     }
-    
+
+    /**
+     * Save registration form (dynamic).
+     *
+     * @param Request $request
+     * @return void
+     */
     public function reg2(Request $request)
     {
         $customTable = json_decode(Conference::findOrFail(2)->tableSettings)->regTable;
@@ -278,6 +302,12 @@ class UserController extends Controller
         $reg->save();
     }
 
+    /**
+     * make a registration school verified.
+     *
+     * @param int $id the id of the registration
+     * @return void
+     */
     public function schoolVerify($id)
     {
         $school = Auth::user()->school;
@@ -288,6 +318,12 @@ class UserController extends Controller
         $specific->save();
     }
 
+    /**
+     * make a registration school unverified.
+     *
+     * @param int $id the id of the registration
+     * @return void
+     */
     public function schoolUnverify($id)
     {
         $school = Auth::user()->school;
@@ -298,6 +334,13 @@ class UserController extends Controller
         $specific->save();
     }
 
+    /**
+     * set a registration to a certain status.
+     *
+     * @param int $id the id of the registration
+     * @param string $status the new status of the registration
+     * @return void
+     */
     public function setStatus($id, $status)
     {
         if (Auth::user()->type != 'ot' || (!Auth::user()->can('approve-regs')))
@@ -309,7 +352,11 @@ class UserController extends Controller
         $specific->save();
     }
 
-
+    /**
+     * Register school accounts from csv file.
+     *
+     * @return string registration result
+     */
     public function regSchool()
     {
         if (($handle = fopen("/var/www/munpanel/test.csv", "r")) !== FALSE) {
@@ -336,6 +383,11 @@ class UserController extends Controller
         }
     }
 
+    /**
+     * Register dais accounts from csv file.
+     *
+     * @return string registration result
+     */
     public function regDais()
     {
          if (($handle = fopen("/var/www/munpanel/test.csv", "r")) !== FALSE) {
@@ -369,6 +421,12 @@ class UserController extends Controller
         }       
     }
 
+    /**
+     * Change the password of the logged in user.
+     *
+     * @param Request $request
+     * @return Illuminate\Http\Response
+     */
     public function doChangePwd(Request $request)
     {
         $user = Auth::user();
@@ -382,6 +440,13 @@ class UserController extends Controller
             return view('error', ['msg' => 'Wrong password!']);
     }
 
+    /**
+     * Update a property of a user.
+     *
+     * @param Request $request
+     * @param int $id the id of the user to be updated
+     * @return void
+     */
     public function updateUser(Request $request, $id)
     {
         if (Auth::user()->type != 'ot')
@@ -401,6 +466,13 @@ class UserController extends Controller
         $user->save();
     }
 
+    /**
+     * Update a property of a school.
+     *
+     * @param Request $request
+     * @param int $id the id of the school to be updated
+     * @return void
+     */
     public function updateSchool(Request $request, $id)
     {
         if (Auth::user()->type != 'ot')
@@ -412,6 +484,13 @@ class UserController extends Controller
         $school->save();
     }
 
+    /**
+     * Update a property of a committee.
+     *
+     * @param Request $request
+     * @param int $id the id of the committee to be updated
+     * @return void
+     */
     public function updateCommittee(Request $request, $id)
     {
         if (Auth::user()->type != 'ot')
@@ -423,6 +502,13 @@ class UserController extends Controller
         $committee->save();
     }
 
+    /**
+     * Delete a user from database.
+     *
+     * @param Request $request
+     * @param int $id the id of the user to be deleted
+     * @return void
+     */
     public function deleteUser(Request $request, $id)
     {
         if (Auth::user()->type != 'ot')
@@ -430,6 +516,13 @@ class UserController extends Controller
         User::destroy($id);
     }
 
+    /**
+     * Delete a committee from database.
+     *
+     * @param Request $request
+     * @param int $id the id of the committee to be deleted
+     * @return void
+     */
     public function deleteCommittee(Request $request, $id)
     {
         if (Auth::user()->type != 'ot')
@@ -437,6 +530,13 @@ class UserController extends Controller
         Committee::destroy($id);
     }
 
+    /**
+     * Delete a school from database.
+     *
+     * @param Request $request
+     * @param int $id the id of the school to be deleted
+     * @return void
+     */
     public function deleteSchool(Request $request, $id)
     {
         if (Auth::user()->type != 'ot')
@@ -444,6 +544,9 @@ class UserController extends Controller
         School::destroy($id);
     }
 
+    /**
+     * Initiate permissions to the database.
+     */
     public function createPermissions()
     {
         /*$editUser = new Permission();
@@ -517,6 +620,11 @@ class UserController extends Controller
 
     }
 
+    /**
+     * Pair roommates and partners according to name
+     *
+     * @return string paring result
+     */
     public function autoAssign()
     {
         $users = User::all();
@@ -546,6 +654,9 @@ class UserController extends Controller
         return "えるの室友配对遍历了$room" . "行记录<br>$result1<br>えるの搭档配对遍历了$part" . "行记录<br>$result2";
     }
 
+    /**
+     * A function to write some temporary code.
+     */
     public function test()
     {
         if (($handle = fopen("/var/www/munpanel/test.csv", "r")) !== FALSE) {
@@ -742,11 +853,13 @@ class UserController extends Controller
         return "gou";
     }
 
-    public function show($id)
-    {
-        return User::findOrFail($id);
-    }
-
+    /**
+     * Verify an email using a token.
+     *
+     * @param string $email the email to be verified
+     * @param string $token the token to verify
+     * @return string|Illuminate\Http\Response
+     */
     public function doVerifyEmail($email, $token)
     {
         $user = User::where('email', $email)->firstOrFail();
@@ -759,6 +872,15 @@ class UserController extends Controller
         return 'Token mismatch!';
     }
 
+    /**
+     * Send a verification code to a mobile using sms/call.
+     * Then, display a modal for the user to input the code.
+     *
+     * @param Request $request
+     * @param string $method 'sms' or 'call'
+     * @param string $tel the number to be called/messaged
+     * @return string|Illuminate\Http\Response
+     */
     public function verifyTelModal(Request $request, $method, $tel)
     {
         $user = Auth::user();
@@ -779,6 +901,12 @@ class UserController extends Controller
         return view('/verifyTelModal');
     }
 
+    /**
+     * Verify a phone number.
+     *
+     * @param Request $request
+     * @return string|Illuminate\Http\Response
+     */
     public function doVerifyTel(Request $request)
     {
         $correct = $request->session()->get('code');
@@ -794,6 +922,11 @@ class UserController extends Controller
         }
     }
 
+    /**
+     * Resend verification mail to the logged in user.
+     *
+     * @return Illuminate\Http\Response
+     */
     public function resendRegMail()
     {
         $user = Auth::user();

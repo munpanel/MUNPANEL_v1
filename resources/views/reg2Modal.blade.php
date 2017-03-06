@@ -57,9 +57,7 @@ $isExperience = isset($customTable->experience) && in_array($regType, $customTab
               <label>　出生日期</label>
               <input name="dateofbirth" class="datepicker-input form-control input" type="text" size="16" placeholder="yyyy-mm-dd" data-date-format="yyyy-mm-dd" data-required="true">
               <label>　省份</label>
-              <select name="province" class="form-control" data-required="true">
-                <option value="99" selected="">海外</option>
-              </select>
+              {!!provinceSelect()!!}
             </div>
             <div class="form-group pull-in clearfix">
               <div class="col-sm-9">

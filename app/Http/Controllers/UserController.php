@@ -222,13 +222,13 @@ class UserController extends Controller
         $personal_info->typeDocument = $request->typeDocument; 
         $personal_info->sfz = $request->sfz;         
         $personal_info->tel = $request->tel; 
-        if (isset($request->tel2))
+        if (isset($request->tel2) && $request->tel2 != "")
             $personal_info->tel2 = $request->tel2; 
-        if (isset($request->qq))
+        if (isset($request->qq) && $request->qq != "")
             $personal_info->qq = $request->qq; 
-        if (isset($request->skype))
+        if (isset($request->skype) && $request->skype != "")
             $personal_info->skype = $request->skype; 
-        if (isset($request->wechat))
+        if (isset($request->wechat) && $request->wechat != "")
             $personal_info->wechat = $request->wechat;         
         $personal_info->parentname = $request->parentname; 
         $personal_info->parentrelation = $request->parentrelation; 

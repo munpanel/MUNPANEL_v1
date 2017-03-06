@@ -21,10 +21,21 @@ use Illuminate\Support\Facades\Auth;
 
 class DatatablesController extends Controller //To-Do: Permission Check
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
     public function __construct()
     {
         $this->middleware('auth');
     }
+
+    /**
+     * Show registration datatables json
+     *
+     * @return string JSON of registrations
+     */
     public function registrations()
     {
         $user = Auth::user();
@@ -175,6 +186,11 @@ class DatatablesController extends Controller //To-Do: Permission Check
         return Datatables::of($result)->make(true);
     }
 
+    /**
+     * Show registration datatables json
+     *
+     * @return string JSON of registrations
+     */
     public function reg2Table()
     {
         $user = Auth::user();
@@ -239,6 +255,11 @@ class DatatablesController extends Controller //To-Do: Permission Check
         return Datatables::of($result)->make(true);
     }
 
+    /**
+     * Show user datatables json
+     *
+     * @return string JSON of users
+     */
     public function users()
     {
             $result = new Collection;
@@ -274,6 +295,11 @@ class DatatablesController extends Controller //To-Do: Permission Check
         return Datatables::of($result)->make(true);
     }
 
+    /**
+     * Show school datatables json
+     *
+     * @return string JSON of schools
+     */
     public function schools()
     {
         $result = new Collection;
@@ -303,6 +329,11 @@ class DatatablesController extends Controller //To-Do: Permission Check
         return Datatables::of($result)->make(true);
     }
 
+    /**
+     * Show committee datatables json
+     *
+     * @return string JSON of committees
+     */
     public function committees()
     {
         $result = new Collection;
@@ -318,6 +349,11 @@ class DatatablesController extends Controller //To-Do: Permission Check
         return Datatables::of($result)->make(true);
     }
     
+    /**
+     * Show assignment datatables json
+     *
+     * @return string JSON of assignments
+     */
     public function assignments()
     {
         $result = new Collection;
@@ -362,6 +398,11 @@ class DatatablesController extends Controller //To-Do: Permission Check
         return Datatables::of($result)->make(true);
     }
 
+    /**
+     * Show nation datatables json
+     *
+     * @return string JSON of nations
+     */
     public function nations()
     {
         $result = new Collection;
@@ -414,6 +455,11 @@ class DatatablesController extends Controller //To-Do: Permission Check
         return Datatables::of($result)->make(true);
     }
     
+    /**
+     * Show document datatables json
+     *
+     * @return string JSON of documents
+     */
     public function documents()
     {
         $result = new Collection;
@@ -438,6 +484,11 @@ class DatatablesController extends Controller //To-Do: Permission Check
         return Datatables::of($result)->make(true);
     }
 
+    /**
+     * Show handin datatables json
+     *
+     * @return string JSON of handins
+     */
     public function handins()
     {
         $result = new Collection;
@@ -461,6 +512,11 @@ class DatatablesController extends Controller //To-Do: Permission Check
         return Datatables::of($result)->make(true);
     }
     
+    /**
+     * Show good datatables json
+     *
+     * @return string JSON of goods
+     */
     public function goods()
     {
         $result = new Collection;
@@ -500,6 +556,11 @@ class DatatablesController extends Controller //To-Do: Permission Check
         return Datatables::of($result)->make(true);
     }
         
+    /**
+     * Show role datatables json (by nation)
+     *
+     * @return string JSON of roles
+     */
     public function roleListByNation()
     {
         $result = new Collection;
@@ -507,6 +568,11 @@ class DatatablesController extends Controller //To-Do: Permission Check
         return Datatables::of($result)->make(true);
     }
     
+    /**
+     * Show role datatables json (by delegate)
+     *
+     * @return string JSON of roles
+     */
     public function roleListByDelegate()
     {
         $result = new Collection;
@@ -514,6 +580,11 @@ class DatatablesController extends Controller //To-Do: Permission Check
         return Datatables::of($result)->make(true);
     }
     
+    /**
+     * Show role datatables json (for management)
+     *
+     * @return string JSON of roles
+     */
     public function roleAllocNations()
     {
         $result = new Collection;
@@ -565,6 +636,11 @@ class DatatablesController extends Controller //To-Do: Permission Check
         return Datatables::of($result)->make(true);
     }
     
+    /**
+     * Show delegate datatables json (for role management)
+     *
+     * @return string JSON of delegates
+     */
     public function roleAllocDelegates()
     {
         $result = new Collection;

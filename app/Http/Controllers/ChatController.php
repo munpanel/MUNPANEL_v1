@@ -15,13 +15,22 @@ class ChatController extends Controller
 
     const DEFAULT_CHAT_CHANNEL = 'chat';
 
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
     public function __construct()
     {
         $this->pusher = App::make('pusher');
         $this->chatChannel = self::DEFAULT_CHAT_CHANNEL;
         $this->middleware('auth');
     }
-
+    /**
+     * Show the chat site.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function getIndex()
     {
         /*if(!$this->user)
@@ -32,6 +41,12 @@ class ChatController extends Controller
         return view('chat', ['chatChannel' => $this->chatChannel]);
     }
 
+    /**
+     * Post a message to chat.
+     *
+     * @param Request $request
+     * @return void
+     */
     public function postMessage(Request $request)
     {
         $surfix = ' (';

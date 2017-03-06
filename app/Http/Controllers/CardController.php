@@ -10,6 +10,11 @@ use Illuminate\Http\Request;
 
 class CardController extends Controller
 {
+    /**
+     * Generate cards for all delegates.
+     *
+     * @return void
+     */
     public function generateCardsDelegates()
     {
         $delegates = Delegate::where('status', 'paid')->get();
@@ -31,6 +36,11 @@ class CardController extends Controller
         }
     }
 
+    /**
+     * Generate cards for all dais.
+     *
+     * @return void
+     */
     public function generateCardsDais()
     {
         $dais = Dais::all();
@@ -48,6 +58,11 @@ class CardController extends Controller
         }
     }
 
+    /**
+     * Generate cards for all volunteers.
+     *
+     * @return void
+     */
     public function generateCardsVolunteers()
     {
         $volunteers = Volunteer::where('status', 'paid')->get();
@@ -65,6 +80,11 @@ class CardController extends Controller
         }
     }
 
+    /**
+     * Generate badges images for all cards.
+     *
+     * @return void
+     */
     public function generateCardBadges()
     {
         set_time_limit(0);
@@ -75,12 +95,29 @@ class CardController extends Controller
         }
     }
 
+    /**
+     * Regenerate the badge image for one card.
+     *
+     * @param int $id the ID of the card whose badge is being regenerated
+     * @return void
+     */
     public function regenerateCardBadge($id)
     {
         $card = Card::findOrFail($id);
         ImageController::generateBadge($card->template, $card->name, $card->school, $card->role, $card->title, 'CMYK', $card->template.'.'.$card->title.'.'.$card->id.'.'.$card->user_id.'.'.$card->name.'.jpg', $card->id, $card->blank);
     }
 
+    /**
+     * Create new Card instance.
+     *
+     * @param string $template the template of the card
+     * @param int $uid the ID of ther user to whom the card belongs
+     * @param string $name the name displayed in the card
+     * @param string $school the school name displayed in the card
+     * @param string $role the role name displayed in the card
+     * @param string $title the title displayed in the card
+     * @return Card the Card instance created
+     */
     public function newCard($template, $uid, $name, $school, $role, $title)
     {
         $card = new Card;
@@ -92,8 +129,14 @@ class CardController extends Controller
         $card->role = $role;
         $card->title = $title;
         $card->save();
+	return $card;
     }
     
+    /**
+     * Import cards from csv to database.
+     *
+     * @return string import result
+     */
     public function importCards()
     {
         if (($handle = fopen("/var/www/munpanel/test.csv", "r")) !== FALSE) {
@@ -118,6 +161,5 @@ class CardController extends Controller
             return $resp;
         }
     }
-
 
 }

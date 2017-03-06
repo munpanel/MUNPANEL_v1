@@ -100,11 +100,23 @@ class HomeController extends Controller
         }
     }
 
+    /**
+     * Show the password changing modal.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function changePwd()
     {
         return view('changePwdModal');
     }
 
+    /**
+     * (Deprecated) Show the registration form modal.
+     * Static form, used in BJMUNC 2017.
+     *
+     * @param int $id UID of the user
+     * @return \Illuminate\Http\Response
+     */
     public function regModal($id = null)
     {
         $user = User::find($id);
@@ -135,7 +147,13 @@ class HomeController extends Controller
             $changable = true;
         return view('regModal', ['committees' => Committee::all(), 'schools' => $schools, 'id' => $id, 'user' => $user, 'delegate' => $user->delegate, 'volunteer' => $user->volunteer, 'observer' => $user->observer, 'changable' => $changable]);
     }
-    
+
+    /**
+     * Show the registration form modal.
+     * Dynamic form, used in ROMUNC 2017.
+     *
+     * @return \Illuminate\Http\Response
+     */ 
     public function reg2Modal($regType)
     {
         $customTable = json_decode(Conference::findOrFail(2)->tableSettings)->regTable;
@@ -143,6 +161,11 @@ class HomeController extends Controller
         return view('reg2Modal', ['regType' => $regType, 'customTable' => $customTable, 'confForm' => $confForm]);
     }
 
+    /**
+     * Show the registration management page.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function regManage()
     {
         $type =Auth::user()->type;
@@ -164,6 +187,11 @@ class HomeController extends Controller
         }
     }
 
+    /**
+     * Show the user management page.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function userManage()
     {
         if ( Auth::user()->type != 'ot' )
@@ -171,6 +199,11 @@ class HomeController extends Controller
         return view('ot.userManage');
     }
 
+    /**
+     * Show the school management page.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function schoolManage()
     {
         if ( Auth::user()->type != 'ot' )
@@ -178,6 +211,11 @@ class HomeController extends Controller
         return view('ot.schoolManage');
     }
 
+    /**
+     * Show the committee management page.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function committeeManage()
     {
         if ( Auth::user()->type != 'ot' )
@@ -185,6 +223,11 @@ class HomeController extends Controller
         return view('ot.committeeManage');
     }
 
+    /**
+     * Show the nation management page.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function nationManage()
     {
         if ( Auth::user()->type != 'ot' )
@@ -192,6 +235,12 @@ class HomeController extends Controller
         return view('ot.nationManage');
     }
 
+    /**
+     * Show the user details modal.
+     *
+     * @param int $id UID of user queried
+     * @return \Illuminate\Http\Response
+     */
     public function userDetailsModal($id)
     {
         if (Auth::user()->type != 'ot')
@@ -210,6 +259,12 @@ class HomeController extends Controller
         return view('ot.userDetailsModal', ['user' => $user]);
     }
 
+    /**
+     * Show the user registration info modal.
+     *
+     * @param int $id UID of user queried
+     * @return \Illuminate\Http\Response
+     */
     public function regInfoModal($id)
     {
         if (Auth::user()->type != 'ot')
@@ -218,6 +273,12 @@ class HomeController extends Controller
         return view('ot.regInfoModal', ['reg' => $reg]);
     }
 
+    /**
+     * Show the school details modal.
+     *
+     * @param int $id ID of school queried
+     * @return \Illuminate\Http\Response
+     */
     public function schoolDetailsModal($id)
     {
         if (Auth::user()->type != 'ot')
@@ -234,6 +295,12 @@ class HomeController extends Controller
         return view('ot.schoolDetailsModal', ['school' => $school]);
     }
 
+    /**
+     * Show the committee details modal.
+     *
+     * @param int $id ID of committee queried
+     * @return \Illuminate\Http\Response
+     */
     public function committeeDetailsModal($id)
     {
         if (Auth::user()->type != 'ot')
@@ -249,6 +316,13 @@ class HomeController extends Controller
         return view('ot.committeeDetailsModal', ['committee' => $committee]);
     }
 
+    /**
+     * (Deprecated) Show the invoice of the user for registration. 
+     * This function will be replaced by the more general Order class
+     * in the future.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function invoice()
     {
         if (Auth::user()->type == 'unregistered')
@@ -260,6 +334,11 @@ class HomeController extends Controller
         return view('invoice', ['invoiceItems' => Auth::user()->invoiceItems(), 'invoiceAmount' => Auth::user()->invoiceAmount()]);
     }
 
+    /**
+     * Show the school payment management page.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function schoolPay()
     {
         if (Auth::user()->type != 'school')
@@ -267,6 +346,12 @@ class HomeController extends Controller
         return view('school.pay');
     }
     
+    /**
+     * Change the payment method of a school
+     *
+     * @param string $method 'individual' or 'pork'
+     * @return \Illuminate\Http\Response
+     */
     public function changeSchoolPaymentMethod($method)
     {
         Auth::user()->school->payment_method = $method;
@@ -274,11 +359,23 @@ class HomeController extends Controller
         return redirect(secure_url('/school/payment'));
     }
 
+    /**
+     * Show the purchase modal in which users pay for
+     * invoices using WeChat or Alipay through Teegon API.
+     *
+     * @param string $method 'individual' or 'pork'
+     * @return \Illuminate\Http\Response
+     */
     public function checkout($id)
     {
         return view('checkoutModal', ['id' => $id]);
     }
     
+    /**
+     * Show the assignment list page of user.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function assignmentsList()
     {
         if (Auth::user()->type == 'unregistered')
@@ -294,6 +391,13 @@ class HomeController extends Controller
         return view('assignmentsList', ['committee' => $committee, 'type' => Auth::user()->type]);
     }
 
+    /**
+     * Perform actions related to one assignment.
+     *
+     * @param int $id the ID of the assignment
+     * @param string $action the action on the assignment to be performed
+     * @return \Illuminate\Http\Response
+     */
     public function assignment($id, $action = 'info')
     {
         $assignment = Assignment::findOrFail($id);
@@ -363,6 +467,7 @@ class HomeController extends Controller
             $zip = new ZipArchive();
             $zip->open($zippername, ZipArchive::CREATE);
             // There seems to be bugs with Laravel::Zipper, so we use the ZipArchive of PHP.
+            // Since we have updated Zipper to newer version, testing is required. By Adam Yi Mar 6th 2017
             $i = 0;
             foreach($handins as $handin)
             {
@@ -375,6 +480,13 @@ class HomeController extends Controller
         }
     }
 
+    /**
+     * Upload a new handin of an assignment.
+     *
+     * @param Request $request
+     * @param int $id the ID of the assignment
+     * @return \Illuminate\Http\Response
+     */
     public function uploadAssignment(Request $request, $id)
     {
         $assignment = Assignment::findOrFail($id);
@@ -402,11 +514,24 @@ class HomeController extends Controller
         }
     }
     
+
+    /**
+     * Show a modal in which admins can choose to import
+     * or export registration information.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function imexportRegistrations()
     {
         return view('ot.imexportModal', ['importURL' => secure_url('/regManage/import'), 'exportURL' => secure_url('/regManage/export')]);
     }
 
+
+    /**
+     * Show the document list page.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function documentsList()
     {
         if (Auth::user()->type == 'unregistered')
@@ -422,6 +547,13 @@ class HomeController extends Controller
         return view('documentsList', ['type' => Auth::user()->type]);
     }
     
+    /**
+     * Perform actions related to one document.
+     *
+     * @param int $id the ID of the document
+     * @param string $action the action on the document to be performed
+     * @return \Illuminate\Http\Response
+     */
     public function document($id, $action = "")
     {
         $document = Document::findOrFail($id);
@@ -458,6 +590,12 @@ class HomeController extends Controller
         }
     }
     
+    /**
+     * Show the details modal of one document.
+     *
+     * @param int $id the ID of the document
+     * @return \Illuminate\Http\Response
+     */
     public function documentDetailsModal($id)
     {
         if ($id == 'new')
@@ -473,6 +611,12 @@ class HomeController extends Controller
         return view('documentDetailsModal', ['document' => $document]);
     }
     
+    /**
+     * Show the role/delegate list of a committee.
+     *
+     * @param string $view whether to display list of role or delegate
+     * @return \Illuminate\Http\Response
+     */
     public function roleList($view = 'nation')
     {
         if (Auth::user()->type == 'delegate' && Auth::user()->delegate->committee->is_allocated == false)
@@ -480,6 +624,11 @@ class HomeController extends Controller
         return view('roleList', ['view' => $view]);
     }
     
+    /**
+     * Show the role allocation page for Dais and Organizing Team
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function roleAlloc()
     {
         if (Auth::user()->type == 'delegate')
@@ -505,6 +654,11 @@ class HomeController extends Controller
         ]);
     }
 
+    /**
+     * Show the email verification page for unverified users.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function verifyEmail()
     {
         if (Auth::user()->emailVerificationToken == 'success')
@@ -512,6 +666,11 @@ class HomeController extends Controller
         return view('verifyEmail');
     }
 
+    /**
+     * Show the phone verification page for unverified users.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function verifyTel()
     {
         if (Auth::user()->telVerifications == -1) //3/2/1: tries left; -1: activated

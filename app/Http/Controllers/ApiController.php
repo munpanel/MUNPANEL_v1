@@ -17,26 +17,56 @@ use Illuminate\Http\Request;
 
 class ApiController extends Controller
 {
+    /**
+     * Get user instance using id.
+     *
+     * @param int $id id of user
+     * @result User the user instance
+     */
     public function getUser($id)
     {
         return User::findOrFail($id);
     }
     
+    /**
+     * Get card instance using id.
+     *
+     * @param int $id id of card
+     * @result Card the card instance
+     */
     public function getCard($id)
     {
         return Card::findOrFail($id);
     }
 
+    /**
+     * Get specific instance (delegate/volunteer/observer/dais/etc.) using user id.
+     *
+     * @param int $id id of user
+     * @result Object the specific instance
+     */
     public function getSpecific($id)
     {
         return User::findOrFail($id)->specific();
     }
 
+    /**
+     * Get school instance using id.
+     *
+     * @param int $id id of school
+     * @result School the school instance
+     */
     public function getSchool($id)
     {
         return School::findOrFail($id);
     }
-    
+
+    /**
+     * Get committee instance using id.
+     *
+     * @param int $id id of committee
+     * @result Committee the committee instance
+     */   
     public function getCommittee($id)
     {
         return Committee::findOrFail($id);

@@ -45,7 +45,7 @@
                         </th-->
                         <th>ID</th>
                         <th>名称</th>
-                        <th>UID</th>
+                        <!--th>UID</th-->
                         <th>报名情况(组委已审核/学校已审核/全部)</th>
                       </tr>
                     </thead>

@@ -34,6 +34,6 @@ class CreateDelegategroupDocumentTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('document_delegategroup');
+        Schema::dropIfExists('delegategroup_document');
     }
 }

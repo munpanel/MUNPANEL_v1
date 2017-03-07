@@ -8,8 +8,8 @@ $(document).ready(function() {
             {data: 'reg', name: 'reg', orderable: false},
             {data: 'id', name: 'id', orderable: true},
             {data: 'email', name:'email', orderable: true},
-            {data: 'name', name: 'name', orderable: false},
-            {data: 'type', name: 'type', orderable: true}
+            {data: 'name', name: 'name', orderable: false}
+            //{data: 'type', name: 'type', orderable: true}
         ],
         fnInitComplete: function(oSettings, json) {
             $(document).on('click','.details-modal', function(e) {

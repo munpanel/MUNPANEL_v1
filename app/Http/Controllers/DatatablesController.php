@@ -268,32 +268,15 @@ class DatatablesController extends Controller //To-Do: Permission Check
     public function users()
     {
             $result = new Collection;
-            $users = User::get(['id', 'email', 'name', 'type']);
+            $users = User::get(['id', 'email', 'name']);
             foreach ($users as $user)
             {
-                if ($user->type == 'unregistered')
-                    $type = '未报名';
-                else if ($user->type == 'ot')
-                    $type = '组织团队';
-                else if ($user->type == 'dais')
-                    $type = '学术团队';
-                else if ($user->type == 'delegate')
-                    $type = '代表';
-                else if ($user->type == 'volunteer')
-                    $type = '志愿者';
-                else if ($user->type == 'observer')
-                    $type = '观察员';
-                else if ($user->type == 'school')
-                    $type = '学校';
-                else
-                    $type = '未知';
                 $result->push([
                     'details' => '<a href="ot/userDetails.modal/'. $user->id .'" data-toggle="ajaxModal" id="'. $user->id .'" class="details-modal"><i class="fa fa-user-circle-o"></i></a>',
                     'reg' => '<a href="reg.modal/'. $user->id .'" data-toggle="ajaxModal" id="reg.'. $user->id .'" class="details-modal"><i class="fa fa-search-plus"></i></a>',
                     'id' => $user->id,
                     'email' => $user->email,
                     'name' => $user->name,
-                    'type' =>$type,
                 ]);
             }
  
@@ -308,7 +291,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
     public function schools()
     {
         $result = new Collection;
-        $schools = School::get(['id', 'name', 'user_id']);
+        $schools = School::get(['id', 'name']);
         $committees = Committee::all();
         foreach($schools as $school)
         {
@@ -327,7 +310,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
                 'details' => '<a href="ot/schoolDetails.modal/'. $school->id .'" data-toggle="ajaxModal" id="'. $school->id .'" class="details-modal"><i class="fa fa-search-plus"></i></a>',
                 'id' => $school->id,
                 'name' => $school->name,
-                'uid' => $school->user_id,
+                //'uid' => $school->user_id,
                 'statistics' => $statistics,
             ]);
         }

@@ -40,7 +40,7 @@
                         <th>ID</th>
                         <th>email</th>
                         <th>姓名</th>
-                        <th>类型</th>
+                        <!--th>类型</th-->
                       </tr>
                     </thead>
                   </table>

@@ -9,6 +9,7 @@ $regInfo = json_decode($reg->reginfo);
             <li class="active"><a href="#info" data-toggle="tab" aria-expanded="true">信息</a></li>
             <li class=""><a href="#events" data-toggle="tab" aria-expanded="false">事件</a></li>
             <li class=""><a href="#interview" data-toggle="tab" aria-expanded="false">面试</a></li>
+            <li class=""><a href="#operations" data-toggle="tab" aria-expanded="false">操作</a></li>
           </ul>
         </header>
       <div class="tab-content">
@@ -103,8 +104,64 @@ $regInfo = json_decode($reg->reginfo);
           <div class="modal-body">
             <div class="row">
               <div class="col-sm-12 b-r">
+              @if ($reg->interviews->count() == 0)
+                <p>该用户暂无任何面试。</p>
+                @else
+
               @foreach ($reg->interviews as $interview)
               @endforeach
+              @endif
+              </div>
+            </div>
+          </div>          
+        </section>
+        <section class="tab-pane" id="operations">
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-sm-12 b-r">
+                <div id="pre_select" style="display: block;">
+                    <h3>安排面试</h3>
+
+                    {{-- <p><span class="label label-warning">注意</span> 这是二次面试分配。</p> --}}
+                    <p>此代表已经通过审核，将需要为其安排面试。</p>
+                    <p>点击<strong>分配面试</strong>按钮后，将会出现可选择的面试官列表，您可以分配一位面试官面试此代表。</p>
+                    <p>如果此代表具有规定的免试资格，可以以免试通过方式完成此代表的面试流程。点击<strong>免试通过</strong>按钮后，将会出现可选择的面试官列表，您需要分配一位面试官为此代表分配席位。</p>
+
+                    {{-- <p><span class="label label-warning">注意</span> 这位代表的面试安排曾被join("、", $rollback_data); 回退，请在笔记中了解回退原因。</p>--}}
+
+                    <button name="" type="button" class="btn btn-info" onclick="$('#do_assign').show(); $('#pre_select').hide();">分配面试</button>
+                    <button name="" type="button" class="btn btn-info" onclick="$('#do_exempt').show(); $('#pre_select').hide();">免试通过</button>
+
+                </div>
+
+                <div id="do_assign" style="display: none;">
+                    <h3>分配面试官</h3>
+
+                    {{-- <p><span class="label label-warning">注意</span> 这是二次面试分配。</p>--}}
+
+                    <p>请在此列表中选择面试官，面试官姓名右侧显示了面试官当前面试队列长度。</p>
+
+                    To-Do: list
+
+                        <p>分配完成之后，分配信息将自动通知代表和面试官。</p>
+
+                   <button name="submit" type="submit" class="btn btn-info" onclick="loader(this);"><i class="fa fa-share fa-fw"></i> 分配面试官</button>
+                   <button name="" type="button" class="btn btn-link" onclick="$('#do_assign').hide(); $('#pre_select').show();">取消</button>
+
+                </div>
+
+                <div id="do_exempt" style="display: none;">
+                    <h3>免试指派席位</h3>
+
+                    <p>将会以免试通过方式完成此代表的面试流程，请在此列表中选择面试官，选定的面试官将可以直接为此代表分配席位。</p>
+
+                    To-Do: list
+
+                        <p>指派之后，MUNPANEL 将会自动通知代表和面试官。</p>
+                        <button name="submit" type="submit" class="btn btn-info" onclick="loader(this);"><i class="fa fa-share fa-fw"></i> 分配面试官</button>
+                        <button name="" type="button" class="btn btn-link" onclick="$('#do_exempt').hide(); $('#pre_select').show();">取消</button>
+
+                </div>
               </div>
             </div>
           </div>          

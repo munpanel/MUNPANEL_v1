@@ -56,6 +56,12 @@ class Reg extends Model
         return $this->belongsTo('App\User', 'roommate_user_id'); 
     }
 
+    public function interviews()
+    {
+        return $this->hasMany('App\Interview');
+    }
+
+
     public function assignments() {
         $result = new Collection;
         if (isset($this->nation))

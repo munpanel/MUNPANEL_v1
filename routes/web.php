@@ -11,14 +11,14 @@
 |
 */
 
-Route::group(['domain' => 'portal.munpanel.com'], function () {
+Route::group(['domain' => 'dev.yiad.am'], function () {
     Route::get('/', function () {
          return 'hello';
     });
 });
 
 
-Route::group(['domain' => '{domain}'], function () {
+//Route::group(['domain' => '{domain}'], function () {
     Route::get('/', function () {
         return redirect(secure_url('home'));
     });
@@ -178,4 +178,4 @@ Route::group(['domain' => '{domain}'], function () {
         return config('munpanel.conference_id');
     });
 
-});
+//});

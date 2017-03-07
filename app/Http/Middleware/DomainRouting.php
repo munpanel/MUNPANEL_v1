@@ -15,16 +15,10 @@ class DomainRouting
      */
     public function handle($request, Closure $next)
     {
-        if ($request->route()->action['domain'] == '{domain}')
+        if (!isset($request->route()->action['domain']))
         {
-            // for portal pages not exist in specific route
-            //To-Do configuration for domain
-            if ($request->route()->domain == 'portal.munpanel.com') //To-Do: if conference not exist, we will redirect
-            {
-                return redirect('https://portal.munpanel.com/');
-            }
-            //To-Do: query for conference id and reject invalid domains
-            config(['munpanel.conference_id' => $request->route()->domain]);
+            //To-Do: query for conference id and redirect invalid domains to portal
+            config(['munpanel.conference_id' => $_SERVER['HTTP_HOST']]);
         }
         return $next($request);
     }

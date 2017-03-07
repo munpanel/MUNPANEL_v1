@@ -23,7 +23,7 @@ class CreateUsersTable extends Migration
             $table->string('emailVerificationToken');
             $table->integer('telVerifications')->default(5);
             $table->string('google2fa_secret')->nullable();
-            $table->boolean('google2fa_enabled');//->default(false);
+            $table->boolean('google2fa_enabled')->default(false);
             $table->rememberToken();
             $table->timestamps();
         });

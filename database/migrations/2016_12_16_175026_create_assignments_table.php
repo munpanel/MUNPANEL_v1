@@ -18,7 +18,7 @@ class CreateAssignmentsTable extends Migration
             $table->integer('conference_id')->unsigned();
             $table->enum('subject_type', ['individual', 'nation', 'partner']);
             $table->enum('handin_type', ['upload', 'text', 'form']);
-            $table->boolean('reg_assignment');//->default(false);
+            $table->boolean('reg_assignment')->default(false);
             $table->string('title');
             $table->mediumText('description');
             $table->dateTime('deadline');

@@ -8,7 +8,6 @@
         "php": ">=5.6.4",
         "laravel/framework": "5.4.*",
         "yajra/laravel-datatables-oracle": "^6.0",
-        "zizaco/entrust": "dev-master",
         "maatwebsite/excel": "~2.1.0",
         "chumper/zipper": "1.0.x", 
         "gloudemans/shoppingcart": "*",

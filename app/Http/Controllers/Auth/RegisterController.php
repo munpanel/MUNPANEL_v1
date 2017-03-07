@@ -62,11 +62,15 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
-            'type' => 'unregistered'
+            'emailVerificationToken' => generateID(),
+            'google2fa_enabled' => false
+            //'type' => 'unregistered'
         ]);
+        $user->sendVerificationEmail();
+        return $user;
     }
 }

@@ -42,14 +42,15 @@ class HomeController extends Controller
     public function index()
     {
         $activep['home'] = true;
-        $type =Auth::user()->type;
+        $reg = Reg::findOrFail(session('reg_id'));
+        $type = $reg->type;
         if ($type == 'ot')
         {
             return view('ot.home', ['committees' => Committee::all(), 'vol' =>Volunteer::count()]);
         }
         else if ($type == 'school')
         {
-            $school = Auth::user()->school;
+            $school = $reg->school;
             //return $del->count();
             return view('school.home', ['del' => $school->delegates->count(), 'vol' => $school->volunteers->count()]);
         }
@@ -59,7 +60,7 @@ class HomeController extends Controller
         }
         else
         {
-            $specific = Auth::user()->specific();
+            $specific = $reg->specific();
             $changable = Config::get('munpanel.registration_enabled');
             if (is_null($specific))
             {

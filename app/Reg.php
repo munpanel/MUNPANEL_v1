@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Reg extends Model
 {
-    protected $fillable = ['user_id','conference_id','school_id','type','enabled','gender','reginfo','accomodate','roommate_user_id'];    
+    protected $fillable = ['user_id','conference_id','school_id','type','enabled','gender','reginfo','accomodate','roommate_reg_id'];    
     
     /**
      * The attributes that should be hidden for arrays.
@@ -64,12 +64,27 @@ class Reg extends Model
     }
     
     public function roommate() {
-        return $this->belongsTo('App\User', 'roommate_user_id'); 
+        return $this->belongsTo('App\User', 'roommate_reg_id'); 
     }
 
     public function interviews()
     {
         return $this->hasMany('App\Interview');
+    }
+
+    public function name()
+    {
+        return $this->user->name;
+    }
+
+    static public function current()
+    {
+        return Reg::findOrFail(session('reg_id'));
+    }
+
+    static public function currentID()
+    {
+        return session('reg_id');
     }
 
     public function addEvent($type, $content)
@@ -197,10 +212,6 @@ class Reg extends Model
             $roommate->save();
 //            return $myname  ."&#09;".$roommate->id . "&#09;室友姓名$roommate_name&#09;成功";
         }
-    }
-    
-    public function roommate() {
-        return $this->belongsTo('App\Reg', 'roommate_reg_id'); 
     }
     
 }

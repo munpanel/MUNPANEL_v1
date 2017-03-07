@@ -16,7 +16,7 @@
           <div class="modal-body">
             <div class="row">
               <div class="col-sm-12 b-r">
-              @if (Auth::user()->type == 'ot')
+              @if (Reg::current()->type == 'ot')
               <div class="alert alert-warning"><b>代表、志愿者，任选一项。保存任何一项将自动清空另一项信息。组织团队保存表单将不修改原报名状态。</b></div>
               @elseif ($changable)
               <div class="alert alert-warning"><b>代表、志愿者，任选一项。保存任何一项将自动清空另一项信息。保存将自动重置报名状态为等待学校审核。</b></div>
@@ -57,7 +57,7 @@
                 </div>
                 <div class="form-group">
                   <label>学校</label>
-                  <select name="school" class="form-control m-b" data-required="true" {{$changable&&(Auth::user()->type != 'school')?'':'disabled'}}>
+                  <select name="school" class="form-control m-b" data-required="true" {{$changable&&(Reg::current()->type != 'school')?'':'disabled'}}>
                     @if (isset($delegate))
                       @if ($delegate->school->user_id == 1)
                         <option value="" selected>{{$delegate->school->name}} (非成员校)</option>
@@ -186,7 +186,7 @@
           <div class="modal-body">
             <div class="row">
               <div class="col-sm-12 b-r">
-              @if (Auth::user()->type == 'ot')
+              @if (Reg::current()->type == 'ot')
               <div class="alert alert-warning"><b>代表、志愿者，任选一项。保存任何一项将自动清空另一项信息。组织团队保存表单将不修改原报名状态。</b></div>
               @elseif ($changable)
               <div class="alert alert-warning"><b>代表、志愿者，任选一项。保存任何一项将自动清空另一项信息。保存将自动重置报名状态为等待学校审核。</b></div>
@@ -212,7 +212,7 @@
                 </div>
                 <div class="form-group">
                   <label>学校</label>
-                  <select name="school" class="form-control m-b" data-required="true" {{$changable&&(Auth::user()->type != 'school')?'':'disabled'}}>
+                  <select name="school" class="form-control m-b" data-required="true" {{$changable&&(Reg::current()->type != 'school')?'':'disabled'}}>
                     @if (isset($volunteer))
                       @if ($volunteer->school->user_id == 1)
                         <option value="" selected>{{$volunteer->school->name}} (非成员校)</option>
@@ -466,7 +466,7 @@ $('#delform').submit(function(e){
         $.post("{{ secure_url('/saveRegDel') }}", $('#delform').serialize(), function(receivedData){
             //if (receivedData == "success")
                 $('#ajaxModal').modal('hide');
-                @if (Auth::user()->type != 'ot' && Auth::user()->type != 'school')
+                @if (Reg::current()->type != 'ot' && Reg::current()->type != 'school')
                 location.reaload();
                 @endif
             //useTheResponseData(receivedData);
@@ -479,7 +479,7 @@ $('#volform').submit(function(e){
         $.post("{{ secure_url('/saveRegVol') }}", $('#volform').serialize(), function(receivedData){
             //if (receivedData == "success")
                 $('#ajaxModal').modal('hide');
-                @if (Auth::user()->type != 'ot' && Auth::user()->type != 'school')
+                @if (Reg::current()->type != 'ot' && Reg::current()->type != 'school')
                 location.reaload();
                 @endif
            //useTheResponseData(receivedData);
@@ -492,7 +492,7 @@ $('#obsform').submit(function(e){
         $.post("{{ secure_url('/saveRegObs') }}", $('#obsform').serialize(), function(receivedData){
             //if (receivedData == "success")
                 $('#ajaxModal').modal('hide');
-                @if (Auth::user()->type != 'ot' && Auth::user()->type != 'school')
+                @if (Reg::current()->type != 'ot' && Reg::current()->type != 'school')
                 location.reaload();
                 @endif
             //useTheResponseData(receivedData);

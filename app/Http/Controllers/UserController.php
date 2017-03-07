@@ -46,11 +46,11 @@ class UserController extends Controller
         $user = User::find($request->id);
         if (is_null($request->id))
             $user = Auth::user();
-        else if (Auth::user()->type == 'ot' && (!Auth::user()->can('edit-regs')))
+        else if (Reg::current()->type == 'ot' && (!Reg::current()->can('edit-regs')))
             return "error";
-        else if (Auth::user()->type != 'ot' && Auth::user()->type != 'school')
+        else if (Reg::current()->type != 'ot' && Reg::current()->type != 'school')
             return "error";
-        else if (Auth::user()->type == 'school' && Auth::user()->school->id != $user->specific()->school->id)
+        else if (Reg::current()->type == 'school' && Reg::current()->school->id != $user->specific()->school->id)
             return "error";
         $user->type = 'delegate';
         $user->save();
@@ -61,11 +61,11 @@ class UserController extends Controller
             $del->user_id = $user->id;
             $del->email = $user->email;
         }
-        if (Auth::user()->type != 'school')
+        if (Reg::current()->type != 'school')
             $del->school_id = $request->school;
         else
-            $del->school_id = Auth::user()->school->id;
-        if (Auth::user()->type != 'ot' || $del->status == null)
+            $del->school_id = Reg::current()->school->id;
+        if (Reg::current()->type != 'ot' || $del->status == null)
             $del->status = 'reg';
         $del->gender = $request->gender;
         $del->sfz = $request->sfz;
@@ -95,11 +95,11 @@ class UserController extends Controller
         $user = User::find($request->id);
         if (is_null($request->id))
             $user = Auth::user();
-        else if (Auth::user()->type == 'ot' && (!Auth::user()->can('edit-regs')))
+        else if (Reg::current()->type == 'ot' && (!Reg::current()->can('edit-regs')))
             return "error";
-        else if (Auth::user()->type != 'ot' && Auth::user()->type != 'school')
+        else if (Reg::current()->type != 'ot' && Reg::current()->type != 'school')
             return "error";
-        else if (Auth::user()->type == 'school' && Auth::user()->school->id != $user->specific()->school->id)
+        else if (Reg::current()->type == 'school' && Reg::current()->school->id != $user->specific()->school->id)
             return "error";
         $user->type = 'volunteer';
         $user->save();
@@ -110,11 +110,11 @@ class UserController extends Controller
             $vol->user_id = $user->id;
             $vol->email = $user->email;
         }
-        if (Auth::user()->type != 'school')
+        if (Reg::current()->type != 'school')
             $vol->school_id = $request->school;
         else
-            $vol->school_id = Auth::user()->school->id;
-        if (Auth::user()->type != 'ot' || $vol->status == null)
+            $vol->school_id = Reg::current()->school->id;
+        if (Reg::current()->type != 'ot' || $vol->status == null)
             $vol->status = 'reg';
         $vol->gender = $request->gender;
         $vol->sfz = $request->sfz;
@@ -142,11 +142,11 @@ class UserController extends Controller
         $user = User::find($request->id);
         if (is_null($request->id))
             $user = Auth::user();
-        else if (Auth::user()->type == 'ot' && (!Auth::user()->can('edit-regs')))
+        else if (Reg::current()->type == 'ot' && (!Reg::current()->can('edit-regs')))
             return "error";
-        else if (Auth::user()->type != 'ot' && Auth::user()->type != 'school')
+        else if (Reg::current()->type != 'ot' && Reg::current()->type != 'school')
             return "error";
-        else if (Auth::user()->type == 'school' && Auth::user()->school->id != $user->specific()->school->id)
+        else if (Reg::current()->type == 'school' && Reg::current()->school->id != $user->specific()->school->id)
             return "error";
         $user->type = 'observer';
         $user->save();
@@ -158,7 +158,7 @@ class UserController extends Controller
             $obs->email = $user->email;
         }
         $obs->school_id = $request->school;
-        if (Auth::user()->type != 'ot' || $obs->status == null)
+        if (Reg::current()->type != 'ot' || $obs->status == null)
             $obs->status = 'reg';
         $obs->gender = $request->gender;
         $obs->sfz = $request->sfz;
@@ -839,9 +839,9 @@ class UserController extends Controller
                 if ($delegate->school->user_id == 1)
                         $delegategroup->delegates()->attach($delegate);*/
         return 'hello';
-        return Auth::user()->delegate->nation->name;
+        return Reg::current()->delegate->nation->name;
         return Assignment::find(1)->belongsToDelegate(9);
-        return response()->json(Auth::user()->delegate->assignments());
+        return response()->json(Reg::current()->delegate->assignments());
         return Auth::user()->invoiceAmount();
         return Auth::user()->invoiceItems();
         return "gou";

@@ -16,10 +16,10 @@ class CreateNotesTable extends Migration
         Schema::create('notes', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('reg_id')->unsigned(); // Note of reg
-            $table->integer('user_id')->unsigned(); // Note by user
+            $table->integer('reg_id')->unsigned(); // Note by user
             $table->mediumText('content');
             $table->foreign('reg_id')->references('id')->on('regs')->onDelete('no action');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('no action');
+            $table->foreign('reg_id')->references('id')->on('regs')->onDelete('no action');
             $table->timestamps();
         });
     }

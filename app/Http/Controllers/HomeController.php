@@ -123,12 +123,12 @@ class HomeController extends Controller
         $user = User::find($id);
         if (is_null($id))
             $user = Auth::user();
-        else if (Auth::user()->type != 'ot' && Auth::user()->type != 'school')
+        else if (Reg::current()->type != 'ot' && Reg::current()->type != 'school')
             return "error";
-        else if (Auth::user()->type == 'school' && Auth::user()->school->id != $user->specific()->school->id)
+        else if (Reg::current()->type == 'school' && Reg::current()->school->id != $user->specific()->school->id)
             return "error";
         $schools = array();
-        if (Auth::user()->type == 'ot')
+        if (Reg::current()->type == 'ot')
         {
             $schools = School::all();
             foreach ($schools as $school)
@@ -139,12 +139,12 @@ class HomeController extends Controller
         }
         else
             $schools = School::where('user_id', '!=', 1)->get(); // Member Schools only
-        $changable = Config::get('munpanel.registration_enabled') || (Auth::user()->type == 'ot');
+        $changable = Config::get('munpanel.registration_enabled') || (Reg::current()->type == 'ot');
         $specific = $user->specific();
-        if ((isset($specific)) && Auth::user()->type != 'ot')
+        if ((isset($specific)) && Reg::current()->type != 'ot')
             if ($specific->status == 'oVerified' || $specific->status == 'paid' || $specific->school->user_id == 1)
                 $changable = false;
-        if (Auth::user()->type == 'school' && Config::get('munpanel.registration_school_changable'))
+        if (Reg::current()->type == 'school' && Config::get('munpanel.registration_school_changable'))
             $changable = true;
         return view('regModal', ['committees' => Committee::all(), 'schools' => $schools, 'id' => $id, 'user' => $user, 'delegate' => $user->delegate, 'volunteer' => $user->volunteer, 'observer' => $user->observer, 'changable' => $changable]);
     }
@@ -176,7 +176,7 @@ class HomeController extends Controller
         }
         else if ($type == 'school')
         {
-            $school = Auth::user()->school;
+            $school = Reg::current()->school;
             //return response()->json($school);
             //$delegates = $school->delegates;
             //return response()->json($delegates);//;delegates);
@@ -327,11 +327,11 @@ class HomeController extends Controller
      */
     public function invoice()
     {
-        if (Auth::user()->type == 'unregistered')
+        if (Reg::current()->type == 'unregistered')
             return view('error', ['msg' => 'Please register first.']);
-        if (Auth::user()->specific()->status != 'oVerified' && Auth::user()->specific()->status != 'paid')
+        if (Reg::current()->specific()->status != 'oVerified' && Reg::current()->specific()->status != 'paid')
             return view('error', ['msg' =>'You have to be verified by the Organizing Team first.']);
-        if (Auth::user()->specific()->school->payment_method == 'group' && Auth::user()->specific()->status != 'paid')
+        if (Reg::current()->specific()->school->payment_method == 'group' && Reg::current()->specific()->status != 'paid')
             return view('error', ['msg' => '贵校目前配置为统一缴费，请联系社团管理层缴费。我们亦提供直接每人线上使用微信支付、支付宝线上支付自动确认的便捷服务，如需使用请联系社团管理层在学校后台修改支付方式。']);
         return view('invoice', ['invoiceItems' => Auth::user()->invoiceItems(), 'invoiceAmount' => Auth::user()->invoiceAmount()]);
     }

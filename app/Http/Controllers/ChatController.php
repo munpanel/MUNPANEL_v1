@@ -50,13 +50,13 @@ class ChatController extends Controller
     public function postMessage(Request $request)
     {
         $surfix = ' (';
-        switch (Auth::user()->type)
+        switch (Reg::current()->type)
         {
             case 'ot': $surfix .= '组织团队';break;
-            case 'dais': $surfix .= '学术团队 - '. Auth::user()->committee->name;break;
+            case 'dais': $surfix .= '学术团队 - '. Reg::current()->committee->name;break;
             case 'volunteer': $surfix .= '志愿者';break;
             case 'observer': $surfix .= '观察员';break;
-            case 'delegate': $surfix .= '代表 - '. Auth::user()->committee->name. (Auth::user()->committee->is_allocated ? ' ' . Auth::user()->delegate->nation->name : '');break;
+            case 'delegate': $surfix .= '代表 - '. Reg::current()->committee->name. (Reg::current()->committee->is_allocated ? ' ' . Reg::current()->delegate->nation->name : '');break;
         }
         $surfix .= ')';
         $message = [

@@ -380,7 +380,7 @@ $('#delform').submit(function(e){
         $.post("{{ secure_url('/saveReg2') }}", $('#reg2Form').serialize(), function(receivedData){
             //if (receivedData == "success")
             $('#ajaxModal').modal('hide');
-            @if (Auth::user()->type != 'ot' && Auth::user()->type != 'school')
+            @if (Reg::current()->type != 'ot' && Reg::current()->type != 'school')
             location.reaload();
             @endif
             //useTheResponseData(receivedData);

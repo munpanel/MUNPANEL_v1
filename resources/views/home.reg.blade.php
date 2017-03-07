@@ -88,9 +88,9 @@
                   <!--center><b>Welcome to BJMUNC2017!</b></center><br>Please check the following information. If any of them is wrong, please send a feedback so that we can correct it.<br><b>Name:</b> Adam Yi<br><b>Gender:</b> Male<br><b>Telephone:</b> 18610713116<br><b>Email:</b> yixuan@procxn.org<br><b>Country:</b> NOT ASSIGNED YET<-->
                  <!--center><b>Welcome to BJMUNC2017!</b></center><br>您的报名信息如下，如有任何问题，请重新进入报名表单修改。如有任何其他问题，请联系official@bjmun.org<br><br><b>报姓名：</b>易轩<br><b>性别：</b>男<br><b>委员会：</b>ICAO<br><b>搭档：</b>Yassi<br><b>室友：</b>不住宿<br><b>身份证：</b>123456789012345678<br><b>电话：</b>18610713116<!-->
                  @if (Config::get('munpanel.registration_enabled'))
-                 <center><b>Welcome to BJMUNC2017!</b></center><br>您的报名类型为<b> {{ Auth::user()->type == 'unregistered' ? '未注册' : (Auth::user()->type == 'delegate' ? '代表' : (Auth::user()->type == 'volunteer' ? '志愿者':'观察员')) }} </b>，如需查看当前报名信息或修改信息，请点击下方的表单按钮。<br>请注意，如您已通过审核，重新编辑信息将导致您回到待审核状态。<br>如有任何其他问题，请联系official@bjmun.org。<br>再次感谢您对北京市高中生模拟联合国协会的关注与支持。
+                 <center><b>Welcome to BJMUNC2017!</b></center><br>您的报名类型为<b> {{ Reg::current()->type == 'unregistered' ? '未注册' : (Reg::current()->type == 'delegate' ? '代表' : (Reg::current()->type == 'volunteer' ? '志愿者':'观察员')) }} </b>，如需查看当前报名信息或修改信息，请点击下方的表单按钮。<br>请注意，如您已通过审核，重新编辑信息将导致您回到待审核状态。<br>如有任何其他问题，请联系official@bjmun.org。<br>再次感谢您对北京市高中生模拟联合国协会的关注与支持。
                  @else
-                  <center><b>Welcome to BJMUNC2017!</b></center><br>您的报名类型为<b> {{ Auth::user()->type == 'unregistered' ? '未注册' : (Auth::user()->type == 'delegate' ? '代表' : (Auth::user()->type == 'volunteer' ? '志愿者':'观察员')) }} </b>。当前报名已截止，您无法编辑报名信息，如需查看当前报名信息，请点击下方的表单按钮。
+                  <center><b>Welcome to BJMUNC2017!</b></center><br>您的报名类型为<b> {{ Reg::current()->type == 'unregistered' ? '未注册' : (Reg::current()->type == 'delegate' ? '代表' : (Reg::current()->type == 'volunteer' ? '志愿者':'观察员')) }} </b>。当前报名已截止，您无法编辑报名信息，如需查看当前报名信息，请点击下方的表单按钮。
                  @endif
                 </footer>
               </section>

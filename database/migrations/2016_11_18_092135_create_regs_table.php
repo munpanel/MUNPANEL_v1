@@ -18,7 +18,7 @@ class CreateRegsTable extends Migration
             $table->integer('user_id')->unsigned();
             $table->integer('conference_id')->unsigned();
             $table->integer('school_id')->unsigned()->nullable();
-            $table->enum('type', ['unregistered', 'ot', 'dais', 'delegate', 'observer', 'volunteer']);
+            $table->enum('type', ['unregistered', 'ot', 'dais', 'school', 'delegate', 'observer', 'volunteer']);
             $table->enum('gender', ['male', 'female'])->nullable();
             $table->string('password')->nullable();
             $table->boolean('enabled');

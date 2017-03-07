@@ -5,7 +5,7 @@
         <header class="header b-b hidden-print">
           <button href="#" class="btn btn-sm btn-info pull-right" onClick="window.print();">打印</button>
           <p class="pull-right">&nbsp;&nbsp;&nbsp;</p> 
-          @if (Auth::user()->specific()->status != 'paid')
+          @if (Reg::current()->specific()->status != 'paid')
             <a href="{{ secure_url('/pay/checkout.modal') }}" data-toggle="ajaxModal" class="btn btn-sm btn-success pull-right">支付</a>
           @endif
           <p>账单</p>
@@ -27,8 +27,8 @@
                 <strong>付款人:</strong>
                 <h4>{{Auth::user()->name}}</h4>
                 <p>
-                  {{Auth::user()->specific()->school->name}}<br>
-                  Phone: {{Auth::user()->specific()->tel}}<br>
+                  {{Reg::current()->specific()->school->name}}<br>
+                  Phone: {{Reg::current()->specific()->tel}}<br>
                   Email: {{Auth::user()->email}}<br>
                 </p>
               </div>
@@ -44,7 +44,7 @@
             </div>
           </div>
           <p class="m-t m-b">
-          @if (Auth::user()->specific()->status != 'paid')
+          @if (Reg::current()->specific()->status != 'paid')
               账单状态: <span class="label bg-danger">未支付</span><br>
           @else
               账单状态: <span class="label bg-success">已支付</span><br>

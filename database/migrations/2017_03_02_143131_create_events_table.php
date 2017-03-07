@@ -18,7 +18,7 @@ class CreateEventsTable extends Migration
             $table->string('eventtype_id');
             $table->integer('reg_id')->unsigned();
             $table->string('content');
-            $table->foreign('reg_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('reg_id')->references('id')->on('regs')->onDelete('cascade');
             $table->foreign('eventtype_id')->references('id')->on('eventtypes')->onDelete('no action');
             $table->timestamps();
         });

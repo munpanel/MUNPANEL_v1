@@ -81,6 +81,10 @@ class Reg extends Model
         return $this->user->name;
     }
 
+    public function committee() {
+        return $this->specific()->belongsTo('App\Committee');
+    }
+
     static public function current()
     {
         return Reg::findOrFail(session('reg_id'));

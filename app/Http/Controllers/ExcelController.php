@@ -22,7 +22,7 @@ ese Illuminate\Support\Facades\Auth;
 class ExcelController extends Controller
 {
     public function exportRegistrations($flag = 'normal', $ext = 'xlsx') {
-        if (Auth::user()->type != 'ot')
+        if (Reg::current()->type != 'ot')
             return view('error', ['msg' => '您不是组织团队成员，无权进行该操作！']);
         //TO-DO: permission check
         Excel::create('registrations', function($excel) {

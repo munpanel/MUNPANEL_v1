@@ -38,7 +38,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
      */
     public function registrations()
     {
-        $user = Auth::user();
+        $user = Reg::current();
         if ($user->type == 'school') {
             $result = new Collection;
             $delegates = Delegate::with(['school' => function($q) {$q->select('name', 'id');}, 'user' => function($q) {$q->select('name', 'id');}, 'committee' => function($q) {$q->select('name', 'id');}])->where('school_id', $user->school->id)->get(['user_id', 'school_id', 'committee_id', 'status', 'partnername']);//->select(['user_id', 'name', 'school', 'committee', 'partnername']);
@@ -101,7 +101,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
             //TO-DO: Observers
         }
         else if ($user->type=='ot'){
-            if (!Auth::user()->can('view-regs'))
+            if (!Reg::current()->can('view-regs'))
                 return "ERROR";
             $result = new Collection;
             $delegates = Delegate::with(['school' => function($q) {$q->select('name', 'id', 'user_id');}, 'user' => function($q) {$q->select('name', 'id');}, 'committee' => function($q) {$q->select('name', 'id');}])->get(['user_id', 'school_id', 'committee_id', 'status', 'partnername']);//->select(['user_id', 'name', 'school', 'committee', 'partnername']);

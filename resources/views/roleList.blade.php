@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@if (Auth::user()->type == 'delegate')
+@if (Reg::current()->type == 'delegate')
     @section('home_active', 'active')
 @else
     @section('roles_active', 'active')
@@ -18,10 +18,10 @@
             <header class="header bg-white b-b clearfix">
               <div class="row m-t-sm">
                 <div class="col-sm-6 m-b-xs">
-                  @if (Auth::user()->type == 'delegate')
+                  @if (Reg::current()->type == 'delegate')
                   <a href="{{secure_url('/home')}}" class="btn btn-sm btn-success"><i class="fa fa-arrow-left"></i> 返回首页</a>
                   @else
-                  <p>BJMUNC2017 {{Auth::user()->specific()->committee->display_name}} 席位分配表</p>
+                  <p>BJMUNC2017 {{Reg::current()->specific()->committee->display_name}} 席位分配表</p>
                   @endif
                   <!--a href="{{secure_url('/ot/nationDetails.modal/new')}}" class="btn btn-sm btn-white details-modal"><i class="fa fa-plus"></i> 添加国家</a>
                   @if ($view == 'nation')

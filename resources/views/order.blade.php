@@ -29,16 +29,16 @@
                 <strong>付款人:</strong>
                 <h4>{{Auth::user()->name}}</h4>
                 <p>
-                  @if (is_object(Auth::user()->specific()) && is_object(Auth::user()->specific()->school))
-                  {{Auth::user()->specific()->school->name}}<br>
+                  @if (is_object(Reg::current()->specific()) && is_object(Reg::current()->specific()->school))
+                  {{Reg::current()->specific()->school->name}}<br>
                   @endif
                   @if ($order->shipment_method == 'mail')
                   Address: {{$order->address}}<br>
                   @elseif ($order->shipment_method == 'conference')
                   会议期间取货<br>
                   @endif
-                  @if (is_object(Auth::user()->specific()) && isset(Auth::user()->specific()->tel))
-                  Phone: {{Auth::user()->specific()->tel}}<br>
+                  @if (is_object(Reg::current()->specific()) && isset(Reg::current()->specific()->tel))
+                  Phone: {{Reg::current()->specific()->tel}}<br>
                   @endif
                   Email: {{Auth::user()->email}}
                 </p>

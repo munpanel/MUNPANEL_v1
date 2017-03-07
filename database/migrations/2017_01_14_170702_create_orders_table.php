@@ -32,7 +32,7 @@ class CreateOrdersTable extends Migration
             $table->dateTime('shipped_at')->nullable();
             $table->timestamps();
             $table->primary('id');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('no action');
+            $table->foreign('user_id')->references('id')->on('regs')->onDelete('no action');
         });
     }
 

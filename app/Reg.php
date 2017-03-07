@@ -147,10 +147,10 @@ class Reg extends Model
     public function addEvent($type, $content)
     {
         $event = new Event;
-	$event->eventtype_id = $type;
-	$event->content = $content;
-	$event->reg_id = $this->id;
-	$event->save();
-	return $event;
+        $event->eventtype_id = $type;
+        $event->content = $content;
+        $event->reg_id = $this->id;
+        $event->save();
+        return $event;
     }
 }

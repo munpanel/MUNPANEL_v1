@@ -23,7 +23,8 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        //https://medium.com/@joelennon/dynamic-custom-domain-routing-in-laravel-62c5ffec666b#.3s6zsc4vm
+        Route::pattern('domain', '[a-z0-9.\-]+');
 
         parent::boot();
     }
@@ -55,6 +56,7 @@ class RouteServiceProvider extends ServiceProvider
             'middleware' => 'web',
             'namespace' => $this->namespace,
         ], function ($router) {
+            $router->pattern('domain', '[a-z0-9.\-]+');
             require base_path('routes/web.php');
         });
     }

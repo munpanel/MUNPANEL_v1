@@ -14,26 +14,15 @@ class CreateObserverInfoTable extends Migration
     public function up()
     {
         Schema::create('observer_info', function (Blueprint $table) {
-            $table->integer('user_id')->unsigned();
-            $table->integer('school_id')->unsigned();
+            $table->integer('reg_id')->unsigned();
+            $table->integer('conference_id')->unsigned();
+            $table->integer('school_id')->unsigned()->nullable();
             $table->enum('status', ['reg','sVerified', 'oVerified', 'paid'])->default('reg');
-            $table->enum('gender', ['male','female']);
-            $table->string('sfz');
-            $table->integer('grade');
-            $table->string('email');
-            $table->string('qq');
-            $table->string('wechat');
-            $table->string('parenttel');
-            $table->string('tel');
-            $table->boolean('accomodate');
-            $table->string('roommatename');
-            $table->integer('roommate_user_id')->nullable()->unsigned();
-            $table->string('notes')->nullable();
             $table->timestamps();
-            $table->primary('user_id');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('school_id')->references('id')->on('schools')->onDelete('cascade');
-            $table->foreign('roommate_user_id')->references('id')->on('users')->onDelete('set null');
+            $table->primary('reg_id');
+            $table->foreign('reg_id')->references('id')->on('regs')->onDelete('cascade');
+            $table->foreign('conference_id')->references('id')->on('conferences')->onDelete('cascade');
+            $table->foreign('school_id')->references('id')->on('schools')->onDelete('set null');
         });
     }
 

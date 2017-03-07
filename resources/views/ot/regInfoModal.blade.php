@@ -19,7 +19,7 @@ $regInfo = json_decode($reg->reginfo);
                 @if ($allRegs->count() > 1)
                 <p>{{$reg->user->name}}在本次会议中共包含以下{{ $allRegs->count() }}个身份。</p>
                 @else
-                <p>千反田える，您将以<strong>{{ $regType == 'delegate' ? '代表' : ($regType == 'observer' ? '观察员' : '志愿者') }}</strong>身份报名参加2017年环梦模拟联合国年度会议。</p>
+                <p>{{$reg->user->name}}以<strong>{{ $regType == 'delegate' ? '代表' : ($regType == 'observer' ? '观察员' : '志愿者') }}</strong>身份报名参加本次会议。</p>
                 @endif
                 <section class="panel text-sm">
                   <div class="panel-body">

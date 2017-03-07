@@ -6,7 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Reg extends Model
 {
-    protected $fillable = ['user_id','conference_id','school_id','type','status','gender','reginfo','committee_id','nation_id','partner_user_id','roommate_user_id'];
+    protected $fillable = ['user_id','conference_id','school_id','type','enabled','gender','reginfo','accomodate','roommate_user_id'];    
+    
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = ['password'];
 
     public function conference() {
         return $this->belongsTo('App\Conference');
@@ -48,8 +55,8 @@ class Reg extends Model
         return $this->hasOne('App\Observer');
     }
     
-    public function ot() {
-        
+    public function ot() {        
+        return $this->hasOne('App\Orgteam');
     }
 
     public function specific() {
@@ -58,78 +65,6 @@ class Reg extends Model
     
     public function roommate() {
         return $this->belongsTo('App\User', 'roommate_user_id'); 
-    }
-
-    public function assignments() {
-        $result = new Collection;
-        if (isset($this->nation))
-        {
-            $nationgroups = $this->nationgroups;
-            if (isset($nationgroups))
-            {
-                foreach($nationgroups as $nationgroup)
-                {
-                    $assignments = $nationgroup->assignments;
-                    if (isset($assignments))
-                        foreach ($assignments as $assignment)
-                            $result->push($assignment);
-                }
-            }
-        }
-        $assignments = $this->committee->assignments;
-        if (isset($assignments))
-        {
-            foreach ($assignments as $assignment)
-                $result->push($assignment);
-        }
-        $delegategroups = $this->delegategroups;
-        if (isset($delegategroups))
-        {
-            foreach($delegategroups as $delegategroup)
-            {
-                $assignments = $delegategroup->assignments;
-                if (isset($assignments))
-                    foreach ($assignments as $assignment)
-                        $result->push($assignment);
-            }
-        }
-        return $result->unique()->sortBy('id');
-    }
-    
-    public function documents() {
-        $result = new Collection;
-        if (isset($this->nation))
-        {
-            $nationgroups = $this->nationgroups;
-            if (isset($nationgroups))
-            {
-                foreach($nationgroups as $nationgroup)
-                {
-                    $documents = $nationgroup->documents;
-                    if (isset($documents))
-                        foreach ($documents as $document)
-                            $result->push($document);
-                }
-            }
-        }
-        $documents = $this->committee->documents;
-        if (isset($documents))
-        {
-            foreach ($documents as $document)
-                $result->push($document);
-        }
-        $delegategroups = $this->delegategroups;
-        if (isset($delegategroups))
-        {
-            foreach($delegategroups as $delegategroup)
-            {
-                $documents = $delegategroup->documents;
-                if (isset($documents))
-                    foreach ($documents as $document)
-                        $result->push($document);
-            }
-        }
-        return $result->unique()->sortBy('id');
     }
 
     public function addEvent($type, $content)
@@ -174,6 +109,7 @@ class Reg extends Model
     
     public function assignRoommateByName() 
     {
+        // TODO: 重写所有的 roommatename
         if (!$this->accomodate) return $this->user->name . "&#09;0&#09;未申请住宿";
         $this->roommate_user_id = null;
         if (isset($this->roommatename))
@@ -181,7 +117,7 @@ class Reg extends Model
             $roommate_name = $this->roommatename;
             $myname = $this->user->name;
             // 对于带空格的roommatename值，在此if表达式外增加foreach表达式以逐一处理
-            // TODO: 重写下一行
+            // TODO: 重写以下 1 行
             $roommates = Reg::where('name', $roommate_name);
             $count = $roommates->count();
             if ($count == 0) 

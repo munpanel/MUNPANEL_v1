@@ -297,6 +297,7 @@ class UserController extends Controller
         $reg->reginfo = json_encode($regInfo);
         $reg->save();
         $reg->make();
+        $reg->addEvent('registration_submitted', '');
     }
 
     /**

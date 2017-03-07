@@ -20,13 +20,16 @@ class CreateRegsTable extends Migration
             $table->integer('school_id')->unsigned()->nullable();
             $table->enum('type', ['ot', 'dais', 'delegate', 'observer', 'volunteer']);
             $table->enum('gender', ['male', 'female']);
-            $table->string('password');
+            $table->string('password')->nullable();
             $table->boolean('enabled');
+            $table->boolean('accomodate');
+            $table->integer('roommate_user_id')->nullable()->unsigned();
             $table->timestamps();
             $table->unique(['user_id', 'conference_id', 'type']);
             $table->foreign('user_id')->references('id')->on('users')->onDelete('no action');
             $table->foreign('conference_id')->references('id')->on('conferences')->onDelete('cascade');
             $table->foreign('school_id')->references('id')->on('schools')->onDelete('set null');
+            $table->foreign('roommate_user_id')->references('id')->on('users')->onDelete('set null');
         });
     }
 

@@ -17,7 +17,7 @@ class CreateDaisInfoTable extends Migration
             $table->integer('reg_id')->unsigned();
 	        $table->integer('school_id')->unsigned();
             $table->integer('committee_id')->unsigned();
-            //$table->enum('position', ['dh', 'dm', 'ad']);
+            $table->enum('position', ['reg', 'oVerified']);
             $table->string('position');
             $table->timestamps();
             $table->primary('reg_id');

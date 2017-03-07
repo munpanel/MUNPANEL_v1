@@ -270,7 +270,8 @@ class HomeController extends Controller
         if (Auth::user()->type != 'ot')
             return "Error";
         $reg = Reg::findOrFail($id);
-        return view('ot.regInfoModal', ['reg' => $reg]);
+        $allRegs = Reg::where('user_id', $reg->user_id)->get(['id', 'type']);
+        return view('ot.regInfoModal', ['reg' => $reg, 'allRegs' => $allRegs]);
     }
 
     /**

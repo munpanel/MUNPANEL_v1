@@ -8,41 +8,16 @@
  */
 function province($code)
 {
-    if ($code == 11) return "北京";
-    if ($code == 12) return "天津";
-    if ($code == 13) return "河北";
-    if ($code == 14) return "山西";
-    if ($code == 15) return "内蒙古";
-    if ($code == 21) return "辽宁";
-    if ($code == 22) return "吉林";
-    if ($code == 23) return "黑龙江";
-    if ($code == 31) return "上海";
-    if ($code == 32) return "江苏";
-    if ($code == 33) return "浙江";
-    if ($code == 34) return "安徽";
-    if ($code == 35) return "福建";
-    if ($code == 36) return "江西";
-    if ($code == 37) return "山东";
-    if ($code == 41) return "河南";
-    if ($code == 42) return "湖北";
-    if ($code == 43) return "湖南";
-    if ($code == 44) return "广东";
-    if ($code == 45) return "广西";
-    if ($code == 46) return "海南";
-    if ($code == 50) return "重庆";
-    if ($code == 51) return "四川";
-    if ($code == 52) return "贵州";
-    if ($code == 53) return "云南";
-    if ($code == 54) return "西藏";
-    if ($code == 61) return "陕西";
-    if ($code == 62) return "甘肃";
-    if ($code == 63) return "青海";
-    if ($code == 64) return "宁夏";
-    if ($code == 65) return "新疆";
-    if ($code == 71) return "台湾";
-    if ($code == 81) return "香港";
-    if ($code == 82) return "澳门";
-    if ($code == 99) return "海外";
+    $results = [ 11 => "北京", "天津", "河北", "山西", "内蒙古",
+        21 => "辽宁", "吉林", "黑龙江",
+        31 => "上海", "江苏", "浙江", "安徽", "福建", "江西", "山东",
+        41 => "河南", "湖北", "湖南", "广东", "广西", "海南",
+        50 => "重庆", "四川", "贵州", "云南", "西藏",
+        61 => "陕西", "甘肃", "青海", "宁夏", "新疆",
+        71 => "台湾",
+        81 => "香港", "澳门",
+        99 => "海外" ];
+    if (isset($results[$code])) return $results[$code];
     return "undefined";
 }
 

@@ -8,8 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Delegate extends Model
 {
     protected $table='delegate_info';
-    protected $primaryKey = 'user_id';
-    protected $fillable = ['user_id','school_id','status','gender','sfz','grade','email','qq','wechat','partnername','parenttel','tel','committee_id','accomodate','roommatename','partner_user_id','roommate_user_id','notes'];
+    protected $primaryKey = 'reg_id';
+    protected $fillable = ['reg_id','conference_id','school_id','status','committee_id','partner_user_id'];
+
+    public function conference() {
+        return $this->belongsTo('App\Conference');
+    }
 
     public function committee() {
         return $this->belongsTo('App\Committee');
@@ -20,7 +24,11 @@ class Delegate extends Model
     }
 
     public function user() {
-        return $this->belongsTo('App\User');
+        return $this->reg->user;
+    }
+    
+    public function reg() {
+        return $this->belongsTo('App\Reg');
     }
 
     public function school() {
@@ -44,7 +52,7 @@ class Delegate extends Model
     }
 
     public function partner() {
-        return $this->belongsTo('App\User', 'partner_user_id');
+        return $this->belongsTo('App\Reg', 'partner_reg_id');
     }
 
     public function assignments() {
@@ -86,19 +94,20 @@ class Delegate extends Model
     public function assignPartnerByName() 
     {
         // TODO: 如果委员会为单带，return
+        // TODO: 重写所有的 partnername
         $this->partner_user_id = null;
         if (isset($this->partnername))
         {
             $partner_name = $this->partnername;
             $myname = $this->user->name;
             // TODO: 对于带空格的partnername值，在此if表达式外增加foreach表达式以逐一处理
+            // TODO: 重写以下 1 行
             $partners = User::where('name', $partner_name);
             $count = $partners->count();
             if ($count == 0) 
             {
-                if (isset($this->notes)) $this->notes .= "\n";
-                $this->notes .= "未找到搭档$partner_name" . "的报名记录！";
-                $this->save();
+                $notes = "{'reason':'未找到搭档$partner_name" . "的报名记录'}";
+                $this->reg->addEvent('partner_auto_fail', $notes);
                 return $myname . "&#09;0&#09;搭档姓名$partner_name&#09;未找到搭档的报名记录";
             }
             $partner = $partners->first();
@@ -115,141 +124,45 @@ class Delegate extends Model
             }
             if ($partner->id == $this->user->id)                                 // 排除自我配对
             {
-                if (isset($this->notes)) $this->notes .= "\n";
-                $this->notes .= "$myname" . "申报的搭档与报名者本人重合！";
-                $this->save(); 
+                $notes = "{'reason':'$myname" . "申报的搭档与报名者本人重合'}";
+                $this->reg->addEvent('partner_auto_fail', $notes); 
                 return $myname  ."&#09;".$partner->id . "&#09;自我配对";
             }
             if ($partner->type != 'delegate') //continue;                        // 排除非代表搭档
             {
-                if (isset($this->notes)) $this->notes .= "\n";
-                $this->notes .= "$partner_name" . "并未以代表身份报名！";
-                $this->save();
+                $notes = "{'reason':'$partner_name" . "并未以代表身份报名'}";
+                $this->reg->addEvent('partner_auto_fail', $notes);
                 return $myname  ."&#09;".$partner->id . "&#09;搭档姓名$partner_name&#09;不是代表";                
             }
             $delpartner = $partner->delegate;
             if ($delpartner->status != 'paid' && $delpartner->status != 'oVerified')   // 排除未通过审核搭档
             {
-                if (isset($this->notes)) $this->notes .= "\n";
-                $this->notes .= "搭档$partner_name" . "的报名未通过审核！";
-                $this->save();
+                $notes = "{'reason':'搭档$partner_name" . "的报名未通过审核'}";
+                $this->reg->addEvent('partner_auto_fail', $notes);
                 return $myname  ."&#09;".$partner->id . "&#09;搭档姓名$partner_name&#09;未通过审核";
             }
             if ($delpartner->committee != $this->committee) //continue;          // 排除非本委员会搭档
             {
-                if (isset($this->notes)) $this->notes .= "\n";
-                $this->notes .= "$partner_name" . "与$myname" . "并非同一委员会！";
-                $this->save();
+                $notes = "{'reason':'$partner_name" . "与$myname" . "并非同一委员会'}";
+                $this->reg->addEvent('partner_auto_fail', $notes);
                 return $myname  ."&#09;".$partner->id ."&#09;搭档姓名$partner_name&#09;不同委员会";
             }
             if (is_null($delpartner->partnername))                               // 如果对方未填搭档，自动补全
                 $delpartner->partnername = $myname;
             if ($delpartner->partnername != $myname) //continue;                 // 排除多角搭档
             {
-                if (isset($this->notes)) $this->notes .= "\n";
-                $this->notes .= "$partner_name" . "申报的搭档并非$myname" . "本人！";
-                $this->save();
+                $notes = "{'reason':'$partner_name" . "申报的搭档并非$myname" . "本人'}";
+                $this->reg->addEvent('partner_auto_fail', $notes);
                 return $myname  ."&#09;".$partner->id . "&#09;搭档姓名$partner_name&#09;多角搭档";                
             }
             $this->partner_user_id = $partner->id;
             $this->save();
+            $this->reg->addEvent('partner_auto_success', '');
             $delpartner->partner_user_id = $this->user->id;
             $delpartner->save();
 //            return $myname  ."&#09;".$partner->id . "&#09;搭档姓名$partner_name&#09;成功";
         }
 //        return $this->user->name . "&#09;未填写搭档姓名";
-    }
-    
-    public function assignRoommateByName() 
-    {
-        if (!$this->accomodate) return $this->user->name . "&#09;0&#09;未申请住宿";
-        $this->roommate_user_id = null;
-        if (isset($this->roommatename))
-        {
-            $roommate_name = $this->roommatename;
-            $myname = $this->user->name;
-            // 对于带空格的roommatename值，在此if表达式外增加foreach表达式以逐一处理
-            $roommates = User::where('name', $roommate_name);
-            $count = $roommates->count();
-            if ($count == 0) 
-            {
-                if (isset($this->notes)) $this->notes .= "\n";
-                $this->notes .= "未找到室友$roommate_name" . "的报名记录！";
-                $this->save();
-                return $myname . "&#09;0&#09;室友姓名$roommate_name&#09;未找到室友的报名记录";
-            }
-            $roommate = $roommates->first();
-            if ($count > 1)
-            {
-                foreach ($roommates as $roommate1)
-                {
-                    if ($roommate->type == 'unregistered') continue;                    // 排除未注册室友
-                    $roommate = $roommate1;
-                    break;
-                }
-            }
-            if ($roommate->id == $this->user->id)                               // 排除自我配对
-            {
-                if (isset($this->notes)) $this->notes .= "\n";
-                $this->notes .= "$myname" . "申报的室友与报名者本人重合！";
-                $this->save(); 
-                return $myname  ."&#09;".$roommate->id . "&#09;自我配对";
-            }
-            if ($roommate->type == 'unregistered')                              // 排除未注册室友
-            {
-                if (isset($this->notes)) $this->notes .= "\n";
-                $this->notes .= "$roommate_name" . "并未报名！";
-                $this->save();
-                return $myname  ."&#09;".$roommate->id . "&#09;室友姓名$roommate_name&#09;未报名参会"; 
-            }
-            if ($roommate->type != 'delegate' && $roommate->type != 'volunteer' )
-            {
-                if (isset($this->notes)) $this->notes .= "\n";
-                $this->notes .= "$roommate_name" . "组委/学团";
-                $this->save();
-                return $myname  ."&#09;".$roommate->id . "&#09;室友姓名$roommate_name&#09;组委/学团"; 
-            }
-            $typedroommate = $roommate->specific();
-            if ($typedroommate->status != 'paid' && $typedroommate->status != 'oVerified')   // 排除未通过审核室友
-            {
-                if (isset($this->notes)) $this->notes .= "\n";
-                $this->notes .= "室友$roommate_name" . "的报名未通过审核！";
-                $this->save();
-                return $myname  ."&#09;".$roommate->id . "&#09;室友姓名$roommate_name&#09;未通过审核";
-            }
-            if (!$typedroommate->accomodate)                                    // 排除对方未申请住宿
-            {
-                if (isset($this->notes)) $this->notes .= "\n";
-                $this->notes .= "$roommate_name" . "未申请住宿！";
-                $this->save();
-                return $myname  ."&#09;".$roommate->id . "&#09;室友姓名$roommate_name&#09;未申请住宿";
-            }
-            if (is_null($typedroommate->roommatename))                          // 如果对方未填室友，自动补全
-                $typedroommate->roommatename = $myname;
-            if ($typedroommate->roommatename != $myname) //continue;}           // 排除多角室友
-            {
-                if (isset($this->notes)) $this->notes .= "\n";
-                $this->notes .= "$roommate_name" . "申报的室友并非$myname" . "本人！";
-                $this->save(); 
-                return $myname  ."&#09;".$roommate->id . "&#09;室友姓名$roommate_name&#09;多角室友";
-            }
-            if ($typedroommate->gender != $this->gender)                        // 排除男女混宿
-            {
-                if (isset($this->notes)) $this->notes .= "\n";
-                $this->notes .= "$roommate_name" . "与报名者为异性！";
-                $this->save();
-                return $myname  ."&#09;".$roommate->id . "&#09;室友姓名$roommate_name&#09;室友为异性";
-            }
-            $this->roommate_user_id = $roommate->id;       
-            $this->save();
-            $typedroommate->roommate_user_id = $this->user->id;
-            $typedroommate->save();
-//            return $myname  ."&#09;".$roommate->id . "&#09;室友姓名$roommate_name&#09;成功";
-        }
-    }
-    
-    public function roommate() {
-        return $this->belongsTo('App\User', 'roommate_user_id'); 
     }
     
     public function documents() {

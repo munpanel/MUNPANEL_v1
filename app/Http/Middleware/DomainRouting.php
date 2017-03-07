@@ -19,7 +19,7 @@ class DomainRouting
         {
             // for portal pages not exist in specific route
             //To-Do configuration for domain
-            if ($request->route()->domain == 'portal.munpanel.com')
+            if ($request->route()->domain == 'portal.munpanel.com') //To-Do: if conference not exist, we will redirect
             {
                 return redirect('https://portal.munpanel.com/');
             }

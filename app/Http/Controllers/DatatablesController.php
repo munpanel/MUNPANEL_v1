@@ -193,14 +193,15 @@ class DatatablesController extends Controller //To-Do: Permission Check
      */
     public function reg2Table()
     {
-        $user = Auth::user();
+        $user = Reg::current();
         $conf = 2;
         if ($user->type=='ot')
         {
-            if (!Auth::user()->can('view-regs'))
+            if (false)//(!Auth::user()->can('view-regs'))
                 return "ERROR";
             $result = new Collection;
-            $regs = Reg::where('conference_id', 2)->with(['user' => function($q) {$q->select('name', 'id');}, 'committee' => function($q) {$q->select('name', 'id');}])->get(['id', 'user_id', 'committee_id', 'status', 'type']);
+            // TODO: 过滤结果，只保留 delegate, observer 和 volunteer
+            $regs = Reg::where('conference_id', 2)->with(['user' => function($q) {$q->select('name', 'id');}])->get(['id', 'user_id', 'type']);
             foreach ($regs as $reg)
             {
                 if ($reg->type == 'unregistered')
@@ -219,7 +220,9 @@ class DatatablesController extends Controller //To-Do: Permission Check
                     $type = '学校';
                 else
                     $type = '未知';
-                if ($reg->status == 'paid')
+            if (null !== $reg->specific())
+            {
+                if ($reg->specific()->status == 'paid')
                     $statusbar = 'has-success';
                 else if ($reg->status == 'oVerified')
                     $statusbar = 'has-warning';
@@ -227,10 +230,10 @@ class DatatablesController extends Controller //To-Do: Permission Check
                     $statusbar = '';
                 else
                     $statusbar = 'has-error';
-                if ($reg->status == 'paid' && (!$user->can('approve-regs-pay')))
+                if ($reg->specific()->status == 'paid' && (!$user->can('approve-regs-pay')))
                     $status = '成功';
                 else if ($user->can('approve-regs'))
-                    $status = '<div class="status-select '.$statusbar.'" uid="'. $reg->user_id .'">'.$reg->status."</div>";
+                    $status = '<div class="status-select '.$statusbar.'" uid="'. $reg->user_id .'">'.$reg->specific()->status."</div>";
                 else if ($reg->status == 'reg')
                     $status = '等待学校审核';
                 else if ($reg->status == 'sVerified')
@@ -241,12 +244,14 @@ class DatatablesController extends Controller //To-Do: Permission Check
                     $status = '成功';
                  else if ($reg->status == 'init')
                     $status = '报名学测未完成';
+            }
+            else $status = '';
                 $school = null !== json_decode($reg->reginfo)? json_decode($reg->reginfo)->school: '未填写';
                 $result->push([
                     'details' => '<a href="ot/regInfo.modal/'. $reg->id .'" data-toggle="ajaxModal" id="'. $reg->id .'" class="details-modal"><i class="fa fa-search-plus"></i></a>',
                     'name' => $reg->user->name,
                     'school' => $school,
-                    'committee' => $reg->committee->name,
+                    'committee' => isset($reg->specific()->committee) ? $reg->specific()->committee->name : '无',
                     'partner' => $type,
                     'status' => $status,
                 ]);

@@ -20,7 +20,7 @@ $regInfo = json_decode($reg->reginfo);
                 @if ($allRegs->count() > 1)
                 <p>{{$reg->user->name}}在本次会议中共包含以下{{ $allRegs->count() }}个身份。</p>
                 @else
-                <p>{{$reg->user->name}}以<strong>{{ $regType == 'delegate' ? '代表' : ($regType == 'observer' ? '观察员' : '志愿者') }}</strong>身份报名参加本次会议。</p>
+                <p>{{$reg->user->name}}以<strong>{{ $reg->type == 'delegate' ? '代表' : ($reg->type == 'observer' ? '观察员' : '志愿者') }}</strong>身份报名参加本次会议。</p>
                 @endif
                 <section class="panel text-sm">
                   <div class="panel-body">
@@ -62,7 +62,7 @@ $regInfo = json_decode($reg->reginfo);
                     <p><i>委员会意向 1</i><br>&emsp;&emsp;{{App\Committee::find($regInfo->conference->committee)->name}}</p>
                     <p><i>委员会意向 2</i><br>&emsp;&emsp;{{App\Committee::find($regInfo->conference->committee2)->name}}</p>
                     <p><i>委员会意向 3</i><br>&emsp;&emsp;{{App\Committee::find($regInfo->conference->committee3)->name}}</p>
-                    <p><i>面试联络方式</i><br>&emsp;&emsp;{{typeInterview($regInfo->conference->typeInterview)}}</p>
+                    <p><i>面试联络方式</i><br>&emsp;&emsp;{{--typeInterview($regInfo->conference->typeInterview)--}}</p>
                     @if (isset($regInfo->conference->smsInterview) || isset($regInfo->conference->offlineInterview))
 		    <p><i>面试选项</i><br>&emsp;&emsp;{{isset($regInfo->conference->smsInterview) ? '开通面试短信提醒服务' : ''}}{{isset($regInfo->conference->smsInterview) && isset($regInfo->conference->offlineInterview) ? ', ' : ''}}{{isset($regInfo->conference->offlineInterview) ? '接受线下面试' : ''}}</p>
                     @endif

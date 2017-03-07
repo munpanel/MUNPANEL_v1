@@ -199,14 +199,13 @@ class UserController extends Controller
         else
             $user = Auth::user();
         $conf = $request->conference_id;
-        $reg = $user->regs->where('conference_id', $conf)->first();
-        $reg = new Reg;
+        $reg = Reg::current();
         $reg->user_id = $user->id;
         $reg->conference_id = $conf;
         $reg->type = $request->type;
         $reg->enabled = true;
         $reg->gender = $request->gender;
-        if (isset($request->committee)) $reg->committee_id = $request->committee;
+        //if (isset($request->committee)) $reg->committee_id = $request->committee;
         $regInfo = new \stdClass();
         $personal_info = new \stdClass();
         $personal_info->dateofbirth = $request->dateofbirth; 
@@ -245,8 +244,8 @@ class UserController extends Controller
                     $expitem->dates = $request->date1;
                     $expitem->name = $request->name1;
                     $expitem->role = $request->role1;
-                    $expitem->award = $request->award1;
-                    $expitem->others = $request->others1;
+                    if (!empty($request->award1)) $expitem->award = $request->award1;
+                    if (!empty($request->others1)) $expitem->others = $request->others1;
                     array_push($items, $expitem);
                 }
                 if (!(empty($request->level2) || empty($request->date2) || empty($request->name2) || empty($request->role2)))
@@ -256,8 +255,8 @@ class UserController extends Controller
                     $expitem->dates = $request->date2;
                     $expitem->name = $request->name2;
                     $expitem->role = $request->role2;
-                    $expitem->award = $request->award2;
-                    $expitem->others = $request->others2;
+                    if (!empty($request->award2)) $expitem->award = $request->award2;
+                    if (!empty($request->others2)) $expitem->others = $request->others2;
                     array_push($items, $expitem);
                 }
                 if (!(empty($request->level3) || empty($request->date3) || empty($request->name3) || empty($request->role3)))
@@ -267,8 +266,8 @@ class UserController extends Controller
                     $expitem->dates = $request->date3;
                     $expitem->name = $request->name3;
                     $expitem->role = $request->role3;
-                    $expitem->award = $request->award3;
-                    $expitem->others = $request->others3;
+                    if (!empty($request->award3)) $expitem->award = $request->award3;
+                    if (!empty($request->others3)) $expitem->others = $request->others3;
                     array_push($items, $expitem);
                 }
             }

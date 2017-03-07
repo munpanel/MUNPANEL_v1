@@ -15,7 +15,7 @@ class CreateOtInfoTable extends Migration
     {
         Schema::create('ot_info', function (Blueprint $table) {
             $table->integer('reg_id')->unsigned();
-	        $table->integer('school_id')->unsigned();
+            $table->integer('school_id')->unsigned()->nullable();
             $table->string('position');
             $table->timestamps();
             $table->primary('reg_id');

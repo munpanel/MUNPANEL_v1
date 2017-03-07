@@ -28,14 +28,14 @@
                 </a>
               </li>
               @endpermission
-              @permission('view-regs')
+              {{--@permission('view-regs')--}}
               <li class="@yield('regManage_active')">
                 <a href="{{ secure_url('/regManage') }}">
                   <i class="fa fa-tasks"></i>
                   <span>Registration Management</span>
                 </a>
               </li>
-              @endpermission
+              {{--@endpermission--}}
               @permission('edit-nations')
               <li class="@yield('nationManage_active')">
                 <a href="{{ secure_url('/nationManage') }}">

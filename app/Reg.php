@@ -3,9 +3,12 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Zizaco\Entrust\Traits\EntrustUserTrait;
 
 class Reg extends Model
 {
+    use EntrustUserTrait;
+
     protected $fillable = ['user_id','conference_id','school_id','type','enabled','gender','reginfo','accomodate','roommate_reg_id'];    
     
     /**

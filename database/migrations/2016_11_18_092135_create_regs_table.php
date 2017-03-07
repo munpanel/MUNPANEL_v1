@@ -24,6 +24,7 @@ class CreateRegsTable extends Migration
             $table->boolean('enabled');
             $table->boolean('accomodate')->nullable();
             $table->integer('roommate_user_id')->nullable()->unsigned();
+            $table->text('reginfo')->nullable();
             $table->timestamps();
             $table->unique(['user_id', 'conference_id', 'type']);
             $table->foreign('user_id')->references('id')->on('users')->onDelete('no action');

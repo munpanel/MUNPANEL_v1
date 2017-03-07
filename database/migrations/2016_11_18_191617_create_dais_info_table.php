@@ -15,7 +15,7 @@ class CreateDaisInfoTable extends Migration
     {
         Schema::create('dais_info', function (Blueprint $table) {
             $table->integer('reg_id')->unsigned();
-	        $table->integer('school_id')->unsigned();
+            $table->integer('school_id')->unsigned()->nullable();
             $table->integer('committee_id')->unsigned();
             $table->string('position');
             $table->timestamps();

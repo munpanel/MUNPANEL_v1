@@ -138,11 +138,11 @@
           <!-- nav -->
           <nav class="nav-primary hidden-xs">
             <ul class="nav">
-                @if (Auth::user()->type == 'school')
+                @if (Reg::current()->type == 'school')
                 @include('layouts.school')
-                @elseif (Auth::user()->type == 'ot')
+                @elseif (Reg::current()->type == 'ot')
                 @include('layouts.ot')
-                @elseif (Auth::user()->type == 'dais')
+                @elseif (Reg::current()->type == 'dais')
                 @include('layouts.dais')
                 @else
                 @include('layouts.delegate')

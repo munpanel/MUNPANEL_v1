@@ -169,8 +169,8 @@ class HomeController extends Controller
      */
     public function regManage()
     {
-        $type =Auth::user()->type;
-        if ($type == 'ot' && Auth::user()->can('edit-users'))
+        $type = Reg::current()->type;
+        if ($type == 'ot' && Reg::current()->can('edit-users'))
         {
             return view('ot.regManage', ['delegates' => Delegate::all(), 'volunteers' => Volunteer::all(), 'observers' => Observer::all()]);
         }
@@ -268,7 +268,7 @@ class HomeController extends Controller
      */
     public function regInfoModal($id)
     {
-        if (Auth::user()->type != 'ot')
+        if (Reg::current()->type != 'ot')
             return "Error";
         $reg = Reg::findOrFail($id);
         $allRegs = Reg::where('user_id', $reg->user_id)->get(['id', 'type']);

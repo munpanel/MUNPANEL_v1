@@ -99,13 +99,12 @@
                  @endif
                 </footer>
               </section>
-              @if (Reg::current()->type == 'delegate')
                     <section class="panel bg-warning no-borders">
                       <div class="row">
                         <div class="col-xs-6">
                           <div class="wrapper">
                             <p>席位分配</p>
-                            <p class="h4 font-bold">{{ Reg::current()->delegate->committee->is_allocated ? Reg::current()->delegate->nation->name : '未分配' }}</p>
+                            <p class="h4 font-bold">{{-- Reg::current()->delegate->committee->is_allocated ? Reg::current()->delegate->nation->name : '未分配'--}}</p>
                             <!--div class="progress progress-xs progress-striped active m-b-sm">
                               <div class="progress-bar progress-bar-warning" data-toggle="tooltip" data-original-title="{{ $percent }}%" style="width: {{ $percent }}%"></div>
                             </div-->
@@ -117,14 +116,13 @@
                         </div>
                         <div class="col-xs-6 wrapper text-center">
                           <div class="inline m-t-sm">
-                            <div class="easypiechart" data-percent="{{ Reg::current()->delegate->committee->is_allocated ? '100' : '0' }}" data-line-width="8" data-bar-color="#ffffff" data-track-Color="#c79d43" data-scale-Color="false" data-size="100">
-                              <span class="h2">{{ Reg::current()->delegate->committee->is_allocated ? '100' : '0' }}</span>%
+                            <div class="easypiechart" data-percent="{{-- Reg::current()->delegate->committee->is_allocated ? '100' : '0'--}}" data-line-width="8" data-bar-color="#ffffff" data-track-Color="#c79d43" data-scale-Color="false" data-size="100">
+                              <span class="h2">{{-- Reg::current()->delegate->committee->is_allocated ? '100' : '0'--}}</span>%
                             </div>
                           </div>
                         </div>
                       </div>
                     </section>
-              @endif
               <section class="panel clearfix">
                 <div class="panel-body">
                   <div class="clear">

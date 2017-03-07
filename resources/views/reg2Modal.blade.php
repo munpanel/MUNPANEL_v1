@@ -23,7 +23,7 @@ $isExperience = isset($customTable->experience) && in_array($regType, $customTab
         <form id="reg2Form" class="m-b-sm" action="{{ secure_url('/saveReg2') }}" method="post">
           <div class="step-pane active" id="step1">
             {{csrf_field()}}
-            <input type="hidden" name="conference_id" value="2">
+            <input type="hidden" name="conference_id" value="{{Reg::current()->conference_id}}">
             <input type="hidden" name="type" value="{{ $regType }}">
             <div class="form-group">
               <label>姓名</label>

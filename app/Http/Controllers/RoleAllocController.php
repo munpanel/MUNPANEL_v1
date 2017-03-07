@@ -21,12 +21,12 @@ class RoleAllocController extends Controller
      */
     public function lockAlloc($confirm = false)
     {
-        if (Auth::user()->type != 'dais')
+        if (Reg::current()->type != 'dais')
             return 'Error';
         if ($confirm)
         {
-            Auth::user()->dais->committee->is_allocated = true;
-            Auth::user()->dais->committee->save();
+            Reg::current()->dais->committee->is_allocated = true;
+            Reg::current()->dais->committee->save();
             return redirect(secure_url('/roleList'));
         }
         else
@@ -107,13 +107,13 @@ class RoleAllocController extends Controller
      */
     public function nationDetailsModal($id)
     {
-        if (Auth::user()->type != 'dais')
+        if (Reg::current()->type != 'dais')
             return "Error";
         if ($id == 'new')
         {
             $nation = new Nation;
             $nation->name = 'New Nation';
-            $nation->committee_id = Auth::user()->dais->committee_id;
+            $nation->committee_id = Reg::current()->dais->committee_id;
             $nation->conpetence = 1;
             $nation->veto_power = 0;
             $nation->save();
@@ -132,7 +132,7 @@ class RoleAllocController extends Controller
      */
     public function updateNation(Request $request, $id)
     {
-        if (Auth::user()->type != 'dais')
+        if (Reg::current()->type != 'dais')
             return 'Error';
         $nation = Nation::findOrFail($id);
         $name = $request->get('name');
@@ -151,7 +151,7 @@ class RoleAllocController extends Controller
      */
     public function deleteNation(Request $request, $id, $confirm = false)
     {
-        if (Auth::user()->type != 'dais')
+        if (Reg::current()->type != 'dais')
             return 'Error';
         if ($confirm)
         {
@@ -174,8 +174,8 @@ class RoleAllocController extends Controller
      */
     public function linkPartner($id1, $id2)
     {
-        if (Auth::user()->type == 'dais')
-            $cid = Auth::user()->dais->committee->id;
+        if (Reg::current()->type == 'dais')
+            $cid = Reg::current()->dais->committee->id;
         else
             return 'Error';
         $del1 = Delegate::findOrFail($id1);

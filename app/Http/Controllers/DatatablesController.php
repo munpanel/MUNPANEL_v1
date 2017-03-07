@@ -197,7 +197,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
         $conf = 2;
         if ($user->type=='ot')
         {
-            if (false)//(!Auth::user()->can('view-regs'))
+            if (false)//(!Reg::current()->can('view-regs'))
                 return "ERROR";
             $result = new Collection;
             // TODO: 过滤结果，只保留 delegate, observer 和 volunteer
@@ -362,26 +362,26 @@ class DatatablesController extends Controller //To-Do: Permission Check
     public function assignments()
     {
         $result = new Collection;
-        if (Auth::user()->type == 'dais')
-            $assignments = /*Auth::user()->dais->Assignment();*/Assignment::all(); // TODO: get docs per committee 
+        if (Reg::current()->type == 'dais')
+            $assignments = /*Reg::current()->dais->Assignment();*/Assignment::all(); // TODO: get docs per committee 
         else 
-            $assignments = Auth::user()->delegate->assignments();//Assignment::all();//get(['id', 'title', 'deadline']);
+            $assignments = Reg::current()->delegate->assignments();//Assignment::all();//get(['id', 'title', 'deadline']);
         $i = 0;
         foreach($assignments as $assignment)
         {
             $title = $assignment->title;
             $detailline = '<a href="assignment/'. $assignment->id.'"><i class="fa fa-search-plus"></i></a>';
-            if (Auth::user()->type == 'delegate')
+            if (Reg::current()->type == 'delegate')
             {
                 if ($assignment->subject_type == 'nation')
-                    $handin = Handin::where('assignment_id', $assignment->id)->where('nation_id', Auth::user()->delegate->nation->id)->first();
+                    $handin = Handin::where('assignment_id', $assignment->id)->where('nation_id', Reg::current()->delegate->nation->id)->first();
                 else if ($assignment->subject_type == 'partner')
                 {
-                    if (isset(Auth::user()->delegate->partner)) $handin = Handin::where('assignment_id', $assignment->id)->where('user_id', Auth::user()->delegate->partner->id)->orderBy('id', 'desc')->first();
-                    if (!isset($handin)) $handin = Handin::where('assignment_id', $assignment->id)->where('user_id', Auth::user()->id)->orderBy('id', 'desc')->first();                
+                    if (isset(Reg::current()->delegate->partner)) $handin = Handin::where('assignment_id', $assignment->id)->where('user_id', Reg::current()->delegate->partner->id)->orderBy('id', 'desc')->first();
+                    if (!isset($handin)) $handin = Handin::where('assignment_id', $assignment->id)->where('user_id', Reg::current()->id)->orderBy('id', 'desc')->first();                
                 }
                 else
-                    $handin = Handin::where('assignment_id', $assignment->id)->where('user_id', Auth::user()->id)->orderBy('id', 'desc')->first();                
+                    $handin = Handin::where('assignment_id', $assignment->id)->where('user_id', Reg::current()->id)->orderBy('id', 'desc')->first();                
                 if (is_null($handin)) //TO-DO: ddl check
                     $title = $title."<b class=\"badge bg-danger pull-right\">未提交</b>";
             }
@@ -411,7 +411,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
     public function nations()
     {
         $result = new Collection;
-        if (Auth::user()->type == 'ot')
+        if (Reg::current()->type == 'ot')
         {
             $nations = Nation::all();
             foreach($nations as $nation)
@@ -435,7 +435,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
                 ]);
             }
         } else {
-            $nations = Auth::user()->specific()->committee->nations;
+            $nations = Reg::current()->specific()->committee->nations;
             foreach($nations as $nation)
             {
                 /*$groups = '';
@@ -468,15 +468,15 @@ class DatatablesController extends Controller //To-Do: Permission Check
     public function documents()
     {
         $result = new Collection;
-        if (Auth::user()->type == 'dais')
-            $documents = /*Auth::user()->dais->documents();*/Document::all(); // TODO: get docs per committee
+        if (Reg::current()->type == 'dais')
+            $documents = /*Reg::current()->dais->documents();*/Document::all(); // TODO: get docs per committee
         else
-            $documents = Auth::user()->delegate->documents();//Assignment::all();//get(['id', 'title', 'deadline']);
+            $documents = Reg::current()->delegate->documents();//Assignment::all();//get(['id', 'title', 'deadline']);
         $i = 0;
         foreach($documents as $document)
         {
             $detailline = '<a href="document/'. $document->id.'"><i class="fa fa-search-plus"></i></a>';
-            if (Auth::user()->type == 'dais')
+            if (Reg::current()->type == 'dais')
                 $detailline = $detailline . '&nbsp;<a href="documentDetails.modal/'. $document->id.'" data-toggle="ajaxModal"><i class="fa fa-pencil"></i></a>';
             $result->push([
                 //'id' => $document->id,
@@ -593,7 +593,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
     public function roleAllocNations()
     {
         $result = new Collection;
-        if (Auth::user()->type != 'dais')
+        if (Reg::current()->type != 'dais')
             $result->push([
                 'select' => '*',
                 'name' => '错误',
@@ -603,7 +603,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
                               <button class="btn btn-xs btn-warning disabled" type="button">编辑</button>
                               <button class="btn btn-xs btn-danger disabled" type="button">删除</button>'
             ]);
-        $mycommittee = Auth::user()->dais->committee;
+        $mycommittee = Reg::current()->dais->committee;
         $nations = Nation::where('committee_id', $mycommittee->id)->get();
         $autosel = false;
         foreach($nations as $nation)
@@ -649,19 +649,19 @@ class DatatablesController extends Controller //To-Do: Permission Check
     public function roleAllocDelegates()
     {
         $result = new Collection;
-        if (Auth::user()->type != 'dais')
+        if (Reg::current()->type != 'dais')
             $result->push([
                 'name' => '错误',
                 'school' => '您没有权限',
                 'nation' => '进行该操作！',
                 'command' => '<button class="btn btn-xs btn-success addButton" del-id="' . $delegate->user->id . '"type="button">移入席位</button>'
             ]);
-        $mycommittee = Auth::user()->dais->committee;
+        $mycommittee = Reg::current()->dais->committee;
         $delegates = Delegate::where(function($query) {
-            $query->where('committee_id', Auth::user()->dais->committee->id)
+            $query->where('committee_id', Reg::current()->dais->committee->id)
             ->where('status', 'paid');
         })->orWhere(function($query) {
-            $query->where('committee_id', Auth::user()->dais->committee->id)
+            $query->where('committee_id', Reg::current()->dais->committee->id)
             ->where('status', 'oVerified');
         })->get(['user_id', 'school_id', 'nation_id', 'status']);
         foreach($delegates as $delegate)

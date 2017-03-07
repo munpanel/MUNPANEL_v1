@@ -307,7 +307,7 @@ class UserController extends Controller
      */
     public function schoolVerify($id)
     {
-        $school = Auth::user()->school;
+        $school = Reg::current()->school;
         $specific =  User::find($id)->specific();
         if ($specific->school->id != $school->id)
             return "error";
@@ -323,7 +323,7 @@ class UserController extends Controller
      */
     public function schoolUnverify($id)
     {
-        $school = Auth::user()->school;
+        $school = Reg::current()->school;
         $specific =  User::find($id)->specific();
         if ($specific->school->id != $school->id)
             return "error";
@@ -340,9 +340,9 @@ class UserController extends Controller
      */
     public function setStatus($id, $status)
     {
-        if (Auth::user()->type != 'ot' || (!Auth::user()->can('approve-regs')))
+        if (Reg::current()->type != 'ot' || (!Reg::current()->can('approve-regs')))
             return "Error";
-        if ($status == 'paid' && (!Auth::user()->can('approve-regs-pay')))
+        if ($status == 'paid' && (!Reg::current()->can('approve-regs-pay')))
             return "Error";
         $specific =  User::find($id)->specific();
         $specific->status = $status;
@@ -446,7 +446,7 @@ class UserController extends Controller
      */
     public function updateUser(Request $request, $id)
     {
-        if (Auth::user()->type != 'ot')
+        if (Reg::current()->type != 'ot')
             return 'Error';
         $user = User::findOrFail($id);
         $name = $request->get('name');
@@ -472,7 +472,7 @@ class UserController extends Controller
      */
     public function updateSchool(Request $request, $id)
     {
-        if (Auth::user()->type != 'ot')
+        if (Reg::current()->type != 'ot')
             return 'Error';
         $school = School::findOrFail($id);
         $name = $request->get('name');
@@ -490,7 +490,7 @@ class UserController extends Controller
      */
     public function updateCommittee(Request $request, $id)
     {
-        if (Auth::user()->type != 'ot')
+        if (Reg::current()->type != 'ot')
             return 'Error';
         $committee = Committee::findOrFail($id);
         $name = $request->get('name');
@@ -508,9 +508,9 @@ class UserController extends Controller
      */
     public function deleteUser(Request $request, $id)
     {
-        if (Auth::user()->type != 'ot')
+        if (Reg::current()->type != 'ot')
             return 'Error';
-        User::destroy($id);
+        Reg::destroy($id);
     }
 
     /**
@@ -522,7 +522,7 @@ class UserController extends Controller
      */
     public function deleteCommittee(Request $request, $id)
     {
-        if (Auth::user()->type != 'ot')
+        if (Reg::current()->type != 'ot')
             return 'Error';
         Committee::destroy($id);
     }
@@ -536,7 +536,7 @@ class UserController extends Controller
      */
     public function deleteSchool(Request $request, $id)
     {
-        if (Auth::user()->type != 'ot')
+        if (Reg::current()->type != 'ot')
             return 'Error';
         School::destroy($id);
     }
@@ -624,26 +624,23 @@ class UserController extends Controller
      */
     public function autoAssign()
     {
-        $users = User::all();
+        $regs = Reg::where('conference_id', Reg::current()->conference_id);
         $room = 0;
         $part = 0;
         $result1 = "";
         $result2 = "";
-        foreach($users as $user)
+        foreach($regs as $reg)
         {
-            if ($user->type != 'delegate' && $user->type != 'observer' && $user->type != 'volunteer') continue;
-            $specific = $user->specific();
-            if (is_null($specific)) continue;
-            if ($user->type != 'dais' && isset($specific->roommatename) && ($specific->status == 'oVerified' || $specific->status == 'paid'))
+            if (!empty($reg->roommatename) && ($reg->status == 'oVerified' || $reg->status == 'paid'))
             {
-                $result1 .= $user->id ."&#09;". $specific->assignRoommateByName() . "<br>";
+                $result1 .= $reg->id ."&#09;". $reg->assignRoommateByName() . "<br>";
                 $room++;
             }
-            if ($user->type == 'delegate')
+            if ($reg->type == 'delegate')
             {
-                if (isset($user->delegate->partnername) && ($user->delegate->status == 'oVerified' || $user->delegate->status == 'paid'))
+                if (isset($reg->delegate->partnername) && ($reg->delegate->status == 'oVerified' || $reg->delegate->status == 'paid'))
                 {
-                    $result2 .= $user->id ."&#09;". $user->delegate->assignPartnerByName() . "<br>";
+                    $result2 .= $reg->id ."&#09;". $reg->delegate->assignPartnerByName() . "<br>";
                     $part++;
                 }
             }

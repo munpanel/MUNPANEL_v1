@@ -195,7 +195,7 @@ class HomeController extends Controller
      */
     public function userManage()
     {
-        if ( Auth::user()->type != 'ot' )
+        if ( Reg::current()->type != 'ot' )
             return 'Error';
         return view('ot.userManage');
     }
@@ -207,7 +207,7 @@ class HomeController extends Controller
      */
     public function schoolManage()
     {
-        if ( Auth::user()->type != 'ot' )
+        if ( Reg::current()->type != 'ot' )
             return 'Error';
         return view('ot.schoolManage');
     }
@@ -219,7 +219,7 @@ class HomeController extends Controller
      */
     public function committeeManage()
     {
-        if ( Auth::user()->type != 'ot' )
+        if ( Reg::current()->type != 'ot' )
             return 'Error';
         return view('ot.committeeManage');
     }
@@ -231,7 +231,7 @@ class HomeController extends Controller
      */
     public function nationManage()
     {
-        if ( Auth::user()->type != 'ot' )
+        if ( Reg::current()->type != 'ot' )
             return 'Error';
         return view('ot.nationManage');
     }
@@ -244,7 +244,7 @@ class HomeController extends Controller
      */
     public function userDetailsModal($id)
     {
-        if (Auth::user()->type != 'ot')
+        if (Reg::current()->type != 'ot')
             return "Error";
         if ($id == 'new')
         {
@@ -283,7 +283,7 @@ class HomeController extends Controller
      */
     public function schoolDetailsModal($id)
     {
-        if (Auth::user()->type != 'ot')
+        if (Reg::current()->type != 'ot')
             return "Error";
         if ($id == 'new')
         {
@@ -305,7 +305,7 @@ class HomeController extends Controller
      */
     public function committeeDetailsModal($id)
     {
-        if (Auth::user()->type != 'ot')
+        if (Reg::current()->type != 'ot')
             return "Error";
         if ($id == 'new')
         {
@@ -343,7 +343,7 @@ class HomeController extends Controller
      */
     public function schoolPay()
     {
-        if (Auth::user()->type != 'school')
+        if (Reg::current()->type != 'school')
             return view('error', ['msg' => 'You have to use your school account!']);
         return view('school.pay');
     }
@@ -356,8 +356,8 @@ class HomeController extends Controller
      */
     public function changeSchoolPaymentMethod($method)
     {
-        Auth::user()->school->payment_method = $method;
-        Auth::user()->school->save();
+        Reg::current()->school->payment_method = $method;
+        Reg::current()->school->save();
         return redirect(secure_url('/school/payment'));
     }
 
@@ -380,17 +380,17 @@ class HomeController extends Controller
      */
     public function assignmentsList()
     {
-        if (Auth::user()->type == 'unregistered')
+        if (Reg::current()->type == 'unregistered')
             return view('error', ['msg' => '您无权访问该页面！']);
-        if (Auth::user()->type == 'delegate')
+        if (Reg::current()->type == 'delegate')
         {
-            if (Auth::user()->specific()->status == 'reg')//TO-DO: parameters for this
+            if (Reg::current()->specific()->status == 'reg')//TO-DO: parameters for this
                 return view('error', ['msg' => '请等待学校和/或组织团队审核！']);  
-            if (Auth::user()->specific()->status != 'paid')//TO-DO: parameters for this  
+            if (Reg::current()->specific()->status != 'paid')//TO-DO: parameters for this  
                 return view('error', ['msg' => '请先缴费！如果您已通过社团缴费，请等待组织团队确认']); 
         }
-        $committee = Auth::user()->specific()->committee;
-        return view('assignmentsList', ['committee' => $committee, 'type' => Auth::user()->type]);
+        $committee = Reg::current()->specific()->committee;
+        return view('assignmentsList', ['committee' => $committee, 'type' => Reg::current()->type]);
     }
 
     /**
@@ -403,24 +403,24 @@ class HomeController extends Controller
     public function assignment($id, $action = 'info')
     {
         $assignment = Assignment::findOrFail($id);
-        if (Auth::user()->type != 'ot' && Auth::user()->type != 'dais' && (!$assignment->belongsToDelegate(Auth::user()->id)))
+        if (Reg::current()->type != 'ot' && Reg::current()->type != 'dais' && (!$assignment->belongsToDelegate(Reg::current()->id)))
             return "ERROR"; //TO-DO: Permission check for ot and dais (for downloading handins)
-        if (Auth::user()->type == 'ot') //To-Do: Dais
+        if (Reg::current()->type == 'ot') //To-Do: Dais
             $handins = $assignment->handins;
         else if ($assignment->subject_type == 'nation')
-            $handin = Handin::where('assignment_id', $id)->where('nation_id', Auth::user()->delegate->nation->id)->orderBy('id', 'desc')->first();
+            $handin = Handin::where('assignment_id', $id)->where('nation_id', Reg::current()->delegate->nation->id)->orderBy('id', 'desc')->first();
         else if ($assignment->subject_type == 'partner')
         {
-            if (isset(Auth::user()->delegate->partner)) $handin = Handin::where('assignment_id', $id)->where('user_id', Auth::user()->delegate->partner->id)->orderBy('id', 'desc')->first();
-            if (!isset($handin)) $handin = Handin::where('assignment_id', $id)->where('user_id', Auth::user()->id)->orderBy('id', 'desc')->first();
+            if (isset(Reg::current()->delegate->partner)) $handin = Handin::where('assignment_id', $id)->where('user_id', Reg::current()->delegate->partner->id)->orderBy('id', 'desc')->first();
+            if (!isset($handin)) $handin = Handin::where('assignment_id', $id)->where('user_id', Reg::current()->id)->orderBy('id', 'desc')->first();
             else
             {
-                $handin1 = Handin::where('assignment_id', $id)->where('user_id', Auth::user()->id)->orderBy('id', 'desc')->first();
+                $handin1 = Handin::where('assignment_id', $id)->where('user_id', Reg::current()->id)->orderBy('id', 'desc')->first();
                 if (isset($handin1) && $handin1->id > $handin->id) $handin = $handin1;
             }
         }
         else
-            $handin = Handin::where('assignment_id', $id)->where('user_id', Auth::user()->id)->orderBy('id', 'desc')->first();
+            $handin = Handin::where('assignment_id', $id)->where('user_id', Reg::current()->id)->orderBy('id', 'desc')->first();
         if ($action == 'info')
         {
             if (isset($handin))
@@ -492,7 +492,7 @@ class HomeController extends Controller
     public function uploadAssignment(Request $request, $id)
     {
         $assignment = Assignment::findOrFail($id);
-        if (!$assignment->belongsToDelegate(Auth::user()->id))
+        if (!$assignment->belongsToDelegate(Reg::current()->id))
             return "ERROR";
         if (strtotime(date("y-m-d H:i:s")) >= strtotime($assignment->deadline))
             return "ERROR";
@@ -500,9 +500,9 @@ class HomeController extends Controller
         {
             $handin = new Handin;
             if ($assignment->subject_type == 'nation')
-                $handin->nation_id = Auth::user()->delegate->nation->id;
+                $handin->nation_id = Reg::current()->delegate->nation->id;
             //else
-            $handin->user_id = Auth::user()->id;
+            $handin->user_id = Reg::current()->id;
             $handin->content = $request->file->store('assignmentHandins');
             $handin->assignment_id = $id;
             $handin->handin_type = 'upload';
@@ -536,17 +536,17 @@ class HomeController extends Controller
      */
     public function documentsList()
     {
-        if (Auth::user()->type == 'unregistered')
+        if (Reg::current()->type == 'unregistered')
             return view('error', ['msg' => '您无权访问该页面！']);
-        if (Auth::user()->type == 'delegate')
+        if (Reg::current()->type == 'delegate')
         {
-            if (Auth::user()->specific()->status == 'reg')//TO-DO: parameters for this
+            if (Reg::current()->specific()->status == 'reg')//TO-DO: parameters for this
                 return view('error', ['msg' => '请等待学校和/或组织团队审核！']);  
-            if (Auth::user()->specific()->status != 'paid')//TO-DO: parameters for this  
+            if (Reg::current()->specific()->status != 'paid')//TO-DO: parameters for this  
                 return view('error', ['msg' => '请先缴费！如果您已通过社团缴费，请等待组织团队确认']); 
         }
-        $committee = Auth::user()->specific()->committee;
-        return view('documentsList', ['type' => Auth::user()->type]);
+        $committee = Reg::current()->specific()->committee;
+        return view('documentsList', ['type' => Reg::current()->type]);
     }
     
     /**
@@ -559,11 +559,11 @@ class HomeController extends Controller
     public function document($id, $action = "")
     {
         $document = Document::findOrFail($id);
-        if (Auth::user()->type == 'unregistered' || Auth::user()->type == 'volunteer')
+        if (Reg::current()->type == 'unregistered' || Reg::current()->type == 'volunteer')
             return view('error', ['msg' => '您不是参会代表，无权访问该页面！']);
-        else if (Auth::user()->type == 'delegate')
+        else if (Reg::current()->type == 'delegate')
         {
-            if (!$document->belongsToDelegate(Auth::user()->id))
+            if (!$document->belongsToDelegate(Reg::current()->id))
                 return view('error', ['msg' => '您不是此学术文件的分发对象，无权访问该页面！']);
         }
         if ($action == "download")
@@ -578,7 +578,7 @@ class HomeController extends Controller
         }
         else if ($action == "upload")
         {
-            if (Auth::user()->type != 'ot' || Auth::user()->type != 'dais')
+            if (Reg::current()->type != 'ot' || Reg::current()->type != 'dais')
                 return view('error', ['msg' => '您不是该会议学术团队成员，无权对文件操作！']);
             // $document->downloads = 0;
             // $document->views = 0;
@@ -621,7 +621,7 @@ class HomeController extends Controller
      */
     public function roleList($view = 'nation')
     {
-        if (Auth::user()->type == 'delegate' && Auth::user()->delegate->committee->is_allocated == false)
+        if (Reg::current()->type == 'delegate' && Reg::current()->delegate->committee->is_allocated == false)
             return view('error', ['msg' => '请等待席位分配发布！']);
         return view('roleList', ['view' => $view]);
     }
@@ -633,25 +633,25 @@ class HomeController extends Controller
      */
     public function roleAlloc()
     {
-        if (Auth::user()->type == 'delegate')
+        if (Reg::current()->type == 'delegate')
         {
-            if (!Auth::user()->specific()->committee->is_allocated)
+            if (!Reg::current()->specific()->committee->is_allocated)
                 return view('error', ['msg' => '您不是该会议学术团队成员，无权进行席位分配！']);
             else
                 return redirect(secure_url('/roleList'));
         }
-        else if (Auth::user()->type == 'ot')
+        else if (Reg::current()->type == 'ot')
             return redirect(secure_url('/nationManage'));
-        else if (Auth::user()->type != 'dais')
+        else if (Reg::current()->type != 'dais')
             return view('error', ['msg' => '您不是该会议学术团队成员，无权进行席位分配！']);            
-        if (Auth::user()->specific()->committee->is_allocated)
+        if (Reg::current()->specific()->committee->is_allocated)
             return redirect(secure_url('/roleList'));
-        $mycommittee = Auth::user()->dais->committee;
+        $mycommittee = Reg::current()->dais->committee;
         return view('dais.roleAlloc', [
             'committee' => $mycommittee, 
             'mustAlloc' => $mycommittee->delegates->where('status', 'paid')->where('nation_id', null)->count(), 
             'emptyNations' => $mycommittee->emptyNations()->count(),
-            'verified' => Delegate::where(function($query) {$query->where('committee_id', Auth::user()->dais->committee->id)->where('status', 'paid');})->orWhere(function($query) {$query->where('committee_id', Auth::user()->dais->committee->id)->where('status', 'oVerified');})->count(),
+            'verified' => Delegate::where(function($query) {$query->where('committee_id', Reg::current()->dais->committee->id)->where('status', 'paid');})->orWhere(function($query) {$query->where('committee_id', Reg::current()->dais->committee->id)->where('status', 'oVerified');})->count(),
             'isDouble' => true
         ]);
     }

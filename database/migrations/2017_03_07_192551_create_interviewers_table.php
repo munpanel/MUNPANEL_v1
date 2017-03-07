@@ -20,7 +20,6 @@ class CreateInterviewersTable extends Migration
             $table->foreign('reg_id')->references('id')->on('regs')->onDelete('cascade');
             $table->foreign('committee_id')->references('id')->on('committees')->onDelete('cascade');
             $table->timestamps();
-$
         });
     }
 

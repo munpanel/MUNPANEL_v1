@@ -24,14 +24,14 @@ class CreateCommitteesTable extends Migration
             $table->enum('language', ['ChineseS', 'English']);
             $table->string('rule');
             $table->integer('father_committee_id')->unsigned()->nullable();
-            $table->integer('option_limit')->unsigned->default(99);
+            $table->integer('option_limit')->unsigned()->default(99);
 			//时间节点默认取会议起止日
 			$table->date('timeframe_start');
 			$table->date('timeframe_end');
-            $table->boolean('is_allocated')->default(false);
+            $table->boolean('is_allocated');//->default(false);
 			$table->integer('session')->unsigned();
 			$table->text('description');
-            $table->timestamps()->nullable();
+            $table->timestamps();
             $table->foreign('conference_id')->references('id')->on('conferences')->onDelete('cascade');
             $table->foreign('father_committee_id')->references('id')->on('committees')->onDelete('set null');
         });

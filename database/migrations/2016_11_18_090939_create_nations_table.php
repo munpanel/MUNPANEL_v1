@@ -18,7 +18,7 @@ class CreateNationsTable extends Migration
             $table->integer('committee_id')->unsigned();
 			$table->string('name');
 			$table->integer('conpetence')->unsigned()->default(1);
-			$table->boolean('veto_power')->default(false);
+			$table->boolean('veto_power');//->default(false);
 			$table->boolean('attendance')->nullable();
             $table->timestamps();
             $table->unique(['committee_id', 'name']);

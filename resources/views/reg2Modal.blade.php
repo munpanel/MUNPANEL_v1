@@ -32,7 +32,7 @@ $isExperience = isset($customTable->experience) && in_array($regType, $customTab
               <input name="name" disabled="" class="form-control" type="text" value="{{ Auth::user()->name }}" data-required="true" data-trigger="change">
               <span class="help-block m-b-none">如需编辑请退出登录或联系客服</span>
               @else
-              <input name="name" class="form-control" type="text" data-required="true" data-trigger="change">              
+              <input name="name" class="form-control" type="text" data-required="true" data-trigger="change">
               @endif
             </div>
             <div class="form-group">

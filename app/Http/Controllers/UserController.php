@@ -200,15 +200,11 @@ class UserController extends Controller
             $user = Auth::user();
         $conf = $request->conference_id;
         $reg = $user->regs->where('conference_id', $conf)->first();
-        if (is_null($reg)) 
-        {
-            $reg = new Reg;
-            $reg->user_id = $user->id;
-            $reg->conference_id = $conf;
-        }
+        $reg = new Reg;
+        $reg->user_id = $user->id;
+        $reg->conference_id = $conf;
         $reg->type = $request->type;
-        if ($reg->status == null)
-            $reg->status = 'init'; // TODO: 根据会议首选项确定status的初始值
+        $reg->enabled = true;
         $reg->gender = $request->gender;
         if (isset($request->committee)) $reg->committee_id = $request->committee;
         $regInfo = new \stdClass();
@@ -217,32 +213,32 @@ class UserController extends Controller
         $personal_info->province = $request->province; 
         $personal_info->school = $request->school; 
         $school = School::where('name', $request->school)->first();
-        if (isset($school)) $reg->school_id = $school->id;
+        if (!empty($school)) $reg->school_id = $school->id;
         $personal_info->yearGraduate = $request->yearGraduate; 
         $personal_info->typeDocument = $request->typeDocument; 
         $personal_info->sfz = $request->sfz;         
         $personal_info->tel = $request->tel; 
-        if (isset($request->tel2) && $request->tel2 != "")
+        if (!empty($request->tel2))
             $personal_info->tel2 = $request->tel2; 
-        if (isset($request->qq) && $request->qq != "")
+        if (!empty($request->qq))
             $personal_info->qq = $request->qq; 
-        if (isset($request->skype) && $request->skype != "")
+        if (!empty($request->skype))
             $personal_info->skype = $request->skype; 
-        if (isset($request->wechat) && $request->wechat != "")
+        if (!empty($request->wechat))
             $personal_info->wechat = $request->wechat;         
         $personal_info->parentname = $request->parentname; 
         $personal_info->parentrelation = $request->parentrelation; 
         $personal_info->parenttel = $request->parenttel;
         $regInfo->personinfo = $personal_info;
         if (isset($customTable->experience) && in_array($reg->type, $customTable->experience->uses))
-        {            
+        {
             $experience = new \stdClass();
             $experience->startYear = $request->startYear;
             $items = array();
             // TODO: 加载 MUNPANEL 收录会议的参会经历
             if (in_array($reg->type, $customTable->experience->custom))
             {
-                if (isset($request->level1) && isset($request->date1) && isset($request->name1) && isset($request->role1))
+                if (!(empty($request->level1) || empty($request->date1) || empty($request->name1) || empty($request->role1)))
                 {
                     $expitem = new \stdClass();
                     $expitem->level = $request->level1;
@@ -253,7 +249,7 @@ class UserController extends Controller
                     $expitem->others = $request->others1;
                     array_push($items, $expitem);
                 }
-                if (isset($request->level2) && isset($request->date2) && isset($request->name2) && isset($request->role2))
+                if (!(empty($request->level2) || empty($request->date2) || empty($request->name2) || empty($request->role2)))
                 {
                     $expitem = new \stdClass();
                     $expitem->level = $request->level2;
@@ -264,7 +260,7 @@ class UserController extends Controller
                     $expitem->others = $request->others2;
                     array_push($items, $expitem);
                 }
-                if (isset($request->level3) && isset($request->date3) && isset($request->name3) && isset($request->role3))
+                if (!(empty($request->level3) || empty($request->date3) || empty($request->name3) || empty($request->role3)))
                 {
                     $expitem = new \stdClass();
                     $expitem->level = $request->level3;
@@ -282,7 +278,7 @@ class UserController extends Controller
         $conf_info = new \stdClass();
         foreach ($customTable->conference->items as $item)
         {
-            if (isset($item->name) && isset($request->{$item->name}))
+            if (isset($item->name) && !empty($request->{$item->name}))
                 $conf_info->{$item->name} = $request->{$item->name};
             else
             {
@@ -300,6 +296,7 @@ class UserController extends Controller
         $regInfo->conference = $conf_info;
         $reg->reginfo = json_encode($regInfo);
         $reg->save();
+        $reg->make();
     }
 
     /**

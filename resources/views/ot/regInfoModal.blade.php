@@ -16,6 +16,11 @@ $regInfo = json_decode($reg->reginfo);
           <div class="modal-body">
             <div class="row">
               <div class="col-sm-12 b-r">
+                @if ($allRegs->count() > 1)
+                <p>{{$reg->user->name}}在本次会议中共包含以下{{ $allRegs->count() }}个身份。</p>
+                @else
+                <p>千反田える，您将以<strong>{{ $regType == 'delegate' ? '代表' : ($regType == 'observer' ? '观察员' : '志愿者') }}</strong>身份报名参加2017年环梦模拟联合国年度会议。</p>
+                @endif
                 <section class="panel text-sm">
                   <div class="panel-body">
                     <label>个人信息</label>
@@ -26,16 +31,16 @@ $regInfo = json_decode($reg->reginfo);
                     <p><i>学校及毕业年份</i><br>&emsp;&emsp;{{$regInfo->personinfo->school}} / {{$regInfo->personinfo->yearGraduate}}</p>
                     <p><i>证件类型及号码</i><br>&emsp;&emsp;{{typeID($regInfo->personinfo->typeDocument)}} / {{$regInfo->personinfo->sfz}} </p>
                     <p><i>电话</i><br>&emsp;&emsp;{{$regInfo->personinfo->tel}}</p>
-                    @if (isset($regInfo->personinfo->alt_phone))                
+                    @if (!empty($regInfo->personinfo->alt_phone))                
                     <p><i>备用电话</i><br>&emsp;&emsp;{{$regInfo->personinfo->alt_phone}}</p>
                     @endif
-                    @if (isset($regInfo->personinfo->qq)) 
+                    @if (!empty($regInfo->personinfo->qq)) 
                     <p><i>QQ</i><br>&emsp;&emsp;{{$regInfo->personinfo->qq}}</p>
                     @endif
-                    @if (isset($regInfo->personinfo->skype)) 
+                    @if (!empty($regInfo->personinfo->skype)) 
                     <p><i>Skype</i><br>&emsp;&emsp;{{$regInfo->personinfo->skype}}</p>
                     @endif
-                    @if (isset($regInfo->personinfo->wechat)) 
+                    @if (!empty($regInfo->personinfo->wechat)) 
                     <p><i>微信</i><br>&emsp;&emsp;{{$regInfo->personinfo->wechat}}</p>
                     @endif
                     <p><i>紧急联络人</i><br>&emsp;&emsp;{{$regInfo->personinfo->parentname}}</p>

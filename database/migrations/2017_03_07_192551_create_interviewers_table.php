@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateDaisInfoTable extends Migration
+class CreateInterviewersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,17 +13,14 @@ class CreateDaisInfoTable extends Migration
      */
     public function up()
     {
-        Schema::create('dais_info', function (Blueprint $table) {
+        Schema::create('interviewers', function (Blueprint $table) {
             $table->integer('reg_id')->unsigned();
-	        $table->integer('school_id')->unsigned();
-            $table->integer('committee_id')->unsigned();
-            //$table->enum('position', ['dh', 'dm', 'ad']);
-            $table->string('position');
-            $table->timestamps();
+            $table->integer('committee_id')->nullable()->unsigned();
             $table->primary('reg_id');
             $table->foreign('reg_id')->references('id')->on('regs')->onDelete('cascade');
-            $table->foreign('school_id')->references('id')->on('schools')->onDelete('cascade');
             $table->foreign('committee_id')->references('id')->on('committees')->onDelete('cascade');
+            $table->timestamps();
+$
         });
     }
 
@@ -34,6 +31,6 @@ class CreateDaisInfoTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('dais_info');
+        Schema::dropIfExists('interviewers');
     }
 }

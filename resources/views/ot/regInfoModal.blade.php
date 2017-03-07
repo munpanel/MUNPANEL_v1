@@ -108,7 +108,8 @@ $regInfo = json_decode($reg->reginfo);
           <div class="modal-body">
             <div class="row">
               <div class="col-sm-12 b-r">
-              面试
+              @foreach ($reg->interviews as $interview)
+              @endforeach
               </div>
             </div>
           </div>          

@@ -17,4 +17,9 @@ class Conference extends Model
     {
         return $this->hasMany('App\Form');
     }
+
+    public function options()
+    {
+        return $this->hasMany('App\Option');
+    }
 }

@@ -306,6 +306,7 @@ class UserController extends Controller
         $reg->save();
         $reg->make();
         $reg->addEvent('registration_submitted', '');
+        return redirect('/home');
     }
 
     /**
@@ -896,7 +897,8 @@ class UserController extends Controller
         $code = mt_rand(1000, 9999);
         $request->session()->flash('code', $code);
         if ($method == 'sms')
-            SmsController::send([$tel], '尊敬的'.$user->name.'，感谢您使用 MUNPANEL 系统。您的验证码为'.$code.'。【MUNPANEL】');
+            $user->sendSMS('感谢您使用 MUNPANEL 系统。您的验证码为'.$code.'。');
+        //SmsController::send([$tel], '尊敬的'.$user->name.'，感谢您使用 MUNPANEL 系统。您的验证码为'.$code.'。');
         else if ($method == 'call')
             SmsController::call($tel, $code);
         else

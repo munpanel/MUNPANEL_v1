@@ -24,16 +24,6 @@ $(document).ready(function() {
                 else 
                     jQuery.get('school/verify/' + id, cb);
             });
-            $(document).on('click','.details-modal', function(e) {
-                $('#ajaxModal').remove();
-                e.preventDefault();
-                var $this = $(this)
-                  , $remote = $this.data('remote') || $this.attr('href')
-                  , $modal = $('<div class="modal" id="ajaxModal"><div class="modal-body"></div></div>');
-                $('body').append($modal);
-                $modal.modal();
-                $modal.load($remote);
-            });
             $(document).on('hidden.bs.modal', '#ajaxModal', function() {
                 $('#registration-table').dataTable().fnReloadAjax(undefined, undefined, true);
             });

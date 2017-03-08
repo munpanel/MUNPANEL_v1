@@ -90,4 +90,12 @@ class User extends Authenticatable
     public function verify2FAkey($secret) {
         return Google2FA::verifyKey($this->google2fa_secret, $secret);
     }
+
+    public function sendSMS($message) {
+        if (mb_strlen($this->name) <= 5)
+            $name = '模联人';
+        else
+            $name = $this->name;
+        SmsController::send($this->tel, $name.'，'.$message);
+    }
 }

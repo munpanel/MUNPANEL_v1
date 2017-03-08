@@ -22,4 +22,9 @@ class Conference extends Model
     {
         return $this->hasMany('App\Option');
     }
+
+    public function option($key)
+    {
+        return $this->options()->where('key', $key)->first()->value;
+    }
 }

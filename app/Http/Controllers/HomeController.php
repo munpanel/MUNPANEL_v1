@@ -157,7 +157,7 @@ class HomeController extends Controller
      */ 
     public function reg2Modal($regType)
     {
-        $customTable = json_decode(Conference::findOrFail(2)->tableSettings)->regTable;
+        $customTable = json_decode(Reg::currentConference()->option('reg_tables'))->regTable; //todo: table id
         $confForm = FormController::render($customTable->conference->items, $regType, 'uses');
         return view('reg2Modal', ['regType' => $regType, 'customTable' => $customTable, 'confForm' => $confForm]);
     }

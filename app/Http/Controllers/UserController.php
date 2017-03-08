@@ -182,7 +182,7 @@ class UserController extends Controller
      */
     public function reg2(Request $request)
     {
-        $customTable = json_decode(Conference::findOrFail(2)->tableSettings)->regTable;
+        $customTable = json_decode(Reg::currentConference()->option('reg_tables'))->regTable; //todo: table id
         if (!Auth::check())
         {
             if (is_object(User::where('email', $request->email)->first()))

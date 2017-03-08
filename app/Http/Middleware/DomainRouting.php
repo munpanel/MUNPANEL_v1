@@ -18,8 +18,8 @@ class DomainRouting
         if (!isset($request->route()->action['domain']))
         {
             //To-Do: query for conference id and redirect invalid domains to portal
-            //config(['munpanel.conference_id' => $_SERVER['HTTP_HOST']]);
-            config(['munpanel.conference_id' => 2]);
+            if (is_null(config('munpanel.conference_id'))) //we may route all domains to one conference for debugging and developing.
+                config(['munpanel.conference_id' => $_SERVER['HTTP_HOST']]);
         }
         return $next($request);
     }

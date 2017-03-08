@@ -95,6 +95,16 @@ class Reg extends Model
         return session('reg_id');
     }
 
+    static public function currentConference()
+    {
+        return Conference::findOrFail(config('munpanel.conference_id'));
+    }
+
+    static public function currentConferenceID()
+    {
+        return config('munpanel.conference_id');
+    }
+
     public function addEvent($type, $content)
     {
         $event = new Event;

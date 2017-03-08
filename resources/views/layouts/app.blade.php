@@ -8,7 +8,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>MUNPANEL</title>
+    <title>{{Reg::currentConference()->name}} | MUNPANEL</title>
 
     <link rel="icon" href="{{secure_url('/images/favicon.ico')}}" type="image/x-icon" />
     <link rel="shortcut icon" href="{{secure_url('/images/favicon.ico')}}" type="image/x-icon" />
@@ -58,7 +58,7 @@
           <a class="btn btn-link visible-xs" data-toggle="class:nav-off-screen" data-target="#nav">
             <i class="fa fa-bars"></i>
           </a>
-          <a href="#" class="nav-brand" data-toggle="fullscreen">BJMUN</a>
+          <a href="#" class="nav-brand" data-toggle="fullscreen">{{Reg::currentConference()->shortname}}</a>
           <a class="btn btn-link visible-xs" data-toggle="class:show" data-target=".nav-user">
             <i class="fa fa-comment-o"></i>
           </a>
@@ -151,9 +151,9 @@
           </nav>
           <!-- / nav -->
           <!-- note -->
-          <div class="bg-danger wrapper hidden-vertical animated fadeInUp text-sm">
-              <a href="#" data-dismiss="alert" class="pull-right m-r-n-sm m-t-n-sm"><i class="fa fa-times"></i></a>
-              Hi, welcome to MUNPANEL,  isn't it awesome?
+          <div class="bg-primary wrapper hidden-vertical animated fadeInUp text-sm">
+              <!--a href="#" data-dismiss="alert" class="pull-right m-r-n-sm m-t-n-sm"><i class="fa fa-times"></i></a-->
+              Proudly Powered and Copyrighted by 2016-2017 Console iT.
           </div>
           <!-- / note -->
         </section>

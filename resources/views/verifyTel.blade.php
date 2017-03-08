@@ -56,7 +56,7 @@
   <!-- footer -->
   <footer id="footer">
     <div class="text-center padder clearfix">
-      <p><small>&copy; 2016-2017 MUNPANEL. All rights reserved.</small></p>
+      <p><small>&copy; {{config('munpanel.copyright_year')}} MUNPANEL. All rights reserved.</small></p>
     </div>
   </footer>
   <!-- / footer -->

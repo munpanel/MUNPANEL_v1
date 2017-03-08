@@ -124,7 +124,7 @@
               <section class="panel clearfix">
                 <div class="panel-body">
                   <div class="clear">
-                    Copyright 2017 {{Reg::currentConference()->shortname}}.<br>Proudly Powered by MUNPANEL.<br>
+                    Proudly Powered by MUNPANEL.<br>Copyright {{config('munpanel.copyright_year')}} Console iT.
                   </div>
                 </div>
               </section>

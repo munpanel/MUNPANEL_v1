@@ -153,7 +153,7 @@
           <!-- note -->
           <div class="bg-primary wrapper hidden-vertical animated fadeInUp text-sm">
               <!--a href="#" data-dismiss="alert" class="pull-right m-r-n-sm m-t-n-sm"><i class="fa fa-times"></i></a-->
-              Proudly Powered and Copyrighted by 2016-2017 Console iT.
+              Proudly Powered and Copyrighted by {{config('munpanel.copyright_year')}} Console iT.
           </div>
           <!-- / note -->
         </section>

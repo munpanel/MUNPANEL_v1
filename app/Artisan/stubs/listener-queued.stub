@@ -1,0 +1,42 @@
+<?php
+/**
+ * Copyright (C) Console iT
+ * This file is part of MUNPANEL System.
+ *
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ *
+ * Developed by Adam Yi <xuan@yiad.am>
+ */
+
+namespace DummyNamespace;
+
+use DummyFullEvent;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Contracts\Queue\ShouldQueue;
+
+class DummyClass implements ShouldQueue
+{
+    use InteractsWithQueue;
+
+    /**
+     * Create the event listener.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        //
+    }
+
+    /**
+     * Handle the event.
+     *
+     * @param  DummyEvent  $event
+     * @return void
+     */
+    public function handle(DummyEvent $event)
+    {
+        //
+    }
+}

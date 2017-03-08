@@ -1,5 +1,15 @@
 <?php
 /**
+ * Copyright (C) Console iT
+ * This file is part of MUNPANEL System.
+ *
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ *
+ * Developed by Adam Yi <xuan@yiad.am>
+ */
+
+/**
  * 时间格式化
  * @link http://php.net/manual/en/function.time.php
  * @param string $date 时间

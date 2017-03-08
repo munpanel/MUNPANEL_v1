@@ -1,5 +1,6 @@
 <?php
 // Teegon's Official API
+// @link https://github.com/shopex/teegon-charging-php-sdk/blob/master/lib/teegon.php
 // To-Do1: merge this with PayController
 // To-Do2: own payment API module
 namespace App\Http\Controllers;

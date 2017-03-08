@@ -944,6 +944,10 @@ class UserController extends Controller
      */
     public function doSwitchIdentity(Request $request)
     {
+        if ($request->reg == 'logout') {
+            Auth::logout();
+            return redirect('/login');
+        }
         $reg = Reg::findOrFail($request->reg);
         if ($reg->user_id != Auth::user()->id)
             return 'error';

@@ -91,7 +91,9 @@ class Reg extends Model
     }
 
     public function regText() {
-        return $this->specific()->regText();
+        if (is_object($this->specific()))
+            return $this->specific()->regText();
+        return '访客';
     }
 
     public function committee() {

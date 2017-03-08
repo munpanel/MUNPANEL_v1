@@ -704,6 +704,9 @@ class HomeController extends Controller
      */
     public function firstModal()
     {
+        if (!Reg::selectConfirmed()) {
+            return redirect(secure_url('/selectIdentityModal'));
+        }
         if (Reg::current()->type == 'unregistered') {
             return redirect(secure_url('/reg2.modal/select'));
         }

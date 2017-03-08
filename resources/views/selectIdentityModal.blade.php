@@ -8,12 +8,13 @@
        <div class="input-group input-m">
         <select name="reg" class="form-control m-b">
         @foreach(Auth::user()->regs as $reg)
-        <option value="{{$reg->id}}">{{$reg->regText()}}</option>
+        <option value="{{$reg->id}}" {{ $reg->id == Reg::current()->id ? 'selected' : '' }}>{{$reg->regText()}}</option>
         @endforeach
+        <option value="logout">注销用户</option>
         </select>
         <span class="input-group-btn">
           <button class="btn btn-success" type="submit"><i class="fa fa-arrow-right"></i></button>
-          <button class="btn btn-danger" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="fa fa-times"></i></button>
+          <!--button class="btn btn-danger" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="fa fa-times"></i></button-->
         </span>
        </div>
       </form>

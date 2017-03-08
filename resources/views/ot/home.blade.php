@@ -15,7 +15,7 @@
   </header>
   <section class="scrollable wrapper">
     <div class="row">
-        <div class="col-md-6 col-md-offset-2">
+        <div class="col-md-6 col-md-offset-3">
             <div class="panel panel-default">
                 <div class="panel-heading">会议报名情况<span class="pull-right">代表总数: {{$del}}</span>
 @if ($hasChildComm)

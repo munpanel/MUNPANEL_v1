@@ -81,7 +81,7 @@ $isExperience = isset($customTable->experience) && in_array($regType, $customTab
               </div>
               <div class="col-sm-8">
                 <label>&nbsp;</label>
-                <input id="text-sfz" name="sfz" class="form-control" type="text" data-required="true">
+                <input id="text-sfz" name="sfz" class="form-control" type="text" placeholder="中国大陆 18 位身份证号（末尾 X 大写）" data-required="true" pattern="^(\d{6})(\d{4})(\d{2})(\d{2})(\d{3})([0-9]|X)$">
               </div>
             </div>
             <div class="form-group">
@@ -392,20 +392,22 @@ $('#select-typeID').change(function(e){
     switch (document.getElementById("select-typeID").value)
     {
         case "1":
-            e1.setAttribute("data-parsley-pattern", "^(\\d{6})(\\d{4})(\\d{2})(\\d{2})(\\d{3})([0-9]|X)$");
+            e1.setAttribute("pattern", "^(\\d{6})(\\d{4})(\\d{2})(\\d{2})(\\d{3})([0-9]|X)$");
             e1.setAttribute("placeholder", "中国大陆 18 位身份证号 (末位 X 大写)");
             break;
         case "2":
-            e1.setAttribute("data-parsley-pattern", "^[A-Z0-9]{1,9}$");
+            e1.setAttribute("pattern", "^[A-Z0-9]{1,9}$");
             e1.setAttribute("placeholder", "不多于 9 位的数字和大写字母组合");
             break;
         case "3":
-            e1.setAttribute("data-parsley-pattern", "^(H|M)\\d{8}$");
+            e1.setAttribute("pattern", "^(H|M)\\d{8}$");
             e1.setAttribute("placeholder", "H 或 M 后接 8 位纯数字 (不含换证次数)");
             break;
         case "4":
-            e1.setAttribute("data-parsley-pattern", "^\\d{8}$");
+            e1.setAttribute("pattern", "^\\d{8}$");
             e1.setAttribute("placeholder", "8 位纯数字 (不含换证次数)");
     }
+    $("form").parsley('destroy');
+    $("form").parsley();
 });  
 </script>

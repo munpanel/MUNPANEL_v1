@@ -24,13 +24,11 @@ class Committee extends Model
     
     public function allDelegates()
     {
-        $result = new Collection;
-        if ($this->delegates->count() > 0)
-            $result->push($this->delegates);
+        $result = $this->delegates;
         foreach ($this->childCommittees as $cc)
         {
             if ($cc->delegates->count() > 0 || $cc->childCommittees->count() > 0)
-                $result->push($cc->allDelegates());
+                $result->merge($cc->allDelegates());
         }
         return $result;
     }

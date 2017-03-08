@@ -1,6 +1,7 @@
 @php
 $i = 0;
 $regInfo = json_decode($reg->reginfo);
+$isOtOrDais = in_array(Reg::current()->type, ['ot', 'dais']);
 @endphp
 <div class="modal-dialog">
       <div class="modal-content">
@@ -9,7 +10,9 @@ $regInfo = json_decode($reg->reginfo);
             <li class="active"><a href="#info" data-toggle="tab" aria-expanded="true">信息</a></li>
             <li class=""><a href="#events" data-toggle="tab" aria-expanded="false">事件</a></li>
             <li class=""><a href="#interview" data-toggle="tab" aria-expanded="false">面试</a></li>
+            @if ($isOtOrDais)
             <li class=""><a href="#operations" data-toggle="tab" aria-expanded="false">操作</a></li>
+            @endif
           </ul>
         </header>
       <div class="tab-content">
@@ -17,7 +20,7 @@ $regInfo = json_decode($reg->reginfo);
           <div class="modal-body">
             <div class="row">
               <div class="col-sm-12 b-r">
-              @if (in_array(Reg::current()->type, ['ot', 'dais'])
+              @if ($isOtOrDais)
                 @if ($allRegs->count() > 1)
                 <p>{{$reg->user->name}}在本次会议中共包含以下{{ $allRegs->count() }}个身份。</p>
                 @else
@@ -48,9 +51,7 @@ $regInfo = json_decode($reg->reginfo);
                     @if (!empty($regInfo->personinfo->wechat)) 
                     <p><i>微信</i><br>&emsp;&emsp;{{$regInfo->personinfo->wechat}}</p>
                     @endif
-                    <p><i>紧急联络人</i><br>&emsp;&emsp;{{$regInfo->personinfo->parentname}}</p>
-                    <p><i>与紧急联络人关系</i><br>&emsp;&emsp;{{$regInfo->personinfo->parentrelation}}</p>
-                    <p><i>紧急联络人电话</i><br>&emsp;&emsp;{{$regInfo->personinfo->parenttel}}</p>
+                    <p><i>紧急联络人</i><br>&emsp;&emsp;{{$regInfo->personinfo->parentname}} ({{$regInfo->personinfo->parentrelation}}, {{$regInfo->personinfo->parenttel}})</p>
                     @if (isset($regInfo->experience))
                     <label>参会经历</label>
                       @if (isset($regInfo->experience->startYear))
@@ -114,7 +115,7 @@ $regInfo = json_decode($reg->reginfo);
             <div class="row">
               <div class="col-sm-12 b-r">
               @if ($reg->interviews->count() == 0)
-                <p>该用户暂无任何面试。</p>
+                <p>暂无任何对{{$isOtOrDais ? '该用户' : '您'}}分配的面试。</p>
                 @else
 
               @foreach ($reg->interviews as $interview)
@@ -122,9 +123,9 @@ $regInfo = json_decode($reg->reginfo);
               @endif
               </div>
             </div>
-          </div>          
+          </div>
         </section>
-        @if (in_array(Reg::current()->type, ['ot', 'dais'])
+        @if ($isOtOrDais)
         <section class="tab-pane" id="operations">
           <div class="modal-body">
             <div class="row">

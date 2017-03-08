@@ -287,8 +287,6 @@ class HomeController extends Controller
      */
     public function regInfoModal($id)
     {
-        if (Reg::current()->type != 'ot')
-            return "Error";
         $reg = Reg::findOrFail($id);
         $allRegs = Reg::where('user_id', $reg->user_id)->get(['id', 'type']);
         return view('ot.regInfoModal', ['reg' => $reg, 'allRegs' => $allRegs]);

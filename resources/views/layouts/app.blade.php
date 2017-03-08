@@ -187,6 +187,9 @@
   <!-- Parsley -->
   <script src="{{secure_url('/js/parsley/parsley.min.js')}}"></script>
   <script src="{{secure_url('/js/parsley/parsley.extend.js')}}"></script>
+  @if ((!Auth::user()->verified()) || Reg::current()->type == 'unregistered')
+  <script src="{{secure_url('/js/reg.firsttime.js')}}"></script>
+  @endif
   @stack('scripts')
   @if (isset($notice_msg))
   <script>

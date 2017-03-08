@@ -12,16 +12,6 @@ $(document).ready(function() {
             {data: 'status', name: 'status', orderable: true}
         ],
         fnInitComplete: function(oSettings, json) {
-            $(document).on('click','.details-modal', function(e) {
-                $('#ajaxModal').remove();
-                e.preventDefault();
-                var $this = $(this)
-                  , $remote = $this.data('remote') || $this.attr('href')
-                  , $modal = $('<div class="modal" id="ajaxModal"><div class="modal-body"></div></div>');
-                $('body').append($modal);
-                $modal.modal();
-                $modal.load($remote);
-            });
             $(document).on('change', '.status-options', function() {
                 var father = $(this).parent();
                 jQuery.get('ot/verify/' + father.attr('uid') + '/' + $(this).val());

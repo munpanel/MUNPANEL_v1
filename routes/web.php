@@ -35,6 +35,7 @@ Route::group(['domain' => 'dev.yiad.am'], function () {
     Route::get('/verifyTel.modal/{method}/{tel}', 'UserController@verifyTelModal');
     Route::post('/verifyTel', 'UserController@doVerifyTel');
     Route::get('/verifyEmail/resend', 'UserController@resendRegMail');
+    Route::get('/reg.first.modal', 'HomeController@firstModal');
 
     Route::get('/home', 'HomeController@index');
     Route::get('/changePwd.modal', 'HomeController@changePwd');

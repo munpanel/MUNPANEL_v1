@@ -11,16 +11,6 @@ $(document).ready(function() {
             {data: 'statistics', name: 'statistics', orderable: false}
         ],
         fnInitComplete: function(oSettings, json) {
-            $(document).on('click','.details-modal', function(e) {
-                $('#ajaxModal').remove();
-                e.preventDefault();
-                var $this = $(this)
-                  , $remote = $this.data('remote') || $this.attr('href')
-                  , $modal = $('<div class="modal" id="ajaxModal"><div class="modal-body"></div></div>');
-                $('body').append($modal);
-                $modal.modal();
-                $modal.load($remote);
-            });
             $(document).on('hidden.bs.modal', '#ajaxModal', function() {
                 $('#school-table').dataTable().fnReloadAjax(undefined, undefined, true);
             });

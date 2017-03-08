@@ -37,4 +37,8 @@ class Dais extends Model
     {
         return $this->belongsTo('App\School');
     }
+
+    public function regText() {
+        return '学术团队（'.$this->position.'）';
+    }
 }

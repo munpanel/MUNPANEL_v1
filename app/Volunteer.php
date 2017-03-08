@@ -30,4 +30,8 @@ class Volunteer extends Model
     public function conference() {
         return $this->belongsTo('App\Conference');
     }
+
+    public function regText() {
+        return '志愿者';
+    }
 }

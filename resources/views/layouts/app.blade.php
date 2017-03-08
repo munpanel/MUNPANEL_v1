@@ -153,12 +153,12 @@
           <!-- note -->
           <div class="bg-primary wrapper hidden-vertical animated fadeInUp text-sm">
               <!--a href="#" data-dismiss="alert" class="pull-right m-r-n-sm m-t-n-sm"><i class="fa fa-times"></i></a-->
-              Proudly Powered and Copyrighted by 2016-2017 Console iT.
+              Proudly Powered and Copyrighted by {{config('munpanel.copyright_year')}} Console iT.
           </div>
           <!-- / note -->
         </section>
         <footer class="footer bg-gradient hidden-xs">
-          <a href="modal.lockme.html" data-toggle="ajaxModal" class="btn btn-sm btn-link m-r-n-xs pull-right">
+          <a href="{{secure_url('/selectIdentityModal')}}" data-toggle="ajaxModal" class="btn btn-sm btn-link m-r-n-xs pull-right">
             <i class="fa fa-power-off"></i>
           </a>
           <a href="#nav" data-toggle="class:nav-vertical" class="btn btn-sm btn-link m-l-n-sm">
@@ -187,7 +187,7 @@
   <!-- Parsley -->
   <script src="{{secure_url('/js/parsley/parsley.min.js')}}"></script>
   <script src="{{secure_url('/js/parsley/parsley.extend.js')}}"></script>
-  @if ((!Auth::user()->verified()) || Reg::current()->type == 'unregistered')
+  @if ((!Auth::user()->verified()) || Reg::current()->type == 'unregistered' || (!Reg::selectConfirmed()))
   <script src="{{secure_url('/js/reg.firsttime.js')}}"></script>
   @endif
   @stack('scripts')

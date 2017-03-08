@@ -72,7 +72,7 @@
 
         </div>
     </div>
-    <center>Copyright 2016 MUNPANEL, a Product of Console iT<br>Developed by Adam Yi</center>
+    <center>Copyright {{config('munpanel.copyright_year')}} MUNPANEL, a Product of Console iT<br>Developed by Adam Yi</center>
 </section>
 
 <script id="chat_message_template" type="text/template">

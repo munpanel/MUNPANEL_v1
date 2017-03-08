@@ -64,6 +64,10 @@ class Delegate extends Model
         return $this->belongsTo('App\Reg', 'partner_reg_id');
     }
 
+    public function regText() {
+        return '代表（'.$this->committee->name.'）';
+    }
+
     public function assignments() {
         $result = new Collection;
         if (isset($this->nation))

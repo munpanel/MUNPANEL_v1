@@ -98,4 +98,12 @@ class User extends Authenticatable
             $name = $this->name;
         SmsController::send($this->tel, $name.'，'.$message);
     }
+
+    public function verified() {
+        if ($this->emailVerificationToken != 'success')
+            return false;
+        if ($this->telVerifications != -1) //3/2/1: tries left; -1: activated
+            return false;
+        return true;
+    }
 }

@@ -675,7 +675,7 @@ class HomeController extends Controller
     public function verifyEmail()
     {
         if (Auth::user()->emailVerificationToken == 'success')
-            return redirect('/home');
+            return redirect('/verifyTel');
         return view('verifyEmail');
     }
 
@@ -689,6 +689,17 @@ class HomeController extends Controller
         if (Auth::user()->telVerifications == -1) //3/2/1: tries left; -1: activated
             return redirect(secure_url('/home'));
         return view('verifyTel');
+    }
+
+    /**
+     *
+     */
+    public function firstModal()
+    {
+        if (Reg::current()->type == 'unregistered') {
+            return redirect(secure_url('/reg2.modal/select'));
+        }
+        return view('verificationModal');
     }
 
 }

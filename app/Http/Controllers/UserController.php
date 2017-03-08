@@ -871,7 +871,7 @@ class UserController extends Controller
         {
             $user->emailVerificationToken = 'success';
             $user->save();
-            return redirect('/home');
+            return redirect('/verifyTel');
         }
         return 'Token mismatch!';
     }

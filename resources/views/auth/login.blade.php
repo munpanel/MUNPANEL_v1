@@ -58,7 +58,7 @@
             <button type="submit" class="btn btn-info">登陆</button>
 <div class="line line-dashed"></div>
             <p class="text-muted text-center"><small>没有账号?</small></p>
-            <a href="{{ secure_url('/register') }}" class="btn btn-white btn-block">新建帐号（限成员校）</a>
+            <a href="{{ secure_url('/register') }}" class="btn btn-white btn-block">新建帐号并报名会议</a>
           </form>
         </section>
       </div>

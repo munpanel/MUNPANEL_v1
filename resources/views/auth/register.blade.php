@@ -62,11 +62,11 @@
               <label class="control-label">Grade</label>
               <input type="text" placeholder="高一" class="form-control" data-required="true">
             </div-->
-            <div class="checkbox">
+            <!--div class="checkbox">
               <label>
                 <input type="checkbox" name="check" data-required="true"> 我就读于成员校</a>
               </label>
-            </div>
+            </div-->
             <button type="submit" class="btn btn-info">注册</button>
             <div class="line line-dashed"></div>
             <p class="text-muted text-center"><small>已有账号?</small></p>
@@ -80,7 +80,7 @@
   <footer id="footer">
     <div class="text-center padder clearfix">
       <p>
-        <small>&copy; 2016 MUNPANEL. All rights reserved.</small>
+        <small>&copy; 2016-2017 MUNPANEL. All rights reserved.</small>
       </p>
     </div>
   </footer>

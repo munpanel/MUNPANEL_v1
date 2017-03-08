@@ -92,8 +92,8 @@ Date.now = Date.now || function() { return +new Date; };
     });
 
     // ajax modal
-    $('[data-toggle="ajaxModal"]').on('click',
-      function(e) {
+    $(document).on('click','[data-toggle="ajaxModal"]', function(e) {
+        $('#ajaxModal').modal('hide');
         $('#ajaxModal').remove();
         e.preventDefault();
         var $this = $(this)
@@ -102,8 +102,8 @@ Date.now = Date.now || function() { return +new Date; };
         $('body').append($modal);
         $modal.modal();
         $modal.load($remote);
-      }
-    );
+    });
+
     // dropdown menu
     $.fn.dropdown.Constructor.prototype.change = function(e){
       e.preventDefault();

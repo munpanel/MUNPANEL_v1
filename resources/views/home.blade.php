@@ -109,9 +109,7 @@
                               <div class="progress-bar progress-bar-warning" data-toggle="tooltip" data-original-title="{{ $percent }}%" style="width: {{ $percent }}%"></div>
                             </div>
                               <div class="text-sm">点击下方按钮进入报名表单：</div>
-                              <a href="{{ secure_url('/reg2.modal/delegate') }}" data-toggle="ajaxModal" class="btn btn-danger">报名(代表)</a>
-                              <a href="{{ secure_url('/reg2.modal/observer') }}" data-toggle="ajaxModal" class="btn btn-danger">报名(观察员)</a>
-                              <a href="{{ secure_url('/reg2.modal/volunteer') }}" data-toggle="ajaxModal" class="btn btn-danger">报名(志愿者)</a>
+                              <a href="{{ secure_url('/reg2.modal/select') }}" data-toggle="ajaxModal" class="btn btn-danger">报名</a>
                           </div>
                         </div>
                         <div class="col-xs-6 wrapper text-center">

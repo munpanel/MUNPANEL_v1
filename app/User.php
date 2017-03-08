@@ -92,11 +92,11 @@ class User extends Authenticatable
     }
 
     public function sendSMS($message) {
-        if (mb_strlen($this->name) <= 5)
+        if (mb_strlen($this->name) > 5)
             $name = '模联人';
         else
             $name = $this->name;
-        SmsController::send($this->tel, $name.'，'.$message);
+        \App\Http\Controllers\SmsController::send([$this->tel], '尊敬的'.$name.'，'.$message);
     }
 
     public function verified() {

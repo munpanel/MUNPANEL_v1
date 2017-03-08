@@ -44,16 +44,19 @@ class CheckVerification
             $cid = config('munpanel.conference_id');
             if (isset($cid)) //portal pages otherwise, will use Auth::user() instead
             {
-                $regid = $request->session()->get('reg_id');
-                if (!isset($regid) || Reg::find($regid)->conference_id != $cid)
+                $regid = $request->session()->get('regIdforConference'.$cid);
+                if (!isset($regid) || Reg::find($regid)->conference_id != $cid || Reg::find($regid)->user_id != $request->user()->id)
                 {
                     $regs = $user->regs()->where('conference_id', $cid)->get();
                     if ($regs->count() == 0)
+                    {
                         $reg = Reg::create(['conference_id' => $cid, 'user_id' => $user->id, 'type' => 'unregistered', 'enabled' => true]);
+                        $reg->login(true);
+                    }
+                    else if ($regs->count() == 1)
+                        $regs[0]->login(true);
                     else
-                        $reg = $regs[0];
-                    //To-Do: let user select one reg
-                    $request->session()->put('reg_id', $reg->id);
+                        $regs[0]->login(false);
                 }
             }
 

@@ -51,7 +51,7 @@ class HomeController extends Controller
     public function index()
     {
         $activep['home'] = true;
-        $reg = Reg::findOrFail(session('reg_id'));
+        $reg = Reg::current();
         $type = $reg->type;
         if ($type == 'ot')
         {
@@ -708,6 +708,14 @@ class HomeController extends Controller
             return redirect(secure_url('/reg2.modal/select'));
         }
         return view('verificationModal');
+    }
+
+    /**
+     *
+     */
+    public function selectIdentityModal()
+    {
+        return view('selectIdentityModal');
     }
 
 }

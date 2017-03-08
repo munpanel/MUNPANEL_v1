@@ -30,4 +30,8 @@ class Observer extends Model
     public function school() {
         return $this->belongsTo('App\School');
     }
+
+    public function regText() {
+        return '观察员';
+    }
 }

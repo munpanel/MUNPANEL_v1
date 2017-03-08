@@ -16,4 +16,8 @@ use Illuminate\Database\Eloquent\Model;
 class Interviewer extends Model
 {
     protected $guarded = [];
+
+    public function regText() {
+        return '面试官';
+    }
 }

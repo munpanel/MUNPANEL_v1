@@ -938,4 +938,16 @@ class UserController extends Controller
         $user->sendVerificationEmail();
         return redirect('/verifyEmail');
     }
+
+    /**
+     *
+     */
+    public function doSwitchIdentity(Request $request)
+    {
+        $reg = Reg::findOrFail($request->reg);
+        if ($reg->user_id != Auth::user()->id)
+            return 'error';
+        $reg->login(true);
+        return redirect('/home');
+    }
 }

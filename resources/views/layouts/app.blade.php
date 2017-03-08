@@ -158,7 +158,7 @@
           <!-- / note -->
         </section>
         <footer class="footer bg-gradient hidden-xs">
-          <a href="modal.lockme.html" data-toggle="ajaxModal" class="btn btn-sm btn-link m-r-n-xs pull-right">
+          <a href="{{secure_url('/selectIdentityModal')}}" data-toggle="ajaxModal" class="btn btn-sm btn-link m-r-n-xs pull-right">
             <i class="fa fa-power-off"></i>
           </a>
           <a href="#nav" data-toggle="class:nav-vertical" class="btn btn-sm btn-link m-l-n-sm">

@@ -32,4 +32,8 @@ class Orgteam extends Model
     {
         return $this->belongsTo('App\School');
     }
+
+    public function regText() {
+        return '组织团队（'.$this->position.'）';
+    }
 }

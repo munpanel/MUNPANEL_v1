@@ -90,18 +90,22 @@ class Reg extends Model
         return $this->user->name;
     }
 
+    public function regText() {
+        return $this->specific()->regText();
+    }
+
     public function committee() {
         return $this->specific()->belongsTo('App\Committee');
     }
 
     static public function current()
     {
-        return Reg::findOrFail(session('reg_id'));
+        return Reg::findOrFail(Reg::currentID());
     }
 
     static public function currentID()
     {
-        return session('reg_id');
+        return session('regIdforConference'.Reg::currentConferenceID());
     }
 
     static public function currentConference()
@@ -112,6 +116,18 @@ class Reg extends Model
     static public function currentConferenceID()
     {
         return config('munpanel.conference_id');
+    }
+
+    static public function selectConfirmed()
+    {
+        return session('regIdforConference'.Reg::currentConferenceID().'confirm');
+    }
+
+    public function login($confirm)
+    {
+        $sessionName = 'regIdforConference'.Reg::currentConferenceID();
+        session([$sessionName => $this->id]);
+        session([$sessionName.'confirm' => $confirm]);
     }
 
     public function addEvent($type, $content)

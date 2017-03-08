@@ -109,7 +109,11 @@
                               <div class="progress-bar progress-bar-warning" data-toggle="tooltip" data-original-title="{{ $percent }}%" style="width: {{ $percent }}%"></div>
                             </div>
                               <div class="text-sm">点击下方按钮进入报名表单：</div>
+                              @if (Reg::current() == 'unregistered')
                               <a href="{{ secure_url('/reg2.modal/select') }}" data-toggle="ajaxModal" class="btn btn-danger">报名</a>
+                              @else
+                              <a href="{{ secure_url('/ot/regInfo.modal/'.Reg::currentID()) }}" data-toggle="ajaxModal" class="btn btn-danger">查看我的报名</a>                              
+                              @endif
                           </div>
                         </div>
                         <div class="col-xs-6 wrapper text-center">

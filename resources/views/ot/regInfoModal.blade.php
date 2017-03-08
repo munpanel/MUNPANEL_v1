@@ -17,11 +17,15 @@ $regInfo = json_decode($reg->reginfo);
           <div class="modal-body">
             <div class="row">
               <div class="col-sm-12 b-r">
+              @if (in_array(Reg::current()->type, ['ot', 'dais'])
                 @if ($allRegs->count() > 1)
                 <p>{{$reg->user->name}}在本次会议中共包含以下{{ $allRegs->count() }}个身份。</p>
                 @else
                 <p>{{$reg->user->name}}以<strong>{{ $reg->type == 'delegate' ? '代表' : ($reg->type == 'observer' ? '观察员' : '志愿者') }}</strong>身份报名参加本次会议。</p>
                 @endif
+              @else
+                <p>{{$reg->user->name}}，您已以<strong>{{ $reg->type == 'delegate' ? '代表' : ($reg->type == 'observer' ? '观察员' : '志愿者') }}</strong>身份报名参加{{Reg::currentConference()->fullname}}。</p>
+              @endif
                 <section class="panel text-sm">
                   <div class="panel-body">
                     <label>个人信息</label>
@@ -120,6 +124,7 @@ $regInfo = json_decode($reg->reginfo);
             </div>
           </div>          
         </section>
+        @if (in_array(Reg::current()->type, ['ot', 'dais'])
         <section class="tab-pane" id="operations">
           <div class="modal-body">
             <div class="row">
@@ -171,6 +176,7 @@ $regInfo = json_decode($reg->reginfo);
             </div>
           </div>          
         </section>
+        @endif
         </div>
       </div><!-- /.modal-content -->
 </div>

@@ -32,7 +32,7 @@
           </ul>
         </div>
         <div class="step-content clearfix">
-          <form class="m-b-sm">
+          <form class="m-b-sm" data-parsley-validate>
             <div class="step-pane active" id="step1">
               <input name="_token" type="hidden" value="4SESNPfyxuMeUqCNiHIATR7nb7THQKV1AWyyLseg">
               <div class="form-group">
@@ -75,7 +75,7 @@
               <div class="form-group pull-in clearfix">
                 <div class="col-sm-4">
                 <label>证件类型及号码</label>
-                 <select name="typeDocument" class="form-control" data-required="true">
+                 <select id="select-typeID" name="typeDocument" class="form-control" data-required="true">
                    <option value="1" selected="">居民身份证</option>
                    <option value="2">护照 (Passport)</option>
                    <option value="3">港澳回乡证</option>
@@ -84,7 +84,7 @@
                 </div>
                 <div class="col-sm-8">
                   <label>&nbsp;</label>
-                  <input name="sfz" class="form-control" type="text" value="" data-required="true">
+                  <input id="text-sfz" name="sfz" class="form-control" type="text" value="" placeholder="中国大陆 18 位身份证号（末尾 X 大写）" data-required="true" data-parsley-pattern="^(\d{6})(\d{4})(\d{2})(\d{2})(\d{3})([0-9]|X)$" required>
                 </div>
               </div>
               <div class="form-group">
@@ -462,4 +462,27 @@
   <script src="js/datepicker/bootstrap-datepicker.js"></script>
   <script src="js/parsley/parsley.min.js"></script>
   <script src="js/parsley/parsley.extend.js"></script>
+  <script>
+$('#select-typeID').change(function(e){
+    var e1 = document.getElementById("text-sfz");
+    switch (document.getElementById("select-typeID").value)
+    {
+        case "1":
+            e1.setAttribute("data-parsley-pattern", "^(\\d{6})(\\d{4})(\\d{2})(\\d{2})(\\d{3})([0-9]|X)$");
+            e1.setAttribute("placeholder", "中国大陆 18 位身份证号 (末位 X 大写)");
+            break;
+        case "2":
+            e1.setAttribute("data-parsley-pattern", "^[A-Z0-9]{1,9}$");
+            e1.setAttribute("placeholder", "不多于 9 位的数字和大写字母组合");
+            break;
+        case "3":
+            e1.setAttribute("data-parsley-pattern", "^(H|M)\\d{8}$");
+            e1.setAttribute("placeholder", "H 或 M 后接 8 位纯数字 (不含换证次数)");
+            break;
+        case "4":
+            e1.setAttribute("data-parsley-pattern", "^\\d{8}$");
+            e1.setAttribute("placeholder", "8 位纯数字 (不含换证次数)");
+    }
+});  
+  </script>
 </body>

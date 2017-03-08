@@ -37,15 +37,21 @@ class FormController extends Controller
                 {
                 // 自定义的表单项
                     case 'select': $html .= '
-                      <select name="'.$item->name.'" class="form-control m-b">
+                      <select name="'.$item->name.'" class="form-control m-b"';
+                       if (!empty($item->data_required)) $html .= ' data-required="true"';
+                    $html .= '>
                         <option value="" selected="">请选择</option>';
                         foreach ($item->options as $option)
                           $html .= '<option value="'.$option->value.'">'.$option->text.'</option>';
                     $html .= '</select> ';
                     break;
-                    case 'checkbox': $html .= '<br><input name="'.$item->name.'" type="checkbox">'.$item->text;
+                    case 'checkbox': $html .= '<br><input name="'.$item->name.'" type="checkbox"';
+                        if (!empty($item->data_required)) $html .= ' data-required="true"';
+                        $html .= '>'.$item->text;
                     break;
-                    case 'text': $html .= '<input name="'.$item->name.'" class="form-control m-b" type="text" value="">';
+                    case 'text': $html .= '<input name="'.$item->name.'" class="form-control m-b" type="text" value=""';
+                        if (!empty($item->data_required)) $html .= ' data-required="true"';
+                        $html .= '>';
                     break;
                       // 预设的表单项
                     case 'preGroupOptions': $html .='

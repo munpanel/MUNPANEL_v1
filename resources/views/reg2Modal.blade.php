@@ -26,7 +26,7 @@ $isExperience = isset($customTable->experience) && in_array($regType, $customTab
             <input type="hidden" name="conference_id" value="{{Reg::current()->conference_id}}">
             <input type="hidden" name="type" value="{{ $regType }}">
             <div class="form-group">
-              <label>姓名</label>
+              <label>姓名 *</label>
               @if (Auth::check())
               <input type="hidden" name="user_id" value="{{ Auth::id() }}">
               <input name="name" disabled="" class="form-control" type="text" value="{{ Auth::user()->name }}" data-required="true" data-trigger="change">
@@ -36,7 +36,7 @@ $isExperience = isset($customTable->experience) && in_array($regType, $customTab
               @endif
             </div>
             <div class="form-group">
-              <label>邮箱</label>
+              <label>邮箱 *</label>
               @if (Auth::check())
               <input name="email" disabled="" class="form-control" type="text" value="{{ Auth::user()->email }}" data-type="email" data-required="true" data-trigger="change">
               <span class="help-block m-b-none">如需编辑请退出登录或联系客服</span>
@@ -45,34 +45,34 @@ $isExperience = isset($customTable->experience) && in_array($regType, $customTab
               @endif
             </div>
             <div class="form-group form-inline">
-              <label>性别</label>
+              <label>性别 *</label>
               <div class="btn-group" data-toggle="buttons">
                 <label class="btn btn-sm btn-info">
                   <input name="gender" id="male" type="radio" value="male"> <i class="fa fa-check text-active"></i>男
                 </label>
                 <label class="btn btn-sm btn-success active">
-                  <input name="gender" id="female" type="radio" value="female"> <i class="fa fa-check text-active"></i>女
+                  <input name="gender" id="female" type="radio" value="female" selected=""> <i class="fa fa-check text-active"></i>女
                 </label>
               </div>
-              <label>　出生日期</label>
+              <label>　出生日期 *</label>
               <input name="dateofbirth" class="datepicker-input form-control input" type="text" size="16" placeholder="yyyy-mm-dd" data-date-format="yyyy-mm-dd" data-required="true">
-              <label>　省份</label>
+              <label>　省份 *</label>
               {!!provinceSelect()!!}
             </div>
             <div class="form-group pull-in clearfix">
               <div class="col-sm-9">
-              <label>学校</label>
+              <label>学校 *</label>
                 <input name="school" class="form-control" type="text" data-required="true">
               </div>
               <div class="col-sm-3">
-                <label>毕业年份</label>
+                <label>毕业年份 *</label>
                 <input name="yearGraduate" class="form-control" type="text" data-required="true">
               </div>
             </div>
             <div class="form-group pull-in clearfix">
               <div class="col-sm-4">
-              <label>证件类型及号码</label>
-               <select name="typeDocument" class="form-control" data-required="true">
+              <label>证件类型及号码 *</label>
+               <select id="select-typeID" name="typeDocument" class="form-control" data-required="true">
                  <option value="1" selected="">居民身份证</option>
                  <option value="2">护照 (Passport)</option>
                  <option value="3">港澳回乡证</option>
@@ -81,49 +81,49 @@ $isExperience = isset($customTable->experience) && in_array($regType, $customTab
               </div>
               <div class="col-sm-8">
                 <label>&nbsp;</label>
-                <input name="sfz" class="form-control" type="text" data-required="true">
+                <input id="text-sfz" name="sfz" class="form-control" type="text" data-required="true">
               </div>
             </div>
             <div class="form-group">
-              <label>电话</label>
+              <label>电话 *</label>
               <input name="tel" class="form-control" type="text" data-required="true">
             </div>
             @if (isset($customTable->info->contact->alt_phone))
             <div class="form-group">
-              <label>备用电话</label>
+              <label>备用电话{{$customTable->info->contact->alt_phone == 'mandatory' ? ' *' : ''}}</label>
               <input name="tel2" class="form-control" type="text" placeholder="选填；如果您的主电话号码无法使用，我们将通过备用电话联系您" {{$customTable->info->contact->alt_phone == 'mandatory' ? 'data-required="true"' : ''}}>
             </div>
             @endif
             @if (isset($customTable->info->contact->qq))
             <div class="form-group">
-              <label>QQ</label>
+              <label>QQ{{$customTable->info->contact->qq == 'mandatory' ? ' *' : ''}}</label>
               <input name="qq" class="form-control" type="text" {{$customTable->info->contact->qq == 'mandatory' ? 'data-required="true"' : ''}}>
             </div>
             @endif
             @if (isset($customTable->info->contact->skype))
             <div class="form-group">
-              <label>Skype</label>
+              <label>Skype{{$customTable->info->contact->skype == 'mandatory' ? ' *' : ''}}</label>
               <input name="skype" class="form-control" type="text" {{$customTable->info->contact->skype == 'mandatory' ? 'data-required="true"' : ''}}>
             </div>
             @endif
             @if (isset($customTable->info->contact->wechat))
             <div class="form-group">
-              <label>微信</label>
+              <label>微信{{$customTable->info->contact->wechat == 'mandatory' ? ' *' : ''}}</label>
               <input name="wechat" class="form-control" type="text" {{$customTable->info->contact->wechat == 'mandatory' ? 'data-required="true"' : ''}}>
             </div>
             @endif
             <div class="form-group pull-in clearfix">
               <div class="col-sm-6">
-              <label>紧急联络人</label>
+              <label>紧急联络人 *</label>
                 <input name="parentname" class="form-control" type="text" data-required="true">
               </div>
               <div class="col-sm-6">
-                <label>与紧急联络人关系</label>
+                <label>与紧急联络人关系 *</label>
                 <input name="parentrelation" class="form-control" type="text" data-required="true">
               </div>
             </div>
             <div class="form-group">
-              <label>紧急联络人电话</label>
+              <label>紧急联络人电话 *</label>
               <input name="parenttel" class="form-control" type="text" data-required="true">
             </div>
           </div>
@@ -131,7 +131,7 @@ $isExperience = isset($customTable->experience) && in_array($regType, $customTab
           <div class="step-pane" id="step2">
             @if (in_array($regType, $customTable->experience->startYear))
             <div class="form-group">
-              <label>首次参加模拟联合国活动的年份</label>
+              <label>首次参加模拟联合国活动的年份 *</label>
               <input name="startYear" class="form-control" type="text" placeholder="您在哪一年第一次参会呢？请回答 4 位数年份" data-required="true">
             </div>
             @endif
@@ -167,7 +167,7 @@ $isExperience = isset($customTable->experience) && in_array($regType, $customTab
               <label>请添加未在 MUNPANEL 收录的参会经历 (最多 3 项)</label>
               <div class="form-group pull-in clearfix">
                 <div class="col-sm-6">
-                 <select name="level1" class="form-control" data-required="true">
+                 <select name="level1" class="form-control">
                    <option value="" selected="">请选择会议级别</option>
                    <option value="1">全国及以上级别会议</option>
                    <option value="2">地区级会议</option>
@@ -176,15 +176,15 @@ $isExperience = isset($customTable->experience) && in_array($regType, $customTab
                  </select>
                 </div>
                 <div class="col-sm-6">
-                  <input name="date1" class="form-control" type="text" placeholder="会议的举办时间 (例：2017年2月)" data-required="true">
+                  <input name="date1" class="form-control" type="text" placeholder="会议的举办时间 (例：2017年2月)">
                 </div>
               </div>
               <div class="form-group">
-                <input name="name1" class="form-control" type="text" placeholder="会议名称" data-required="true">
+                <input name="name1" class="form-control" type="text" placeholder="会议名称">
               </div>
               <div class="form-group pull-in clearfix">
                 <div class="col-sm-6">
-                  <input name="role1" class="form-control" type="text" placeholder="您的角色" data-required="true">
+                  <input name="role1" class="form-control" type="text" placeholder="您的角色">
                 </div>
                 <div class="col-sm-6">
                   <input name="award1" class="form-control" type="text" placeholder="所获奖项 (如果有)">
@@ -387,4 +387,25 @@ $('#delform').submit(function(e){
         });
     }
 });
+$('#select-typeID').change(function(e){
+    var e1 = document.getElementById("text-sfz");
+    switch (document.getElementById("select-typeID").value)
+    {
+        case "1":
+            e1.setAttribute("data-parsley-pattern", "^(\\d{6})(\\d{4})(\\d{2})(\\d{2})(\\d{3})([0-9]|X)$");
+            e1.setAttribute("placeholder", "中国大陆 18 位身份证号 (末位 X 大写)");
+            break;
+        case "2":
+            e1.setAttribute("data-parsley-pattern", "^[A-Z0-9]{1,9}$");
+            e1.setAttribute("placeholder", "不多于 9 位的数字和大写字母组合");
+            break;
+        case "3":
+            e1.setAttribute("data-parsley-pattern", "^(H|M)\\d{8}$");
+            e1.setAttribute("placeholder", "H 或 M 后接 8 位纯数字 (不含换证次数)");
+            break;
+        case "4":
+            e1.setAttribute("data-parsley-pattern", "^\\d{8}$");
+            e1.setAttribute("placeholder", "8 位纯数字 (不含换证次数)");
+    }
+});  
 </script>

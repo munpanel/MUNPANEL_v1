@@ -21,6 +21,21 @@ class Conference extends Model
     {
         return $this->hasMany('App\Committee');
     }
+    
+    public function delegates() 
+    {
+        return $this->hasMany('App\Delegate');
+    }
+    
+    public function volunteers() 
+    {
+        return $this->hasMany('App\Volunteer');
+    }
+
+    public function observers() 
+    {
+        return $this->hasMany('App\Observer');
+    }
 
     public function forms()
     {

@@ -32,6 +32,7 @@ class CreateCommitteesTable extends Migration
             $table->enum('topic_sel', ['Topic0', 'Topic1', 'Unchosen']);
             $table->enum('language', ['ChineseS', 'English']);
             $table->string('rule');
+            $table->integer('capacity')->unsigned();
             $table->integer('father_committee_id')->unsigned()->nullable();
             $table->integer('option_limit')->unsigned()->default(99);
 			//时间节点默认取会议起止日

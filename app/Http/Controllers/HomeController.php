@@ -55,7 +55,7 @@ class HomeController extends Controller
         $type = $reg->type;
         if ($type == 'ot')
         {
-            return view('ot.home', ['committees' => Committee::all(), 'vol' =>Volunteer::count()]);
+            return view('ot.home', ['committees' => Reg::currentConference->committees, 'vol' => Reg::currentConference->volunteers->count(), 'obs' => Reg::currentConference->observers->count(), 'del' => Reg::currentConference->delegates->count()]);
         }
         else if ($type == 'school')
         {

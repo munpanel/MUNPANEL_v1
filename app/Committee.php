@@ -12,13 +12,25 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 
 class Committee extends Model
 {
-    protected $fillable = ['conference_id', 'name', 'display_name', 'topic_0', 'topic_1', 'topic_sel', 'language', 'rule', 'father_committee_id', 'timeframe_start', 'timeframe_end', 'session', 'description', 'is_allocated'];
+    protected $fillable = ['conference_id', 'name', 'display_name', 'topic_0', 'topic_1', 'topic_sel', 'language', 'rule', 'capacity', 'father_committee_id', 'timeframe_start', 'timeframe_end', 'session', 'description', 'is_allocated'];
 
     public function delegates() {
         return $this->hasMany('App\Delegate');
+    }
+    
+    public function allDelegates()
+    {
+        $result = new Collection;
+        $result->push($this->delegates);
+        foreach ($this->childCommittees as $cc)
+        {
+            $result->push($this->allDelegates())
+        }
+        return $result;
     }
 
     public function nations() {

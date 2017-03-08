@@ -4,6 +4,9 @@
     <script src="{{secure_url('js/charts/easypiechart/jquery.easy-pie-chart.js')}}"></script>
     <script src="{{secure_url('/js/fuelux/fuelux.js')}}"></script>
     <script src="{{secure_url('/js/datepicker/bootstrap-datepicker.js')}}"></script>
+    @if (Reg::current()->type == 'unregistered')
+    <script src="{{secure_url('/js/reg.firsttime.js')}}"></script>
+    @endif
 @endpush
 @push('css')
     <link href="{{secure_url('/js/fuelux/fuelux.css')}}" rel="stylesheet">

@@ -45,6 +45,10 @@ class AppArtisanServiceProvider extends ServiceProvider
         'TestMake' => 'command.test.make',
     ];
 
+    protected $noncommands = [
+        'MigrationCreator' => 'migration.creator',
+    ];
+
     /**
      * Register the service provider.
      *
@@ -52,9 +56,8 @@ class AppArtisanServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->registerCommands(array_merge(
-            $this->commands
-        ));
+        $this->registerCommands($this->commands);
+        $this->registerNoncommands($this->noncommands);
     }
 
     /**
@@ -70,6 +73,19 @@ class AppArtisanServiceProvider extends ServiceProvider
         }
 
         $this->commands(array_values($commands));
+    }
+
+    /**
+     * Register the given non-commands.
+     *
+     * @param  array  $noncommands
+     * @return void
+     */
+    protected function registerNoncommands(array $noncommands)
+    {
+        foreach (array_keys($noncommands) as $command) {
+            call_user_func_array([$this, "register{$command}"], []);
+        }
     }
 
     /**
@@ -241,12 +257,24 @@ class AppArtisanServiceProvider extends ServiceProvider
     }
 
     /**
+     * Register the command.
+     *
+     * @return void
+     */
+    protected function registerMigrationCreator()
+    {
+        $this->app->singleton('migration.creator', function ($app) {
+            return new AppMigrationCreator($app['files']);
+        });
+    }
+
+    /**
      * Get the services provided by the provider.
      *
      * @return array
      */
     public function provides()
     {
-        return array_merge(array_values($this->commands));
+        return array_merge(array_values($this->commands), array_values($this->noncommands));
     }
 }

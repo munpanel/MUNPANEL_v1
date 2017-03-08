@@ -1,4 +1,13 @@
 <?php
+/**
+ * Copyright (C) Console iT
+ * This file is part of MUNPANEL System.
+ *
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ *
+ * Developed by Adam Yi <xuan@yiad.am>
+ */
 
 return [
 
@@ -179,7 +188,6 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\HelperServiceProvider::class,
-        App\Artisan\AppMigrationServiceProvider::class,
         App\Artisan\AppArtisanServiceProvider::class,
         //ChumPer\Zipper\ZipperServiceProvider::class,
         Gloudemans\Shoppingcart\ShoppingcartServiceProvider::class,

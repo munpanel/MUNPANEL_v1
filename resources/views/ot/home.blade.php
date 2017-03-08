@@ -15,17 +15,21 @@
   </header>
   <section class="scrollable wrapper">
     <div class="row">
-        <div class="col-md-8 col-md-offset-2">
+        <div class="col-md-4 col-md-offset-4">
             <div class="panel panel-default">
-                <div class="panel-heading">会议报名情况<span class="pull-right">代表总数: {{$del}}</span></div>
+                <div class="panel-heading">会议报名情况<span class="pull-right">代表总数: {{$del}}</span>
+@if ($hasChildComm)
+<button class="btn btn-xs btn-white m-l active" id="nestable-menu" data-toggle="class:show">
+              <i class="fa fa-plus text"></i>
+              <span class="text">全部展开</span>
+              <i class="fa fa-minus text-active"></i>
+              <span class="text-active">全部折叠</span>
+            </button>
+@endif
+                </div>
 
                 <div class="panel-body">
-                  {{regStat($committees, $obs, $vol}}
-                  {{--  欢迎组织团队成员 {{Auth::user()->name}}<br/><br/>目前报名人数：<br/>
-                    @foreach ($committees as $committee)
-                    {{$committee->name}} {{$committee->delegates->count()}}<br/>
-                    @endforeach
-                    志愿者{{$vol --}}
+                  {!!regStat($committees, $obs, $vol)!!}
                 </div>
             </div>
         </div>

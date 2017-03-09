@@ -55,7 +55,7 @@ $isExperience = isset($customTable->experience) && in_array($regType, $customTab
                 </label>
               </div>
               <label>　出生日期 *</label>
-              <input name="dateofbirth" class="datepicker-input form-control input" type="text" size="16" placeholder="yyyy-mm-dd" data-date-format="yyyy-mm-dd" data-required="true">
+              <input name="dateofbirth" class="datepicker-input form-control input" type="text" size="16" placeholder="yyyy-mm-dd" data-type="dateIso" data-required="true">
               <label>　省份 *</label>
               {!!provinceSelect()!!}
             </div>
@@ -77,6 +77,7 @@ $isExperience = isset($customTable->experience) && in_array($regType, $customTab
                  <option value="2">护照 (Passport)</option>
                  <option value="3">港澳回乡证</option>
                  <option value="4">台胞证</option>
+                 <option value="5">Social Security Number</option>
                </select>
               </div>
               <div class="col-sm-8">
@@ -406,6 +407,10 @@ $('#select-typeID').change(function(e){
         case "4":
             e1.setAttribute("pattern", "^\\d{8}$");
             e1.setAttribute("placeholder", "8 位纯数字 (不含换证次数)");
+            break;
+        case "5":
+            e1.setAttribute("pattern", "^\\d{3}-\\d{2}-\\d{4}$");
+            e1.setAttribute("placeholder", "形如AAA-GG-SSSS");
     }
     $("form").parsley('destroy');
     $("form").parsley();

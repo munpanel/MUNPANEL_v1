@@ -108,7 +108,7 @@
                             <div class="progress progress-xs progress-striped active m-b-sm">
                               <div class="progress-bar progress-bar-warning" data-toggle="tooltip" data-original-title="{{ $percent }}%" style="width: {{ $percent }}%"></div>
                             </div>
-                              @if (Reg::current() == 'unregistered')
+                              @if (Reg::current()->type == 'unregistered')
                               <div class="text-sm">点击下方按钮报名：</div>
                               <a href="{{ secure_url('/reg2.modal/select') }}" data-toggle="ajaxModal" class="btn btn-danger">报名</a>
                               @elseif (!Auth::user()->verified())

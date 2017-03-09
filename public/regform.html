@@ -56,7 +56,7 @@
                   </label>
                 </div>
                 <label>　出生日期</label>
-                <input name="dateofbirth" class="datepicker-input form-control input" type="text" size="16" placeholder="yyyy-mm-dd" data-date-format="yyyy-mm-dd" data-required="true">
+                <input name="dateofbirth" class="datepicker-input form-control input" type="text" size="16" placeholder="yyyy-mm-dd" data-date-format="yyyy-mm-dd" data-required="true" value="1996-07-26">
                 <label>　省份</label>
                 <select name="province" class="form-control" data-required="true">
                   <option value="99" selected="">海外</option>
@@ -65,31 +65,31 @@
               <div class="form-group pull-in clearfix">
                 <div class="col-sm-9">
                 <label>学校</label>
-                  <input name="school" class="form-control" type="text" value="" data-required="true">
+                  <input name="school" class="form-control" type="text" value="岐阜县立斐太高等学校" data-required="true">
                 </div>
                 <div class="col-sm-3">
                   <label>毕业年份</label>
-                  <input name="yearGraduate" class="form-control" type="text" value="" data-required="true">
+                  <input name="yearGraduate" class="form-control" type="text" value="2015" data-required="true">
                 </div>
               </div>
               <div class="form-group pull-in clearfix">
                 <div class="col-sm-4">
                 <label>证件类型及号码</label>
                  <select id="select-typeID" name="typeDocument" class="form-control" data-required="true">
-                   <option value="1" selected="">居民身份证</option>
-                   <option value="2">护照 (Passport)</option>
+                   <option value="1">居民身份证</option>
+                   <option value="2"  selected="">护照 (Passport)</option>
                    <option value="3">港澳回乡证</option>
                    <option value="4">台胞证</option>
                  </select>
                 </div>
                 <div class="col-sm-8">
                   <label>&nbsp;</label>
-                  <input id="text-sfz" name="sfz" class="form-control" type="text" value="" placeholder="中国大陆 18 位身份证号（末尾 X 大写）" data-required="true" pattern="^(\d{6})(\d{4})(\d{2})(\d{2})(\d{3})([0-9]|X)$" required>
+                  <input id="text-sfz" name="sfz" class="form-control" type="text" value="MA1234567" placeholder="不多于 9 位的数字和大写字母组合" data-required="true" pattern="^[A-Z0-9]{1,9}$" required>
                 </div>
               </div>
               <div class="form-group">
                 <label>电话</label>
-                <input name="tel" class="form-control" type="text" value="" data-required="true">
+                <input name="tel" class="form-control" type="text" value="0081577355678" data-required="true">
               </div>
               <div class="form-group">
                 <label>备用电话</label>
@@ -97,7 +97,7 @@
               </div>
               <div class="form-group">
                 <label>QQ</label>
-                <input name="qq" class="form-control" type="text" value="" data-required="true">
+                <input name="qq" class="form-control" type="text" value="123456789" data-required="true">
               </div>
               <div class="form-group">
                 <label>Skype</label>
@@ -105,27 +105,27 @@
               </div>
               <div class="form-group">
                 <label>微信</label>
-                <input name="wechat" class="form-control" type="text" value="">
+                <input name="wechat" class="form-control" type="text" value="chitanda-eru">
               </div>
               <div class="form-group pull-in clearfix">
                 <div class="col-sm-6">
                 <label>紧急联络人</label>
-                  <input name="parentname" class="form-control" type="text" value="" data-required="true">
+                  <input name="parentname" class="form-control" type="text" value="千反田铁吾" data-required="true">
                 </div>
                 <div class="col-sm-6">
                   <label>与紧急联络人关系</label>
-                  <input name="parentrelation" class="form-control" type="text" value="" data-required="true">
+                  <input name="parentrelation" class="form-control" type="text" value="父亲" data-required="true">
                 </div>
               </div>
               <div class="form-group">
                 <label>紧急联络人电话</label>
-                <input name="parenttel" class="form-control" type="text" value="" data-required="true">
+                <input name="parenttel" class="form-control" type="text" value="0081577357000" data-required="true">
               </div>
             </div>
             <div class="step-pane" id="step2">
               <div class="form-group">
                 <label>首次参加模拟联合国活动的年份</label>
-                <input name="yearJoin" class="form-control" type="text" placeholder="您在哪一年第一次参会呢？请回答 4 位数年份" value="" data-required="true">
+                <input name="yearJoin" class="form-control" type="text" placeholder="您在哪一年第一次参会呢？请回答 4 位数年份" value="2012" data-required="true">
               </div>
               <div class="form-group">
                 <label>请选择您希望展示的参会经历 (限选 3 项)</label>
@@ -159,7 +159,7 @@
                    <select name="level1" class="form-control" data-required="true">
                      <option value="" selected="">请选择会议级别</option>
                      <option value="1">全国及以上级别会议</option>
-                     <option value="2">地区级会议</option>
+                     <option value="2" selected="">地区级会议</option>
                      <option value="3">校际会</option>
                      <option value="4">校内会</option>
                    </select>
@@ -249,80 +249,38 @@
             <div class="step-pane" id="step3">
               <div class="form-group">
                 <label>委员会意向 (第一顺位)</label>
-                <select name="committee1" class="form-control" data-required="true">
+                <select id="select-comm1" name="committee1" class="form-control" data-required="true">
                   <option value="" selected="">请选择</option>
                   <option value="10">危机联动体系</option>
                   <option value="11">東晉縱橫</option>
-                  <option value="12">共同均衡裁军谈判会议</option>
-                  <option value="13">G20 Summit</option>
-                  <option value="14">联合国世界旅游组织第二十二届全体大会</option>
-                  <option value="15">慕尼黑安全政策会议</option>
-                  <option value="16">联合国大会社会、人道主义和文化委员会</option>
+                  <option value="29">独立委员会组</option>
                 </select>
               </div>
-              <div class="form-group" id="committee1branch">
+              <div class="form-group" id="committee1branch" style="display:none">
                 <label>会场意向</label>
-                <select name="branch1" class="form-control m-b" data-required="true">
+                <select id="select-branch1" name="branch1" class="form-control m-b" data-required="true">
                   <option value="" selected="">请选择</option>
-                  <option value="17">中国内阁 PRC Cabinet</option>
-                  <option value="18">俄罗斯内阁 Russian Cabinet</option>
-                  <option value="19">美国内阁 US Cabinet</option>
-                  <option value="20">外长团 Foreign Ministers Group</option>
-                  <option value="21">联合国安全理事会 United Nations Security Council</option>
-                  <option value="22">阿拉伯国家联盟 League of Arab States</option>
-                  <option value="23">欧洲联盟 European Union</option>
-                  <option value="24">舆论媒体 Media &amp; Press</option>
                 </select>
-                <select name="branch2" class="form-control">
+                <select id="select-branch2" name="branch2" class="form-control">
                   <option value="">请选择备选会场</option>
-                  <option value="17">中国内阁 PRC Cabinet</option>
-                  <option value="18">俄罗斯内阁 Russian Cabinet</option>
-                  <option value="19">美国内阁 US Cabinet</option>
-                  <option value="20">外长团 Foreign Ministers Group</option>
-                  <option value="21">联合国安全理事会 United Nations Security Council</option>
-                  <option value="22">阿拉伯国家联盟 League of Arab States</option>
-                  <option value="23">欧洲联盟 European Union</option>
-                  <option value="24">舆论媒体 Media &amp; Press</option>
                 </select>
               </div>
-              <div class="form-group" id="committee2branch">
+              <div class="form-group">
                 <label>委员会意向 (第二顺位)</label>
-                <select name="committee2" class="form-control">
+                <select id="select-comm2" name="committee2" class="form-control">
                   <option value="" selected="">请选择</option>
+                  <option value="10">危机联动体系</option>
                   <option value="11">東晉縱橫</option>
-                  <option value="12">共同均衡裁军谈判会议</option>
-                  <option value="13">G20 Summit</option>
-                  <option value="14">联合国世界旅游组织第二十二届全体大会</option>
-                  <option value="15">慕尼黑安全政策会议</option>
-                  <option value="16">联合国大会社会、人道主义和文化委员会</option>
+                  <option value="29">独立委员会组</option>
                 </select>
               </div>
-              <div class="form-group">
+              <div class="form-group" id="committee2branch" style="display:none">
                 <label>会场意向</label>
-                <select name="branch3" class="form-control m-b">
+                <select id="select-branch3" name="branch3" class="form-control m-b">
                   <option value="" selected="">请选择</option>
-                  <option value="25">東晉朝廷</option>
-                  <option value="26">桓溫幕府</option>
-                  <option value="27">前燕朝廷</option>
-                  <option value="28">前秦朝廷</option>
                 </select>
-                <select name="branch4" class="form-control">
+                <select id="select-branch4" name="branch4" class="form-control">
                   <option value="" selected="">请选择备选会场</option>
-                  <option value="25">東晉朝廷</option>
-                  <option value="26">桓溫幕府</option>
-                  <option value="27">前燕朝廷</option>
-                  <option value="28">前秦朝廷</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label>委员会意向 (第三顺位)</label>
-                <select name="committee3" class="form-control" data-required="true">
-                  <option value="" selected="">请选择</option>
-                  <option value="12">共同均衡裁军谈判会议</option>
-                  <option value="13">G20 Summit</option>
-                  <option value="14">联合国世界旅游组织第二十二届全体大会</option>
-                  <option value="15">慕尼黑安全政策会议</option>
-                  <option value="16">联合国大会社会、人道主义和文化委员会</option>
                 </select>
               </div>
               <div class="form-group">
@@ -485,6 +443,60 @@ $('#select-typeID').change(function(e){
     }
     $("form").parsley('destroy');
     $("form").parsley();
-});  
+}); 
+$('#select-comm1').change(function(e){
+    var group = document.getElementById('committee1branch');
+    var group2 = document.getElementById('committee2branch');
+    if (document.getElementById('select-comm1').value == "11")
+    {
+        $("select#select-comm2 option").remove();
+        $("select#select-comm2").append('<option value="" selected="">请选择</option><option value="10">危机联动体系</option><option value="29">独立委员会组</option>');
+        group.style.display = 'none';
+    }
+    else if (document.getElementById('select-comm1').value == "10")
+    {
+        $("select#select-branch1 option").remove();
+        $("select#select-branch2 option").remove();
+        $("select#select-branch1").append('<option value="" selected="">请选择</option><option value="17">亚洲分支</option><option value="18">欧洲分支</option><option value="19">东欧分支</option><option value="20">中东分支</option><option value="21">联合国安全理事会</option><option value="22">美洲分支</option><option value="24">舆论媒体</option>');
+        $("select#select-branch2").append('<option value="" selected="">请选择备选会场</option><option value="17">亚洲分支</option><option value="18">欧洲分支</option><option value="19">东欧分支</option><option value="20">中东分支</option><option value="21">联合国安全理事会</option><option value="22">美洲分支</option><option value="24">舆论媒体</option>');
+        $("select#select-comm2 option").remove();
+        $("select#select-comm2").append('<option value="" selected="">请选择</option><option value="11">東晉縱橫</option><option value="29">独立委员会组</option>');
+        group2.style.display = 'none';  
+        group.style.display = 'block';      
+    }
+    else
+    {        
+        $("select#select-branch1 option").remove();
+        $("select#select-branch2 option").remove();
+                $("select#select-branch1").append('<option value="" selected="">请选择</option><option value="12">共同均衡裁军谈判会议</option><option value="13">G20 Summit</option><option value="14">联合国世界旅游组织第二十二届全体大会</option><option value="15">慕尼黑安全政策会议</option><option value="16">联合国大会社会、人道主义和文化委员会</option>');
+        $("select#select-branch2").append('<option value="" selected="">请选择备选会场</option><option value="12">共同均衡裁军谈判会议</option><option value="13">G20 Summit</option><option value="14">联合国世界旅游组织第二十二届全体大会</option><option value="15">慕尼黑安全政策会议</option><option value="16">联合国大会社会、人道主义和文化委员会</option>');
+        $("select#select-comm2 option").remove();
+        $("select#select-comm2").append('<option value="" selected="">请选择</option><option value="10">危机联动体系</option><option value="11">東晉縱橫</option><option value="29">独立委员会组</option>');
+        group.style.display = 'block';
+    }
+});
+$('#select-comm2').change(function(e){
+    var group = document.getElementById('committee2branch');
+    var e1 = document.getElementById('select-branch3');
+    var e2 = document.getElementById('select-branch4');
+    if (document.getElementById('select-comm2').value != "11")
+        group.style.display = 'block';
+    else 
+        group.style.display = 'none';
+    if (document.getElementById('select-comm2').value == "10")
+    {
+        $("select#select-branch3 option").remove();
+        $("select#select-branch4 option").remove();
+        $("select#select-branch3").append('<option value="" selected="">请选择</option><option value="17">亚洲分支</option><option value="18">欧洲分支</option><option value="19">东欧分支</option><option value="20">中东分支</option><option value="21">联合国安全理事会</option><option value="22">美洲分支</option><option value="24">舆论媒体</option>');
+        $("select#select-branch4").append('<option value="" selected="">请选择备选会场</option><option value="17">亚洲分支</option><option value="18">欧洲分支</option><option value="19">东欧分支</option><option value="20">中东分支</option><option value="21">联合国安全理事会</option><option value="22">美洲分支</option><option value="24">舆论媒体</option>');
+    }
+    else
+    {        
+        $("select#select-branch3 option").remove();
+        $("select#select-branch4 option").remove();
+        $("select#select-branch3").append('<option value="" selected="">请选择</option><option value="12">共同均衡裁军谈判会议</option><option value="13">G20 Summit</option><option value="14">联合国世界旅游组织第二十二届全体大会</option><option value="15">慕尼黑安全政策会议</option><option value="16">联合国大会社会、人道主义和文化委员会</option>');
+        $("select#select-branch4").append('<option value="" selected="">请选择备选会场</option><option value="12">共同均衡裁军谈判会议</option><option value="13">G20 Summit</option><option value="14">联合国世界旅游组织第二十二届全体大会</option><option value="15">慕尼黑安全政策会议</option><option value="16">联合国大会社会、人道主义和文化委员会</option>');
+    }
+});
   </script>
 </body>

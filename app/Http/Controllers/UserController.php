@@ -898,13 +898,19 @@ class UserController extends Controller
         $code = mt_rand(1000, 9999);
         $request->session()->flash('code', $code);
         if ($method == 'sms')
-            $user->sendSMS('感谢您使用 MUNPANEL 系统。您的验证码为'.$code.'。');
+        {
+            if (!$user->sendSMS('感谢您使用 MUNPANEL 系统。您的验证码为'.$code.'。'))
+                return view('errorModal', ['msg' => '发送短信出错！请联系客服。对您造成的不便敬请谅解。']);
+        }
         //SmsController::send([$tel], '尊敬的'.$user->name.'，感谢您使用 MUNPANEL 系统。您的验证码为'.$code.'。');
         else if ($method == 'call')
-            SmsController::call($tel, $code);
+        {
+            if(!SmsController::call($tel, $code))
+                return view('errorModal', ['msg' => '拨打电话出错！抱歉我们暂不支持较多国家的电话服务，请尝试使用短信激活您的账户']);
+        }
         else
-            return 'error';
-        return view('/verifyTelModal');
+            return view('errorModal', ['msg' => '您的尝试次数已用尽！']);
+        return view('verifyTelModal');
     }
 
     /**

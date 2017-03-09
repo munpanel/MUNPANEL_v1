@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="css/font.css" type="text/css" cache="false" />
   <link rel="stylesheet" href="css/plugin.css" type="text/css" />
   <link rel="stylesheet" href="css/app.css" type="text/css" />
+  <link rel="stylesheet" href="css/intlTelInput.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="js/ie/respond.min.js" cache="false"></script>
     <script src="js/ie/html5.js" cache="false"></script>
@@ -39,13 +40,15 @@
           <header class="panel-heading text-center">
             请验证您的电话号码
           </header>
-            <div class="panel-body"><div class="alert alert-info">感谢您使用MUNPANEL！请在下方填写您的手机号，我们将给您发送一条短信或拨打一个电话并告知验证码以激活您的账户。未激活的账户将不能使用任何 MUNPANEL 服务，会议组织团队亦不可查看您的报名信息。<br>当前账户剩余 <b>{{Auth::user()->telVerifications}}</b> 次验证机会。如您无验证机会，请联系客服或重新注册新账户，感谢。</div><div class="alert alert-warning">电话号码中请不要添加除加号与阿拉伯数字外的其他字符（如空格、分割线、括号等）。如您使用的手机号所在地区为中国大陆，请直接输入11位号码，否则请根据国际电信联盟（ITU）E.164标准，在号码前添加一个加号（“+”）与国际电话区号。如+12133220115</div></div>
+            <div class="panel-body"><div class="alert alert-info">感谢您使用MUNPANEL！请在下方填写您的手机号，我们将给您发送一条短信或拨打一个电话并告知验证码以激活您的账户。未激活的账户将不能使用任何 MUNPANEL 服务，会议组织团队亦不可查看您的报名信息。<br>当前账户剩余 <b>{{Auth::user()->telVerifications}}</b> 次验证机会。如您无验证机会，请联系客服或重新注册新账户，感谢。</div></div>
             @if (Auth::user()->telVerifications > 0)
           <form action="{{ secure_url('/login') }}" method="post" class="panel-body" data-validate="parsley">
             {{ csrf_field() }}
             <div class="form-group">
               <label class="control-label">手机号</label>
-              <input type="text" id="tel" name="tel" placeholder="eg. 18612345678" value="{{ Auth::user()->tel }}" autofocus>&nbsp&nbsp<button id="getVerificationSMS" class="btn btn-warning">发短信</button>&nbsp&nbsp<button id="getVerificationCALL" class="btn btn-warning">打电话</button>
+              <!--input type="text" id="tel" name="tel" placeholder="eg. 18612345678" value="{{ Auth::user()->tel }}" autofocus-->
+              <input type="tel" id="tel" autofocus>
+              &nbsp&nbsp<button id="getVerificationSMS" class="btn btn-warning">发短信</button>&nbsp&nbsp<button id="getVerificationCALL" class="btn btn-warning">打电话</button>
             </div>
             </form>
             @endif
@@ -70,11 +73,18 @@
   <!-- Parsley -->
   <script src="js/parsley/parsley.min.js"></script>
   <script src="js/parsley/parsley.extend.js"></script>
+  <script src="js/intlTelInput.js"></script>
   <script>
+  $("#tel").intlTelInput({
+      initialCountry:"cn",
+      separateDialCode: true,
+      preferredCountries: ['cn','us','gb'],
+      utilsScript: "js/intl-utils.js"
+  });
   $('#getVerificationSMS').click(function(e) {
      $('#ajaxModal').remove();
      e.preventDefault();
-     var $remote = 'verifyTel.modal/sms/' + $('#tel').val()
+     var $remote = 'verifyTel.modal/sms/' + $('#tel').intlTelInput("getNumber")
        , $modal = $('<div class="modal" id="ajaxModal"><div class="modal-body"></div></div>');
      $('body').append($modal);
      $modal.modal();
@@ -83,7 +93,7 @@
   $('#getVerificationCALL').click(function(e) {
      $('#ajaxModal').remove();
      e.preventDefault();
-     var $remote = 'verifyTel.modal/call/' + $('#tel').val()
+     var $remote = 'verifyTel.modal/call/' + $('#tel').intlTelInput("getNumber")
        , $modal = $('<div class="modal" id="ajaxModal"><div class="modal-body"></div></div>');
      $('body').append($modal);
      $modal.modal();

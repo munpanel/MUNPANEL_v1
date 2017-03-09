@@ -37,7 +37,12 @@ class SmsController extends Controller
             if ($mobile[0] == '+')
             {
                 //twillio International
-                Twilio::message($mobile, $message);
+                try {
+                    Twilio::message($mobile, $message);
+                } catch (\Exception $e) {
+                    return false;
+                }
+
             }
             else
             {
@@ -77,6 +82,7 @@ class SmsController extends Controller
             $res = curl_exec( $ch );
             curl_close( $ch );
         }
+        return true;
     }
 
     /**
@@ -92,12 +98,16 @@ class SmsController extends Controller
             $mobile = substr($mobile, 3);
         if ($mobile[0] == '+')
         {
-            Twilio::call($mobile, function($message) {
-                $message->say("Welcome to mengpanle. Your code is ".implode(' ',str_split(session("code"))));
-                $message->pause(["length" => "1"]);
-                $message->say("Welcome to mengpanle. Your code is ".implode(' ',str_split(session("code"))));
-                $message->say("Thank you.");
-            });
+            try {
+                Twilio::call($mobile, function($message) {
+                    $message->say("Welcome to mengpanle. Your code is ".implode(' ',str_split(session("code"))));
+                    $message->pause(["length" => "1"]);
+                    $message->say("Welcome to mengpanle. Your code is ".implode(' ',str_split(session("code"))));
+                    $message->say("Thank you.");
+                });
+            } catch (\Exception $e) {
+                return false;
+            }
         }
         else
         {
@@ -118,5 +128,6 @@ class SmsController extends Controller
             $res = curl_exec( $ch );
             curl_close( $ch );
         }
+        return true;
     }
 }

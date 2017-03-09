@@ -96,7 +96,7 @@ class User extends Authenticatable
             $name = '模联人';
         else
             $name = $this->name;
-        \App\Http\Controllers\SmsController::send([$this->tel], '尊敬的'.$name.'，'.$message);
+        return \App\Http\Controllers\SmsController::send([$this->tel], '尊敬的'.$name.'，'.$message);
     }
 
     public function verified() {

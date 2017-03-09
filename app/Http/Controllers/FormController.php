@@ -78,4 +78,53 @@ class FormController extends Controller
         }
         return $html;
     }
+    
+    /**
+     * filter form assignments by committee
+     *
+     * @param object $tableItems the table items object ($*->items)
+     * @param int $committeeID ID of committee
+     * @return array assignment objects with specific committee
+     */
+    public static function filterFormAssignmentsByCommittee($tableItems, $committeeID)
+    {
+        $result = [];
+        foreach ($tableItems as $item)
+        {
+            if (!!array_intersect($committeeID, $item->committee))
+                array_push($result, $item);
+        }
+        return $result;
+    }
+    
+    /**
+     * Render the assignment form to html
+     *
+     * @param object $tableItems the table items object ($*->items)
+     * @param int $committeeID ID of committee
+     * @param int $maxValue the items will be shown
+     * @return string HTML clip of the table
+     */
+    public static function formAssignment($tableItems, $committeeID, $maxValue)
+    {
+        $html = '';
+        $i = 0;
+        $b = 0;
+        if ($maxValue > count($tableItems)) $maxValue = count($tableItems);
+        $subItems = array_rand($tableItems, $maxValue);
+        foreach ($subItems as $item)
+        {
+            $html .= '<div class="form-group"><label>'.$item->title.'</label>';
+            switch ($item->type)
+            {
+                case "single_choice":
+                    $html .= '<div class="radio" style="display:none"><label class="radio-custom"><input type="radio" name="answer['.$item->id.']" value="0" checked="checked"><i class="fa fa-circle-o checked"></i></label></div>';
+                    foreach ($item->options as $option)
+                        $html .= '<div class="radio"><label class="radio-custom"><input type="radio" name="answer['.$item->id.']" value="'.$option->value.'"><i class="fa fa-circle-o"></i>'.$option->text.'</label></div>';
+                    break;
+            }
+            $html .= '</div>';
+        }
+        return $html;
+    }
 }

@@ -150,7 +150,7 @@ $isOtOrDais = in_array(Reg::current()->type, ['ot', 'dais']);
 
                     {{-- <p><span class="label label-warning">注意</span> 这是二次面试分配。</p>--}}
 
-                    <p>请在此列表中选择面试官，面试官姓名右侧显示了面试官当前面试队列长度。</p>
+                    <p>请在此列表中选择面试官，面试官姓名右侧显示了面试官当前分配的未完成面试数量。</p>
 
                           <div class="m-b">
                             <select style="width:260px" class="interviewer-list">

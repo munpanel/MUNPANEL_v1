@@ -27,6 +27,10 @@ class Interviewer extends Model
         return $this->belongsTo('App\Committee');
     }
 
+    public function interviews() {
+        return $this->hasMany('App\Interview', 'interviewer_id');
+    }
+
     public function regText() {
         return '面试官';
     }
@@ -40,7 +44,7 @@ class Interviewer extends Model
                 $committee = $interviewer->committee->name;
             else
                 $committee = '公共';
-            $list[$committee][$interviewer->reg_id] = $interviewer->reg->name();
+            $list[$committee][$interviewer->reg_id] = $interviewer->reg->name(). '（' . $interviewer->interviews->whereIn('status', ['assigned', 'arranged'])->count() . '）';
         }
         return $list;
     }

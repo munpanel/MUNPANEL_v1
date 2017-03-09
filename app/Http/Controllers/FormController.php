@@ -108,11 +108,9 @@ class FormController extends Controller
     public static function formAssignment($tableItems, $committeeID, $maxValue)
     {
         $html = '';
-        $i = 0;
-        $b = 0;
         if ($maxValue > count($tableItems)) $maxValue = count($tableItems);
         $subItems = array_rand($tableItems, $maxValue);
-        foreach ($subItems as $item)
+        foreach ($tableItems as $item)
         {
             $html .= '<div class="form-group"><label>'.$item->title.'</label>';
             switch ($item->type)

@@ -24,12 +24,10 @@ class Committee extends Model
     
     public function allDelegates()
     {
-        $result = $this->delegates;
-        foreach ($this->childCommittees as $cc)
-        {
-            if ($cc->delegates->count() > 0 || $cc->childCommittees->count() > 0)
-                $result->merge($cc->allDelegates());
-        }
+        $coms = Committee::where('id', $this->id)->orWhere('father_committee_id', $this->id)->get(['id']);
+        $e = [];
+        foreach ($coms as $com) array_push($e, $com->id);
+        $result = Delegate::whereIn('committee_id', $e)->get(); 
         return $result;
     }
 

@@ -724,7 +724,7 @@ class HomeController extends Controller
      */
     public function blank()
     {
-        $test = json_encode('[
+        $test = json_decode('[
         {
             "id":"1",
             "type":"single_choice",
@@ -738,8 +738,22 @@ class HomeController extends Controller
             {"value":"4", "text":"法国衰落"}
             ],
             "answer":"2"
-        }]');
-        $html = FormController::formAssignment($test, 20, 1);
-        return view('blank', ['testContent' => $test]);
+        },
+        {
+            "id":"2",
+            "type":"single_choice",
+            "committee":["20", "23"],
+            "level":"1",
+            "title":"1618 年历史上第一次全欧大战爆发，战争经历了三十年，史称三十年战争，请问下列哪项是该战争带来的影响：",
+            "options":[
+            {"value":"1", "text":"德意志统一"},
+            {"value":"2", "text":"荷兰独立"},
+            {"value":"3", "text":"西班牙兴起"},
+            {"value":"4", "text":"法国衰落"}
+            ],
+            "answer":"2"
+}]');
+        $html = FormController::formAssignment($test, 20, 2);
+        return view('blank', ['testContent' => $html]);
     }
 }

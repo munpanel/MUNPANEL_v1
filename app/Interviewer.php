@@ -16,8 +16,32 @@ use Illuminate\Database\Eloquent\Model;
 class Interviewer extends Model
 {
     protected $guarded = [];
+    protected $primaryKey = 'reg_id';
+
+    public function reg()
+    {
+        return $this->belongsTo('App\reg');
+    }
+
+    public function committee() {
+        return $this->belongsTo('App\Committee');
+    }
 
     public function regText() {
         return '面试官';
+    }
+
+    static public function list() {
+        $interviewers = Interviewer::all();
+        $list = array();
+        foreach ($interviewers as $interviewer)
+        {
+            if (is_object($interviewer->committee))
+                $committee = $interviewer->committee->name;
+            else
+                $committee = '公共';
+            $list[$committee][$interviewer->reg_id] = $interviewer->reg->name();
+        }
+        return $list;
     }
 }

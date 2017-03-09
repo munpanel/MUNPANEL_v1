@@ -3,6 +3,7 @@
 @push('scripts')
     <script src="{{secure_url('/js/jquery.dataTables.min.js')}}"></script>
     <script src="{{secure_url('/js/datatables/fnReloadAjax.js')}}"></script>
+    <script src="{{secure_url('/js/select2/select2.min.js')}}"></script>
     @if (Auth::user()->can('approve-regs-pay'))
     <script src="{{secure_url('/js/ot.regManage.withPay.js')}}"></script>
     @else
@@ -10,6 +11,7 @@
     @endif
 @endpush
 @push('css')
+    <link rel="stylesheet" href="{{secure_url('js/select2/select2.css')}}" type="text/css" />
     <link rel="stylesheet" href="{{secure_url('/css/jquery.dataTables.min.css')}}" type="text/css" />
 @endpush
 @section('content')
@@ -49,7 +51,7 @@
                         <th>姓名</th>
                         <th>学校</th>
                         <th>委员会</th>
-                        <th>搭档</th>
+                        <th>类型</th>
                         <th>状态</th>
                       </tr>
                     </thead>

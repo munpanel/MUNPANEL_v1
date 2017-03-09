@@ -663,6 +663,7 @@ class UserController extends Controller
      */
     public function test()
     {
+        dd(\App\Interviewer::list());
         if (($handle = fopen("/var/www/munpanel/test.csv", "r")) !== FALSE) {
             $resp = "";
             while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {

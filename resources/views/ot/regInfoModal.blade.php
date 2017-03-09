@@ -152,7 +152,17 @@ $isOtOrDais = in_array(Reg::current()->type, ['ot', 'dais']);
 
                     <p>请在此列表中选择面试官，面试官姓名右侧显示了面试官当前面试队列长度。</p>
 
-                    To-Do: list
+                          <div class="m-b">
+                            <select style="width:260px" class="interviewer-list">
+                                @foreach (\App\Interviewer::list() as $name => $group)
+                                <optgroup label="{{$name}}">
+                                    @foreach ($group as $iid => $iname)
+                                    <option value="{{$iid}}">{{$iname}}</option>
+                                    @endforeach
+                                </optgroup>
+                                @endforeach
+                            </select>
+                          </div>
 
                         <p>分配完成之后，分配信息将自动通知代表和面试官。</p>
 
@@ -166,7 +176,17 @@ $isOtOrDais = in_array(Reg::current()->type, ['ot', 'dais']);
 
                     <p>将会以免试通过方式完成此代表的面试流程，请在此列表中选择面试官，选定的面试官将可以直接为此代表分配席位。</p>
 
-                    To-Do: list
+                          <div class="m-b">
+                            <select style="width:260px" class="interviewer-list">
+                                @foreach (\App\Interviewer::list() as $name => $group)
+                                <optgroup label="{{$name}}">
+                                    @foreach ($group as $iid => $iname)
+                                    <option value="{{$iid}}">{{$iname}}</option>
+                                    @endforeach
+                                </optgroup>
+                                @endforeach
+                            </select>
+                          </div>
 
                         <p>指派之后，MUNPANEL 将会自动通知代表和面试官。</p>
                         <button name="submit" type="submit" class="btn btn-info" onclick="loader(this);"><i class="fa fa-share fa-fw"></i> 分配面试官</button>
@@ -181,3 +201,8 @@ $isOtOrDais = in_array(Reg::current()->type, ['ot', 'dais']);
         </div>
       </div><!-- /.modal-content -->
 </div>
+<script type="text/javascript">
+$(document).ready(function() {
+      $(".interviewer-list").select2();
+});
+</script>

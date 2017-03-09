@@ -14,6 +14,7 @@
 namespace App\Http\Controllers;
 
 use Config;
+use Twilio;
 use Illuminate\Http\Request;
 
 class SmsController extends Controller
@@ -30,22 +31,34 @@ class SmsController extends Controller
         if (count($mobileList) == 0)
             return false;
         else if (count($mobileList) == 1) { // single send
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, "http://sms-api.luosimao.com/v1/send.json");
+            $mobile = $mobileList[0];
+            if (substr($mobile, 0, 3) == '+86')
+                $mobile = substr($mobile, 3);
+            if ($mobile[0] == '+')
+            {
+                //twillio International
+                Twilio::message($mobile, $message);
+            }
+            else
+            {
+                //luosimao Chinese
+                $ch = curl_init();
+                curl_setopt($ch, CURLOPT_URL, "http://sms-api.luosimao.com/v1/send.json");
 
-            curl_setopt($ch, CURLOPT_HTTP_VERSION  , CURL_HTTP_VERSION_1_0 );
-            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 8);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-            curl_setopt($ch, CURLOPT_HEADER, FALSE);
+                curl_setopt($ch, CURLOPT_HTTP_VERSION  , CURL_HTTP_VERSION_1_0 );
+                curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 8);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+                curl_setopt($ch, CURLOPT_HEADER, FALSE);
 
-            curl_setopt($ch, CURLOPT_HTTPAUTH , CURLAUTH_BASIC);
-            curl_setopt($ch, CURLOPT_USERPWD  , 'api:key-'.Config::get('luosimao.key_sms'));
+                curl_setopt($ch, CURLOPT_HTTPAUTH , CURLAUTH_BASIC);
+                curl_setopt($ch, CURLOPT_USERPWD  , 'api:key-'.Config::get('luosimao.key_sms'));
 
-            curl_setopt($ch, CURLOPT_POST, TRUE);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, array('mobile' => $mobileList[0], 'message' => $message .'【MUNPANEL】'));
+                curl_setopt($ch, CURLOPT_POST, TRUE);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, array('mobile' => $mobileList[0], 'message' => $message .'【MUNPANEL】'));
 
-            $res = curl_exec( $ch );
-            curl_close( $ch );
+                $res = curl_exec( $ch );
+                curl_close( $ch );
+            }
         } else { // batch send
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, "http://sms-api.luosimao.com/v1/send_batch.json");
@@ -75,21 +88,35 @@ class SmsController extends Controller
      */
 
     static public function call($mobile, $code) {
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, "http://voice-api.luosimao.com/v1/verify.json");
+        if (substr($mobile, 0, 3) == '+86')
+            $mobile = substr($mobile, 3);
+        if ($mobile[0] == '+')
+        {
+            Twilio::call($mobile, function($message) {
+                $message->say("Welcome to mengpanle. Your code is ".implode(' ',str_split(session("code"))));
+                $message->pause(["length" => "1"]);
+                $message->say("Welcome to mengpanle. Your code is ".implode(' ',str_split(session("code"))));
+                $message->say("Thank you.");
+            });
+        }
+        else
+        {
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, "http://voice-api.luosimao.com/v1/verify.json");
 
-        curl_setopt($ch, CURLOPT_HTTP_VERSION  , CURL_HTTP_VERSION_1_0 );
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 30);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-        curl_setopt($ch, CURLOPT_HEADER, FALSE);
+            curl_setopt($ch, CURLOPT_HTTP_VERSION  , CURL_HTTP_VERSION_1_0 );
+            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 30);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+            curl_setopt($ch, CURLOPT_HEADER, FALSE);
 
-        curl_setopt($ch, CURLOPT_HTTPAUTH , CURLAUTH_BASIC);
-        curl_setopt($ch, CURLOPT_USERPWD  , 'api:key-'.Config::get('luosimao.key_call'));
+            curl_setopt($ch, CURLOPT_HTTPAUTH , CURLAUTH_BASIC);
+            curl_setopt($ch, CURLOPT_USERPWD  , 'api:key-'.Config::get('luosimao.key_call'));
 
-        curl_setopt($ch, CURLOPT_POST, TRUE);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, array('mobile' => $mobile,'code' => $code));
+            curl_setopt($ch, CURLOPT_POST, TRUE);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, array('mobile' => $mobile,'code' => $code));
 
-        $res = curl_exec( $ch );
-        curl_close( $ch );
+            $res = curl_exec( $ch );
+            curl_close( $ch );
+        }
     }
 }

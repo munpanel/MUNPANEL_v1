@@ -11,7 +11,7 @@
 |
 */
 
-Route::group(['domain' => 'dev.yiad.am'], function () {
+Route::group(['domain' => 'portal.munpanel.com'], function () {
     Route::get('/', function () {
          return 'hello';
     });

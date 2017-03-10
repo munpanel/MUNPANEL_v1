@@ -61,3 +61,21 @@ function regStat($committees, $obs, $vol)
     return $result;
 }
 
+/**
+ * make single input item HTML DOM
+ *
+ * @param string $type type of input
+ * @param string $name name of HTTP POST request
+ * @param string $value value of HTTP POST request
+ * @param string $text text of the input
+ * @param string $id id of the DOM element
+ * @return string HTML DOM element <input ...>...
+ */
+function singleInput($type, $name, $value = '', $text = null, $id = null)
+{
+    $html = '<input ';
+    if (isset($id)) $html .= 'id="'.$id.'"';
+    $html .= ' type="'.$type.'" name="'.$name.'" value="'.$value.'">';
+    if (isset($text)) $html .= $text;
+    return $html;
+}

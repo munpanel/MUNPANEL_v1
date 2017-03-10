@@ -214,7 +214,7 @@ class UserController extends Controller
         $reg->type = $request->type;
         $reg->enabled = true;
         $reg->gender = $request->gender;
-        //if (isset($request->committee)) $reg->committee_id = $request->committee;
+        //if (!empty($request->committee)) 
         $regInfo = new \stdClass();
         $personal_info = new \stdClass();
         $personal_info->dateofbirth = $request->dateofbirth; 
@@ -299,6 +299,16 @@ class UserController extends Controller
                         $conf_info->remarks = $request->remarks;
                     break;
                 }
+            }
+        }
+        $targets = $customTable->targets;
+        foreach ($targets is $item)
+        {
+            switch key($item)
+            {
+                case 'committee':
+                $reg->committee_id = $request->{$targets['committee']};
+                break;
             }
         }
         $regInfo->conference = $conf_info;

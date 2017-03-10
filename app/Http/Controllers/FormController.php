@@ -108,18 +108,38 @@ class FormController extends Controller
     public static function formAssignment($tableItems, $committeeID, $maxValue)
     {
         $html = '';
+        $num = 0;
         if ($maxValue > count($tableItems)) $maxValue = count($tableItems);
         $subItems = array_rand($tableItems, $maxValue);
         foreach ($tableItems as $item)
         {
-            $html .= '<div class="form-group"><label>'.$item->title.'</label>';
+            $html .= '<div class="form-group"><span class="badge">'.++$num.'</span><label>'.$item->title.'</label>';
+            $i = 0;
             switch ($item->type)
             {
                 case "single_choice":
-                    $html .= '<div class="radio" style="display:none"><label class="radio-custom"><input type="radio" name="answer['.$item->id.']" value="0" checked="checked"><i class="fa fa-circle-o checked"></i></label></div>';
+                    $html .= '<input type="radio" name="'.$item->id.'" value="0" checked="checked">';
                     foreach ($item->options as $option)
-                        $html .= '<div class="radio"><label class="radio-custom"><input type="radio" name="answer['.$item->id.']" value="'.$option->value.'"><i class="fa fa-circle-o"></i>'.$option->text.'</label></div>';
+                        $html .= singleInput('radio', $item->id, ++$i, $option->text);
+                        //$html .= '<div class="radio"><label class="radio-custom"><input type="radio" name="answer['.$item->id.']" value="'.$option->value.'"><i class="fa fa-circle-o"></i>'.$option->text.'</label></div>';
                     break;
+                case "mult_choice":
+                    foreach ($item->options as $option)
+                        $html .= singleInput('check', $item->id, ++$i, $option->text);
+                        //$html .= '<div class="radio"><label class="radio-custom"><input type="radio" name="answer['.$item->id.']" value="'.$option->value.'"><i class="fa fa-circle-o"></i>'.$option->text.'</label></div>';
+                    break;
+                case "yes_or_no":
+                    $html .= '
+                <div class="btn-group" data-toggle="buttons">
+                  <label class="btn btn-sm btn-success">
+                    <input name="'.$item->id.'" id="true" type="radio" value="true"> <i class="fa fa-check text-active"></i>正确
+                    <input name="'.$item->id.'" id="false" type="radio" value="false"> <i class="fa fa-times text-active"></i>错误
+                  </label>
+                  <label class="btn btn-sm btn-danger">
+                  </label></div>';
+                    break;
+                case "fill_in":
+                    $html .= singleInput('text', $item->id);
             }
             $html .= '</div>';
         }

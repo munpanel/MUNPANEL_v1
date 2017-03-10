@@ -741,18 +741,35 @@ class HomeController extends Controller
         },
         {
             "id":"2",
-            "type":"single_choice",
-            "committee":["20", "23"],
+            "type":"mult_choice",
+            "committee":["24"],
             "level":"1",
-            "title":"1618 年历史上第一次全欧大战爆发，战争经历了三十年，史称三十年战争，请问下列哪项是该战争带来的影响：",
+            "title":"判断以下标题是否为符合新闻写作标准的新闻标题：",
             "options":[
-            {"value":"1", "text":"德意志统一"},
-            {"value":"2", "text":"荷兰独立"},
-            {"value":"3", "text":"西班牙兴起"},
-            {"value":"4", "text":"法国衰落"}
+            {"value":"1", "text":"纽约民众抗议特朗普 拟放送对华尔街管制"},
+            {"value":"2", "text":"去年普涨两三成 今年房价料回稳"},
+            {"value":"3", "text":"坚守人民立场 从严管党治党"},
+            {"value":"4", "text":"报告：港IPO集资额连续两年全球最高"},
+            {"value":"5", "text":"普京称：俄方不会归还北方四岛，日媒还岛言论为谣言"}
             ],
-            "answer":"2"
-}]');
+            "answer":["1","4"]
+        },
+        {
+            "id":"3",
+            "type":"yes_or_no",
+            "committee":["21"],
+            "level":"1",
+            "title":"在安理会的闭门会议中，除理事国代表以外的任何国家代表皆不得出席会议。",
+            "answer":"false"
+        },
+        {
+            "id":"4",
+            "type":"fill_in",
+            "committee":["21"],
+            "level":"1",
+            "title":"安理会所用议事规则为 (...)",
+            "answer":"安理会暂行议事规则"
+        }]');
         $html = FormController::formAssignment($test, 20, 2);
         return view('blank', ['testContent' => $html]);
     }

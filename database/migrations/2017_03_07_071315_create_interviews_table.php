@@ -27,10 +27,10 @@ class CreateInterviewsTable extends Migration
             $table->integer('conference_id')->unsigned();
             $table->integer('reg_id')->unsigned();
             $table->integer('interviewer_id')->nullabled()->unsigned();
-            $table->dateTime('assigned_at')->nullable();
+            $table->dateTime('arranged_at')->nullable();
             $table->dateTime('finished_at')->nullable();
-            $table->enum('status', ['assigned', 'arranged', 'cancelled', 'passed', 'failed', 'exempted']);
-            $table->float('score');
+            $table->enum('status', ['assigned', 'arranged', 'cancelled', 'passed', 'failed', 'wait', 'exempted']);
+            $table->float('score')->nullable();
             $table->text('feedback')->nullable();
             $table->timestamps();
             $table->foreign('conference_id')->references('id')->on('conferences')->onDelete('cascade');

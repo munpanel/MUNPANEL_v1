@@ -152,8 +152,11 @@ $isOtOrDais = in_array(Reg::current()->type, ['ot', 'dais']);
 
                     <p>请在此列表中选择面试官，面试官姓名右侧显示了面试官当前分配的未完成面试数量。</p>
 
+                    <form action="{{secure_url('/ot/assignInterview/'.$reg->id)}}" method="post">
+                    {{csrf_field()}}
+
                           <div class="m-b">
-                            <select style="width:260px" class="interviewer-list">
+                            <select style="width:260px" class="interviewer-list" name="interviewer">
                                 @foreach (\App\Interviewer::list() as $name => $group)
                                 <optgroup label="{{$name}}">
                                     @foreach ($group as $iid => $iname)
@@ -164,10 +167,12 @@ $isOtOrDais = in_array(Reg::current()->type, ['ot', 'dais']);
                             </select>
                           </div>
 
-                        <p>分配完成之后，分配信息将自动通知代表和面试官。</p>
+                        <p>分配完成之后，MUNPANEL 将自动通知代表和面试官。</p>
 
-                   <button name="submit" type="submit" class="btn btn-info" onclick="loader(this);"><i class="fa fa-share fa-fw"></i> 分配面试官</button>
-                   <button name="" type="button" class="btn btn-link" onclick="$('#do_assign').hide(); $('#pre_select').show();">取消</button>
+                   <button name="submit" type="submit" class="btn btn-info">分配面试官</button>
+                   <button name="cancel" type="button" class="btn btn-link" onclick="$('#do_assign').hide(); $('#pre_select').show();">取消</button>
+
+                   </form>
 
                 </div>
 
@@ -176,8 +181,11 @@ $isOtOrDais = in_array(Reg::current()->type, ['ot', 'dais']);
 
                     <p>将会以免试通过方式完成此代表的面试流程，请在此列表中选择面试官，选定的面试官将可以直接为此代表分配席位。</p>
 
+                    <form action="{{secure_url('/ot/exemptInterview/'.$reg->id)}}" method="post">
+                    {{csrf_field()}}
+
                           <div class="m-b">
-                            <select style="width:260px" class="interviewer-list">
+                            <select style="width:260px" class="interviewer-list" name="interviewer">
                                 @foreach (\App\Interviewer::list() as $name => $group)
                                 <optgroup label="{{$name}}">
                                     @foreach ($group as $iid => $iname)
@@ -189,8 +197,10 @@ $isOtOrDais = in_array(Reg::current()->type, ['ot', 'dais']);
                           </div>
 
                         <p>指派之后，MUNPANEL 将会自动通知代表和面试官。</p>
-                        <button name="submit" type="submit" class="btn btn-info" onclick="loader(this);"><i class="fa fa-share fa-fw"></i> 分配面试官</button>
-                        <button name="" type="button" class="btn btn-link" onclick="$('#do_exempt').hide(); $('#pre_select').show();">取消</button>
+                        <button name="submit" type="submit" class="btn btn-info" onclick="">免试通过并分配面试官</button>
+                        <button name="cancel" type="button" class="btn btn-link" onclick="$('#do_exempt').hide(); $('#pre_select').show();">取消</button>
+
+                        </form>
 
                 </div>
               </div>

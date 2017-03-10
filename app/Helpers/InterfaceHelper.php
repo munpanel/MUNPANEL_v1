@@ -69,15 +69,62 @@ function regStat($committees, $obs, $vol)
  * @param string $value value of HTTP POST request
  * @param string $text text of the input
  * @param string $id id of the DOM element
+ * @param bool $required 'data_required' for parsley
  * @return string HTML DOM element <input ...>...
  */
-function singleInput($type, $name, $value = '', $text = null, $id = null)
+function singleInput($type, $name, $value = '', $text = null, $id = null, $required = false)
 {
     $html = '<input ';
     if (isset($id)) $html .= 'id="'.$id.'"';
     $html .= ' type="'.$type.'" name="'.$name.'" value="'.$value.'"';
+    if ($required) $html .= ' data-required="true"';
     $html .= $type == 'text' ? ' class="form-control">' : '>';
     if (isset($text)) $html .= '&nbsp;' . $text;
     $html .= '<br>';
+    return $html;
+}
+/**
+ * Render one item of the table to html
+ *
+ * @param object $item the table item object ($*->items as item)
+ * @param string $useParam 用于判断项目是否对特定用户组有效
+ * @param string $useCompare 用于判断上述内容的数据源（item下的变量名）
+ * @return string HTML clip of the table
+ */
+function singleRegItem($item, $useParam, $useCompare)
+{
+    $html = '';
+    if (isset($item->title) && $item->type != 'group')
+        $html .= '<label>'.$item->title.'</label>';
+    switch ($item->type)
+    {
+        // 自定义的表单项
+        case 'select': $html .= '<select name="'.$item->name.'" class="form-control m-b"';
+            if (!empty($item->data_required)) $html .= ' data-required="true"';
+            if (!empty($item->id)) $html .= ' id="'.$item->id.'"';
+            $html .= '>
+            <option value="" selected="">请选择</option>';
+            foreach ($item->options as $option)
+                $html .= '<option value="'.$option->value.'">'.$option->text.'</option>';
+            $html .= '</select> ';
+        break;
+        case 'checkbox': 
+        case 'text': 
+            $html .= singleInput($item->type, $item->name, '', $item->text, $item->id);
+        break;
+        case 'group': 
+            $html .= '<div class="form-group" ';
+            if (!empty($item->id)) $html .= ' id="'.$item->id.'"';
+            $html .= '>';
+            if (isset($item->title))
+                $html .= '<label>'.$item->title.'</label>';
+            foreach ($item->items as $subitem)
+            {
+                if (!in_array($useParam, $subitem->{$useCompare})) continue;
+                $html .= singleRegItem($subitem, $useParam, $useCompare);
+            }
+            $html .= '</div>';
+        break;
+    }
     return $html;
 }

@@ -29,35 +29,11 @@ class FormController extends Controller
             // 使用 $useParam 比对 $item->{$useCompare} 的值确定下一项是否对用户有效
             // 例：在 regTable 中，检查 $item->uses 是否存在 $regType 的值
             // TODO: 基于委员会的判断时，对父委员会的判断 
-            if (in_array($useParam, $item->{$useCompare}))
+            if (!in_array($useParam, $item->{$useCompare})) continue;
+            switch ($item->type)
             {
-                if (isset($item->title))
-                    $html .= '<label>'.$item->title.'</label>';
-                switch ($item->type)
-                {
-                // 自定义的表单项
-                    case 'select': $html .= '
-                      <select name="'.$item->name.'" class="form-control m-b"';
-                       if (!empty($item->data_required)) $html .= ' data-required="true"';
-                       if (!empty($item->id)) $html .= ' id="'.$item->id.'"';
-                    $html .= '>
-                        <option value="" selected="">请选择</option>';
-                        foreach ($item->options as $option)
-                          $html .= '<option value="'.$option->value.'">'.$option->text.'</option>';
-                    $html .= '</select> ';
-                    break;
-                    case 'checkbox': $html .= '<br><input name="'.$item->name.'" type="checkbox"';
-                        if (!empty($item->data_required)) $html .= ' data-required="true"';
-                        if (!empty($item->id)) $html .= ' id="'.$item->id.'"';
-                        $html .= '>'.$item->text;
-                    break;
-                    case 'text': $html .= '<input name="'.$item->name.'" class="form-control m-b" type="text" value=""';
-                        if (!empty($item->data_required)) $html .= ' data-required="true"';
-                        if (!empty($item->id)) $html .= ' id="'.$item->id.'"';
-                        $html .= '>';
-                    break;
-                      // 预设的表单项
-                    case 'preGroupOptions': $html .='
+                  // 预设的表单项
+                case 'preGroupOptions': $html .='
                 <div class="form-group">
                   <label>团队报名选项</label>
                   <div>
@@ -69,14 +45,15 @@ class FormController extends Controller
                       我是团队报名的领队<br>
                   </div>
                 </div>';
-                    break;
-                    case 'preRemarks': $html .='
+                break;
+                case 'preRemarks': $html .='
                 <div class="form-group">
                   <label>备注</label>
                   <textarea name="others" class="form-control" placeholder="任何其他说明" type="text"></textarea>
                 </div>';
-                    break;
-                }
+                break;
+                default:
+                    $html .= singleRegItem($item, $useParam, $useCompare);
             }
         }
         return $html;

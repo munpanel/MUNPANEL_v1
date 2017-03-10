@@ -39,6 +39,7 @@ class FormController extends Controller
                     case 'select': $html .= '
                       <select name="'.$item->name.'" class="form-control m-b"';
                        if (!empty($item->data_required)) $html .= ' data-required="true"';
+                       if (!empty($item->id)) $html .= ' id="'.$item->id.'"';
                     $html .= '>
                         <option value="" selected="">请选择</option>';
                         foreach ($item->options as $option)
@@ -47,10 +48,12 @@ class FormController extends Controller
                     break;
                     case 'checkbox': $html .= '<br><input name="'.$item->name.'" type="checkbox"';
                         if (!empty($item->data_required)) $html .= ' data-required="true"';
+                        if (!empty($item->id)) $html .= ' id="'.$item->id.'"';
                         $html .= '>'.$item->text;
                     break;
                     case 'text': $html .= '<input name="'.$item->name.'" class="form-control m-b" type="text" value=""';
                         if (!empty($item->data_required)) $html .= ' data-required="true"';
+                        if (!empty($item->id)) $html .= ' id="'.$item->id.'"';
                         $html .= '>';
                     break;
                       // 预设的表单项
@@ -113,19 +116,18 @@ class FormController extends Controller
         $subItems = array_rand($tableItems, $maxValue);
         foreach ($tableItems as $item)
         {
-            $html .= '<div class="form-group"><span class="badge">'.++$num.'</span><label>'.$item->title.'</label>';
+            $html .= '<div class="form-group"><span class="badge form-assignment m-l-n-xs">'.++$num.'</span>&nbsp;<label>'.$item->title.'</label><div class="m-l-lg">';
             $i = 0;
             switch ($item->type)
             {
                 case "single_choice":
-                    $html .= '<input type="radio" name="'.$item->id.'" value="0" checked="checked">';
                     foreach ($item->options as $option)
                         $html .= singleInput('radio', $item->id, ++$i, $option->text);
                         //$html .= '<div class="radio"><label class="radio-custom"><input type="radio" name="answer['.$item->id.']" value="'.$option->value.'"><i class="fa fa-circle-o"></i>'.$option->text.'</label></div>';
                     break;
                 case "mult_choice":
                     foreach ($item->options as $option)
-                        $html .= singleInput('check', $item->id, ++$i, $option->text);
+                        $html .= singleInput('checkbox', $item->id, ++$i, $option->text);
                         //$html .= '<div class="radio"><label class="radio-custom"><input type="radio" name="answer['.$item->id.']" value="'.$option->value.'"><i class="fa fa-circle-o"></i>'.$option->text.'</label></div>';
                     break;
                 case "yes_or_no":
@@ -133,15 +135,15 @@ class FormController extends Controller
                 <div class="btn-group" data-toggle="buttons">
                   <label class="btn btn-sm btn-success">
                     <input name="'.$item->id.'" id="true" type="radio" value="true"> <i class="fa fa-check text-active"></i>正确
-                    <input name="'.$item->id.'" id="false" type="radio" value="false"> <i class="fa fa-times text-active"></i>错误
                   </label>
                   <label class="btn btn-sm btn-danger">
+                    <input name="'.$item->id.'" id="false" type="radio" value="false"> <i class="fa fa-times text-active"></i>错误
                   </label></div>';
                     break;
                 case "fill_in":
                     $html .= singleInput('text', $item->id);
             }
-            $html .= '</div>';
+            $html .= '</div></div>';
         }
         return $html;
     }

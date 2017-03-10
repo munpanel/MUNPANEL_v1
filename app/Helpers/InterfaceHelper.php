@@ -75,7 +75,9 @@ function singleInput($type, $name, $value = '', $text = null, $id = null)
 {
     $html = '<input ';
     if (isset($id)) $html .= 'id="'.$id.'"';
-    $html .= ' type="'.$type.'" name="'.$name.'" value="'.$value.'">';
-    if (isset($text)) $html .= $text;
+    $html .= ' type="'.$type.'" name="'.$name.'" value="'.$value.'"';
+    $html .= $type == 'text' ? ' class="form-control">' : '>';
+    if (isset($text)) $html .= '&nbsp;' . $text;
+    $html .= '<br>';
     return $html;
 }

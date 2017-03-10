@@ -7,6 +7,10 @@
 @extends('layouts.app')
 @section('content')
 <div class="container">
+    @if ($convert)
     {!!$testContent!!}
+    @else
+    {{$testContent}}
+    @endif
 </div>
 @endsection

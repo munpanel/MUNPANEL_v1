@@ -410,9 +410,12 @@ $('#select-typeID').change(function(e){
             break;
         case "5":
             e1.setAttribute("pattern", "^\\d{3}-\\d{2}-\\d{4}$");
-            e1.setAttribute("placeholder", "形如AAA-GG-SSSS");
+            e1.setAttribute("placeholder", "形如 AAA-GG-SSSS");
     }
     $("form").parsley('destroy');
     $("form").parsley();
 });  
 </script>
+@if (isset($customTable->scripts))
+<script>{!!$customTable->scripts!!}</script>
+@endif

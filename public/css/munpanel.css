@@ -211,3 +211,7 @@ ul.timeline-small>li>.timeline-panel:after {
 .timeline-body blockquote p {
     font-size: 15px
 }
+
+.badge.form-assignment {
+    vertical-align: top
+}

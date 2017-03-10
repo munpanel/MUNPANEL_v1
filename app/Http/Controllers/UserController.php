@@ -301,10 +301,10 @@ class UserController extends Controller
                 }
             }
         }
-        $targets = $customTable->targets;
-        foreach ($targets is $item)
+        $targets = (array)$customTable->targets;
+        foreach ($targets as $key -> $item)
         {
-            switch key($item)
+            switch ($key)
             {
                 case 'committee':
                 $reg->committee_id = $request->{$targets['committee']};

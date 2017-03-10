@@ -64,13 +64,14 @@ $isOtOrDais = in_array(Reg::current()->type, ['ot', 'dais']);
                       @endif                
                     @endif
                     <label>会议信息</label>
+                    <p><i>TODO: 报名信息</i><br>&emsp;&emsp;{{json_encode($regInfo->conference)}}</p>{{--
                     <p><i>委员会意向 1</i><br>&emsp;&emsp;{{App\Committee::find($regInfo->conference->committee)->name}}</p>
                     <p><i>委员会意向 2</i><br>&emsp;&emsp;{{App\Committee::find($regInfo->conference->committee2)->name}}</p>
                     <p><i>委员会意向 3</i><br>&emsp;&emsp;{{App\Committee::find($regInfo->conference->committee3)->name}}</p>
                     <p><i>面试联络方式</i><br>&emsp;&emsp;{{--typeInterview($regInfo->conference->typeInterview)--}}</p>
                     @if (isset($regInfo->conference->smsInterview) || isset($regInfo->conference->offlineInterview))
 		    <p><i>面试选项</i><br>&emsp;&emsp;{{isset($regInfo->conference->smsInterview) ? '开通面试短信提醒服务' : ''}}{{isset($regInfo->conference->smsInterview) && isset($regInfo->conference->offlineInterview) ? ', ' : ''}}{{isset($regInfo->conference->offlineInterview) ? '接受线下面试' : ''}}</p>
-                    @endif
+                    @endif--}}
                     @if (isset($regInfo->conference->groupOption))
                     <p><i>团队报名选项</i><br>&emsp;&emsp;{{groupOption($regInfo->conference->groupOption)}}</p>
                     @endif

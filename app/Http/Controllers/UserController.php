@@ -246,7 +246,7 @@ class UserController extends Controller
             // TODO: 加载 MUNPANEL 收录会议的参会经历
             if (in_array($reg->type, $customTable->experience->custom))
             {
-                if (!(empty($request->level1) || empty($request->date1) || empty($request->name1) || empty($request->role1)))
+                if (!empty($request->level1) && !empty($request->date1) && !empty($request->name1) && !empty($request->role1))
                 {
                     $expitem = new \stdClass();
                     $expitem->level = $request->level1;
@@ -298,16 +298,21 @@ class UserController extends Controller
                     case 'preRemarks': 
                         $conf_info->remarks = $request->remarks;
                     break;
+                    case 'group':
+                        foreach ($item->items as $subitem)
+                            if (isset($subitem->name) && !empty($request->{$subitem->name}))
+                                $conf_info->{$subitem->name} = $request->{$subitem->name};
+                    break;
                 }
             }
         }
         $targets = (array)$customTable->targets;
-        foreach ($targets as $key -> $item)
+        foreach ($targets as $key => $item)
         {
             switch ($key)
             {
                 case 'committee':
-                $reg->committee_id = $request->{$targets['committee']};
+                $conf_info->committee = $request->{$targets['committee']};
                 break;
             }
         }

@@ -16,6 +16,7 @@ use App\Delegate;
 use App\Interview;
 use App\Interviewer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class InterviewController extends Controller
 {
@@ -30,6 +31,7 @@ class InterviewController extends Controller
         $interview->interviewer_id = $interviewer->reg_id;
         $interview->status = 'assigned';
         $interview->save();
+        Reg::findOrFail($id)->addEvent('interview_assigned', '{"interviewer":"'.$interviewer->reg->user->name.'"}');
         //To-Do: return redirect
     }
 
@@ -37,5 +39,7 @@ class InterviewController extends Controller
     {
         //To-Do: permission check
         $interviewer = Interviewer::findOrFail($request->interviewer);
+        // TODO: 免试流程
+        Reg::findOrFail($id)->addEvent('interview_exempted', '{"name":"'.Auth::user()->name.'"}');
     }
 }

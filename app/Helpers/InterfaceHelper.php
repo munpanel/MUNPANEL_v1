@@ -110,7 +110,10 @@ function singleRegItem($item, $useParam, $useCompare)
         break;
         case 'checkbox': 
         case 'text': 
-            $html .= singleInput($item->type, $item->name, '', $item->text, $item->id);
+            $id = $text = null;
+            if (!empty($item->id)) $id = $item->id;
+            if (!empty($item->text)) $text = $item->text;
+            $html .= singleInput($item->type, $item->name, '', $text, $id);
         break;
         case 'group': 
             $html .= '<div class="form-group" ';

@@ -119,6 +119,13 @@ class FormController extends Controller
                     break;
                 case "fill_in":
                     $html .= singleInput('text', $item->id);
+                case "order":
+                    $li = 0;
+                    $html .= '<ul class="list-group gutter  list-group-sp sortable">';
+                    foreach ($item->options as $option)
+                        $html .= '<li class="list-group-item" draggable="true"><span class="pull-left media-xs"><i class="fa fa-sort text-muted fa-sm"></i>&nbsp;'.++$li.'</span><div class="clear">'.$option->text.'</div></li>';
+                    $html .= '</ul>';
+                    break;
             }
             $html .= '</div></div>';
         }

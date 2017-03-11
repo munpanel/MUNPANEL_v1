@@ -732,10 +732,10 @@ class HomeController extends Controller
             "level":"1",
             "title":"1618 年历史上第一次全欧大战爆发，战争经历了三十年，史称三十年战争，请问下列哪项是该战争带来的影响：",
             "options":[
-            {"value":"1", "text":"德意志统一"},
-            {"value":"2", "text":"荷兰独立"},
-            {"value":"3", "text":"西班牙兴起"},
-            {"value":"4", "text":"法国衰落"}
+                {"value":"1", "text":"德意志统一"},
+                {"value":"2", "text":"荷兰独立"},
+                {"value":"3", "text":"西班牙兴起"},
+                {"value":"4", "text":"法国衰落"}
             ],
             "answer":"2"
         },
@@ -746,11 +746,11 @@ class HomeController extends Controller
             "level":"1",
             "title":"判断以下标题是否为符合新闻写作标准的新闻标题<br>（请从新闻写作的角度思考并作答，下同）：",
             "options":[
-            {"value":"1", "text":"纽约民众抗议特朗普 拟放送对华尔街管制"},
-            {"value":"2", "text":"去年普涨两三成 今年房价料回稳"},
-            {"value":"3", "text":"坚守人民立场 从严管党治党"},
-            {"value":"4", "text":"报告：港IPO集资额连续两年全球最高"},
-            {"value":"5", "text":"普京称：俄方不会归还北方四岛，日媒还岛言论为谣言"}
+                {"value":"1", "text":"纽约民众抗议特朗普 拟放送对华尔街管制"},
+                {"value":"2", "text":"去年普涨两三成 今年房价料回稳"},
+                {"value":"3", "text":"坚守人民立场 从严管党治党"},
+                {"value":"4", "text":"报告：港IPO集资额连续两年全球最高"},
+                {"value":"5", "text":"普京称：俄方不会归还北方四岛，日媒还岛言论为谣言"}
             ],
             "answer":["1","4"]
         },
@@ -769,62 +769,22 @@ class HomeController extends Controller
             "level":"1",
             "title":"安理会所用议事规则为 (...)",
             "answer":"安理会暂行议事规则"
+        },
+        {
+            "id":"5",
+            "type":"order",
+            "committee":["24"],
+            "level":"1",
+            "title":"假设你是新加坡联合早报的编辑，现在时间是 2016 年 11 月 16 日，请将以下几条新闻事件依报道优先级排序: ",
+            "options":[
+                {"value":"1", "text":"青瓦台反对朴槿惠“有序退位”"},
+                {"value":"2", "text":"特朗普当选后引发安全隐忧 欧盟通过防务计划提高防御能力"},
+                {"value":"3", "text":"中国遏制徇私舞弊权钱交易 高院发布量刑执法新规打击涉案权势者"},
+                {"value":"4", "text":"出席台湾-亚细安对话 蔡英文谈“新向南政策”三大目标"}
+            ],
+            "answer":["3","4","1","2"]
         }]');
         $html = FormController::formAssignment($test, 20, 2);
-        $js = '$("#select-comm1").change(function(e){
-    var group = document.getElementById("committee1branch");
-    var group2 = document.getElementById("committee2branch");
-    if (document.getElementById("select-comm1").value == "11")
-    {
-        $("select#select-comm2 option").remove();
-        $("select#select-comm2").append(\'<option value="" selected="">请选择</option><option value="10">危机联动体系</option><option value="29">独立委员会组</option>\');
-        group.style.display = "none";
-    }
-    else if (document.getElementById("select-comm1").value == "10")
-    {
-        $("select#select-branch1 option").remove();
-        $("select#select-branch2 option").remove();
-        $("select#select-branch1").append(\'<option value="" selected="">请选择</option><option value="17">亚洲分支</option><option value="18">欧洲分支</option><option value="19">东欧分支</option><option value="20">中东分支</option><option value="21">联合国安全理事会</option><option value="22">美洲分支</option><option value="24">舆论媒体</option>\');
-        $("select#select-branch2").append(\'<option value="" selected="">请选择备选会场</option><option value="17">亚洲分支</option><option value="18">欧洲分支</option><option value="19">东欧分支</option><option value="20">中东分支</option><option value="21">联合国安全理事会</option><option value="22">美洲分支</option><option value="24">舆论媒体</option>\');
-        $("select#select-comm2 option").remove();
-        $("select#select-comm2").append(\'<option value="" selected="">请选择</option><option value="11">東晉縱橫</option><option value="29">独立委员会组</option>\');
-        group2.style.display = "none";  
-        group.style.display = "block";      
-    }
-    else
-    {        
-        $("select#select-branch1 option").remove();
-        $("select#select-branch2 option").remove();
-                $("select#select-branch1").append(\'<option value="" selected="">请选择</option><option value="12">共同均衡裁军谈判会议</option><option value="13">G20 Summit</option><option value="14">联合国世界旅游组织第二十二届全体大会</option><option value="15">慕尼黑安全政策会议</option><option value="16">联合国大会社会、人道主义和文化委员会</option>\');
-        $("select#select-branch2").append(\'<option value="" selected="">请选择备选会场</option><option value="12">共同均衡裁军谈判会议</option><option value="13">G20 Summit</option><option value="14">联合国世界旅游组织第二十二届全体大会</option><option value="15">慕尼黑安全政策会议</option><option value="16">联合国大会社会、人道主义和文化委员会</option>\');
-        $("select#select-comm2 option").remove();
-        $("select#select-comm2").append(\'<option value="" selected="">请选择</option><option value="10">危机联动体系</option><option value="11">東晉縱橫</option><option value="29">独立委员会组</option>\');
-        group.style.display = "block";
-    }
-});
-$("#select-comm2").change(function(e){
-    var group = document.getElementById("committee2branch");
-    var e1 = document.getElementById("select-branch3");
-    var e2 = document.getElementById("select-branch4");
-    if (document.getElementById("select-comm2").value != "11")
-        group.style.display = "block";
-    else 
-        group.style.display = "none";
-    if (document.getElementById("select-comm2").value == "10")
-    {
-        $("select#select-branch3 option").remove();
-        $("select#select-branch4 option").remove();
-        $("select#select-branch3").append(\'<option value="" selected="">请选择</option><option value="17">亚洲分支</option><option value="18">欧洲分支</option><option value="19">东欧分支</option><option value="20">中东分支</option><option value="21">联合国安全理事会</option><option value="22">美洲分支</option><option value="24">舆论媒体</option>\');
-        $("select#select-branch4").append(\'<option value="" selected="">请选择备选会场</option><option value="17">亚洲分支</option><option value="18">欧洲分支</option><option value="19">东欧分支</option><option value="20">中东分支</option><option value="21">联合国安全理事会</option><option value="22">美洲分支</option><option value="24">舆论媒体</option>\');
-    }
-    else
-    {        
-        $("select#select-branch3 option").remove();
-        $("select#select-branch4 option").remove();
-        $("select#select-branch3").append(\'<option value="" selected="">请选择</option><option value="12">共同均衡裁军谈判会议</option><option value="13">G20 Summit</option><option value="14">联合国世界旅游组织第二十二届全体大会</option><option value="15">慕尼黑安全政策会议</option><option value="16">联合国大会社会、人道主义和文化委员会</option>\');
-        $("select#select-branch4").append(\'<option value="" selected="">请选择备选会场</option><option value="12">共同均衡裁军谈判会议</option><option value="13">G20 Summit</option><option value="14">联合国世界旅游组织第二十二届全体大会</option><option value="15">慕尼黑安全政策会议</option><option value="16">联合国大会社会、人道主义和文化委员会</option>\');
-    }
-});';
-        return view('blank', ['testContent' => json_encode($js), 'convert' => false]);
+        return view('blank', ['testContent' => $html, 'convert' => true]);
     }
 }

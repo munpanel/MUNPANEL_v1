@@ -80,7 +80,7 @@ function singleInput($type, $name, $value = '', $text = null, $id = null, $requi
     if ($required) $html .= ' data-required="true"';
     $html .= $type == 'text' ? ' class="form-control">' : '>';
     if (isset($text)) $html .= '&nbsp;' . $text;
-    $html .= '<br>';
+    if ($type != 'text') $html .= '<br>';
     return $html;
 }
 /**

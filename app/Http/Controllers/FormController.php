@@ -119,6 +119,7 @@ class FormController extends Controller
                     break;
                 case "fill_in":
                     $html .= singleInput('text', $item->id);
+                    break;
                 case "order":
                     $li = 0;
                     $html .= '<ul class="list-group gutter  list-group-sp sortable">';

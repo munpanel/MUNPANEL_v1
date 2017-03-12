@@ -10,17 +10,17 @@
 
     <title>{{Reg::currentConference()->name}} | MUNPANEL</title>
 
-    <link rel="icon" href="{{secure_url('/images/favicon.ico')}}" type="image/x-icon" />
-    <link rel="shortcut icon" href="{{secure_url('/images/favicon.ico')}}" type="image/x-icon" />
+    <link rel="icon" href="{{mp_url('/images/favicon.ico')}}" type="image/x-icon" />
+    <link rel="shortcut icon" href="{{mp_url('/images/favicon.ico')}}" type="image/x-icon" />
 
     <!-- Styles -->
-    <link rel="stylesheet" href="{{secure_url('/css/bootstrap.css')}}" type="text/css" />
-    <link rel="stylesheet" href="{{secure_url('/css/animate.css')}}" type="text/css" />
-    <link rel="stylesheet" href="{{secure_url('/css/font-awesome.min.css')}}" type="text/css" />
-    <link rel="stylesheet" href="{{secure_url('/css/font.css')}}" type="text/css" cache="false" />
-    <link rel="stylesheet" href="{{secure_url('/css/plugin.css')}}" type="text/css" />
-    <link rel="stylesheet" href="{{secure_url('/css/app.css')}}" rel="stylesheet" />
-    <link rel="stylesheet" href="{{secure_url('/css/munpanel.css')}}" type="text/css" />
+    <link rel="stylesheet" href="{{mp_url('/css/bootstrap.css')}}" type="text/css" />
+    <link rel="stylesheet" href="{{mp_url('/css/animate.css')}}" type="text/css" />
+    <link rel="stylesheet" href="{{mp_url('/css/font-awesome.min.css')}}" type="text/css" />
+    <link rel="stylesheet" href="{{mp_url('/css/font.css')}}" type="text/css" cache="false" />
+    <link rel="stylesheet" href="{{mp_url('/css/plugin.css')}}" type="text/css" />
+    <link rel="stylesheet" href="{{mp_url('/css/app.css')}}" rel="stylesheet" />
+    <link rel="stylesheet" href="{{mp_url('/css/munpanel.css')}}" type="text/css" />
     @stack('css')
 
     <!-- Scripts -->
@@ -30,10 +30,10 @@
         ]); ?>
     </script>
     <!--[if lt IE 9]>
-      <script src="{{secure_url('/js/ie/respond.min.js')}}" cache="false"></script>
-      <script src="{{secure_url('/js/ie/html5.js')}}" cache="false"></script>
-      <script src="{{secure_url('/js/ie/excanvas.js')}}" cache="false"></script>
-      <script src="{{secure_url('/js/ie/fix.js')}}" cache="false"></script>
+      <script src="{{mp_url('/js/ie/respond.min.js')}}" cache="false"></script>
+      <script src="{{mp_url('/js/ie/html5.js')}}" cache="false"></script>
+      <script src="{{mp_url('/js/ie/excanvas.js')}}" cache="false"></script>
+      <script src="{{mp_url('/js/ie/fix.js')}}" cache="false"></script>
     <![endif]-->
 @if (Config::get('analytics.enabled'))
     <script>
@@ -68,7 +68,7 @@
           <div class="bg-success nav-user hidden-xs pos-rlt">
             <div class="nav-avatar pos-rlt">
               <a href="#" class="thumb-sm avatar animated rollIn" data-toggle="dropdown">
-                <img src="{{ 'https://www.gravatar.com/avatar/' . md5( strtolower( trim( Auth::user()->email ) ) ) . '?d='.secure_url('images/avatar.jpg').'&s=320' }}" alt="" class="">
+                <img src="{{ 'https://www.gravatar.com/avatar/' . md5( strtolower( trim( Auth::user()->email ) ) ) . '?d='.mp_url('images/avatar.jpg').'&s=320' }}" alt="" class="">
                 <span class="caret caret-white"></span>
               </a>
               <ul class="dropdown-menu m-t-sm animated fadeInLeft">
@@ -90,9 +90,9 @@
                   <a href="help.html">Help</a>
                 </li-->
                 <li>
-                  <a href="{{ secure_url('/changePwd.modal') }}" data-toggle="ajaxModal">修改密码</a>
-                  <a href="{{ secure_url('/help.html') }}">帮助</a>
-                  <a href="{{ secure_url('/logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">注销</a>
+                  <a href="{{ mp_url('/changePwd.modal') }}" data-toggle="ajaxModal">修改密码</a>
+                  <a href="{{ mp_url('/help.html') }}">帮助</a>
+                  <a href="{{ mp_url('/logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">注销</a>
                 </li>
               </ul>
               <div class="visible-xs m-t m-b">
@@ -153,12 +153,12 @@
           <!-- note -->
           <div class="bg-primary wrapper hidden-vertical animated fadeInUp text-sm">
               <!--a href="#" data-dismiss="alert" class="pull-right m-r-n-sm m-t-n-sm"><i class="fa fa-times"></i></a-->
-              Proudly Powered and Copyrighted by {{config('munpanel.copyright_year')}} Console iT.
+              Proudly Powered and Copyrighted by {{config('munpanel.copyright_year')}} MUNPANEL. A Product of Console iT.
           </div>
           <!-- / note -->
         </section>
         <footer class="footer bg-gradient hidden-xs">
-          <a href="{{secure_url('/selectIdentityModal')}}" data-toggle="ajaxModal" class="btn btn-sm btn-link m-r-n-xs pull-right">
+          <a href="{{mp_url('/selectIdentityModal')}}" data-toggle="ajaxModal" class="btn btn-sm btn-link m-r-n-xs pull-right">
             <i class="fa fa-power-off"></i>
           </a>
           <a href="#nav" data-toggle="class:nav-vertical" class="btn btn-sm btn-link m-l-n-sm">
@@ -176,19 +176,19 @@
     </section>
     <!-- /.vbox -->
   </section>
-  <form id="logout-form" action="{{ secure_url('/logout') }}" method="POST" style="display: none;"> {{ csrf_field() }} </form>
-	<script src="{{secure_url('/js/jquery.min.js')}}"></script>
+  <form id="logout-form" action="{{ mp_url('/logout') }}" method="POST" style="display: none;"> {{ csrf_field() }} </form>
+	<script src="{{mp_url('/js/jquery.min.js')}}"></script>
   <!-- Bootstrap -->
-  <script src="{{secure_url('/js/bootstrap.js')}}"></script>
+  <script src="{{mp_url('/js/bootstrap.js')}}"></script>
  <!-- App -->
-  <script src="{{secure_url('/js/app.js')}}"></script>
-  <script src="{{secure_url('/js/app.plugin.js')}}"></script>
-  <script src="{{secure_url('/js/app.data.js')}}"></script>
+  <script src="{{mp_url('/js/app.js')}}"></script>
+  <script src="{{mp_url('/js/app.plugin.js')}}"></script>
+  <script src="{{mp_url('/js/app.data.js')}}"></script>
   <!-- Parsley -->
-  <script src="{{secure_url('/js/parsley/parsley.min.js')}}"></script>
-  <script src="{{secure_url('/js/parsley/parsley.extend.js')}}"></script>
+  <script src="{{mp_url('/js/parsley/parsley.min.js')}}"></script>
+  <script src="{{mp_url('/js/parsley/parsley.extend.js')}}"></script>
   @if ((!Auth::user()->verified()) || Reg::current()->type == 'unregistered' || (!Reg::selectConfirmed()))
-  <script src="{{secure_url('/js/reg.firsttime.js')}}"></script>
+  <script src="{{mp_url('/js/reg.firsttime.js')}}"></script>
   @endif
   @stack('scripts')
   @if (isset($notice_msg))

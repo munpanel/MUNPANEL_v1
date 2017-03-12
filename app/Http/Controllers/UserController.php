@@ -456,7 +456,7 @@ class UserController extends Controller
         {
             $user->password = Hash::make($request->newPassword);
             $user->save();
-            return redirect(secure_url('/home'));
+            return redirect(mp_url('/home'));
         }
         else
             return view('error', ['msg' => 'Wrong password!']);

@@ -309,7 +309,7 @@ class ExcelController extends Controller
                     }
                 }
             });
-            return redirect(secure_url('/regManage'));
+            return redirect(mp_url('/regManage'));
         }
         else
             return view('error', ['msg' => '操作失败！']);

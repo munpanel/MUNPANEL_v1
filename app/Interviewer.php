@@ -35,6 +35,12 @@ class Interviewer extends Model
         return '面试官';
     }
 
+    public function nicename() {
+        if (is_object($this->committee))
+            return $this->reg->name().'（'.$this->committee->name.'）';
+        return $this->reg->name();
+    }
+
     static public function list() {
         $interviewers = Interviewer::all();
         $list = array();

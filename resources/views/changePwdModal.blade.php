@@ -3,7 +3,7 @@
           <div class="modal-body">
             <div class="row">
                 <div class="col-sm-12 b-r">
-                    <form role="form" action="{{secure_url('/changePwd')}}" method="post"  data-validate="parsley" id="changePwdForm">
+                    <form role="form" action="{{mp_url('/changePwd')}}" method="post"  data-validate="parsley" id="changePwdForm">
                         {{ csrf_field() }}
                         <div class="form-group">
                             <label>原密码</label>

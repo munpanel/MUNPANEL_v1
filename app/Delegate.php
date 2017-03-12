@@ -68,6 +68,15 @@ class Delegate extends Model
         return '代表（'.$this->committee->name.'）';
     }
 
+    public function nextStatus() {
+        switch ($this->status) { //To-Do: configurable
+            case null: return 'sVerified';
+            case 'sVerified': return 'oVerified';
+            case 'oVerified': return 'unpaid';
+            case 'unpaid': return 'paid';
+        }
+    }
+
     public function assignments() {
         $result = new Collection;
         if (isset($this->nation))
@@ -228,6 +237,11 @@ class Delegate extends Model
             }
         }
         return $scope;
+    }
+
+    public function interviewStatus()
+    {
+        
     }
 
 }

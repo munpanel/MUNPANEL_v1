@@ -119,7 +119,23 @@ $isOtOrDais = in_array(Reg::current()->type, ['ot', 'dais']);
                 <p>暂无任何对{{$isOtOrDais ? '该用户' : '您'}}分配的面试。</p>
                 @else
 
-              @foreach ($reg->interviews as $interview)
+              @foreach ($reg->interviews()->orderBy('created_at', 'dsc')->get() as $interview)
+              <table class="table table-bordered table-striped table-hover">
+              <tbody>
+              <tr>
+              <td>状态</td>
+              <td>{{$interview->status}}</td>
+              </tr>
+              <tr>
+              <td>面试官</td>
+              <td>{{$interview->interviewer->nicename()}}</td>
+              </tr>
+              <tr>
+              <td>分配时间</td>
+              <td>{{nicetime($interview->created_at)}}</td>
+              </tr>
+              </tbody>
+              </table>
               @endforeach
               @endif
               </div>
@@ -153,7 +169,7 @@ $isOtOrDais = in_array(Reg::current()->type, ['ot', 'dais']);
 
                     <p>请在此列表中选择面试官，面试官姓名右侧显示了面试官当前分配的未完成面试数量。</p>
 
-                    <form action="{{secure_url('/ot/assignInterview/'.$reg->id)}}" method="post">
+                    <form action="{{mp_url('/ot/assignInterview/'.$reg->id)}}" method="post">
                     {{csrf_field()}}
 
                           <div class="m-b">
@@ -182,7 +198,7 @@ $isOtOrDais = in_array(Reg::current()->type, ['ot', 'dais']);
 
                     <p>将会以免试通过方式完成此代表的面试流程，请在此列表中选择面试官，选定的面试官将可以直接为此代表分配席位。</p>
 
-                    <form action="{{secure_url('/ot/exemptInterview/'.$reg->id)}}" method="post">
+                    <form action="{{mp_url('/ot/exemptInterview/'.$reg->id)}}" method="post">
                     {{csrf_field()}}
 
                           <div class="m-b">

@@ -65,7 +65,7 @@ class User extends Authenticatable
     }
 
     public function sendVerificationEmail() {
-        $url = secure_url('/verifyEmail/'.$this->email.'/'.$this->emailVerificationToken);
+        $url = mp_url('/verifyEmail/'.$this->email.'/'.$this->emailVerificationToken);
         $mail = new Email;
         $mail->id = generateID();
         $mail->conference_id = 2; //ToDo
@@ -106,4 +106,5 @@ class User extends Authenticatable
             return false;
         return true;
     }
+
 }

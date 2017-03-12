@@ -105,10 +105,10 @@
   font-size: 1px;
 }
 </style>
-<div class="extra">完整HTML版邮件请见：{{secure_url('/showEmail/'.$id)}}</div>
+<div class="extra">完整HTML版邮件请见：{{mp_url('/showEmail/'.$id)}}</div>
 <div class="container">
   <div class="header">
-    <img src="{{secure_url('/email/munpanel.png')}}">
+    <img src="{{mp_url('/email/munpanel.png')}}">
   </div>
   <div class="body">
     <p>{!!$content!!}</p>

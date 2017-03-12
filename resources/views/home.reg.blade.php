@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('home_active', 'active')
 @push('scripts')
-    <script src="{{secure_url('js/charts/easypiechart/jquery.easy-pie-chart.js')}}"></script>
+    <script src="{{mp_url('js/charts/easypiechart/jquery.easy-pie-chart.js')}}"></script>
 @endpush
 @section('content')
       <section class="vbox">
@@ -104,7 +104,7 @@
                               <div class="progress-bar progress-bar-warning" data-toggle="tooltip" data-original-title="{{ $percent }}%" style="width: {{ $percent }}%"></div>
                             </div>
                               <div class="text-sm">点击下方按钮进入报名表单：</div>
-                              <a href="{{ secure_url('/reg.modal') }}" data-toggle="ajaxModal" class="btn btn-danger">报名</a>
+                              <a href="{{ mp_url('/reg.modal') }}" data-toggle="ajaxModal" class="btn btn-danger">报名</a>
                           </div>
                         </div>
                         <div class="col-xs-6 wrapper text-center">

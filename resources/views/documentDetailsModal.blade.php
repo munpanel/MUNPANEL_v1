@@ -10,7 +10,7 @@
                     @if (Reg::current()->type == 'ot' || Reg::current()->type == 'dais')
                     <tr>
                         <td width="35%">标题</td>
-                        <td width="65%"><a href="#" id="title" data-type="text" data-pk="{{$document->id}}" data-url="{{secure_url('/ot/update/document/'.$document->id)}}" data-title="title" class="editable">{{$document->title}}</a></td>
+                        <td width="65%"><a href="#" id="title" data-type="text" data-pk="{{$document->id}}" data-url="{{mp_url('/ot/update/document/'.$document->id)}}" data-title="title" class="editable">{{$document->title}}</a></td>
                     </tr>
                     @endif
                     <tr>
@@ -25,7 +25,7 @@
                         <td width="35%">描述</td>
                         @if (Reg::current()->type == 'ot' || Reg::current()->type == 'dais')
                         <!-- TODO: 改用多行文本 -->
-                        <td width="65%"><a href="#" id="description" data-type="text" data-pk="{{$document->id}}" data-url="{{secure_url('/ot/update/document/'.$document->id)}}" data-title="description" class="editable">{!!$document->description!!}</a></td>
+                        <td width="65%"><a href="#" id="description" data-type="text" data-pk="{{$document->id}}" data-url="{{mp_url('/ot/update/document/'.$document->id)}}" data-title="description" class="editable">{!!$document->description!!}</a></td>
                         @else
                         <td width="65%">{!!$document->description!!}</td>
                         @endif

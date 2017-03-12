@@ -7,7 +7,7 @@
                 <tbody>
                     <tr>
                         <td width="35%">名称</td>
-                        <td width="65%"><a href="#" id="name" data-type="text" data-pk="{{$nation->id}}" data-url="{{secure_url('/dais/update/nation/'.$nation->id)}}" data-title="name" class="editable">{{$nation->name}}</a></td>
+                        <td width="65%"><a href="#" id="name" data-type="text" data-pk="{{$nation->id}}" data-url="{{mp_url('/dais/update/nation/'.$nation->id)}}" data-title="name" class="editable">{{$nation->name}}</a></td>
                     </tr>
                   </tbody>
             </table>

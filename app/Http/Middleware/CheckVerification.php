@@ -36,9 +36,9 @@ class CheckVerification
             /*
             if (substr($route, 0, 6) != 'verify') {
                 if ($user->emailVerificationToken != 'success')
-                    return redirect(secure_url('/verifyEmail'));
+                    return redirect(mp_url('/verifyEmail'));
                 if ($user->telVerifications != -1) //3/2/1: tries left; -1: activated
-                    return redirect(secure_url('/verifyTel'));
+                    return redirect(mp_url('/verifyTel'));
             }
             */
             $cid = config('munpanel.conference_id');

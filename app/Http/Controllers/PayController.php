@@ -41,7 +41,7 @@ class PayController extends Controller
             $param['amount'] = $order->price;
             $param['subject'] = 'MUNPANEL Store';
             $param['metadata'] = json_encode(array('oid' => $order->id, 'uid' => Auth::user()->id));
-            $param['notify_url'] = secure_url('/api/payNotify');//支付成功后天工支付网关通知
+            $param['notify_url'] = mp_url('/api/payNotify');//支付成功后天工支付网关通知
             //dd($param);
 
         }
@@ -53,7 +53,7 @@ class PayController extends Controller
             $param['amount'] = Auth::user()->invoiceAmount();
             $param['subject'] = 'BJMUNC 2017会费';
             $param['metadata'] = json_encode(array('uid'=> Auth::user()->id));
-            $param['notify_url'] = secure_url('/api/payNotify');//支付成功后天工支付网关通知
+            $param['notify_url'] = mp_url('/api/payNotify');//支付成功后天工支付网关通知
             //return $param;
         }
         return $srv->pay($param,false);

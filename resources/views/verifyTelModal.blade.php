@@ -3,7 +3,7 @@
           <div class="modal-body">
             <div class="row">
               <div class="col-sm-12 b-r">
-              <form role="form"  data-validate="parsley" action="{{ secure_url('/verifyTel') }}" method="post">
+              <form role="form"  data-validate="parsley" action="{{ mp_url('/verifyTel') }}" method="post">
                 {{ csrf_field() }}
                 <div class="form-group">
                   <label>您收到的验证码</label>

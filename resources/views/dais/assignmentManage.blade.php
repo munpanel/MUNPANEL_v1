@@ -3,7 +3,7 @@
 @section('content')
     <!-- TODO: 检查 /public/js/dais.assignmentManage.js -->
       <header class="header b-b bg-white">      
-          <a href="{{secure_url('/ot/committeeDetails.modal/new')}}" class="btn btn-sm btn-success details-modal pull-right"><i class="fa fa-plus"></i> 新建</a>
+          <a href="{{mp_url('/ot/committeeDetails.modal/new')}}" class="btn btn-sm btn-success details-modal pull-right"><i class="fa fa-plus"></i> 新建</a>
           <p>BJMUNC2017 {{$committee->display_name}} 学术作业清单</p>
         </header>
       <section class="scrollable wrapper w-f">

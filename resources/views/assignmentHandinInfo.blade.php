@@ -1,8 +1,8 @@
 ﻿@extends('layouts.app')
 @section('assignment_active', 'active')
 @push('scripts')
-    <script src="{{secure_url('/js/fuelux/fuelux.js')}}"></script>
-    <script src="{{secure_url('/js/file-input/bootstrap.file-input.js')}}"></script>
+    <script src="{{mp_url('/js/fuelux/fuelux.js')}}"></script>
+    <script src="{{mp_url('/js/file-input/bootstrap.file-input.js')}}"></script>
     <script>
     $(document).ready(function() {
         $('#uploadWizard')
@@ -17,7 +17,7 @@
     </script>
 @endpush
 @push('css')
-    <link rel="stylesheet" href="{{secure_url('/js/fuelux/fuelux.css')}}" type="text/css" />
+    <link rel="stylesheet" href="{{mp_url('/js/fuelux/fuelux.css')}}" type="text/css" />
 @endpush
 @section('content')
       <section class="vbox">
@@ -80,14 +80,14 @@
                 <div class="panel-body">
                   <span class="h4">{{$assignment->title}}</span>
                   @if (strtotime(date("y-m-d H:i:s")) < strtotime($assignment->deadline))
-                      <a class="badge bg-primary pull-right" href="{{secure_url('/assignment/'.$assignment->id.'/resubmit')}}">重新提交</a>
+                      <a class="badge bg-primary pull-right" href="{{mp_url('/assignment/'.$assignment->id.'/resubmit')}}">重新提交</a>
                   @endif
                   <div class="text-center padder m-t">
                     <i class="fa fa-file-text fa fa-4x"></i>
                   </div>
                 </div>
                 <footer class="panel-footer lt">
-                  <center><b><a href="{{secure_url('/assignment/'.$assignment->id.'/download')}}">点此下载</a></b></center>
+                  <center><b><a href="{{mp_url('/assignment/'.$assignment->id.'/download')}}">点此下载</a></b></center>
                 </footer>
               </section>
           </div>

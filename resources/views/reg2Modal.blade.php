@@ -20,7 +20,7 @@ $isExperience = isset($customTable->experience) && in_array($regType, $customTab
         </ul>
       </div>
       <div class="step-content clearfix">
-        <form id="reg2Form" class="m-b-sm" action="{{ secure_url('/saveReg2') }}" method="post">
+        <form id="reg2Form" class="m-b-sm" action="{{ mp_url('/saveReg2') }}" method="post">
           <div class="step-pane active" id="step1">
             {{csrf_field()}}
             <input type="hidden" name="conference_id" value="{{Reg::current()->conference_id}}">
@@ -378,7 +378,7 @@ $isExperience = isset($customTable->experience) && in_array($regType, $customTab
 $('#delform').submit(function(e){
     e.preventDefault();
     if ($( '#reg2Form' ).parsley( 'validate' )) {
-        $.post("{{ secure_url('/saveReg2') }}", $('#reg2Form').serialize(), function(receivedData){
+        $.post("{{ mp_url('/saveReg2') }}", $('#reg2Form').serialize(), function(receivedData){
             //if (receivedData == "success")
             $('#ajaxModal').modal('hide');
             @if (Reg::current()->type != 'ot' && Reg::current()->type != 'school')

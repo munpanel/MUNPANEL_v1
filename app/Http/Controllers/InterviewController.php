@@ -38,8 +38,15 @@ class InterviewController extends Controller
     public function exemptInterview(Request $request, $id)
     {
         //To-Do: permission check
+        //To-Do: status check
         $interviewer = Interviewer::findOrFail($request->interviewer);
-        // TODO: 免试流程
-        Reg::findOrFail($id)->addEvent('interview_exempted', '{"name":"'.Auth::user()->name.'"}');
+        $interview = new Interview;
+        $interview->conference_id = Reg::currentConferenceID();
+        $interview->reg_id = $id;
+        $interview->interviewer_id = $interviewer->reg_id;
+        $interview->status = 'exempted';
+        $interview->save();
+        Reg::findOrFail($id)->addEvent('interview_exempted', '{"interviewer":"'.$interviewer->reg->user->name.'"}');
+        //To-Do: return redirect
     }
 }

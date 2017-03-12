@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <title>Account Verification | MUNPANEL</title>
-  <link rel="icon" href="{{secure_url('/images/favicon.ico')}}" type="image/x-icon" />
-  <link rel="shortcut icon" href="{{secure_url('/images/favicon.ico')}}" type="image/x-icon" />
+  <link rel="icon" href="{{mp_url('/images/favicon.ico')}}" type="image/x-icon" />
+  <link rel="shortcut icon" href="{{mp_url('/images/favicon.ico')}}" type="image/x-icon" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <link rel="stylesheet" href="css/bootstrap.css" type="text/css" />
   <link rel="stylesheet" href="css/animate.css" type="text/css" />
@@ -42,7 +42,7 @@
           </header>
             <div class="panel-body"><div class="alert alert-info">感谢您使用MUNPANEL！请在下方填写您的手机号，我们将给您发送一条短信或拨打一个电话并告知验证码以激活您的账户。未激活的账户将不能使用任何 MUNPANEL 服务，会议组织团队亦不可查看您的报名信息。<br>当前账户剩余 <b>{{Auth::user()->telVerifications}}</b> 次验证机会。如您无验证机会，请联系客服或重新注册新账户，感谢。</div></div>
             @if (Auth::user()->telVerifications > 0)
-          <form action="{{ secure_url('/login') }}" method="post" class="panel-body" data-validate="parsley">
+          <form action="{{ mp_url('/login') }}" method="post" class="panel-body" data-validate="parsley">
             {{ csrf_field() }}
             <div class="form-group">
               <label class="control-label">手机号</label>

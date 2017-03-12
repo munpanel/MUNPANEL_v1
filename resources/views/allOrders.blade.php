@@ -23,7 +23,7 @@
           </div>
           @foreach($orders as $order)
           <div class="line"></div>
-          <a href="{{secure_url('/shipOrder/'.$order->id)}}" class="btn btn-sm btn-info pull-right">发货</a>
+          <a href="{{mp_url('/shipOrder/'.$order->id)}}" class="btn btn-sm btn-info pull-right">发货</a>
           <h4>订单编号 {{$order->id}}</h4>
           <p class="m-t m-b">
           @if ($order->shipment_method == 'mail')

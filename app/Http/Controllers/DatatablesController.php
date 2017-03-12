@@ -528,7 +528,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
             if ($remain == 0) $command = '<p class="text-muted">已售罄</p>';
             else
             {
-                $command = '<form class="form-inline" action="'.secure_url('/store/cart/add/'.$good->id).'" method="post">
+                $command = '<form class="form-inline" action="'.mp_url('/store/cart/add/'.$good->id).'" method="post">
                       <span>数量： </span><div id="MySpinner" class="spinner input-group shop-spinner" data-min="1" data-max="'.$remain.'">'.
                       csrf_field().'
                       <input type="text" class="form-control spinner-input" value="1" name="num" maxlength="2">
@@ -544,8 +544,8 @@ class DatatablesController extends Controller //To-Do: Permission Check
             }
             $result->push([
                 'id' => ++$i, 
-                'image' => '<a href="'. secure_url('/store/good.modal/'.$good->id).'" data-toggle="ajaxModal" class="details-modal"><img src="'. secure_url('/store/goodimg/' . $good->id) . '" class="shop-image-small"></a>',
-                'title' => '<a href="'. secure_url('/store/good.modal/'.$good->id).'" data-toggle="ajaxModal" class="details-modal">'.$good->name.'</a>',
+                'image' => '<a href="'. mp_url('/store/good.modal/'.$good->id).'" data-toggle="ajaxModal" class="details-modal"><img src="'. mp_url('/store/goodimg/' . $good->id) . '" class="shop-image-small"></a>',
+                'title' => '<a href="'. mp_url('/store/good.modal/'.$good->id).'" data-toggle="ajaxModal" class="details-modal">'.$good->name.'</a>',
                 'price' => '¥' . number_format($good->price, 2),
                 'command' => $command,
             ]);
@@ -602,7 +602,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
         {
             $select = '<input name="nation" type="radio" value="' . $nation->id . '"';
             $delnames = '无';
-            $command = '<a href="' . secure_url('/dais/freeNation/' . $nation->id) . '" class="btn btn-xs btn-white';
+            $command = '<a href="' . mp_url('/dais/freeNation/' . $nation->id) . '" class="btn btn-xs btn-white';
             if (!$nation->delegates->isEmpty())
             {
                 $select .= ' disabled="disabled"';
@@ -669,7 +669,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
                 'name' => $name,
                 'school' => $delegate->school->name,
                 'nation' => isset($delegate->nation) ? $delegate->nation->name : '待分配',
-                'command' => isset($delegate->nation) ? '<a href="'.secure_url('/dais/removeSeat/'.$delegate->user->id).'" class="btn btn-xs btn-white" type="button">移出席位</a>'
+                'command' => isset($delegate->nation) ? '<a href="'.mp_url('/dais/removeSeat/'.$delegate->user->id).'" class="btn btn-xs btn-white" type="button">移出席位</a>'
                                                       : '<button class="btn btn-xs btn-success addButton" del-id="' . $delegate->user->id . '"type="button">移入席位</button>'
             ]);
         }

@@ -114,7 +114,7 @@
 
         // Build POST data and make AJAX request
         var data = {chat_text: messageText};
-        $.post('{{secure_url("/chat/message")}}', data).success(sendMessageSuccess);
+        $.post('{{mp_url("/chat/message")}}', data).success(sendMessageSuccess);
 
         // Ensure the normal browser event doesn't take place
         return false;

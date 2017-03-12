@@ -5,13 +5,13 @@
     @section('roles_active', 'active')
 @endif
 @push('scripts')
-    <script src="{{secure_url('/js/jquery.dataTables.min.js')}}"></script>
-    <script src="{{secure_url('/js/datatables/fnReloadAjax.js')}}"></script>
-    <script src="{{secure_url('/js/roleList.js')}}"></script>
+    <script src="{{mp_url('/js/jquery.dataTables.min.js')}}"></script>
+    <script src="{{mp_url('/js/datatables/fnReloadAjax.js')}}"></script>
+    <script src="{{mp_url('/js/roleList.js')}}"></script>
 @endpush
 @push('css')
-    <link rel="stylesheet" href="{{secure_url('/css/jquery.dataTables.min.css')}}" type="text/css" />
-    <link rel="stylesheet" href="{{secure_url('/css/bootstrap-editable.css')}}" type="text/css" />
+    <link rel="stylesheet" href="{{mp_url('/css/jquery.dataTables.min.css')}}" type="text/css" />
+    <link rel="stylesheet" href="{{mp_url('/css/bootstrap-editable.css')}}" type="text/css" />
 @endpush
 @section('content')
 <section class="vbox">
@@ -19,11 +19,11 @@
               <div class="row m-t-sm">
                 <div class="col-sm-6 m-b-xs">
                   @if (Reg::current()->type == 'delegate')
-                  <a href="{{secure_url('/home')}}" class="btn btn-sm btn-success"><i class="fa fa-arrow-left"></i> 返回首页</a>
+                  <a href="{{mp_url('/home')}}" class="btn btn-sm btn-success"><i class="fa fa-arrow-left"></i> 返回首页</a>
                   @else
                   <p>BJMUNC2017 {{Reg::current()->specific()->committee->display_name}} 席位分配表</p>
                   @endif
-                  <!--a href="{{secure_url('/ot/nationDetails.modal/new')}}" class="btn btn-sm btn-white details-modal"><i class="fa fa-plus"></i> 添加国家</a>
+                  <!--a href="{{mp_url('/ot/nationDetails.modal/new')}}" class="btn btn-sm btn-white details-modal"><i class="fa fa-plus"></i> 添加国家</a>
                   @if ($view == 'nation')
                   <div class="btn-group">
                     <a class="btn btn-sm btn-white details-modal"><i class="fa fa-address-book"></i> 查看代表名单</a>

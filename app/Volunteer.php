@@ -34,4 +34,12 @@ class Volunteer extends Model
     public function regText() {
         return '志愿者';
     }
+
+    public function nextStatus() {
+        switch ($this->status) { //To-Do: configurable
+            case null: return 'sVerified';
+            case 'sVerified': return 'unpaid';
+            case 'unpaid': return 'paid';
+        }
+    }
 }

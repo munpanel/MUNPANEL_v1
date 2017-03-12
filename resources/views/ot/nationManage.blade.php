@@ -1,14 +1,14 @@
 @extends('layouts.app')
 @section('nationManage_active', 'active')
 @push('scripts')
-    <script src="{{secure_url('/js/jquery.dataTables.min.js')}}"></script>
-    <script src="{{secure_url('/js/datatables/fnReloadAjax.js')}}"></script>
-    <script src="{{secure_url('/js/editable/bootstrap-editable.js')}}"></script>
-    <script src="{{secure_url('/js/ot.nationManage.js')}}"></script>
+    <script src="{{mp_url('/js/jquery.dataTables.min.js')}}"></script>
+    <script src="{{mp_url('/js/datatables/fnReloadAjax.js')}}"></script>
+    <script src="{{mp_url('/js/editable/bootstrap-editable.js')}}"></script>
+    <script src="{{mp_url('/js/ot.nationManage.js')}}"></script>
 @endpush
 @push('css')
-    <link rel="stylesheet" href="{{secure_url('/css/jquery.dataTables.min.css')}}" type="text/css" />
-    <link rel="stylesheet" href="{{secure_url('/css/bootstrap-editable.css')}}" type="text/css" />
+    <link rel="stylesheet" href="{{mp_url('/css/jquery.dataTables.min.css')}}" type="text/css" />
+    <link rel="stylesheet" href="{{mp_url('/css/bootstrap-editable.css')}}" type="text/css" />
 @endpush
 @section('content')
 <section class="vbox">
@@ -16,8 +16,8 @@
               <div class="row m-t-sm">
                 <div class="col-sm-6 m-b-xs">
                   <!--a href="#subNav" data-toggle="class:hide" class="btn btn-sm btn-info"><i class="fa fa-caret-right text fa fa-large"></i><i class="fa fa-caret-left text-active fa fa-large"></i></a-->
-                  <a href="{{secure_url('/ot/nationDetails.modal/new')}}" class="btn btn-sm btn-success details-modal"><i class="fa fa-plus"></i> 新建</a>
-                  <a href="{{secure_url('/ot/nationDetails.modal/bulkAdd')}}" class="btn btn-sm btn-success details-modal"><i class="fa fa-plus"></i> 批量创建</a>
+                  <a href="{{mp_url('/ot/nationDetails.modal/new')}}" class="btn btn-sm btn-success details-modal"><i class="fa fa-plus"></i> 新建</a>
+                  <a href="{{mp_url('/ot/nationDetails.modal/bulkAdd')}}" class="btn btn-sm btn-success details-modal"><i class="fa fa-plus"></i> 批量创建</a>
                 </div>
                 <div class="col-sm-6 m-b-xs">
                   <div class="input-group">

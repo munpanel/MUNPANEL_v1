@@ -119,7 +119,7 @@ $isOtOrDais = in_array(Reg::current()->type, ['ot', 'dais']);
                 <p>暂无任何对{{$isOtOrDais ? '该用户' : '您'}}分配的面试。</p>
                 @else
 
-              @foreach ($reg->interviews as $interview)
+              @foreach ($reg->interviews()->orderBy('created_at', 'dsc')->get() as $interview)
               <table class="table table-bordered table-striped table-hover">
               <tbody>
               <tr>

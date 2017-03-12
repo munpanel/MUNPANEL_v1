@@ -44,7 +44,7 @@ class InterviewController extends Controller
         $interview->conference_id = Reg::currentConferenceID();
         $interview->reg_id = $id;
         $interview->interviewer_id = $interviewer->reg_id;
-        $interview->status = 'excempted';
+        $interview->status = 'exempted';
         $interview->save();
         Reg::findOrFail($id)->addEvent('interview_exempted', '{"interviewer":"'.$interviewer->reg->user->name.'"}');
         //To-Do: return redirect

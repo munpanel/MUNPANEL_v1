@@ -80,14 +80,15 @@ class FormController extends Controller
     /**
      * Render the assignment form to html
      *
+     * @param int $assignmentID the id of form Assignment
      * @param object $tableItems the table items object ($*->items)
      * @param int $committeeID ID of committee
      * @param int $maxValue the items will be shown
      * @return string HTML clip of the table
      */
-    public static function formAssignment($tableItems, $committeeID, $maxValue)
+    public static function formAssignment($assignmentID, $tableItems, $committeeID, $maxValue)
     {
-        $html = '';
+        $html = '<form method="POST" action="'.secure_url('/assignment/'.$assignmentID.'/formSubmit').'">';
         $num = 0;
         if ($maxValue > count($tableItems)) $maxValue = count($tableItems);
         $subItems = array_rand($tableItems, $maxValue);
@@ -130,6 +131,7 @@ class FormController extends Controller
             }
             $html .= '</div></div>';
         }
+        $html .= '<div class="form-group"><button type="submit" class="btn btn-success"提交作业</button></div></form>';
         return $html;
     }
 }

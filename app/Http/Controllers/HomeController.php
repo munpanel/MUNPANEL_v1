@@ -724,6 +724,7 @@ class HomeController extends Controller
      */
     public function blank()
     {
+        $i = 12;
         $test = json_decode('[
         {
             "id":"1",
@@ -784,7 +785,12 @@ class HomeController extends Controller
             ],
             "answer":["3","4","1","2"]
         }]');
-        $html = FormController::formAssignment($test, 20, 2);
+        $html = FormController::formAssignment($i, $test, 20, 2);
         return view('blank', ['testContent' => $html, 'convert' => true]);
+    }
+
+    public function formAssignmentSubmit(Request $request, $id)
+    {
+        return view('blank', ['testContent' => json_encode($request), 'convert' => false]);
     }
 }

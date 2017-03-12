@@ -47,6 +47,7 @@ Route::group(['domain' => 'portal.munpanel.com'], function () {
     Route::get('/assignments', 'HomeController@assignmentsList');
     Route::get('/assignment/{id}/{action?}', 'HomeController@assignment');
     Route::post('/assignment/{id}/upload', 'HomeController@uploadAssignment');
+    Route::post('/assignment/{id}/formSubmit', 'HomeController@formAssignmentSubmit');
 
     // TODO: 判定 - 代表 or 学团 or 组委？
     Route::get('/documents', 'HomeController@documentsList');

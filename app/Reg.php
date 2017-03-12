@@ -152,6 +152,7 @@ class Reg extends Model
                 $delegate->conference_id = $this->conference_id;
                 $delegate->school_id = $this->school_id;
                 $delegate->committee_id = json_decode($this->reginfo)->conference->committee;
+                $delegate->status = $delegate->nextStatus();
                 $delegate->save();
                 break;
             case 'observer':
@@ -160,6 +161,7 @@ class Reg extends Model
                 $observer->conference_id = $this->conference_id;
                 $delegate->school_id = $this->school_id;
                 $observer->committee_id = json_decode($this->reginfo)->conference->committee;
+                $observer->status = $observer->nextStatus();
                 $observer->save();
                 break;
             case 'volunteer':
@@ -167,6 +169,7 @@ class Reg extends Model
                 $volunteer->reg_id = $this->id;
                 $volunteer->conference_id = $this->conference_id;
                 $delegate->school_id = $this->school_id;
+                $volunteer->status = $volunteer->nextStatus();
                 $volunteer->save();
                 break;
         }

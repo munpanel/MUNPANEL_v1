@@ -26,7 +26,7 @@ class CreateDelegateInfoTable extends Migration
             $table->integer('reg_id')->unsigned();
             $table->integer('conference_id')->unsigned();
             $table->integer('school_id')->unsigned()->nullable();
-            $table->enum('status', ['reg','sVerified', 'oVerified', 'paid'])->default('reg');
+            $table->enum('status', ['reg','sVerified', 'oVerified', 'unpaid', 'paid'])->default('reg');
             $table->integer('committee_id')->unsigned()->nullable();
             $table->integer('nation_id')->nullable()->unsigned();
             $table->integer('partner_reg_id')->nullable()->unsigned();

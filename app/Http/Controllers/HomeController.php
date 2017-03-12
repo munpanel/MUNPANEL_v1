@@ -741,7 +741,7 @@ class HomeController extends Controller
             "answer":"2"
         },
         {
-            "id":"2",
+            "id":"5",
             "type":"mult_choice",
             "committee":["24"],
             "level":"1",
@@ -756,7 +756,7 @@ class HomeController extends Controller
             "answer":["1","4"]
         },
         {
-            "id":"3",
+            "id":"8",
             "type":"yes_or_no",
             "committee":["21"],
             "level":"1",
@@ -764,7 +764,7 @@ class HomeController extends Controller
             "answer":"false"
         },
         {
-            "id":"4",
+            "id":"11",
             "type":"fill_in",
             "committee":["21"],
             "level":"1",
@@ -772,7 +772,7 @@ class HomeController extends Controller
             "answer":"安理会暂行议事规则"
         },
         {
-            "id":"5",
+            "id":"24",
             "type":"order",
             "committee":["24"],
             "level":"1",
@@ -791,6 +791,6 @@ class HomeController extends Controller
 
     public function formAssignmentSubmit(Request $request, $id)
     {
-        return view('blank', ['testContent' => json_encode($request), 'convert' => false]);
+        return view('blank', ['testContent' => json_encode($request->all()), 'convert' => false]);
     }
 }

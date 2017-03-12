@@ -88,7 +88,7 @@ class FormController extends Controller
      */
     public static function formAssignment($assignmentID, $tableItems, $committeeID, $maxValue)
     {
-        $html = '<form method="POST" action="'.secure_url('/assignment/'.$assignmentID.'/formSubmit').'">';
+        $html = '<form method="POST" action="'.secure_url('/assignment/'.$assignmentID.'/formSubmit').'">'.csrf_field();
         $num = 0;
         if ($maxValue > count($tableItems)) $maxValue = count($tableItems);
         $subItems = array_rand($tableItems, $maxValue);
@@ -99,16 +99,19 @@ class FormController extends Controller
             switch ($item->type)
             {
                 case "single_choice":
+                    $html .= '<input type="hidden" name="'.$item->id.'" value="">';
                     foreach ($item->options as $option)
-                        $html .= singleInput('radio', $item->id, ++$i, $option->text);
+                        $html .= singleInput('radio',$item->id, ++$i, $option->text);
                         //$html .= '<div class="radio"><label class="radio-custom"><input type="radio" name="answer['.$item->id.']" value="'.$option->value.'"><i class="fa fa-circle-o"></i>'.$option->text.'</label></div>';
                     break;
                 case "mult_choice":
+                    $html .= '<input type="hidden" name="'.$item->id.'" value="">';
                     foreach ($item->options as $option)
-                        $html .= singleInput('checkbox', $item->id, ++$i, $option->text);
+                        $html .= singleInput('checkbox',$item->id.'[]', ++$i, $option->text, false, true);
                         //$html .= '<div class="radio"><label class="radio-custom"><input type="radio" name="answer['.$item->id.']" value="'.$option->value.'"><i class="fa fa-circle-o"></i>'.$option->text.'</label></div>';
                     break;
                 case "yes_or_no":
+                    $html .= '<input type="hidden" name="'.$item->id.'" value="">';
                     $html .= '
                 <div class="btn-group" data-toggle="buttons">
                   <label class="btn btn-sm btn-success">
@@ -119,19 +122,19 @@ class FormController extends Controller
                   </label></div>';
                     break;
                 case "fill_in":
-                    $html .= singleInput('text', $item->id);
+                    $html .= singleInput('text',$item->id);
                     break;
                 case "order":
                     $li = 0;
                     $html .= '<ul class="list-group gutter  list-group-sp sortable">';
                     foreach ($item->options as $option)
-                        $html .= '<li class="list-group-item" draggable="true"><span class="pull-left media-xs"><i class="fa fa-sort text-muted fa-sm"></i>&nbsp;'.++$li.'</span><div class="clear">'.$option->text.'</div></li>';
+                        $html .= '<li class="list-group-item" draggable="true"><span class="pull-left media-xs"><i class="fa fa-sort text-muted fa-sm"></i>&nbsp;'.++$li.'</span><div class="clear">'.$option->text.'</div><input type="hidden" name="'.$item->id.'[]" value="'.$li.'"></li>';
                     $html .= '</ul>';
                     break;
             }
             $html .= '</div></div>';
         }
-        $html .= '<div class="form-group"><button type="submit" class="btn btn-success"提交作业</button></div></form>';
+        $html .= '<div class="form-group"><button type="submit" class="btn btn-success">提交作业</button></div></form>';
         return $html;
     }
 }

@@ -36,6 +36,14 @@
                 </a>
               </li>
               {{--@endpermission--}}
+              {{--@permission('view-regs')--}}
+              <li class="@yield('teamManage_active')">
+                <a href="{{ mp_url('/teamManage') }}">
+                  <i class="fa fa-flag"></i>
+                  <span>Team Management</span>
+                </a>
+              </li>
+              {{--@endpermission--}}
               @permission('edit-nations')
               <li class="@yield('nationManage_active')">
                 <a href="{{ mp_url('/nationManage') }}">

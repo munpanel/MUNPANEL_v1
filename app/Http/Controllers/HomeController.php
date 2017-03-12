@@ -207,6 +207,19 @@ class HomeController extends Controller
         }
     }
 
+
+    /**
+     * Show the user management page.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function teamManage()
+    {
+        if ( Reg::current()->type != 'ot' )
+            return 'Error';
+        return view('ot.teamManage');
+    }
+
     /**
      * Show the user management page.
      *

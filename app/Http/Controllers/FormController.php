@@ -88,7 +88,7 @@ class FormController extends Controller
      */
     public static function formAssignment($assignmentID, $tableItems, $committeeID, $maxValue)
     {
-        $html = '<form method="POST" action="'.secure_url('/assignment/'.$assignmentID.'/formSubmit').'">'.csrf_field();
+        $html = '<form method="POST" action="'.mp_url('/assignment/'.$assignmentID.'/formSubmit').'">'.csrf_field();
         $num = 0;
         if ($maxValue > count($tableItems)) $maxValue = count($tableItems);
         $subItems = array_rand($tableItems, $maxValue);

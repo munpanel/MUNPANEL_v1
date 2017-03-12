@@ -87,6 +87,7 @@ Route::group(['domain' => 'portal.munpanel.com'], function () {
     Route::get('/roleAlloc', 'HomeController@roleAlloc');
 
     Route::get('/regManage', 'HomeController@regManage');
+    Route::get('/teamManage', 'HomeController@teamManage');
     Route::get('/regManage/imexport.modal', 'HomeController@imexportRegistrations');
     Route::get('/regManage/export/{flag?}', 'ExcelController@exportRegistrations');
     Route::post('/regManage/import', 'ExcelController@importRegistrations');

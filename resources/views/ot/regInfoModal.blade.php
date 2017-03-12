@@ -120,6 +120,22 @@ $isOtOrDais = in_array(Reg::current()->type, ['ot', 'dais']);
                 @else
 
               @foreach ($reg->interviews as $interview)
+              <table class="table table-bordered table-striped table-hover">
+              <tbody>
+              <tr>
+              <td>状态</td>
+              <td>{{$interview->status}}</td>
+              </tr>
+              <tr>
+              <td>面试官</td>
+              <td>{{$interview->interviewer->nicename()}}</td>
+              </tr>
+              <tr>
+              <td>分配时间</td>
+              <td>{{nicetime($interview->created_at)}}</td>
+              </tr>
+              </tbody>
+              </table>
               @endforeach
               @endif
               </div>

@@ -22,7 +22,7 @@ class Interview extends Model
     }
 
     public function interviewer() {
-        return $this->belongsTo('App\Reg', 'interviewer_id');
+        return $this->belongsTo('App\Interviewer', 'interviewer_id', 'reg_id');
     }
 
     public function conference() {

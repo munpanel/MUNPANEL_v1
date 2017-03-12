@@ -6,7 +6,7 @@
           <button href="#" class="btn btn-sm btn-info pull-right" onClick="window.print();">打印</button>
           <p class="pull-right">&nbsp;&nbsp;&nbsp;</p> 
           @if (Reg::current()->specific()->status != 'paid')
-            <a href="{{ secure_url('/pay/checkout.modal') }}" data-toggle="ajaxModal" class="btn btn-sm btn-success pull-right">支付</a>
+            <a href="{{ mp_url('/pay/checkout.modal') }}" data-toggle="ajaxModal" class="btn btn-sm btn-success pull-right">支付</a>
           @endif
           <p>账单</p>
         </header>

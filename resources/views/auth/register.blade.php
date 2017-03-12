@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <title>Registration | MUNPANEL</title>
-  <link rel="icon" href="{{secure_url('/images/favicon.ico')}}" type="image/x-icon" />
-  <link rel="shortcut icon" href="{{secure_url('/images/favicon.ico')}}" type="image/x-icon" />
+  <link rel="icon" href="{{mp_url('/images/favicon.ico')}}" type="image/x-icon" />
+  <link rel="shortcut icon" href="{{mp_url('/images/favicon.ico')}}" type="image/x-icon" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <link rel="stylesheet" href="css/bootstrap.css" type="text/css" />
   <link rel="stylesheet" href="css/animate.css" type="text/css" />
@@ -40,7 +40,7 @@
             注册
           </header>
 {{$errors->first('password')}}
-          <form action="{{ secure_url('/register') }}" method="post" class="panel-body" data-validate="parsley">
+          <form action="{{ mp_url('/register') }}" method="post" class="panel-body" data-validate="parsley">
             {{ csrf_field() }}
             <div class="form-group">
               <label class="control-label">真实姓名</label>
@@ -70,7 +70,7 @@
             <button type="submit" class="btn btn-info">注册</button>
             <div class="line line-dashed"></div>
             <p class="text-muted text-center"><small>已有账号?</small></p>
-            <a href="{{ secure_url('/login') }}" class="btn btn-white btn-block">登陆</a>
+            <a href="{{ mp_url('/login') }}" class="btn btn-white btn-block">登陆</a>
           </form>
         </section>
       </div>

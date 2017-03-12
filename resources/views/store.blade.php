@@ -1,25 +1,25 @@
 ﻿@extends('layouts.app')
 @section('store_active', 'active')
 @push('scripts')
-    <script src="{{secure_url('/js/jquery.dataTables.min.js')}}"></script>
-    <script src="{{secure_url('/js/store.js')}}"></script>
-    <script src="{{secure_url('/js/fuelux/fuelux.js')}}"></script>
+    <script src="{{mp_url('/js/jquery.dataTables.min.js')}}"></script>
+    <script src="{{mp_url('/js/store.js')}}"></script>
+    <script src="{{mp_url('/js/fuelux/fuelux.js')}}"></script>
 @endpush
 @push('css')
-    <link rel="stylesheet" href="{{secure_url('/css/jquery.dataTables.min.css')}}" type="text/css" />
-    <link rel="stylesheet" href="{{secure_url('/js/fuelux/fuelux.css')}}" type="text/css" />
+    <link rel="stylesheet" href="{{mp_url('/css/jquery.dataTables.min.css')}}" type="text/css" />
+    <link rel="stylesheet" href="{{mp_url('/js/fuelux/fuelux.css')}}" type="text/css" />
 @endpush
 @section('content')
 <section class="vbox">
       <header class="header b-b bg-white">          
         <p>BJMUNC 2017 纪念品商店</p>
-        <a href="{{secure_url('/store/cart')}}" class="btn btn-sm btn-info pull-right"><i class="fa fa-shopping-cart"></i> 我的购物车</a>
+        <a href="{{mp_url('/store/cart')}}" class="btn btn-sm btn-info pull-right"><i class="fa fa-shopping-cart"></i> 我的购物车</a>
         <p class="pull-right">&nbsp;</p>
         <div class="btn-group pull-right">
           <button class="btn btn-white btn-sm dropdown-toggle" aria-expanded="false" data-toggle="dropdown"><i class="fa fa-money"></i> 我的订单 ({{$orders->count()}}) <span class="caret"></span></button>
           <ul class="dropdown-menu">
           @foreach($orders as $order)
-            <li><a href="{{secure_url('/store/order/' . $order->id)}}">订单 {{$order->id}}</a></li>
+            <li><a href="{{mp_url('/store/order/' . $order->id)}}">订单 {{$order->id}}</a></li>
           @endforeach
           @if ($orders->count() != 0)
             <li class="divider"></li>

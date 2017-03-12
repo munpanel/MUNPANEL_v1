@@ -21,7 +21,7 @@
           <div class="modal-body">
             <div class="row">
               <div class="col-sm-12 b-r">
-                <form role="form" id="delform" data-validate="parsley" action="{{ secure_url('/store/doCheckout') }}" method="post">
+                <form role="form" id="delform" data-validate="parsley" action="{{ mp_url('/store/doCheckout') }}" method="post">
                   <div class="alert alert-success"><b>推荐此种方式：</b>会议中途在指定时间凭代表牌领取所预定的纪念品。</div>
                   {{ csrf_field() }}
                   <input type="hidden" name="method" value="conference">
@@ -35,7 +35,7 @@
           <div class="modal-body">
             <div class="row">
               <div class="col-sm-12 b-r">
-                <form role="form" id="delform" data-validate="parsley" action="{{ secure_url('/store/doCheckout') }}" method="post">
+                <form role="form" id="delform" data-validate="parsley" action="{{ mp_url('/store/doCheckout') }}" method="post">
                   <div class="alert alert-warning">您需额外支付15元运费。</div>
                   {{ csrf_field() }}
                   <input type="hidden" name="method" value="mail">

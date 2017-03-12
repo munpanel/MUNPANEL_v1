@@ -43,7 +43,7 @@ class StoreController extends Controller
     public function addCart(Request $request, $id)
     {
         Cart::add(Good::findOrFail($id), $request->num);
-        return redirect(secure_url('/store/cart')); //TODO: 添加操作成功提示
+        return redirect(mp_url('/store/cart')); //TODO: 添加操作成功提示
     }
 
     /**
@@ -55,7 +55,7 @@ class StoreController extends Controller
     public function removeCart($id)
     {
         Cart::remove($id); //ID is rowID instead of goodID
-        return redirect(secure_url('/store/cart')); //TODO: 添加操作成功提示
+        return redirect(mp_url('/store/cart')); //TODO: 添加操作成功提示
     }
 
     /**
@@ -66,7 +66,7 @@ class StoreController extends Controller
     public function emptyCart()
     {
         Cart::destroy();
-        return redirect(secure_url('/store'));
+        return redirect(mp_url('/store'));
     }
 
     /**
@@ -99,11 +99,11 @@ class StoreController extends Controller
             $order->status = 'cancelled';
             $order->save();
             //Order::destroy($id);
-            return redirect(secure_url('/store')); 
+            return redirect(mp_url('/store')); 
         } 
         else 
         { 
-            return view('warningDialogModal', ['danger' => false, 'msg' => "您确实要取消该订单吗？", 'target' => secure_url("/store/deleteOrder/" . $id . "/true")]); 
+            return view('warningDialogModal', ['danger' => false, 'msg' => "您确实要取消该订单吗？", 'target' => mp_url("/store/deleteOrder/" . $id . "/true")]); 
         }
     }
 
@@ -148,7 +148,7 @@ class StoreController extends Controller
             }
         }
         $order->save();
-        return redirect(secure_url('/store/order/' . $order->id));
+        return redirect(mp_url('/store/order/' . $order->id));
     }
 
     /**
@@ -227,6 +227,6 @@ class StoreController extends Controller
         $order->status = 'done';
         $order->shipped_at = date('Y-m-d H:i:s');
         $order->save();
-        return redirect(secure_url('/allOrders/' . $order->user_id));
+        return redirect(mp_url('/allOrders/' . $order->user_id));
     }
 }

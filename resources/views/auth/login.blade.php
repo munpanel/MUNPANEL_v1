@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <title>Sign In | MUNPANEL</title>
-  <link rel="icon" href="{{secure_url('/images/favicon.ico')}}" type="image/x-icon" />
-  <link rel="shortcut icon" href="{{secure_url('/images/favicon.ico')}}" type="image/x-icon" />
+  <link rel="icon" href="{{mp_url('/images/favicon.ico')}}" type="image/x-icon" />
+  <link rel="shortcut icon" href="{{mp_url('/images/favicon.ico')}}" type="image/x-icon" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <link rel="stylesheet" href="css/bootstrap.css" type="text/css" />
   <link rel="stylesheet" href="css/animate.css" type="text/css" />
@@ -39,7 +39,7 @@
           <header class="panel-heading text-center">
             登陆
           </header>
-          <form action="{{ secure_url('/login') }}" method="post" class="panel-body" data-validate="parsley">
+          <form action="{{ mp_url('/login') }}" method="post" class="panel-body" data-validate="parsley">
             {{ csrf_field() }}
             <div class="form-group">
               <label class="control-label">Email</label>
@@ -54,11 +54,11 @@
                 <input type="checkbox" name="remember"> 记住我
               </label>
             </div>
-            <a href="{{ secure_url('/password/reset') }}" class="pull-right m-t-xs"><small>忘记密码?</small></a>
+            <a href="{{ mp_url('/password/reset') }}" class="pull-right m-t-xs"><small>忘记密码?</small></a>
             <button type="submit" class="btn btn-info">登陆</button>
 <div class="line line-dashed"></div>
             <p class="text-muted text-center"><small>没有账号?</small></p>
-            <a href="{{ secure_url('/register') }}" class="btn btn-white btn-block">新建帐号并报名会议</a>
+            <a href="{{ mp_url('/register') }}" class="btn btn-white btn-block">新建帐号并报名会议</a>
           </form>
         </section>
       </div>

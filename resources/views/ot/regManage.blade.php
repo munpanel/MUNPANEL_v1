@@ -1,18 +1,18 @@
 @extends('layouts.app')
 @section('regManage_active', 'active')
 @push('scripts')
-    <script src="{{secure_url('/js/jquery.dataTables.min.js')}}"></script>
-    <script src="{{secure_url('/js/datatables/fnReloadAjax.js')}}"></script>
-    <script src="{{secure_url('/js/select2/select2.min.js')}}"></script>
+    <script src="{{mp_url('/js/jquery.dataTables.min.js')}}"></script>
+    <script src="{{mp_url('/js/datatables/fnReloadAjax.js')}}"></script>
+    <script src="{{mp_url('/js/select2/select2.min.js')}}"></script>
     @if (Auth::user()->can('approve-regs-pay'))
-    <script src="{{secure_url('/js/ot.regManage.withPay.js')}}"></script>
+    <script src="{{mp_url('/js/ot.regManage.withPay.js')}}"></script>
     @else
-    <script src="{{secure_url('/js/ot.regManage.js')}}"></script>
+    <script src="{{mp_url('/js/ot.regManage.js')}}"></script>
     @endif
 @endpush
 @push('css')
-    <link rel="stylesheet" href="{{secure_url('js/select2/select2.css')}}" type="text/css" />
-    <link rel="stylesheet" href="{{secure_url('/css/jquery.dataTables.min.css')}}" type="text/css" />
+    <link rel="stylesheet" href="{{mp_url('js/select2/select2.css')}}" type="text/css" />
+    <link rel="stylesheet" href="{{mp_url('/css/jquery.dataTables.min.css')}}" type="text/css" />
 @endpush
 @section('content')
 <section class="vbox">
@@ -21,7 +21,7 @@
                 <div class="col-sm-6 m-b-xs">
                   <!--a href="#subNav" data-toggle="class:hide" class="btn btn-sm btn-info"><i class="fa fa-caret-right text fa fa-large"></i><i class="fa fa-caret-left text-active fa fa-large"></i></a>
                   <a href="#" class="btn btn-sm btn-success"><i class="fa fa-plus"></i> Create</a-->
-                  <a href="{{secure_url('/regManage/imexport.modal')}}" class="btn btn-sm btn-success details-modal"><i class="fa fa-plus"></i> 批量管理</a>
+                  <a href="{{mp_url('/regManage/imexport.modal')}}" class="btn btn-sm btn-success details-modal"><i class="fa fa-plus"></i> 批量管理</a>
                 </div>
                 <div class="col-sm-6 m-b-xs">
                   <div class="input-group">

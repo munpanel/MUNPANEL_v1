@@ -25,7 +25,7 @@
               @else
               <div class="alert alert-warning"><b>当前为只读状态，如需编辑请联系official@bjmun.org。</b></div>
               @endif
-              <form role="form" id="delform" data-validate="parsley"><!--action="{{ secure_url('/saveRegDel') }}" method="post"-->
+              <form role="form" id="delform" data-validate="parsley"><!--action="{{ mp_url('/saveRegDel') }}" method="post"-->
                 {{ csrf_field() }}
                 @if (isset($id))
                   <input type="hidden" name="id" value="{{ $id }}">
@@ -195,7 +195,7 @@
               @else
               <div class="alert alert-warning"><b>当前为只读状态，如需编辑请联系official@bjmun.org。</b></div>
               @endif
-              <form role="form" id="volform" data-validate="parsley"><!--action="{{ secure_url('/saveRegDel') }}" method="post"-->
+              <form role="form" id="volform" data-validate="parsley"><!--action="{{ mp_url('/saveRegDel') }}" method="post"-->
                 {{ csrf_field() }}
                 @if (isset($id))
                   <input type="hidden" name="id" value="{{ $id }}">
@@ -335,7 +335,7 @@
             <div class="row">
               <div class="col-sm-12 b-r">
               <div class="alert alert-warning"><b>代表、志愿者、观察员，三者任选一项。保存任何一项将自动清空其余两项信息。</b></div>
-              <form role="form" id="obsform" data-validate="parsley"><!--action="{{ secure_url('/saveRegDel') }}" method="post"-->
+              <form role="form" id="obsform" data-validate="parsley"><!--action="{{ mp_url('/saveRegDel') }}" method="post"-->
                 {{ csrf_field() }}
                 @if (isset($id))
                   <input type="hidden" name="id" value="{{ $id }}">
@@ -463,7 +463,7 @@
 $('#delform').submit(function(e){
     e.preventDefault();
     if ($( '#delform' ).parsley( 'validate' )) {
-        $.post("{{ secure_url('/saveRegDel') }}", $('#delform').serialize(), function(receivedData){
+        $.post("{{ mp_url('/saveRegDel') }}", $('#delform').serialize(), function(receivedData){
             //if (receivedData == "success")
                 $('#ajaxModal').modal('hide');
                 @if (Reg::current()->type != 'ot' && Reg::current()->type != 'school')
@@ -476,7 +476,7 @@ $('#delform').submit(function(e){
 $('#volform').submit(function(e){
     e.preventDefault();
     if ($( '#volform' ).parsley( 'validate' )) {
-        $.post("{{ secure_url('/saveRegVol') }}", $('#volform').serialize(), function(receivedData){
+        $.post("{{ mp_url('/saveRegVol') }}", $('#volform').serialize(), function(receivedData){
             //if (receivedData == "success")
                 $('#ajaxModal').modal('hide');
                 @if (Reg::current()->type != 'ot' && Reg::current()->type != 'school')
@@ -489,7 +489,7 @@ $('#volform').submit(function(e){
 $('#obsform').submit(function(e){
     e.preventDefault();
     if ($( '#obsform' ).parsley( 'validate' )) {
-        $.post("{{ secure_url('/saveRegObs') }}", $('#obsform').serialize(), function(receivedData){
+        $.post("{{ mp_url('/saveRegObs') }}", $('#obsform').serialize(), function(receivedData){
             //if (receivedData == "success")
                 $('#ajaxModal').modal('hide');
                 @if (Reg::current()->type != 'ot' && Reg::current()->type != 'school')

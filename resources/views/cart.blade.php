@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('store_active', 'active')
 @push('css')
-<link href="{{secure_url('css/store.css')}}" rel="stylesheet" type="text/css">
+<link href="{{mp_url('css/store.css')}}" rel="stylesheet" type="text/css">
 @endpush('css')
 @section('content')
 <div class="container">
@@ -13,7 +13,7 @@
 <div class="close"> </div>
 <div class="cart-sec simpleCart_shelfItem">
 <div class="cart-item cyc">
-<img src='{{secure_url("store/goodimg/$row->id")}}' class="img-responsive" alt="">
+<img src='{{mp_url("store/goodimg/$row->id")}}' class="img-responsive" alt="">
 </div>
 <div class="cart-item-info">
 <h3><a href="#">{{$row->name}}</a><!--ispan>Powered by Adam Yi LOL</span--></h3>
@@ -23,7 +23,7 @@
 <li><p>Subtotal: {{number_format($row->subtotal, 2)}}</p></li>
 
 </ul>
-<a href='{{secure_url("store/cart/remove/$row->rowId")}}'>Click <u>here</u> to remove from cart</a>
+<a href='{{mp_url("store/cart/remove/$row->rowId")}}'>Click <u>here</u> to remove from cart</a>
 
 <!--div class="delivery">
 <p>Provided by BJMUN</p>
@@ -38,7 +38,7 @@
 @endforeach
 </div>
 <div class="col-md-3 cart-total">
-<a class="continue" href="{{secure_url('/store')}}">Continue to Store</a>
+<a class="continue" href="{{mp_url('/store')}}">Continue to Store</a>
 <div class="price-details">
 <h3>Price Details</h3>
 <span>Subtotal</span>
@@ -60,7 +60,7 @@
 
 <div class="clearfix"></div>
 @if (Config::get('munpanel.store_checkout'))
-<a class="order" data-toggle="ajaxModal" href="{{secure_url('/store/shipment.modal')}}">Place Order</a>
+<a class="order" data-toggle="ajaxModal" href="{{mp_url('/store/shipment.modal')}}">Place Order</a>
 @else
 <a class="order" href="#">购买通道已关闭</a>
 @endif

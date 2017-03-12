@@ -1,12 +1,12 @@
 @extends('layouts.app')
 @section('home_active', 'active')
 @push('scripts')
-    <script src="{{secure_url('js/charts/easypiechart/jquery.easy-pie-chart.js')}}"></script>
-    <script src="{{secure_url('/js/fuelux/fuelux.js')}}"></script>
-    <script src="{{secure_url('/js/datepicker/bootstrap-datepicker.js')}}"></script>
+    <script src="{{mp_url('js/charts/easypiechart/jquery.easy-pie-chart.js')}}"></script>
+    <script src="{{mp_url('/js/fuelux/fuelux.js')}}"></script>
+    <script src="{{mp_url('/js/datepicker/bootstrap-datepicker.js')}}"></script>
 @endpush
 @push('css')
-    <link href="{{secure_url('/js/fuelux/fuelux.css')}}" rel="stylesheet">
+    <link href="{{mp_url('/js/fuelux/fuelux.css')}}" rel="stylesheet">
 @endpush
 @section('content')
       <section class="vbox">
@@ -110,13 +110,13 @@
                             </div>
                               @if (Reg::current()->type == 'unregistered')
                               <div class="text-sm">点击下方按钮报名：</div>
-                              <a href="{{ secure_url('/reg2.modal/select') }}" data-toggle="ajaxModal" class="btn btn-danger">报名</a>
+                              <a href="{{ mp_url('/reg2.modal/select') }}" data-toggle="ajaxModal" class="btn btn-danger">报名</a>
                               @elseif (!Auth::user()->verified())
                               <div class="text-sm">点击下方按钮激活账号：</div>
-                              <a href="{{secure_url('/verifyEmail')}}" class="btn btn-danger">激活我的账号</a>
+                              <a href="{{mp_url('/verifyEmail')}}" class="btn btn-danger">激活我的账号</a>
                               @else
                               <div class="text-sm">点击下方按钮查看我的报名表单：</div>
-                              <a href="{{ secure_url('/ot/regInfo.modal/'.Reg::currentID()) }}" data-toggle="ajaxModal" class="btn btn-danger">查看我的报名</a>                              
+                              <a href="{{ mp_url('/ot/regInfo.modal/'.Reg::currentID()) }}" data-toggle="ajaxModal" class="btn btn-danger">查看我的报名</a>                              
                               @endif
                           </div>
                         </div>

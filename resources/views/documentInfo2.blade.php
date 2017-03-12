@@ -1,11 +1,11 @@
 ﻿@extends('layouts.app')
 @section('document_active', 'active')
 @push('scripts')
-    <script src="{{secure_url('/js/fuelux/fuelux.js')}}"></script>
-    <script src="{{secure_url('/js/file-input/bootstrap.file-input.js')}}"></script>
+    <script src="{{mp_url('/js/fuelux/fuelux.js')}}"></script>
+    <script src="{{mp_url('/js/file-input/bootstrap.file-input.js')}}"></script>
 @endpush
 @push('css')
-    <link rel="stylesheet" href="{{secure_url('/js/fuelux/fuelux.css')}}" type="text/css" />
+    <link rel="stylesheet" href="{{mp_url('/js/fuelux/fuelux.css')}}" type="text/css" />
 @endpush
 @section('content')
       <section class="vbox">
@@ -16,7 +16,7 @@
         <section class="scrollable">
           <div class="row">
             <div class="col-lg-8">
-              <embed src="{{secure_url('/document/'.$document->id.'/raw')}}" width="100%" height="100%"></embed>
+              <embed src="{{mp_url('/document/'.$document->id.'/raw')}}" width="100%" height="100%"></embed>
             </div>
             <div class="col-lg-4">
               <!-- .accordion -->
@@ -53,7 +53,7 @@
                   </div>
                   <div id="collapseThree" class="panel-collapse collapse">
                     <div class="panel-body text-sm">
-                      点击这里下载该学术文件。<br><a href="{{secure_url('/document/'.$document->id.'/download')}}" class="btn btn-sm btn-success details-modal"><i class="fa fa-download"></i> 下载{{$document->title}}</a>
+                      点击这里下载该学术文件。<br><a href="{{mp_url('/document/'.$document->id.'/download')}}" class="btn btn-sm btn-success details-modal"><i class="fa fa-download"></i> 下载{{$document->title}}</a>
                     </div>
                   </div>
                 </div>

@@ -1,23 +1,23 @@
 @extends('layouts.app')
 @section('roleAlloc_active', 'active')
 @push('scripts')
-    <script src="{{secure_url('/js/jquery.dataTables.min.js')}}"></script>
-    <script src="{{secure_url('/js/datatables/fnReloadAjax.js')}}"></script>
-    <script src="{{secure_url('/js/editable/bootstrap-editable.js')}}"></script>
-    <script src="{{secure_url('/js/dais.roleAllocDelegates.js')}}"></script>
-    <script src="{{secure_url('/js/dais.roleAllocNations.js')}}"></script>
+    <script src="{{mp_url('/js/jquery.dataTables.min.js')}}"></script>
+    <script src="{{mp_url('/js/datatables/fnReloadAjax.js')}}"></script>
+    <script src="{{mp_url('/js/editable/bootstrap-editable.js')}}"></script>
+    <script src="{{mp_url('/js/dais.roleAllocDelegates.js')}}"></script>
+    <script src="{{mp_url('/js/dais.roleAllocNations.js')}}"></script>
 </script>
 
 @endpush
 @push('css')
-    <link rel="stylesheet" href="{{secure_url('/css/jquery.dataTables.min.css')}}" type="text/css" />
-    <link rel="stylesheet" href="{{secure_url('/css/bootstrap-editable.css')}}" type="text/css" />
+    <link rel="stylesheet" href="{{mp_url('/css/jquery.dataTables.min.css')}}" type="text/css" />
+    <link rel="stylesheet" href="{{mp_url('/css/bootstrap-editable.css')}}" type="text/css" />
 @endpush
 @section('content')
 
       <section class="vbox">
             <header class="header bg-white b-b clearfix">
-              <a href="{{secure_url('dais/lockAlloc')}}" class="btn btn-sm btn-success {{$mustAlloc > 0 ? 'disabled ': ''}}pull-right details-modal" id="ra-confirm"><i class="fa fa-check"></i> 完成并锁定</a> 
+              <a href="{{mp_url('dais/lockAlloc')}}" class="btn btn-sm btn-success {{$mustAlloc > 0 ? 'disabled ': ''}}pull-right details-modal" id="ra-confirm"><i class="fa fa-check"></i> 完成并锁定</a> 
               <p>BJMUNC2017 {{$committee->display_name}} 席位分配</p>
             </header><section class="scrollable wrapper">
           <div class="tab-content">
@@ -38,7 +38,7 @@
                   @else
                     <br><strong class="text-success">所有已缴费的代表均已分配席位，请点击“完成并锁定”按钮以完成席位分配。</strong>
                   @endif
-                  <a href="{{secure_url('dais/linkPartner.modal')}}" class="btn btn-sm btn-danger details-modal">搭档配对有问题请点此</a>
+                  <a href="{{mp_url('dais/linkPartner.modal')}}" class="btn btn-sm btn-danger details-modal">搭档配对有问题请点此</a>
                   </div>
                     
                   <div class="col-sm-9 m-b-xs">
@@ -97,7 +97,7 @@
                 <div class="col-sm-6">
                   <section class="panel">
                     <header class="panel-heading">
-                  <a href="{{secure_url('/dais/nationDetails.modal/new')}}" class="btn btn-xs btn-white details-modal pull-right">添加席位</a>
+                  <a href="{{mp_url('/dais/nationDetails.modal/new')}}" class="btn btn-xs btn-white details-modal pull-right">添加席位</a>
                   @if ($emptyNations > 0)
                     <span class="pull-right">&nbsp;</span><span class="badge bg-warning pull-right">{{$emptyNations}} 个空席位</span>
                   @endif

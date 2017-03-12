@@ -375,7 +375,7 @@ class HomeController extends Controller
     {
         Reg::current()->school->payment_method = $method;
         Reg::current()->school->save();
-        return redirect(secure_url('/school/payment'));
+        return redirect(mp_url('/school/payment'));
     }
 
     /**
@@ -463,7 +463,7 @@ class HomeController extends Controller
         else if ($action == "resubmit")
         {
             if (is_null($handin))
-                return redirect(secure_url('/assignment/' . $id));
+                return redirect(mp_url('/assignment/' . $id));
             if (strtotime(date("y-m-d h:i:s")) < strtotime($assignment->deadline))
             {
                 if ($assignment->handin_type == 'upload')
@@ -525,7 +525,7 @@ class HomeController extends Controller
             $handin->handin_type = 'upload';
             $handin->remark = $request->remark;
             $handin->save();
-            return redirect(secure_url('/assignment/' . $id));
+            return redirect(mp_url('/assignment/' . $id));
         }
         else
         {
@@ -542,7 +542,7 @@ class HomeController extends Controller
      */
     public function imexportRegistrations()
     {
-        return view('ot.imexportModal', ['importURL' => secure_url('/regManage/import'), 'exportURL' => secure_url('/regManage/export')]);
+        return view('ot.imexportModal', ['importURL' => mp_url('/regManage/import'), 'exportURL' => mp_url('/regManage/export')]);
     }
 
 
@@ -655,14 +655,14 @@ class HomeController extends Controller
             if (!Reg::current()->specific()->committee->is_allocated)
                 return view('error', ['msg' => '您不是该会议学术团队成员，无权进行席位分配！']);
             else
-                return redirect(secure_url('/roleList'));
+                return redirect(mp_url('/roleList'));
         }
         else if (Reg::current()->type == 'ot')
-            return redirect(secure_url('/nationManage'));
+            return redirect(mp_url('/nationManage'));
         else if (Reg::current()->type != 'dais')
             return view('error', ['msg' => '您不是该会议学术团队成员，无权进行席位分配！']);            
         if (Reg::current()->specific()->committee->is_allocated)
-            return redirect(secure_url('/roleList'));
+            return redirect(mp_url('/roleList'));
         $mycommittee = Reg::current()->dais->committee;
         return view('dais.roleAlloc', [
             'committee' => $mycommittee, 
@@ -693,7 +693,7 @@ class HomeController extends Controller
     public function verifyTel()
     {
         if (Auth::user()->telVerifications == -1) //3/2/1: tries left; -1: activated
-            return redirect(secure_url('/home'));
+            return redirect(mp_url('/home'));
         return view('verifyTel');
     }
 
@@ -703,10 +703,10 @@ class HomeController extends Controller
     public function firstModal()
     {
         if (!Reg::selectConfirmed()) {
-            return redirect(secure_url('/selectIdentityModal'));
+            return redirect(mp_url('/selectIdentityModal'));
         }
         if (Reg::current()->type == 'unregistered') {
-            return redirect(secure_url('/reg2.modal/select'));
+            return redirect(mp_url('/reg2.modal/select'));
         }
         return view('verificationModal');
     }

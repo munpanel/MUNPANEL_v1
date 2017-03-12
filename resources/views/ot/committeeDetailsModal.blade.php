@@ -7,7 +7,7 @@
                 <tbody>
                     <tr>
                         <td width="35%">名称</td>
-                        <td width="65%"><a href="#" id="name" data-type="text" data-pk="{{$committee->id}}" data-url="{{secure_url('/ot/update/committee/'.$committee->id)}}" data-title="name" class="editable">{{$committee->name}}</a></td>
+                        <td width="65%"><a href="#" id="name" data-type="text" data-pk="{{$committee->id}}" data-url="{{mp_url('/ot/update/committee/'.$committee->id)}}" data-title="name" class="editable">{{$committee->name}}</a></td>
                     </tr>
                   </tbody>
             </table>

@@ -1,8 +1,8 @@
 ﻿@extends('layouts.app')
 @section('assignment_active', 'active')
 @push('scripts')
-    <script src="{{secure_url('/js/fuelux/fuelux.js')}}"></script>
-    <script src="{{secure_url('/js/file-input/bootstrap.file-input.js')}}"></script>
+    <script src="{{mp_url('/js/fuelux/fuelux.js')}}"></script>
+    <script src="{{mp_url('/js/file-input/bootstrap.file-input.js')}}"></script>
     <script>
     $(document).ready(function() {
         $('#uploadWizard')
@@ -17,7 +17,7 @@
     </script>
 @endpush
 @push('css')
-    <link rel="stylesheet" href="{{secure_url('/js/fuelux/fuelux.css')}}" type="text/css" />
+    <link rel="stylesheet" href="{{mp_url('/js/fuelux/fuelux.css')}}" type="text/css" />
 @endpush
 @section('content')
       <section class="vbox">
@@ -90,7 +90,7 @@
                     <button type="button" class="btn btn-white btn-xs btn-next" data-last="Finish" data-validate="parsley">Next</button>
                   </div>
                 </div>
-                <form id="uploadForm" enctype="multipart/form-data" action="{{secure_url('/assignment/'.$assignment->id.'/upload')}}"  method="post">
+                <form id="uploadForm" enctype="multipart/form-data" action="{{mp_url('/assignment/'.$assignment->id.'/upload')}}"  method="post">
                 {{ csrf_field() }}
                 <div class="step-content">
                   <div class="step-pane active" id="step1" style="color:#000000">请选择您要上传的学术作业文件。<br><input type="file" title="Browse" name="file" class="btn btn-sm btn-info file-input parsley-required" data-required="true"></div>

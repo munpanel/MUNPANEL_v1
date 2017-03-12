@@ -1,17 +1,17 @@
 ﻿@extends('layouts.app')
 @section('assignments_active', 'active')
 @push('scripts')
-    <script src="{{secure_url('/js/jquery.dataTables.min.js')}}"></script>
-    <script src="{{secure_url('/js/assignmentsList.js')}}"></script>
+    <script src="{{mp_url('/js/jquery.dataTables.min.js')}}"></script>
+    <script src="{{mp_url('/js/assignmentsList.js')}}"></script>
 @endpush
 @push('css')
-    <link rel="stylesheet" href="{{secure_url('/css/jquery.dataTables.min.css')}}" type="text/css" />
+    <link rel="stylesheet" href="{{mp_url('/css/jquery.dataTables.min.css')}}" type="text/css" />
 @endpush
 @section('content')
 <section class="vbox">
       <header class="header b-b bg-white">
         @if ($type == 'dais') 
-          <a href="{{secure_url('/dais/documentDetails.modal/new')}}" class="btn btn-sm btn-success details-modal"><i class="fa fa-plus"></i> 新建</a> 
+          <a href="{{mp_url('/dais/documentDetails.modal/new')}}" class="btn btn-sm btn-success details-modal"><i class="fa fa-plus"></i> 新建</a> 
         @else 
           <p>您的学术作业列表</p>
         @endif 

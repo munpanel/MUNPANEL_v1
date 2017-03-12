@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <title>Account Verification | MUNPANEL</title>
-  <link rel="icon" href="{{secure_url('/images/favicon.ico')}}" type="image/x-icon" />
-  <link rel="shortcut icon" href="{{secure_url('/images/favicon.ico')}}" type="image/x-icon" />
+  <link rel="icon" href="{{mp_url('/images/favicon.ico')}}" type="image/x-icon" />
+  <link rel="shortcut icon" href="{{mp_url('/images/favicon.ico')}}" type="image/x-icon" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <link rel="stylesheet" href="css/bootstrap.css" type="text/css" />
   <link rel="stylesheet" href="css/animate.css" type="text/css" />
@@ -42,7 +42,7 @@
             <div class="panel-body"><div class="alert alert-info">感谢您使用MUNPANEL！我们已发送一封激活邮件到您的邮箱({{Auth::user()->email}})。请根据邮件提示激活您的账户。未激活的账户将不能使用任何 MUNPANEL 服务，会议组织团队亦不可查看您的报名信息。</div></div>
 <div class="line line-dashed"></div>
             <p class="text-muted text-center"><small>没有收到邮件?</small></p>
-            <a href="{{ secure_url('/verifyEmail/resend') }}" class="btn btn-white btn-block">再发一封</a>
+            <a href="{{ mp_url('/verifyEmail/resend') }}" class="btn btn-white btn-block">再发一封</a>
         </section>
       </div>
     </div>

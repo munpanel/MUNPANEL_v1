@@ -36,11 +36,11 @@ class RoleAllocController extends Controller
         {
             Reg::current()->dais->committee->is_allocated = true;
             Reg::current()->dais->committee->save();
-            return redirect(secure_url('/roleList'));
+            return redirect(mp_url('/roleList'));
         }
         else
         {
-            return view('warningDialogModal', ['danger' => false, 'msg' => "您将要完成并锁定本委员会的国家分配，此操作将不可撤销。确实要继续吗？", 'target' => secure_url("/dais/lockAlloc/true")]);
+            return view('warningDialogModal', ['danger' => false, 'msg' => "您将要完成并锁定本委员会的国家分配，此操作将不可撤销。确实要继续吗？", 'target' => mp_url("/dais/lockAlloc/true")]);
         }
     }
 
@@ -62,7 +62,7 @@ class RoleAllocController extends Controller
             $partner->nation_id = null;
             $partner->save();
         }
-        return redirect(secure_url('/roleAlloc'));
+        return redirect(mp_url('/roleAlloc'));
     }
 
     /**
@@ -86,7 +86,7 @@ class RoleAllocController extends Controller
             $partner->save();
         }
         return 'success';
-        //return redirect(secure_url('/roleAlloc'));
+        //return redirect(mp_url('/roleAlloc'));
     }
 
     /**
@@ -105,7 +105,7 @@ class RoleAllocController extends Controller
             $delegate->nation_id = null;
             $delegate->save();
         }
-        return redirect(secure_url('/roleAlloc'));
+        return redirect(mp_url('/roleAlloc'));
     }
 
     /**
@@ -165,12 +165,12 @@ class RoleAllocController extends Controller
         if ($confirm)
         {
             Nation::destroy($id);
-            return redirect(secure_url('/roleAlloc'));
+            return redirect(mp_url('/roleAlloc'));
 	}
 	else
 	{
             $name = Nation::findOrFail($id)->name;
-            return view('warningDialogModal', ['danger' => false, 'msg' => "您将要删除国家$name 。确实要继续吗？", 'target' => secure_url("/dais/delete/nation/$id/true")]);
+            return view('warningDialogModal', ['danger' => false, 'msg' => "您将要删除国家$name 。确实要继续吗？", 'target' => mp_url("/dais/delete/nation/$id/true")]);
 	}
     }
 
@@ -199,7 +199,7 @@ class RoleAllocController extends Controller
         $del2->partnername = $del1->user->name;
         $del1->save();
         $del2->save();
-        return redirect(secure_url('/roleAlloc'));
+        return redirect(mp_url('/roleAlloc'));
     }
 
     /**

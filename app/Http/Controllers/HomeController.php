@@ -304,7 +304,18 @@ class HomeController extends Controller
     {
         $reg = Reg::findOrFail($id);
         $allRegs = Reg::where('user_id', $reg->user_id)->get(['id', 'type']);
-        return view('ot.regInfoModal', ['reg' => $reg, 'allRegs' => $allRegs]);
+        $operations = array();
+        if ($reg->type == 'delegate')
+        {
+            $status = $reg->delegate->realStatus();
+            switch($status)
+            {
+                case 'interview_assigned':break;
+                case 'interview_failed':
+                case 'interview_unassigned': $operations[] = 'assignInterview';
+            }
+        }
+        return view('ot.regInfoModal', ['reg' => $reg, 'allRegs' => $allRegs, 'operations' => $operations]);
     }
 
     /**

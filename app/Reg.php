@@ -141,6 +141,26 @@ class Reg extends Model
 	    $event->save();
 	    return $event;
     }
+
+    public function currentInterview()
+    {
+        $interview = $this->interviews()->orderBy('created_at', 'dsc')->first();
+        if (is_object($interview))
+        {
+            if (!in_array($interview->status, ['assigned', 'arranged', 'undecided']))
+                $interview = null;;
+        }
+        return $interview;
+    }
+
+    public function currentInterviewID()
+    {
+        $interview = $this->currentInterview();
+        if (is_object($interview))
+            return $interview->id;
+        return null;
+    }
+
     
     public function make()
     {

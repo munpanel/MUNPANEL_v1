@@ -53,7 +53,7 @@ class Delegate extends Model
     }
 
     public function delegategroups() {
-        return $this->belongstoMany('App\Delegategroup');
+        return $this->belongstoMany('App\Delegategroup', 'delegate_delegategroup', 'delegate_id', 'delegategroup_id');
     }
 
     public function cards() {

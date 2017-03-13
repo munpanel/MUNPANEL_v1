@@ -36,7 +36,7 @@ class Nationgroup extends Model
     public function hasDelegate($uid)
     {
         $nations = $this->nations;
-        $user = User::find($uid);
+        $user = Reg::find($uid);
         if (is_null($user))
             return false;
         $delegate = $user->delegate;

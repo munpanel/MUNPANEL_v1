@@ -416,8 +416,8 @@ class HomeController extends Controller
         {
             if (Reg::current()->specific()->status == 'reg')//TO-DO: parameters for this
                 return view('error', ['msg' => '请等待学校和/或组织团队审核！']);  
-            if (Reg::current()->specific()->status != 'paid')//TO-DO: parameters for this  
-                return view('error', ['msg' => '请先缴费！如果您已通过社团缴费，请等待组织团队确认']); 
+            //if (Reg::current()->specific()->status != 'paid')//TO-DO: parameters for this  
+                //return view('error', ['msg' => '请先缴费！如果您已通过社团缴费，请等待组织团队确认']); 
         }
         $committee = Reg::current()->specific()->committee;
         return view('assignmentsList', ['committee' => $committee, 'type' => Reg::current()->type]);
@@ -441,16 +441,16 @@ class HomeController extends Controller
             $handin = Handin::where('assignment_id', $id)->where('nation_id', Reg::current()->delegate->nation->id)->orderBy('id', 'desc')->first();
         else if ($assignment->subject_type == 'partner')
         {
-            if (isset(Reg::current()->delegate->partner)) $handin = Handin::where('assignment_id', $id)->where('user_id', Reg::current()->delegate->partner->id)->orderBy('id', 'desc')->first();
-            if (!isset($handin)) $handin = Handin::where('assignment_id', $id)->where('user_id', Reg::current()->id)->orderBy('id', 'desc')->first();
+            if (isset(Reg::current()->delegate->partner)) $handin = Handin::where('assignment_id', $id)->where('reg_id', Reg::current()->delegate->partner->id)->orderBy('id', 'desc')->first();
+            if (!isset($handin)) $handin = Handin::where('assignment_id', $id)->where('reg_id', Reg::current()->id)->orderBy('id', 'desc')->first();
             else
             {
-                $handin1 = Handin::where('assignment_id', $id)->where('user_id', Reg::current()->id)->orderBy('id', 'desc')->first();
+                $handin1 = Handin::where('assignment_id', $id)->where('reg_id', Reg::current()->id)->orderBy('id', 'desc')->first();
                 if (isset($handin1) && $handin1->id > $handin->id) $handin = $handin1;
             }
         }
         else
-            $handin = Handin::where('assignment_id', $id)->where('user_id', Reg::current()->id)->orderBy('id', 'desc')->first();
+            $handin = Handin::where('assignment_id', $id)->where('reg_id', Reg::current()->id)->orderBy('id', 'desc')->first();
         if ($action == 'info')
         {
             if (isset($handin))

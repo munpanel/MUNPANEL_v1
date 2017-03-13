@@ -29,7 +29,8 @@ class CreateInterviewsTable extends Migration
             $table->integer('interviewer_id')->nullabled()->unsigned();
             $table->dateTime('arranged_at')->nullable();
             $table->dateTime('finished_at')->nullable();
-            $table->enum('status', ['assigned', 'arranged', 'cancelled', 'passed', 'failed', 'wait', 'exempted']);
+            $table->enum('status', ['assigned', 'arranged', 'cancelled', 'passed', 'failed', 'undecided', 'retest', 'exempted']);
+            $table->boolean('retest')->default(false);
             $table->float('score')->nullable();
             $table->text('feedback')->nullable();
             $table->timestamps();

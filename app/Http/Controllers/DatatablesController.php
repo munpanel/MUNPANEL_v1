@@ -233,9 +233,9 @@ class DatatablesController extends Controller //To-Do: Permission Check
             {
                 if ($reg->specific()->status == 'paid')
                     $statusbar = 'has-success';
-                else if ($reg->status == 'oVerified')
+                else if ($reg->specific()->status == 'oVerified')
                     $statusbar = 'has-warning';
-                else if ($reg->status == 'sVerified')
+                else if ($reg->specific()->status == 'sVerified')
                     $statusbar = '';
                 else
                     $statusbar = 'has-error';
@@ -243,16 +243,18 @@ class DatatablesController extends Controller //To-Do: Permission Check
                     $status = '成功';
                 else if ($user->can('approve-regs'))
                     $status = '<div class="status-select '.$statusbar.'" uid="'. $reg->user_id .'">'.$reg->specific()->status."</div>";
-                else if ($reg->status == 'reg')
+                else if ($reg->specific()->status == 'reg')
                     $status = '等待学校审核';
-                else if ($reg->status == 'sVerified')
+                else if ($reg->specific()->status == 'sVerified')
                     $status = '等待组委审核';
-                 else if ($reg->status == 'oVerified')
+                 else if ($reg->specific()->status == 'oVerified')
                     $status = '待缴费';
-                 else if ($reg->status == 'paid')
+                 else if ($reg->specific()->status == 'paid')
                     $status = '成功';
-                 else if ($reg->status == 'init')
+                 else if ($reg->specific()->status == 'init')
                     $status = '报名学测未完成';
+                 if ($type == '代表')
+                     $status = $reg->specific()->statusText();
             }
             else $status = '';
                 $school = isset($reg->reginfo) ? json_decode($reg->reginfo)->personinfo->school : '未填写';

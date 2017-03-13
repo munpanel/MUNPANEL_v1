@@ -37,7 +37,7 @@
                   </div>
                   <div id="collapseOne" class="panel-collapse in">
                     <div class="panel-body text-sm">
-                      <b>作业标题: </b>{{$assignment->title}}<br><b>提交对象: </b>{{$assignment->scope()}} (以{{$assignment->subject_type == 'individual' ? '个人' : '国家'}}为单位)<br><b>提交形式: </b>{{$assignment->handin_type == 'upload' ? '文件上传' : '在线文本编辑器'}}<br><b>提交期限: </b>{{$assignment->deadline}}
+                      <b>作业标题: </b>{{$assignment->title}}<br><b>提交对象: </b>{{$assignment->scope()}} (以{{$assignment->subject_type == 'individual' ? '个人' : ($assignment->subject_type == 'nation' ? '国家' : '搭档')}}为单位)<br><b>提交形式: </b>{{$assignment->handin_type == 'upload' ? '文件上传' : '在线文本编辑器'}}<br><b>提交期限: </b>{{$assignment->deadline}}
                     </div>
                   </div>
                 </div>
@@ -78,12 +78,13 @@
                 </div>
                 <footer class="panel-footer lt">
               @if (strtotime(date("y-m-d H:i:s")) < strtotime($assignment->deadline))
+                @if ($assignment->handin_type == 'upload')
               <section class="panel wizard" id="uploadWizard"> 
                 <div class="clearfix wizard-steps">
                   <ul class="steps">
-                    <li data-target="#step1" class="active"><span class="badge badge-info">1</span>步骤 1</li>
-                    <li data-target="#step2"><span class="badge">2</span>步骤 2</li>
-                    <li data-target="#step3"><span class="badge">3</span>步骤 3</li>
+                    <li data-target="#step1" class="active"><span class="badge badge-info">1</span>选择文件</li>
+                    <li data-target="#step2"><span class="badge">2</span>补充说明</li>
+                    <li data-target="#step3"><span class="badge">3</span>确认</li>
                   </ul>
                   <div class="actions">
                     <button type="button" class="btn btn-white btn-xs btn-prev" disabled="disabled">Prev</button>
@@ -99,6 +100,9 @@
                 </div>
                 </form>
               </section>
+                @else
+                  <center><b><a href="{{mp_url('/assignment/'.$assignment->id.'/form')}}">获取题目并开始</a></b></center>
+                @endif
               @else
               截止时间已到，您并未上传。
               @endif

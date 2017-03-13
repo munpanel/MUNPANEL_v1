@@ -198,6 +198,14 @@
                 $modal.modal();
   </script>
   @endif
+  @if (isset($initialModal))
+  <script>
+        var $modal = $('<div class="modal" id="ajaxModal"><div class="modal-body"></div></div>');
+        $('body').append($modal);
+        $modal.modal();
+        $modal.load("{{$initialModal}}");
+  </script>
+  @endif
 </body>
 </html>
 

@@ -32,7 +32,7 @@ class InterviewController extends Controller
         $interview->status = 'assigned';
         $interview->save();
         Reg::findOrFail($id)->addEvent('interview_assigned', '{"interviewer":"'.$interviewer->reg->user->name.'"}');
-        //To-Do: return redirect
+        return redirect('/regManage?initialReg='.$id);
     }
 
     public function exemptInterview(Request $request, $id)
@@ -47,6 +47,6 @@ class InterviewController extends Controller
         $interview->status = 'exempted';
         $interview->save();
         Reg::findOrFail($id)->addEvent('interview_exempted', '{"interviewer":"'.$interviewer->reg->user->name.'"}');
-        //To-Do: return redirect
+        return redirect('/regManage?initialReg='.$id);
     }
 }

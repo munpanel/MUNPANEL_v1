@@ -186,11 +186,13 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function regManage()
+    static public function regManage(Request $request)
     {
         $type = Reg::current()->type;
         if ($type == 'ot' && Reg::current()->can('edit-users'))
         {
+            if (isset($request->initialReg))
+                return view('ot.regManage', ['delegates' => Delegate::all(), 'volunteers' => Volunteer::all(), 'observers' => Observer::all(), 'initialModal' => mp_url('/ot/regInfo.modal/'. $request->initialReg)]);
             return view('ot.regManage', ['delegates' => Delegate::all(), 'volunteers' => Volunteer::all(), 'observers' => Observer::all()]);
         }
         else if ($type == 'school')

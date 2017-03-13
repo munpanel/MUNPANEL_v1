@@ -372,10 +372,10 @@ class DatatablesController extends Controller //To-Do: Permission Check
                 else if ($assignment->subject_type == 'partner')
                 {
                     if (isset(Reg::current()->delegate->partner)) $handin = Handin::where('assignment_id', $assignment->id)->where('user_id', Reg::current()->delegate->partner->id)->orderBy('id', 'desc')->first();
-                    if (!isset($handin)) $handin = Handin::where('assignment_id', $assignment->id)->where('user_id', Reg::current()->id)->orderBy('id', 'desc')->first();                
+                    if (!isset($handin)) $handin = Handin::where('assignment_id', $assignment->id)->where('reg_id', Reg::current()->id)->orderBy('id', 'desc')->first();                
                 }
                 else
-                    $handin = Handin::where('assignment_id', $assignment->id)->where('user_id', Reg::current()->id)->orderBy('id', 'desc')->first();                
+                    $handin = Handin::where('assignment_id', $assignment->id)->where('reg_id', Reg::current()->id)->orderBy('id', 'desc')->first();                
                 if (is_null($handin)) //TO-DO: ddl check
                     $title = $title."<b class=\"badge bg-danger pull-right\">未提交</b>";
             }

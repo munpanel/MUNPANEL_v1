@@ -37,7 +37,7 @@
                   </div>
                   <div id="collapseOne" class="panel-collapse in">
                     <div class="panel-body text-sm">
-                      <b>作业标题: </b>{{$assignment->title}}<br><b>提交对象: </b>{{$assignment->scope()}} (以{{$assignment->subject_type == 'individual' ? '个人' : ($assignment->subject_type == 'nation' ? '国家' : '搭档')}}为单位)<br><b>提交形式: </b>{{$assignment->handin_type == 'upload' ? '文件上传' : ($assignment->handin_type == 'form' ? '在线填写表单' : '在线文本编辑器')}}<br><b>提交期限: </b>{{$assignment->deadline}}<br><b>最近一次提交: </b>{{$handin->user->name}}提交于{{nicetime($handin->updated_at)}}
+                      <b>作业标题: </b>{{$assignment->title}}<br><b>提交对象: </b>{{$assignment->scope()}} (以{{$assignment->subject_type == 'individual' ? '个人' : ($assignment->subject_type == 'nation' ? '国家' : '搭档')}}为单位)<br><b>提交形式: </b>{{$assignment->handin_type == 'upload' ? '文件上传' : ($assignment->handin_type == 'form' ? '在线填写表单' : '在线文本编辑器')}}<br><b>提交期限: </b>{{$assignment->deadline}}<br><b>最近一次提交: </b>{{$handin->reg->user->name}}提交于{{nicetime($handin->updated_at)}}
                     </div>
                   </div>
                 </div>
@@ -71,7 +71,7 @@
                <section class="panel bg-info lter no-borders">
                 <div class="panel-body">
                   <span class="h4">{{$assignment->title}}</span>
-                  @if (strtotime(date("y-m-d H:i:s")) < strtotime($assignment->deadline))
+                  @if (strtotime(date("y-m-d H:i:s")) < strtotime($assignment->deadline) && $assignment->handin_type != 'form')
                       <a class="badge bg-primary pull-right" href="{{mp_url('/assignment/'.$assignment->id.'/resubmit')}}">重新提交</a>
                   @endif
                   <div class="text-center padder m-t">
@@ -82,7 +82,7 @@
                   @if ($assignment->handin_type == 'upload')
                   <center><b><a href="{{mp_url('/assignment/'.$assignment->id.'/download')}}">点此下载</a></b></center>
                   @else
-                  <section class="panel text-sm">
+                  <section class="panel text-sm bg-white">
                     <div class="panel-body">
                       <label>您的提交</label>
                       {!!$formContent!!}

@@ -20,6 +20,7 @@ use App\Observer;
 use App\User;
 use App\Assignment;
 use App\Handin;
+use App\Form;
 use App\Document;
 use App\Email;
 use App\Reg;
@@ -472,7 +473,7 @@ class HomeController extends Controller
                 if ($assignment->handin_type == 'form')
                 {
                     $answer = json_decode($handin->content);
-                    $form = Form::findOrFail($content->form);
+                    $form = json_decode(Form::findOrFail($answer->form)->content);
                     $html = FormController::getMyAnswer($form->items, $answer);
                 } 
                 return view('assignmentHandinInfo', ['assignment' => $assignment, 'handin' => $handin, 'formContent' => $html]);
@@ -533,17 +534,30 @@ class HomeController extends Controller
         else if ($action == "form")
         {
             $form = $assignment->form->random();
+            $formID = $form->id;
             $questions = FormController::getQuestions(json_decode($form->content));
-            $handin = new Handin;
-            $handin->assignment_id = $assignment->id;
-            $handin->reg_id = Reg::currentID();
-            $handin->handin_type = "text";
-            $content = [];
-            foreach ($questions as $item)
-                $content[$item->id] = "";
-            $handin->content = json_encode((object)$content);
-            $handin->save();
-            $html = FormController::formAssignment($assignment->id, $questions, $form->id, $handin->id);
+            $handin = Handin::where('assignment_id', $id)->where('reg_id', Reg::currentID())->orderBy('id', 'desc')->first();
+            if (is_null($handin))
+            {
+                $handin = new Handin;
+                $handin->assignment_id = $assignment->id;
+                $handin->reg_id = Reg::currentID();
+                $handin->handin_type = "text";
+                $content = [];
+                $content['form'] = $form->id;
+                foreach ($questions as $item)
+                    $content[$item->id] = "";
+                $handin->content = json_encode((object)$content);
+                $handin->save();
+            }
+            else
+            {
+                $content = json_decode($handin->content);
+                $form = json_decode(Form::findOrFail($content->form)->content);
+                $questions = FormController::restoreQuestions($form->items, $content);
+                $formID = $content->form;
+            }
+            $html = FormController::formAssignment($assignment->id, $questions, $formID, $handin->id);
             return view('assignmentForm', ['assignment' => $assignment, 'formContent' => $html]);
         }
     }
@@ -833,7 +847,7 @@ class HomeController extends Controller
             ],
             "answer":["3","4","1","2"]
         }]');
-        $html = FormController::formAssignment($i, $test);
+        $html = FormController::formAssignment($i, $test, 0);
         return view('blank', ['testContent' => $html, 'convert' => true]);
     }
 
@@ -841,12 +855,11 @@ class HomeController extends Controller
     {
         $handin = Handin::findOrFail($request->handin);
         $answer = $request->all();
-        // BUG: $answer 中 _token 和 handin 无法消除
-        unset($answer->_token, $answer->handin);
         $handin->content = json_encode($answer);
         $handin->save();
         $assignment = Assignment::findOrFail($handin->assignment_id);
-        $form = Form::findOrFail($request->form);
+        $form1 = Form::findOrFail($request->form);
+        $form = json_decode($form1->content);
         $html = FormController::getMyAnswer($form->items, $answer);
         return view('assignmentHandinInfo', ['assignment' => $assignment, 'handin' => $handin, 'formContent' => $html]);
     }

@@ -122,11 +122,12 @@ class FormController extends Controller
                   </label></div>';
                     break;
                 case "fill_in":
-                    $html .= singleInput('text',$item->id);
+                    $placeholder = isset($item->placeholder) ? $item->placeholder : '';
+                    $html .= singleInput('text',$item->id,'',null,null,false,$placeholder);
                     break;
                 case "order":
                     $li = 0;
-                    $html .= '<ul class="list-group gutter  list-group-sp sortable">';
+                    $html .= '<ul class="list-group gutter list-group-sp sortable">';
                     foreach ($item->options as $option)
                         $html .= '<li class="list-group-item" draggable="true"><span class="pull-left media-xs"><i class="fa fa-sort text-muted fa-sm"></i>&nbsp;'.++$li.'</span><div class="clear">'.$option->text.'</div><input type="hidden" name="'.$item->id.'[]" value="'.$li.'"></li>';
                     $html .= '</ul>';
@@ -164,7 +165,12 @@ class FormController extends Controller
         foreach ($object->items as $item)
             array_push($split[$item->level], $item);
         foreach ((array)$object->config->by_level as $level => $qty)
-            array_merge($result, array_rand($split[$level], $qty));
+        {
+            $singlesplit = $split[$level];
+            $res_keys = array_rand($singlesplit, $qty);
+            foreach ($res_keys as $key)
+                array_push($result, $singlesplit[$key]);
+        }
         return $result;
     }
 
@@ -183,24 +189,24 @@ class FormController extends Controller
         foreach ($arr_answers as $key => $value)
         {
             // 排除 _token 和 handin
-            if (in_array($key, ['_token', 'handin'])) continue;
-            $item = $questions[$key];
+            if (in_array($key, ['_token', 'handin', 'form'])) continue;
+            $item = $questions[$key - 1];
             $html .= '<div class="form-group"><span class="badge form-assignment text-xs">'.++$i.'</span>&nbsp;'.$item->title;
             switch ($item->type)
             {
                 case 'single_choice':
-                    $text = array_filter($item->options, function($e) { return $e->value == $value; })[0]->text;
-                    $html .= '<div class="m-l-lg">'.text.'</div>';
+                    $text = $item->options[$value - 1]->text;
+                    $html .= '<div class="m-l-lg">'.$text.'</div>';
                 break;
                 case 'yes_or_no':
-                    $html .= '<div class="m-l-lg">' . $value ? '正确' : '错误' . '</div>';
+                    $html .= '<div class="m-l-lg">' . ($value == 'true' ? '正确' : '错误') . '</div>';
                 break;
                 case 'mult_choice':
                 case 'order':
                     foreach ($value as $val)
                     {
-                        $text = array_filter($item->options, function($e) { return $e->value == $val; })[0]->text;
-                        $html .= '<div class="m-l-lg">'.text.'</div>';
+                        $text = $item->options[$val - 1]->text;
+                        $html .= '<div class="m-l-lg">'.$text.'</div>';
                     }
                 break;
                 case 'fill_in':
@@ -210,5 +216,27 @@ class FormController extends Controller
             $html .= '</div>';
         }
         return $html;
+    }
+
+    /**
+     * Get the items of the form assignment
+     *
+     * @param array $questions the object of form, from json_decode ($*->items)
+     * @param object $answers the object of answer, from json_decode ($*->items)
+     * @return string the table items object ($*->items)
+     */
+    public static function restoreQuestions($questions, $answers)
+    {
+        $result = [];
+        $i = 0;
+        $arr_answers = (array)$answers;
+        foreach ($arr_answers as $key => $value)
+        {
+            // 排除 _token 和 handin
+            if (in_array($key, ['_token', 'handin', 'form'])) continue;
+            $item = $questions[$key - 1];
+            array_push($result, $item);
+        }
+        return $result;
     }
 }

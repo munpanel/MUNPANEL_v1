@@ -72,12 +72,13 @@ function regStat($committees, $obs, $vol)
  * @param bool $required 'data_required' for parsley
  * @return string HTML DOM element <input ...>...
  */
-function singleInput($type, $name, $value = '', $text = null, $id = null, $required = false)
+function singleInput($type, $name, $value = '', $text = null, $id = null, $required = false, $placeholder = '')
 {
     $html = '<input ';
     if (isset($id)) $html .= 'id="'.$id.'"';
     $html .= ' type="'.$type.'" name="'.$name.'" value="'.$value.'"';
     if ($required) $html .= ' data-required="true"';
+    if (!empty($placeholder) && $type == 'text') $html .= ' placeholder="'.$placeholder.'"';
     $html .= $type == 'text' ? ' class="form-control">' : '>';
     if (isset($text)) $html .= '&nbsp;' . $text;
     if ($type != 'text') $html .= '<br>';

@@ -82,19 +82,17 @@ class FormController extends Controller
      *
      * @param int $assignmentID the id of form Assignment
      * @param object $tableItems the table items object ($*->items)
-     * @param int $committeeID ID of committee
-     * @param int $maxValue the items will be shown
+     * @param int $handinID the ID of handin
      * @return string HTML clip of the table
      */
-    public static function formAssignment($assignmentID, $tableItems, $committeeID, $maxValue)
+    public static function formAssignment($assignmentID, $tableItems, $handinID = 0)
     {
-        $html = '<form method="POST" action="'.mp_url('/assignment/'.$assignmentID.'/formSubmit').'">'.csrf_field();
+        $html = '<form method="POST" action="'.mp_url('/assignment/'.$assignmentID.'/formSubmit').'" class="m-t-lg m-b">'.csrf_field();
         $num = 0;
-        if ($maxValue > count($tableItems)) $maxValue = count($tableItems);
-        $subItems = array_rand($tableItems, $maxValue);
+        if (!empty($handinID)) $html .= '<input type="hidden" value="'.$item->id.'" name="handin">';
         foreach ($tableItems as $item)
         {
-            $html .= '<div class="form-group"><span class="badge form-assignment m-l-n-xs">'.++$num.'</span>&nbsp;<label>'.$item->title.'</label><div class="m-l-lg">';
+            $html .= '<div class="form-group"><span class="badge form-assignment">'.++$num.'</span>&nbsp;<label>'.$item->title.'</label><div class="m-l-30">';
             $i = 0;
             switch ($item->type)
             {
@@ -136,5 +134,29 @@ class FormController extends Controller
         }
         $html .= '<div class="form-group"><button type="submit" class="btn btn-success">提交作业</button></div></form>';
         return $html;
+    }
+
+    /**
+     * Get the items of the form assignment
+     *
+     * @param object $object the object of form, from json_decode ($*)
+     * @return array the table items object ($*->items)
+     */
+    public static function getQuestions($object)
+    {
+        if ($object->config->use == "all")
+            return $object->items;
+        // if ($object->config->use == "random")
+        $total = $object->config->total;
+        if (empty($object->config->by_level))
+            return array_rand($object->items, $total);
+        $result = $split = [];
+        foreach ((array)$object->config->by_level as $level => $qty)
+            $split[$level] = [];
+        foreach ($object->items as $item)
+            array_push($split[$item->level], $item);
+        foreach ((array)$object->config->by_level as $level => $qty)
+            array_merge($result, array_rand($split[$level], $qty));
+        return $result;
     }
 }

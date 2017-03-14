@@ -446,7 +446,7 @@ class HomeController extends Controller
     public function assignment($id, $action = 'info')
     {
         $assignment = Assignment::findOrFail($id);
-        if (Reg::current()->type != 'ot' && Reg::current()->type != 'dais' && (!$assignment->belongsToDelegate(Reg::current()->id)))
+        if (Reg::current()->type != 'ot' && Reg::current()->type != 'dais' && (!$assignment->belongsToDelegate(Reg::currentID())))
             return "ERROR"; //TO-DO: Permission check for ot and dais (for downloading handins)
         if (Reg::current()->type == 'ot') //To-Do: Dais
             $handins = $assignment->handins;
@@ -455,22 +455,22 @@ class HomeController extends Controller
         else if ($assignment->subject_type == 'partner')
         {
             if (isset(Reg::current()->delegate->partner)) $handin = Handin::where('assignment_id', $id)->where('reg_id', Reg::current()->delegate->partner->id)->orderBy('id', 'desc')->first();
-            if (!isset($handin)) $handin = Handin::where('assignment_id', $id)->where('reg_id', Reg::current()->id)->orderBy('id', 'desc')->first();
+            if (!isset($handin)) $handin = Handin::where('assignment_id', $id)->where('reg_id', Reg::currentID())->orderBy('id', 'desc')->first();
             else
             {
-                $handin1 = Handin::where('assignment_id', $id)->where('reg_id', Reg::current()->id)->orderBy('id', 'desc')->first();
+                $handin1 = Handin::where('assignment_id', $id)->where('reg_id', Reg::currentID())->orderBy('id', 'desc')->first();
                 if (isset($handin1) && $handin1->id > $handin->id) $handin = $handin1;
             }
         }
         else
-            $handin = Handin::where('assignment_id', $id)->where('reg_id', Reg::current()->id)->orderBy('id', 'desc')->first();
+            $handin = Handin::where('assignment_id', $id)->where('reg_id', Reg::currentID())->orderBy('id', 'desc')->first();
         if ($action == 'info')
         {
             if (isset($handin))
             {
                 return view('assignmentHandinInfo', ['assignment' => $assignment, 'handin' => $handin]);
             }
-            else if ($assignment->handin_type == 'upload')
+            else if (in_array($assignment->handin_type, ['upload', 'form']))
             {
                 return view('assignmentHandinUpload', ['assignment' => $assignment]);
             }
@@ -523,6 +523,22 @@ class HomeController extends Controller
             $zip->close();
             return response()->download(storage_path('app/assignmentExports/'. $zipname));
         }
+        else if ($action == "form")
+        {
+            $form = $assignment->form->random();
+            $questions = FormController::getQuestions(json_decode($form->content));
+            $handin = new Handin;
+            $handin->assignment_id = $assignment->id;
+            $handin->reg_id = Reg::currentID();
+            $handin->handin_type = "text";
+            $content = [];
+            foreach ($questions as $item)
+                $content[$item->id] = "";
+            $handin->content = json_encode((object)$content);
+            $handin->save();
+            $html = FormController::formAssignment($assignment->id, $questions, $handin->id);
+            return view('assignmentForm', ['assignment' => $assignment, 'formContent' => $html]);
+        }
     }
 
     /**
@@ -535,7 +551,7 @@ class HomeController extends Controller
     public function uploadAssignment(Request $request, $id)
     {
         $assignment = Assignment::findOrFail($id);
-        if (!$assignment->belongsToDelegate(Reg::current()->id))
+        if (!$assignment->belongsToDelegate(Reg::currentID()))
             return "ERROR";
         if (strtotime(date("y-m-d H:i:s")) >= strtotime($assignment->deadline))
             return "ERROR";
@@ -545,7 +561,7 @@ class HomeController extends Controller
             if ($assignment->subject_type == 'nation')
                 $handin->nation_id = Reg::current()->delegate->nation->id;
             //else
-            $handin->user_id = Reg::current()->id;
+            $handin->user_id = Reg::currentID();
             $handin->content = $request->file->store('assignmentHandins');
             $handin->assignment_id = $id;
             $handin->handin_type = 'upload';
@@ -570,7 +586,6 @@ class HomeController extends Controller
     {
         return view('ot.imexportModal', ['importURL' => mp_url('/regManage/import'), 'exportURL' => mp_url('/regManage/export')]);
     }
-
 
     /**
      * Show the document list page.
@@ -606,7 +621,7 @@ class HomeController extends Controller
             return view('error', ['msg' => '您不是参会代表，无权访问该页面！']);
         else if (Reg::current()->type == 'delegate')
         {
-            if (!$document->belongsToDelegate(Reg::current()->id))
+            if (!$document->belongsToDelegate(Reg::currentID()))
                 return view('error', ['msg' => '您不是此学术文件的分发对象，无权访问该页面！']);
         }
         if ($action == "download")
@@ -811,7 +826,7 @@ class HomeController extends Controller
             ],
             "answer":["3","4","1","2"]
         }]');
-        $html = FormController::formAssignment($i, $test, 20, 2);
+        $html = FormController::formAssignment($i, $test);
         return view('blank', ['testContent' => $html, 'convert' => true]);
     }
 

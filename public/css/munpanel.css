@@ -215,3 +215,11 @@ ul.timeline-small>li>.timeline-panel:after {
 .badge.form-assignment {
     vertical-align: top
 }
+
+.m-l-30 {
+    margin-left: 30px
+}
+
+.pull-center {
+    float: center;
+}

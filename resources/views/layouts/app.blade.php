@@ -20,8 +20,8 @@
     <link rel="stylesheet" href="{{mp_url('/css/font.css')}}" type="text/css" cache="false" />
     <link rel="stylesheet" href="{{mp_url('/css/plugin.css')}}" type="text/css" />
     <link rel="stylesheet" href="{{mp_url('/css/app.css')}}" rel="stylesheet" />
-    <link rel="stylesheet" href="{{mp_url('/css/munpanel.css')}}" type="text/css" />
     @stack('css')
+    <link rel="stylesheet" href="{{mp_url('/css/munpanel.css')}}" type="text/css" />
 
     <!-- Scripts -->
     <script>
@@ -52,7 +52,7 @@
 <body>
   <section class="hbox stretch">
     <!-- .aside -->
-    <aside class="bg-info aside-sm" id="nav">
+    <aside class="bg-info aside-sm @yield('hide_aside')" id="nav">
       <section class="vbox">
         <header class="dker nav-bar nav-bar-fixed-top">
           <a class="btn btn-link visible-xs" data-toggle="class:nav-off-screen" data-target="#nav">
@@ -180,7 +180,7 @@
 	<script src="{{mp_url('/js/jquery.min.js')}}"></script>
   <!-- Bootstrap -->
   <script src="{{mp_url('/js/bootstrap.js')}}"></script>
- <!-- App -->
+  <!-- App -->
   <script src="{{mp_url('/js/app.js')}}"></script>
   <script src="{{mp_url('/js/app.plugin.js')}}"></script>
   <script src="{{mp_url('/js/app.data.js')}}"></script>

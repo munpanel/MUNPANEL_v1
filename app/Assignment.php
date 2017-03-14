@@ -45,7 +45,7 @@ class Assignment extends Model
 
     public function form()
     {
-        return $this->hasMany('App\Form');
+        return $this->belongsToMany('App\Form');
     }
 
     public function scope()

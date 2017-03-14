@@ -21,7 +21,7 @@ class Delegategroup extends Model
 
     public function delegates()
     {
-        return $this->belongsToMany('App\Delegate');
+        return $this->belongsToMany('App\Delegate', 'delegate_delegategroup', 'delegategroup_id', 'delegate_id');
     }
 
     public function assignments()

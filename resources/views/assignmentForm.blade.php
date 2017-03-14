@@ -4,10 +4,8 @@
     <script src="{{mp_url('/js/fuelux/fuelux.js')}}"></script>
     <script src="{{mp_url('js/sortable/jquery.sortable.js')}}'"></script>
     <script>
-    $(document).ready(function() {{
-      if (screenfull.enabled) {
+    $(document).ready(function() {
         screenfull.request();
-      }
     });
     </script>
 @endpush

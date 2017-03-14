@@ -832,6 +832,12 @@ class HomeController extends Controller
 
     public function formAssignmentSubmit(Request $request, $id)
     {
-        return view('blank', ['testContent' => json_encode($request->all()), 'convert' => false]);
+        $handin = Handin::findOrFail($request->handin);
+        $answer = $request->all();
+        // BUG: $answer 中 _token 和 handin 无法消除
+        unset($answer->_token, $answer->handin);
+        $handin->content = json_encode($answer);
+        $handin->save();
+        return view('blank', ['testContent' => json_encode($answer), 'convert' => false]);
     }
 }

@@ -29,7 +29,7 @@ class CreateHandinsTable extends Migration
             $table->integer('assignment_id')->unsigned();
             $table->enum('handin_type', ['upload', 'text']); //If upload, assignment_content = file location
             $table->mediumtext('content');
-            $table->string('remark');
+            $table->string('remark')->nullable();
             $table->timestamps();
             $table->foreign('reg_id')->references('id')->on('regs')->onDelete('no action');
             $table->foreign('nation_id')->references('id')->on('nations')->onDelete('no action');

@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Form extends Model
 {
-    protected fillable = ['conference_id', 'name', 'content'];
+    protected $fillable = ['conference_id', 'name', 'content'];
 
     public function conference() {
         return $this->belongsTo('App\Conference');

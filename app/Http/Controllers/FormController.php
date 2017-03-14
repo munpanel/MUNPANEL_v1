@@ -89,7 +89,7 @@ class FormController extends Controller
     {
         $html = '<form method="POST" action="'.mp_url('/assignment/'.$assignmentID.'/formSubmit').'" class="m-t-lg m-b">'.csrf_field();
         $num = 0;
-        if (!empty($handinID)) $html .= '<input type="hidden" value="'.$item->id.'" name="handin">';
+        if (!empty($handinID)) $html .= '<input type="hidden" value="'.$handinID.'" name="handin">';
         foreach ($tableItems as $item)
         {
             $html .= '<div class="form-group"><span class="badge form-assignment">'.++$num.'</span>&nbsp;<label>'.$item->title.'</label><div class="m-l-30">';
@@ -149,7 +149,13 @@ class FormController extends Controller
         // if ($object->config->use == "random")
         $total = $object->config->total;
         if (empty($object->config->by_level))
-            return array_rand($object->items, $total);
+        {
+            $res_keys = array_rand($object->items, $total);
+            $result = [];
+            foreach ($res_keys as $key)
+                array_push($result, $object->items[$key]);
+            return $result;
+        }
         $result = $split = [];
         foreach ((array)$object->config->by_level as $level => $qty)
             $split[$level] = [];

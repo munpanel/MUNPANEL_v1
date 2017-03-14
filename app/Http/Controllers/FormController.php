@@ -219,7 +219,7 @@ class FormController extends Controller
     }
 
     /**
-     * Get the items of the form assignment
+     * Find questions from handin 
      *
      * @param array $questions the object of form, from json_decode ($*->items)
      * @param object $answers the object of answer, from json_decode ($*->items)

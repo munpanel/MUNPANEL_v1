@@ -468,7 +468,14 @@ class HomeController extends Controller
         {
             if (isset($handin))
             {
-                return view('assignmentHandinInfo', ['assignment' => $assignment, 'handin' => $handin]);
+                $html = '';
+                if ($assignment->handin_type == 'form')
+                {
+                    $answer = json_decode($handin->content);
+                    $form = Form::findOrFail($content->form);
+                    $html = FormController::getMyAnswer($form->items, $answer);
+                } 
+                return view('assignmentHandinInfo', ['assignment' => $assignment, 'handin' => $handin, 'formContent' => $html]);
             }
             else if (in_array($assignment->handin_type, ['upload', 'form']))
             {
@@ -536,7 +543,7 @@ class HomeController extends Controller
                 $content[$item->id] = "";
             $handin->content = json_encode((object)$content);
             $handin->save();
-            $html = FormController::formAssignment($assignment->id, $questions, $handin->id);
+            $html = FormController::formAssignment($assignment->id, $questions, $form->id, $handin->id);
             return view('assignmentForm', ['assignment' => $assignment, 'formContent' => $html]);
         }
     }
@@ -838,6 +845,9 @@ class HomeController extends Controller
         unset($answer->_token, $answer->handin);
         $handin->content = json_encode($answer);
         $handin->save();
-        return view('blank', ['testContent' => json_encode($answer), 'convert' => false]);
+        $assignment = Assignment::findOrFail($handin->assignment_id);
+        $form = Form::findOrFail($request->form);
+        $html = FormController::getMyAnswer($form->items, $answer);
+        return view('assignmentHandinInfo', ['assignment' => $assignment, 'handin' => $handin, 'formContent' => $html]);
     }
 }

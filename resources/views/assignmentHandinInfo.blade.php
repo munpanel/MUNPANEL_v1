@@ -79,7 +79,16 @@
                   </div>
                 </div>
                 <footer class="panel-footer lt">
+                  @if ($assignment->handin_type == 'upload')
                   <center><b><a href="{{mp_url('/assignment/'.$assignment->id.'/download')}}">点此下载</a></b></center>
+                  @else
+                  <section class="panel text-sm">
+                    <div class="panel-body">
+                      <label>您的提交</label>
+                      {!!$formContent!!}
+                    </div>
+                  </section>
+                  @endif
                 </footer>
               </section>
           </div>

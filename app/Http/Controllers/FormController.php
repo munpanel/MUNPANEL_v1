@@ -62,7 +62,7 @@ class FormController extends Controller
     /**
      * filter form assignments by committee
      *
-     * @param object $tableItems the table items object ($*->items)
+     * @param array $tableItems the table items ($*->items)
      * @param int $committeeID ID of committee
      * @return array assignment objects with specific committee
      */
@@ -81,15 +81,17 @@ class FormController extends Controller
      * Render the assignment form to html
      *
      * @param int $assignmentID the id of form Assignment
-     * @param object $tableItems the table items object ($*->items)
+     * @param array $tableItems the table items ($*->items)
+     * @param int $formID the ID of form
      * @param int $handinID the ID of handin
      * @return string HTML clip of the table
      */
-    public static function formAssignment($assignmentID, $tableItems, $handinID = 0)
+    public static function formAssignment($assignmentID, $tableItems, $formID, $handinID = 0)
     {
         $html = '<form method="POST" action="'.mp_url('/assignment/'.$assignmentID.'/formSubmit').'" class="m-t-lg m-b">'.csrf_field();
         $num = 0;
         if (!empty($handinID)) $html .= '<input type="hidden" value="'.$handinID.'" name="handin">';
+        $html .= '<input type="hidden" value="'.$formID.'" name="form">';
         foreach ($tableItems as $item)
         {
             $html .= '<div class="form-group"><span class="badge form-assignment">'.++$num.'</span>&nbsp;<label>'.$item->title.'</label><div class="m-l-30">';
@@ -164,5 +166,49 @@ class FormController extends Controller
         foreach ((array)$object->config->by_level as $level => $qty)
             array_merge($result, array_rand($split[$level], $qty));
         return $result;
+    }
+
+    /**
+     * Get the items of the form assignment
+     *
+     * @param array $questions the object of form, from json_decode ($*->items)
+     * @param object $answers the object of answer, from json_decode ($*->items)
+     * @return string the table items object ($*->items)
+     */
+    public static function getMyAnswer($questions, $answers)
+    {
+        $html = '';
+        $i = 0;
+        $arr_answers = (array)$answers;
+        foreach ($arr_answers as $key => $value)
+        {
+            // 排除 _token 和 handin
+            if (in_array($key, ['_token', 'handin'])) continue;
+            $item = $questions[$key];
+            $html .= '<div class="form-group"><span class="badge form-assignment text-xs">'.++$i.'</span>&nbsp;'.$item->title;
+            switch ($item->type)
+            {
+                case 'single_choice':
+                    $text = array_filter($item->options, function($e) { return $e->value == $value; })[0]->text;
+                    $html .= '<div class="m-l-lg">'.text.'</div>';
+                break;
+                case 'yes_or_no':
+                    $html .= '<div class="m-l-lg">' . $value ? '正确' : '错误' . '</div>';
+                break;
+                case 'mult_choice':
+                case 'order':
+                    foreach ($value as $val)
+                    {
+                        $text = array_filter($item->options, function($e) { return $e->value == $val; })[0]->text;
+                        $html .= '<div class="m-l-lg">'.text.'</div>';
+                    }
+                break;
+                case 'fill_in':
+                    $html .= '<div class="m-l-lg">' . $value . '</div>';
+                break;
+            }
+            $html .= '</div>';
+        }
+        return $html;
     }
 }

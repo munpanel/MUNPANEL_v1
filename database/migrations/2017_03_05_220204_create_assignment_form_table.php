@@ -29,7 +29,7 @@ class CreateAssignmentFormTable extends Migration
 
             $table->foreign('assignment_id')->references('id')->on('assignments')
                 ->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('form_id')->references('id')->on('committees')
+            $table->foreign('form_id')->references('id')->on('forms')
                 ->onUpdate('cascade')->onDelete('cascade');
 
             $table->primary(['assignment_id', 'form_id']);

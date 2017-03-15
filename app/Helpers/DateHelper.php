@@ -48,6 +48,12 @@ function nicetime($date, $concise = false)
         $difference = round($difference);
 
         if($concise)
-            return "$difference$periods[$j]{$tense}";
-        return $date."（$difference $periods[$j]{$tense}）";
+            if ($difference != 0)
+                return "$difference$periods[$j]{$tense}";
+            else
+                return "现在";
+        if ($difference != 0)
+            return $date."（$difference $periods[$j]{$tense}）";
+        else
+            return $date."（现在）";
 }

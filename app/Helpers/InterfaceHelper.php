@@ -22,8 +22,8 @@ function regStatSingle($committee)
     $result = '<li class="dd-item" data-id="10"><div class="dd-handle">' . $committee->name . '<span class="pull-right">定员: ' . $capacity . '&emsp;';
     if ($counts > $capacity) $result .= '<strong class="text-danger">';
     $result .= '报名人数: ' . $counts;
-    $result .= '</span></div>';
     if ($counts > $capacity) $result .= '</strong>';
+    $result .= '</span></div>';
     if ($committee->childCommittees->count() > 0)
     {
         $result .= '<ol class="dd-list">';

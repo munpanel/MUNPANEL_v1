@@ -179,7 +179,7 @@ class Reg extends Model
                 $observer = new Observer();
                 $observer->reg_id = $this->id;
                 $observer->conference_id = $this->conference_id;
-                $delegate->school_id = $this->school_id;
+                $observer->school_id = $this->school_id;
                 $observer->committee_id = json_decode($this->reginfo)->conference->committee;
                 $observer->status = $observer->nextStatus();
                 $observer->save();
@@ -188,7 +188,7 @@ class Reg extends Model
                 $volunteer = new Volunteer();
                 $volunteer->reg_id = $this->id;
                 $volunteer->conference_id = $this->conference_id;
-                $delegate->school_id = $this->school_id;
+                $volunteer->school_id = $this->school_id;
                 $volunteer->status = $volunteer->nextStatus();
                 $volunteer->save();
                 break;

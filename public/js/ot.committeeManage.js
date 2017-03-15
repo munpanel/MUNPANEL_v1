@@ -6,7 +6,9 @@ $(document).ready(function() {
         columns: [
             {data: 'details', name: 'details', orderable: false},
             {data: 'id', name: 'id', orderable: true},
+            {data: 'bt', name: 'bt', orderable: true},
             {data: 'name', name: 'name', orderable: false},
+            {data: 'dqc', name: 'dqc', orderable: false},
         ],
         fnInitComplete: function(oSettings, json) {
             $(document).on('hidden.bs.modal', '#ajaxModal', function() {

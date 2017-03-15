@@ -49,9 +49,9 @@
                           </span>
                         </th-->
                         <th>姓名</th>
-                        <th>学校</th>
+                        <th>类别</th>
                         <th>委员会</th>
-                        <th>类型</th>
+                        <th>所属代表组</th>
                         <th>状态</th>
                       </tr>
                     </thead>

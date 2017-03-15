@@ -151,6 +151,7 @@ Route::group(['domain' => 'portal.munpanel.com'], function () {
     Route::get('/allOrders/{id}', 'StoreController@viewAllOrders');
     Route::get('/shipOrder/{id}', 'StoreController@shipOrder');
     Route::get('/ajax/registrations', 'DatatablesController@reg2Table');
+    Route::get('/ajax/teammembers', 'DatatablesController@teamTable');
     Route::get('/ajax/users', ['middleware' => ['permission:edit-users'], 'uses' => 'DatatablesController@users']);
     Route::get('/ajax/schools', ['middleware' => ['permission:edit-schools'], 'uses' => 'DatatablesController@schools']);
     Route::get('/ajax/committees', ['middleware' => ['permission:edit-committees'], 'uses' => 'DatatablesController@committees']);

@@ -261,7 +261,55 @@ class DatatablesController extends Controller //To-Do: Permission Check
                 $result->push([
                     'details' => '<a href="ot/regInfo.modal/'. $reg->id .'" data-toggle="ajaxModal" id="'. $reg->id .'" class="details-modal"><i class="fa fa-search-plus"></i></a>',
                     'name' => $reg->user->name,
-                    'school' => $school,
+                    'school' => isset($reg->specific()->position) ? $reg->specific()->position : '无',
+                    'committee' => isset($reg->specific()->committee) ? $reg->specific()->committee->name : '无',
+                    'partner' => $type,
+                    'status' => '无',
+                ]);
+            }
+        }
+        return Datatables::of($result)->make(true);
+    }
+
+    /**
+     * Show team member datatables json
+     *
+     * @return string JSON of team members
+     */
+    public function teamTable()
+    {
+        $user = Reg::current();
+        $conf = 2;
+        if ($user->type=='ot')
+        {
+            if (false)//(!Reg::current()->can('view-regs'))
+                return "ERROR";
+            $result = new Collection;
+            // 过滤结果: 只保留 delegate, observer 和 volunteer
+            $regs = Reg::where('conference_id', 2)->whereIn('type', ['ot', 'dais', 'school'])->with(['user' => function($q) {$q->select('name', 'id');}])->get(['id', 'user_id', 'type']);
+            foreach ($regs as $reg)
+            {
+                if ($reg->type == 'unregistered')
+                    $type = '未报名';
+                else if ($reg->type == 'ot')
+                    $type = '组织团队';
+                else if ($reg->type == 'dais')
+                    $type = '学术团队';
+                else if ($reg->type == 'delegate')
+                    $type = '代表';
+                else if ($reg->type == 'volunteer')
+                    $type = '志愿者';
+                else if ($reg->type == 'observer')
+                    $type = '观察员';
+                else if ($reg->type == 'school')
+                    $type = '学校';
+                else
+                    $type = '未知';
+                $school = isset($reg->reginfo) ? json_decode($reg->reginfo)->personinfo->school : '未填写';
+                $result->push([
+                    'details' => '<a href="ot/regInfo.modal/'. $reg->id .'" data-toggle="ajaxModal" id="'. $reg->id .'" class="details-modal"><i class="fa fa-search-plus"></i></a>',
+                    'name' => $reg->user->name,
+                    'school' => isset($reg->specific()->delegategroups) ? $reg->specific()->scopeDelegateGroup() : '无',
                     'committee' => isset($reg->specific()->committee) ? $reg->specific()->committee->name : '无',
                     'partner' => $type,
                     'status' => $status,
@@ -336,13 +384,15 @@ class DatatablesController extends Controller //To-Do: Permission Check
     public function committees()
     {
         $result = new Collection;
-        $committees = Committee::get(['id', 'name']);
+        $committees = Committee::where('conference_id', Reg::currentConferenceID())->get();
         foreach($committees as $committee)
         {
             $result->push([
                 'details' => '<a href="ot/committeeDetails.modal/'. $committee->id .'" data-toggle="ajaxModal" id="'. $committee->id .'" class="details-modal"><i class="fa fa-search-plus"></i></a>',
                 'id' => $committee->id,
+                'bt' => $committee->father_committee_id,
                 'name' => $committee->name,
+                'dqc' => $committee->allDelegates->count() . ' / ' . $committee->capacity()
             ]);
         }
         return Datatables::of($result)->make(true);

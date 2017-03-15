@@ -312,7 +312,8 @@ class UserController extends Controller
             switch ($key)
             {
                 case 'committee':
-                $conf_info->committee = $request->{$targets['committee']};
+                if (!empty($request->{$targets['committee']}))
+                    $conf_info->committee = $request->{$targets['committee']};
                 break;
             }
         }

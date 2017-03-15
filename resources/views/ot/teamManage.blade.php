@@ -4,14 +4,10 @@
     <script src="{{mp_url('/js/jquery.dataTables.min.js')}}"></script>
     <script src="{{mp_url('/js/datatables/fnReloadAjax.js')}}"></script>
     <script src="{{mp_url('/js/select2/select2.min.js')}}"></script>
-    @if (Auth::user()->can('approve-regs-pay'))
-    <script src="{{mp_url('/js/ot.regManage.withPay.js')}}"></script>
-    @else
-    <script src="{{mp_url('/js/ot.regManage.js')}}"></script>
-    @endif
+    <script src="{{mp_url('/js/ot.teamManage.js')}}"></script>
 @endpush
 @push('css')
-    <link rel="stylesheet" href="{{mp_url('js/select2/select2.css')}}" type="text/css" />
+    <link rel="stylesheet" href="{{mp_url('/js/select2/select2.css')}}" type="text/css" />
     <link rel="stylesheet" href="{{mp_url('/css/jquery.dataTables.min.css')}}" type="text/css" />
 @endpush
 @section('content')
@@ -36,7 +32,7 @@
             <section class="scrollable wrapper w-f">
               <section class="panel">
                 <div class="table-responsive">
-                  <table class="table table-striped m-b-none" id="registration-table">
+                  <table class="table table-striped m-b-none" id="team-table">
                     <thead>
                       <tr>
                         <!--th width="20"><input type="checkbox"></th-->
@@ -49,10 +45,10 @@
                           </span>
                         </th-->
                         <th>姓名</th>
-                        <th>学校</th>
-                        <th>委员会</th>
                         <th>类型</th>
-                        <th>状态</th>
+                        <th>委员会</th>
+                        <th>职位</th>
+                        <th>权限</th>
                       </tr>
                     </thead>
                   </table>

@@ -76,6 +76,8 @@
               <li><a href="#regmanage">开放并管理报名</a></li>
               <li><a href="#sell-souvnirs">售卖会议纪念品</a></li>
               <li><a href="#natmanage">掌握会议全局</a></li>
+              <li class="dropdown-header b-b"><em>高级功能</em></li>
+              <li><a href="#high-func">有待补充</a></li>
               <li class="dropdown-header b-b"><em>尾声</em></li>
               <li><a href="#faq">常见问题</a></li>
               <li><a href="#contact">联系我们</a></li>
@@ -96,19 +98,21 @@
             <div class="clearfix padder"> 
               <h3 class="text-success" id="overview">概览 <small>认识 MUNPANEL</small></h3>
               <div class="line"></div>
-              <p>For the bootstrap css and components, please check the <strong><a href="http://getbootstrap.com">Bootstrap 3.0</a></strong></p>
+              <p>本节内容主要是对 MUNPANEL 通用平台的介绍，以及本帮助文档的阅读说明和注意事项。</p>
               
               <h4>MUNPANEL 简介</h4>
               <p>MUNPANEL 是一个以统一面板的形式整合报名、学术作业、文件下发、席位分配、缴费等功能，并与其他 Console iT 旗下产品联动的在线模拟联合国通用会议平台。</p>
+              <p>MUNPANEL 由 Console iT 工作室开发。Console iT 工作室致力于模拟联合国学生活动的辅助系统的研发，主要产品包括 Console 系列会议软件、FancyClauses™ 文件排版系统等。</p>
+              <p></p>
               <h4 id="specials">特性</h4>
               <ul>
-                <li>Built with Bootstrap 3.0</li>
+                <li>一次注册，全部会议通用</li>
                 <li>Flat ui with clean style</li>
                 <li>Many components</li>
                 <li>Mobile widgets</li>
-                <li>Fully responsive</li>
-                <li>Web app layouts</li>
-                <li>Html5 Markup & CSS3</li>
+                <li>在线支付会费和预购会议纪念品</li>
+                <li>集成 Console 系列会议主持系统</li>
+                <li>Html5 Markup &amp; CSS3</li>
                 <li>2 runable applications</li>
               </ul>
               <h3 class="text-info">开始 <small>千里之行，始于足下</small></h3>
@@ -119,8 +123,18 @@
               <p>Use FontAwesome font icons, over 361 icons with version 3.2 and more will be added in the future, check <strong><a href="http://fortawesome.github.io/Font-Awesome/">FontAwesome</a></strong> for more details to see how to use and examples</p>
 
               <h4 id="join-munpanel" class="m-t-lg">注册与登录</h4>
-              <p><a href="http://daneden.me/animate/"><strong>animate.css</strong></a> is a bunch of cool, fun, and cross-browser animations for you to use in your projects. Great for emphasis, home pages, sliders, and general just-add-water-awesomeness. do not use animate css to an element which contains the dropdown-menu, it will cut the edge.</p>
-              <p><strong>animate.css on landing page</strong>: you can add animate css on the dom element when it appear in the viewpoint. <code>&lt;div data-ride="animated" data-animation="fadeInUp" data-delay="250">&lt;/div></code></p>
+              <p>注册一个个人账号非常简单，而且免费！您只需在右上方下拉菜单中选择“新建账号”，填写您的姓名、邮箱和密码，即可完成注册。</p>
+              <p>在右上方下拉菜单中选择“新建账号”，并输入您注册时的邮箱和密码，即可以注册用户身份登录 MUNPANEL。</p>
+              
+              <h5><strong>激活账号</strong></h5>
+              <p>您需要激活您的账号才能够报名参加会议。激活账号需要验证您的邮箱和手机号码。</p>
+              <p>在验证邮箱时，一封验证邮件将发送到您的注册邮箱。点击该邮件的链接即可完成验证。</p>
+              <p>验证手机号码时，您需要先输入您的手机号码再进行后续操作。您可以选择接收验证短信或接听电话，并且输入您收到或收听到的验证码以完成验证。</p>
+              <p class="text-warning"><strong>注意：手机号码验证只有 5 次机会，请谨慎操作。</strong></p>
+              <p class="text-info"><strong>提示：海外手机号码也可通过短信或电话验证，但提示和语音均为英文。为稳妥起见，我们建议您优先考虑使用短信验证。</strong></p>
+
+              <h5><strong>忘记 MUNPANEL 密码？</strong></h5>
+              <p>请在登录页面点击“<a href="" class="m-t-xs"><small>忘记密码?</small></a> ”链接，并按照提示进行操作。</p>
 
               <h4 id="person-info" class="m-t-lg">完善个人信息 <small>帮助您更快报名会议</small></h4>
               <p>8 default color palettes, build colorful widgets. you can open the less/app.variables.less to config your own colors(<code>
@@ -285,8 +299,7 @@
               
               <h3 class="text-danger">参加会议 <small>Lightweight components to best practice on mobile</small></h3>
               <div class="line"></div>
-              <p>It's easy to change a dom class by click on another dom element.</p>
-
+              <p>本章将以您作为代表、观察员或志愿者参加某场会议的流程，介绍在此流程中将用到的功能和操作方法。</p>
 
               <h4 id="confslist">会议列表与介绍页面</h4>
               <p>It's easy to change a dom class by click on another dom element.</p>
@@ -322,7 +335,7 @@
               <p>点击表格第一列的“<i class="fa fa-search-plus"></i>”打开该作业。学术作业页的左侧显示该作业的详细信息。</p>
               <p>当前版本的 MUNPANEL 支持文件上传和在线表单填写两种模式。</p>
 
-              <h5>文件上传</h5>
+              <h5><strong>文件上传</strong></h5>
               <p>对于文件上传形式的学术作业，您需要先通过外部程序完成学术作业，再按照以下步骤提交：</p>
               <ol>
                 <li>通过学术作业页右侧的上传按钮选择您的文件，并点击 <a class="btn btn-white btn-xs">Next</a>。</li>
@@ -333,10 +346,23 @@
               <p>在作业提交成功之后，学术作业页的左侧将会增加关于您的提交的信息，同时您也可以在学术作业页的右侧下载您提交的学术作业。如果某项作业以搭档或国家为提交单位，那么您的搭档也将可以看到和下载您的提交。</p>
               <p>在提交期限之前，您可以随时对该项学术作业重新提交。只需点击学术作业页右侧的 <a class="badge bg-primary" href="#">重新提交</a>，即可按照上述步骤重新提交您的作业。</p>
 
-              <h5>在线表单填写</h5>
+              <h5><strong>在线表单填写</strong></h5>
               <p>对于在线表单填写形式的学术作业，您可以直接点击“获取题目并开始”进入表单填写页面。在完成全部或部分题目之后，点击 <a class="btn btn-success">提交作业</a> 即可完成此项学术作业。</p>
               <p>在作业提交成功之后，学术作业页的左侧将会增加关于您的提交的信息，同时您也可以在学术作业页的右侧查看您的回答。如果某项作业以搭档或国家为提交单位，那么您的搭档也将可以看到您的提交。</p>
               <p class="text-warning"><strong>注意：不同于文件上传<!--和在线文本编辑器-->形式的作业，在线表单类型的学术作业一经提交，即无法再修改和重新提交。请谨慎作答此类学术作业中的题目。</strong></p>
+              <section class="panel pos-rlt clearfix">
+                <header class="panel-heading">
+                  <ul class="nav nav-pills pull-right">
+                    <li>
+                      <a class="panel-toggle text-muted active" href="#"><i class="fa fa-caret-down text-active"></i><i class="fa fa-caret-up text"></i></a>
+                    </li>
+                  </ul>
+                  表单类型作业的操作 (点击展开)
+                </header>
+                <div class="panel-body clearfix collapse">
+                  TODO 233333
+                </div>
+              </section>
               
               <h4 id="documents" class="m-t-lg">查看学术文件</h4>
               <p>在代表后台页面，点击左侧的“<i class="fa fa-file-text"></i> Documents”查看当前已发布的学术文件。点击表格第一列的“<i class="fa fa-search-plus"></i>”打开该文件。</p>
@@ -522,6 +548,7 @@
         <![endif]--></code></pre>       
               
               <h4 id="cmtmanage" class="m-t-lg">划分委员会</h4>
+              <p class="text-info"><strong>提示：委员会表格和下述章节的部分表格可能含有一些较窄的列，这些列的标题会以简写表示。您可以将鼠标移动到简写的列标题上方以查看其含义。</strong></p>
               <p>有待添加……</p>
               
               <h4 id="announce" class="m-t-lg">发布通告</h4>
@@ -562,6 +589,12 @@
               <h4 id="natmanage" class="m-t-lg">掌握会议全局</h4>
               <p>有待添加……</p>
               
+              <h3 class="text-dark">高级功能 <small>最大限度发挥 MUNPANEL 的强大力量</small></h3>
+              <div class="line"></div>
+              
+              <h4 id="high-func" class="m-t-lg">有待补充</h4>
+              <p>有待添加……</p>
+
               <h3 class="text-dark">尾声 <small>一些其他的内容</small></h3>
               <div class="line"></div>
               

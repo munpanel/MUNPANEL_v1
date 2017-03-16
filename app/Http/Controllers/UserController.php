@@ -326,9 +326,10 @@ class UserController extends Controller
             switch ($element->action)
             {
                 case 'assignDelGroup':
-                    if ($reg->type != 'delegate') break;
-                    $dg_id = $request->{$element->item};
-                    Delegategroup::find($dg_id)->delegates()->attach($reg->id);
+                    if ($reg->type != 'delegate') continue;
+                    $dg = Delegategroup::find($request->{$element->item});
+                    if (is_null($dg)) continue;
+                    $dg->delegates()->attach($reg->id);
                 break;
             }
         }

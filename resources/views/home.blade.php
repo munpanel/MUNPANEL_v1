@@ -108,12 +108,12 @@
                             <div class="progress progress-xs progress-striped active m-b-sm">
                               <div class="progress-bar progress-bar-warning" data-toggle="tooltip" data-original-title="{{ $percent }}%" style="width: {{ $percent }}%"></div>
                             </div>
-                              @if (Reg::current()->type == 'unregistered')
-                              <div class="text-sm">点击下方按钮报名：</div>
-                              <a href="{{ mp_url('/reg2.modal/select') }}" data-toggle="ajaxModal" class="btn btn-danger">报名</a>
-                              @elseif (!Auth::user()->verified())
+                              @if (!Auth::user()->verified())
                               <div class="text-sm">点击下方按钮激活账号：</div>
                               <a href="{{mp_url('/verifyEmail')}}" class="btn btn-danger">激活我的账号</a>
+                              @elseif (Reg::current()->type == 'unregistered')
+                              <div class="text-sm">点击下方按钮报名：</div>
+                              <a href="{{ mp_url('/reg2.modal/select') }}" data-toggle="ajaxModal" class="btn btn-danger">报名</a>
                               @else
                               <div class="text-sm">点击下方按钮查看我的报名表单：</div>
                               <a href="{{ mp_url('/ot/regInfo.modal/'.Reg::currentID()) }}" data-toggle="ajaxModal" class="btn btn-danger">查看我的报名</a>                              

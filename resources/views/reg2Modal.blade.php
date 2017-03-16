@@ -360,7 +360,6 @@ $isExperience = isset($customTable->experience) && in_array($regType, $customTab
               <input name="password2" class="form-control" type="password" placeholder="输入密码以创建您的 MUNPANEL 账号" data-required="true" autocomplete="new-password">
             </div>
             @endif
-            <button type="submit" class="btn btn-sm btn-success pull-right text-uc m-t-n-xs"><strong>保存</strong></button>
           </div>
         </form>
         {{--<!--div class="step-pane" id="{{$isExperience ? 'step5' : 'step4'}}">
@@ -415,6 +414,16 @@ $('#select-typeID').change(function(e){
     $("form").parsley('destroy');
     $("form").parsley();
 });  
+$(document).ready(function() {
+    $('#uploadWizard')
+       // Call the wizard plugin
+       .wizard()
+
+        // Triggered when clicking the Complete button
+        .on('finished.fu.wizard', function(e) {
+        $('#uploadForm').submit();
+    });
+});
 </script>
 @if (isset($customTable->scripts))
 <script>{!!$customTable->scripts!!}</script>

@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="js/slider/slider.css" type="text/css" />
   <link rel="stylesheet" href="css/plugin.css" type="text/css" />
   <link rel="stylesheet" href="css/app.css" type="text/css" />
+  <link rel="stylesheet" href="css/munpanel.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="js/ie/respond.min.js" cache="false"></script>
     <script src="js/ie/html5.js" cache="false"></script>
@@ -129,6 +130,7 @@
               <h5><strong>激活账号</strong></h5>
               <p>您需要激活您的账号才能够报名参加会议。激活账号需要验证您的邮箱和手机号码。</p>
               <p>在验证邮箱时，一封验证邮件将发送到您的注册邮箱。点击该邮件的链接即可完成验证。</p>
+              <p class="text-info"><strong>提示：如果您不能正常收到邮件，请将 <code>noreply@munpanel.com</code> 设置为白名单再试。</strong></p>
               <p>验证手机号码时，您需要先输入您的手机号码再进行后续操作。您可以选择接收验证短信或接听电话，并且输入您收到或收听到的验证码以完成验证。</p>
               <p class="text-warning"><strong>注意：手机号码验证只有 5 次机会，请谨慎操作。</strong></p>
               <p class="text-info"><strong>提示：海外手机号码也可通过短信或电话验证，但提示和语音均为英文。为稳妥起见，我们建议您优先考虑使用短信验证。</strong></p>
@@ -360,7 +362,38 @@
                   表单类型作业的操作 (点击展开)
                 </header>
                 <div class="panel-body clearfix collapse">
-                  TODO 233333
+                  <form class="">
+                  <span class="badge form-assignment">1</span>&nbsp;<label>单项选择题：</label>
+                  <div class="m-l-30"><input name="1" type="hidden" value="">
+                  <input name="1" type="radio" value="1">&nbsp;您可以直接点击选项左侧的单选框<br>
+                  <input name="1" type="radio" value="2">&nbsp;单项选择题并不局限于 4 个选项<br>
+                  <input name="1" type="radio" value="3">&nbsp;也可能更少或更多的选项<br>
+                  <input name="1" type="radio" value="4">&nbsp;这是第四个选项<br>
+                  </div>
+                  <div class="form-group"><span class="badge form-assignment">2</span>&nbsp;<label>多项选择题：</label>
+                  <div class="m-l-30"><input name="5" type="hidden" value="">
+                  <input name="5[]" type="checkbox" value="1" data-required="true">&nbsp;您可以直接点击选项左侧的多选框<br>
+                  <input name="5[]" type="checkbox" value="2" data-required="true">&nbsp;多项选择题也不局限于 4 个选项<br>
+                  <input name="5[]" type="checkbox" value="3" data-required="true">&nbsp;比如，这道展示用的题就只有 3 个选项<br></div>
+                  </div>
+                  <div class="form-group"><span class="badge form-assignment">3</span>&nbsp;<label>是非判断题：直接点击“正确”或“错误”。</label>
+                  <div class="m-l-30"><input name="8" type="hidden" value="">
+                  <div class="btn-group" data-toggle="buttons">
+                  <label class="btn btn-sm btn-success">
+                  <input name="8" id="true" type="radio" value="true"> <i class="fa fa-check text-active"></i>正确
+                  </label>
+                  <label class="btn btn-sm btn-danger">
+                  <input name="8" id="false" type="radio" value="false"> <i class="fa fa-times text-active"></i>错误
+                  </label></div></div></div>
+                  <div class="form-group"><span class="badge form-assignment">4</span>&nbsp;<label>短文本填空题：</label><div class="m-l-30">
+                  <input name="11" class="form-control" type="text" value="" placeholder="直接在文本框输入文本即可"></div>
+                  </div><div class="form-group"><span class="badge form-assignment">5</span>&nbsp;<label>排序题: </label>
+                  <div class="m-l-30"><ul class="list-group gutter list-group-sp sortable">
+                  <li class="list-group-item" draggable="true"><span class="pull-left media-xs"><i class="fa fa-sort text-muted fa-sm"></i>&nbsp;1</span><div class="clear">在选项上点击并按住鼠标左键</div><input name="24[]" type="hidden" value="1"></li>
+                  <li class="list-group-item" draggable="true"><span class="pull-left media-xs"><i class="fa fa-sort text-muted fa-sm"></i>&nbsp;2</span><div class="clear">上下移动鼠标，可见您点击的选项已经浮起并随鼠标移动，而在原位置出现一个占位框</div><input name="24[]" type="hidden" value="2"></li>
+                  <li class="list-group-item" draggable="true"><span class="pull-left media-xs"><i class="fa fa-sort text-muted fa-sm"></i>&nbsp;3</span><div class="clear">继续移动鼠标，将选项拖拽到其他选项上，此时您可以看到下方的选项与占位框交换了位置</div><input name="24[]" type="hidden" value="3"></li>
+                  <li class="list-group-item" draggable="true"><span class="pull-left media-xs"><i class="fa fa-sort text-muted fa-sm"></i>&nbsp;4</span><div class="clear">将选项移动到占位框内并松开鼠标左键，即完成一次排序动作</div><input name="24[]" type="hidden" value="4"></li>
+                  </ul></div></div><div class="form-group"><button class="btn btn-success" type="submit">提交作业</button></div></form>
                 </div>
               </section>
               
@@ -653,5 +686,6 @@
   <!-- combodate -->
   <script src="js/libs/moment.min.js"></script>
   <script src="js/combodate/combodate.js"></script>
+  <script src="js/sortable/jquery.sortable.js"></script>
 </body>
 </html>

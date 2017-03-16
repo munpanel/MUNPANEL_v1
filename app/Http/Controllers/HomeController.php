@@ -767,10 +767,10 @@ class HomeController extends Controller
         if (!Reg::selectConfirmed()) {
             return redirect(mp_url('/selectIdentityModal'));
         }
-        if (Reg::current()->type == 'unregistered') {
-            return redirect(mp_url('/reg2.modal/select'));
-        }
-        return view('verificationModal');
+        if (!Auth::user()->verified())
+            return view('verificationModal');
+        // if (Reg::current()->type == 'unregistered')
+        return redirect(mp_url('/reg2.modal/select'));
     }
 
     /**

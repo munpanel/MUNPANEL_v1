@@ -48,7 +48,7 @@ $isExperience = isset($customTable->experience) && in_array($regType, $customTab
               <label>性别 *</label>
               <div class="btn-group" data-toggle="buttons">
                 <label class="btn btn-sm btn-info" onclick="$('input#male').checked = true;">
-                  <input name="gender" id="male" type="radio" value="male"> <i class="fa fa-check text-active"></i>男
+                  <input name="gender" id="male" type="radio" value="male" data-required="true"> <i class="fa fa-check text-active"></i>男
                 </label>
                 <label class="btn btn-sm btn-success" onclick="$('input#female').checked = true;">
                   <input name="gender" id="female" type="radio" value="female"> <i class="fa fa-check text-active"></i>女

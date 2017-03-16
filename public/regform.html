@@ -451,6 +451,8 @@ $('#select-comm1').change(function(e){
     {
         $("select#select-comm2 option").remove();
         $("select#select-comm2").append('<option value="" selected="">请选择</option><option value="10">危机联动体系</option><option value="29">独立委员会组</option>');
+        $("select#select-branch1 option").remove();
+        $("select#select-branch1").append('<option value="11" selected="">东晋纵横</option>');
         group.style.display = 'none';
     }
     else if (document.getElementById('select-comm1').value == "10")

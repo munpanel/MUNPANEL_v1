@@ -320,6 +320,18 @@ class UserController extends Controller
         $regInfo->conference = $conf_info;
         $reg->reginfo = json_encode($regInfo);
         $reg->save();
+        foreach ($customTable->actions as $element)
+        {
+            if (empty($request->{$element->item})) continue;
+            switch ($element->action)
+            {
+                case 'assignDelGroup':
+                    if ($reg->type != 'delegate') break;
+                    $dg_id = $request->{$element->item};
+                    Delegategroup::find($dg_id)->delegates()->attach($reg->id);
+                break;
+            }
+        }
         $reg->make();
         $reg->addEvent('registration_submitted', '');
         return redirect('/home');

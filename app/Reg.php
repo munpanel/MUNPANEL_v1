@@ -167,7 +167,9 @@ class Reg extends Model
         switch ($this->type)
         {
             case 'delegate':
-                $delegate = new Delegate();
+                $delegate = Delegate::find($this->id);
+                if (is_null($delegate))
+                    $delegate = new Delegate();
                 $delegate->reg_id = $this->id;
                 $delegate->conference_id = $this->conference_id;
                 $delegate->school_id = $this->school_id;
@@ -176,7 +178,9 @@ class Reg extends Model
                 $delegate->save();
                 break;
             case 'observer':
-                $observer = new Observer();
+                $observer = Observer::find($this->id);
+                if (is_null($observer))
+                    $observer = new Observer();
                 $observer->reg_id = $this->id;
                 $observer->conference_id = $this->conference_id;
                 $observer->school_id = $this->school_id;
@@ -185,7 +189,9 @@ class Reg extends Model
                 $observer->save();
                 break;
             case 'volunteer':
-                $volunteer = new Volunteer();
+                $volunteer = Volunteer::find($this->id);
+                if (is_null($volunteer))
+                    $volunteer = new Volunteer();
                 $volunteer->reg_id = $this->id;
                 $volunteer->conference_id = $this->conference_id;
                 $volunteer->school_id = $this->school_id;

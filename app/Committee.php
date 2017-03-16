@@ -84,4 +84,15 @@ class Committee extends Model
                 return true;
         return false;
     }
+
+    public function createDelGroup()
+    {
+        $delgroup = Delegategroup::find($this->id);
+        if (is_null($delgroup))
+            $delgroup = new Delegategroup;
+        $delgroup->id = $this->id;
+        $delgroup->name = $this->name . '代表';
+        $delgroup->display_name = $this->display_name . '报名代表';
+        $delgroup->save();
+    }
 }

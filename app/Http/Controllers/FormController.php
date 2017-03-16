@@ -94,7 +94,9 @@ class FormController extends Controller
         $html .= '<input type="hidden" value="'.$formID.'" name="form">';
         foreach ($tableItems as $item)
         {
-            $html .= '<div class="form-group"><span class="badge form-assignment">'.++$num.'</span>&nbsp;<label>'.$item->title.'</label><div class="m-l-30">';
+            $html .= '<div class="form-group"><span class="badge form-assignment">'.++$num.'</span>&nbsp;<label>'.$item->title.'</label><div class="';
+            $html .= $item->type == 'order' ? 'dd ' : '';
+            $html .= 'm-l-30">';
             $i = 0;
             switch ($item->type)
             {
@@ -127,10 +129,11 @@ class FormController extends Controller
                     break;
                 case "order":
                     $li = 0;
-                    $html .= '<ul class="list-group gutter list-group-sp sortable">';
+                    $html .= '<ol class="dd-list">';
                     foreach ($item->options as $option)
-                        $html .= '<li class="list-group-item" draggable="true"><span class="pull-left media-xs"><i class="fa fa-sort text-muted fa-sm"></i>&nbsp;'.++$li.'</span><div class="clear">'.$option->text.'</div><input type="hidden" name="'.$item->id.'[]" value="'.$li.'"></li>';
-                    $html .= '</ul>';
+                        $html .= '<li class="dd-item"><div class="dd-handle order"><span class="pull-left media-xs"><i class="fa fa-sort text-muted fa-sm"></i>&nbsp;'.++$li.'</span><div class="clear">'.$option->text.'</div><input type="hidden" name="'.$item->id.'[]" value="'.$li.'"></div></li>';
+                        // $html .= '<li class="list-group-item" draggable="true"><span class="pull-left media-xs"><i class="fa fa-sort text-muted fa-sm"></i>&nbsp;'.++$li.'</span><div class="clear">'.$option->text.'</div><input type="hidden" name="'.$item->id.'[]" value="'.$li.'"></li>';
+                    $html .= '</ol>';
                     break;
             }
             $html .= '</div></div>';

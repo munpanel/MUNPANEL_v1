@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="js/slider/slider.css" type="text/css" />
   <link rel="stylesheet" href="css/plugin.css" type="text/css" />
   <link rel="stylesheet" href="css/app.css" type="text/css" />
+  <link rel="stylesheet" href="js/nestable/nestable.css" type="text/css" cache="false">
   <link rel="stylesheet" href="css/munpanel.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="js/ie/respond.min.js" cache="false"></script>
@@ -387,13 +388,17 @@
                   </label></div></div></div>
                   <div class="form-group"><span class="badge form-assignment">4</span>&nbsp;<label>短文本填空题：</label><div class="m-l-30">
                   <input name="11" class="form-control" type="text" value="" placeholder="直接在文本框输入文本即可"></div>
-                  </div><div class="form-group"><span class="badge form-assignment">5</span>&nbsp;<label>排序题: </label>
-                  <div class="m-l-30"><ul class="list-group gutter list-group-sp sortable">
-                  <li class="list-group-item" draggable="true"><span class="pull-left media-xs"><i class="fa fa-sort text-muted fa-sm"></i>&nbsp;1</span><div class="clear">在选项上点击并按住鼠标左键</div><input name="24[]" type="hidden" value="1"></li>
-                  <li class="list-group-item" draggable="true"><span class="pull-left media-xs"><i class="fa fa-sort text-muted fa-sm"></i>&nbsp;2</span><div class="clear">上下移动鼠标，可见您点击的选项已经浮起并随鼠标移动，而在原位置出现一个占位框</div><input name="24[]" type="hidden" value="2"></li>
-                  <li class="list-group-item" draggable="true"><span class="pull-left media-xs"><i class="fa fa-sort text-muted fa-sm"></i>&nbsp;3</span><div class="clear">继续移动鼠标，将选项拖拽到其他选项上，此时您可以看到下方的选项与占位框交换了位置</div><input name="24[]" type="hidden" value="3"></li>
-                  <li class="list-group-item" draggable="true"><span class="pull-left media-xs"><i class="fa fa-sort text-muted fa-sm"></i>&nbsp;4</span><div class="clear">将选项移动到占位框内并松开鼠标左键，即完成一次排序动作</div><input name="24[]" type="hidden" value="4"></li>
-                  </ul></div></div><div class="form-group"><button class="btn btn-success" type="submit">提交作业</button></div></form>
+                  </div>
+                  <div class="form-group"><span class="badge form-assignment">5</span>&nbsp;<label>排序题: </label>
+                  <div class="dd m-l-30">
+                    <ol class="dd-list">
+                      <li class="dd-item"><div class="dd-handle order"><span class="pull-left media-xs"><i class="fa fa-sort text-muted fa-sm"></i>&nbsp;1</span><div class="clear">在选项上点击并按住鼠标左键</div><input name="24[]" type="hidden" value="1"></div></li>
+                      <li class="dd-item"><div class="dd-handle order"><span class="pull-left media-xs"><i class="fa fa-sort text-muted fa-sm"></i>&nbsp;2</span><div class="clear">上下移动鼠标，可见您点击的选项已经浮起并随鼠标移动，而在原位置出现一个占位框</div><input name="24[]" type="hidden" value="2"></div></li>
+                      <li class="dd-item"><div class="dd-handle order"><span class="pull-left media-xs"><i class="fa fa-sort text-muted fa-sm"></i>&nbsp;3</span><div class="clear">继续移动鼠标，将选项拖拽到其他选项上，此时您可以看到下方的选项与占位框交换了位置</div><input name="24[]" type="hidden" value="3"></div></li>
+                      <li class="dd-item"><div class="dd-handle order"><span class="pull-left media-xs"><i class="fa fa-sort text-muted fa-sm"></i>&nbsp;4</span><div class="clear">将选项移动到占位框内并松开鼠标左键，即完成一次排序动作</div><input name="24[]" type="hidden" value="4"></div></li>
+                    </ol>
+                  </div>
+                  </div><div class="form-group"><button class="btn btn-success" type="submit">提交作业</button></div></form>
                 </div>
               </section>
               
@@ -687,5 +692,7 @@
   <script src="js/libs/moment.min.js"></script>
   <script src="js/combodate/combodate.js"></script>
   <script src="js/sortable/jquery.sortable.js"></script>
+  <script src="js/nestable/jquery.nestable.js" cache="false"></script>
+  <script src="js/munpanel/nestable.order.formassignment.js" cache="false"></script>
 </body>
 </html>

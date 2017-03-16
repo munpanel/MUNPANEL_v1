@@ -861,6 +861,6 @@ class HomeController extends Controller
         $form1 = Form::findOrFail($request->form);
         $form = json_decode($form1->content);
         $html = FormController::getMyAnswer($form->items, $answer);
-        return view('assignmentHandinInfo', ['assignment' => $assignment, 'handin' => $handin, 'formContent' => $html]);
+        return redirect(mp_url('/assignment/' . $id));
     }
 }

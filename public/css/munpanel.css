@@ -223,3 +223,7 @@ ul.timeline-small>li>.timeline-panel:after {
 .pull-center {
     float: center;
 }
+
+.dd-handle.order {    
+    padding: 10px 15px;
+}

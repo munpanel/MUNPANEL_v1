@@ -2,15 +2,17 @@
 @section('hide_aside', 'hidden')
 @push('scripts')
     <script src="{{mp_url('/js/fuelux/fuelux.js')}}"></script>
-    <script src="{{mp_url('/js/sortable/jquery.sortable.js')}}"></script>
+    <script src="{{mp_url('js/nestable/jquery.nestable.js')}}" cache="false"></script>
+    <script src="{{mp_url('js/munpanel/nestable.order.formassignment.js')}}" cache="false"></script>
     <script>
     $(document).ready(function() {
-        screenfull.request();
+        $('[data-toggle="fullscreen"]').fullscreen();
     });
     </script>
 @endpush
 @push('css')
     <link rel="stylesheet" href="{{mp_url('/js/fuelux/fuelux.css')}}" type="text/css" />
+    <link rel="stylesheet" href="{{mp_url('js/nestable/nestable.css')}}" type="text/css" cache="false">
 @endpush
 @section('content')
   <section class="vbox">

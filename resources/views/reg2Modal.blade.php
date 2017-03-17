@@ -3,7 +3,7 @@ $isExperience = isset($customTable->experience) && in_array($regType, $customTab
 @endphp
 <div class="modal-dialog">
   <div class="modal-content">
-    <div class="panel wizard">
+    <div class="panel wizard" id="reg2Wizard">
       <div class="wizard-steps clearfix">
         <ul class="steps">
           <li class="active" data-target="#step1"><span class="badge badge-info">1</span>个人信息</li>
@@ -415,13 +415,13 @@ $('#select-typeID').change(function(e){
     $("form").parsley();
 });  
 $(document).ready(function() {
-    $('#uploadWizard')
+    $('#reg2Wizard')
        // Call the wizard plugin
        .wizard()
 
         // Triggered when clicking the Complete button
         .on('finished.fu.wizard', function(e) {
-        $('#uploadForm').submit();
+        $('#reg2Form').submit();
     });
 });
 </script>

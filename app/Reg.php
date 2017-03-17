@@ -167,10 +167,7 @@ class Reg extends Model
         switch ($this->type)
         {
             case 'delegate':
-                $delegate = Delegate::find($this->id);
-                if (is_null($delegate))
-                    $delegate = new Delegate();
-                $delegate->reg_id = $this->id;
+                $delegate = Delegate::findOrNew($this->id);
                 $delegate->conference_id = $this->conference_id;
                 $delegate->school_id = $this->school_id;
                 $delegate->committee_id = json_decode($this->reginfo)->conference->committee;

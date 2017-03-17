@@ -4,7 +4,7 @@
     <script src="{{mp_url('/js/jquery.dataTables.min.js')}}"></script>
     <script src="{{mp_url('/js/datatables/fnReloadAjax.js')}}"></script>
     <script src="{{mp_url('/js/select2/select2.min.js')}}"></script>
-    <script src="{{mp_url('/js/ot.teamManage.js')}}"></script>
+    <script src="{{mp_url('/js/munpanel/ot.teamManage.js')}}"></script>
 @endpush
 @push('css')
     <link rel="stylesheet" href="{{mp_url('/js/select2/select2.css')}}" type="text/css" />
@@ -58,13 +58,13 @@
             <footer class="footer bg-white b-t">
               <div class="row m-t-sm text-center-xs">
                 <div class="col-sm-4">
-                  <div class="dataTables_length" id="registration-table_length_new"><label>每页 <select name="registration-table_length" id="registration-length-select"aria-controls="registration-table" class=""><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> 条记录</label></div>
+                  <div class="dataTables_length" id="team-table_length_new"><label>每页 <select name="team-table_length" id="team-length-select"aria-controls="team-table" class=""><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> 条记录</label></div>
                 </div>
                 <div class="col-sm-4 text-center">
-                  <small class="text-muted inline m-t-sm m-b-sm" id="registration-pageinfo"></small>
+                  <small class="text-muted inline m-t-sm m-b-sm" id="team-pageinfo"></small>
                 </div>
                 <div class="col-sm-4 text-right text-center-xs">                
-                  <ul class="pagination pagination-sm m-t-none m-b-none" id="registration-pagnination">
+                  <ul class="pagination pagination-sm m-t-none m-b-none" id="team-pagnination">
                   </ul>
                 </div>
               </div>

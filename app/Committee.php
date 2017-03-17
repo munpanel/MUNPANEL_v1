@@ -16,7 +16,7 @@ use Illuminate\Support\Collection;
 
 class Committee extends Model
 {
-    protected $fillable = ['conference_id', 'name', 'display_name', 'topic_0', 'topic_1', 'topic_sel', 'language', 'rule', 'capacity', 'father_committee_id', 'timeframe_start', 'timeframe_end', 'session', 'description', 'is_allocated'];
+    protected $fillable = ['conference_id', 'name', 'display_name', 'topic_0', 'topic_1', 'topic_sel', 'language', 'rule', 'capacity', 'father_committee_id', 'delegategroup_id', 'timeframe_start', 'timeframe_end', 'session', 'description', 'is_allocated'];
 
     public function delegates() {
         return $this->hasMany('App\Delegate');
@@ -48,6 +48,11 @@ class Committee extends Model
     public function conference()
     {
         return $this->belongsTo('App\Conference');
+    }
+
+    public function bindDelegategroup()
+    {
+        return $this->belongsTo('App\Delegategroup');
     }
 
     public function childCommittees()

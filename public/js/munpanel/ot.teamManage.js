@@ -1,8 +1,8 @@
 $(document).ready(function() {
-   $('#registration-table').DataTable({
+   $('#team-table').DataTable({
         //processing: true,
         //serverSide: true,
-        ajax: 'ajax/registrations',
+        ajax: 'ajax/teammembers',
         columns: [
             {data: 'details', name: 'details', orderable: false},
             {data: 'name', name: 'name', orderable: false},
@@ -26,13 +26,13 @@ $(document).ready(function() {
                     father.addClass('has-success'); 
             });
             $(document).on('hidden.bs.modal', '#ajaxModal', function() {
-                $('#registration-table').dataTable().fnReloadAjax(undefined, undefined, true);
+                $('#team-table').dataTable().fnReloadAjax(undefined, undefined, true);
             });
            //$('#registration-table_paginate').hide();
-           $('#registration-table_length').hide();
+           $('#team-table_length').hide();
            $('.dataTables_filter').hide();
-           $('#registration-table_info').appendTo($('#registration-pageinfo'));
-           $('#registration-table').removeClass('no-footer');
+           $('#team-table_info').appendTo($('#team-pageinfo'));
+           $('#team-table').removeClass('no-footer');
         },
         "fnDrawCallback": function( oSettings ) {
             $('.status-select').each(function (i) {
@@ -46,10 +46,10 @@ $(document).ready(function() {
                     $(this).removeClass('status-select');
                 //}
             });
-            $('#registration-pagnination').empty();
+            $('#team-pagnination').empty();
             $('.paginate_button').each(function (i) {
                 var li = $("<li></li>");
-                li.appendTo($('#registration-pagnination'));
+                li.appendTo($('#team-pagnination'));
                 $(this).attr({href: "#"});
                 $(this).appendTo(li);
              });
@@ -64,11 +64,11 @@ $(document).ready(function() {
         },
         "order": [[3, "asc"]],
     });
-    var table=$('#registration-table').DataTable();
+    var table=$('#team-table').DataTable();
     $("#searchButton").click(function() {
        table.search($('#searchbox').val()).draw();
     });    
-    $("#registration-length-select").change(function() {
+    $("#team-length-select").change(function() {
         table.page.len($(this).val()).draw();
     });
 });

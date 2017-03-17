@@ -34,6 +34,7 @@ class CreateCommitteesTable extends Migration
             $table->string('rule');
             $table->integer('capacity')->unsigned();
             $table->integer('father_committee_id')->unsigned()->nullable();
+            $table->integer('delegategroup_id')->unsigned()->nullable();
             $table->integer('option_limit')->unsigned()->default(99);
 			//时间节点默认取会议起止日
 			$table->date('timeframe_start');
@@ -44,6 +45,7 @@ class CreateCommitteesTable extends Migration
             $table->timestamps();
             $table->foreign('conference_id')->references('id')->on('conferences')->onDelete('cascade');
             $table->foreign('father_committee_id')->references('id')->on('committees')->onDelete('set null');
+            $table->foreign('delegategroup_id')->references('id')->on('delegategroups')->onDelete('set null');
         });
     }
 

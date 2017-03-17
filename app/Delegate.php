@@ -302,19 +302,27 @@ class Delegate extends Model
         return $result->unique()->sortBy('id');
     }
 
-    public function scopeDelegateGroup()
+    public function scopeDelegateGroup($useShortName = false, $maxDisplay = 0)
     {
         $prefix = '';
         $scope = '';
+        $i = 0;
+        $n = $this->delegategroups->count();
+        if ($n == 0) return '无';
         if (isset($this->delegategroups))
         {
             $delegategroups = $this->delegategroups;
             foreach($delegategroups as $delegategroup)
             {
-                $scope .= $prefix . $delegategroup->display_name;
+                if ($useShortName)
+                    $scope .= $prefix . $delegategroup->name;
+                else
+                    $scope .= $prefix . $delegategroup->display_name;
+                if ($maxDisplay > 0 && ++$i >= $maxDisplay) break;
                 $prefix = ', ';
             }
         }
+        if ($maxDisplay > 0 && $n > $maxDisplay) $scope .= "等 ".$n." 个";
         return $scope;
     }
 

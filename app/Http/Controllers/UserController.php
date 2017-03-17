@@ -327,7 +327,8 @@ class UserController extends Controller
             {
                 case 'assignDelGroup':
                     if ($reg->type != 'delegate') continue;
-                    $dg = Delegategroup::find($request->{$element->item});
+                    // $dg = Delegategroup::find($request->{$element->item});
+                    $dg = Committee::findOrFail($conf_info->committee)->bindDelegategroup;
                     if (is_null($dg)) continue;
                     $dg->delegates()->attach($reg->id);
                 break;

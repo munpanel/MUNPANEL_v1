@@ -769,8 +769,9 @@ class HomeController extends Controller
         }
         if (!Auth::user()->verified())
             return view('verificationModal');
-        // if (Reg::current()->type == 'unregistered')
-        return redirect(mp_url('/reg2.modal/select'));
+        if (Reg::current()->type == 'unregistered')
+            return redirect(mp_url('/reg2.modal/select'));
+        return redirect(mp_url('/regAssignment.modal'));
     }
 
     /**

@@ -37,6 +37,7 @@ Route::group(['domain' => 'portal.munpanel.com'], function () {
     Route::get('/verifyEmail/resend', 'UserController@resendRegMail');
     Route::get('/reg.first.modal', 'HomeController@firstModal');
     Route::get('/selectIdentityModal', 'HomeController@selectIdentityModal');
+    Route::get('/regAssignment.modal', 'HomeController@regAssignmentModal');
     Route::post('/doSwitchIdentity', 'UserController@doSwitchIdentity');
 
     Route::get('/home', 'HomeController@index');

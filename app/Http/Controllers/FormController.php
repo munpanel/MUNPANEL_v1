@@ -195,6 +195,12 @@ class FormController extends Controller
             if (in_array($key, ['_token', 'handin', 'form'])) continue;
             $item = $questions[$key - 1];
             $html .= '<div class="form-group"><span class="badge form-assignment text-xs">'.++$i.'</span>&nbsp;'.$item->title;
+            if (empty($value))
+            {
+                $html .= '<div class="m-l-lg">未作答</div>';
+                $html .= '</div>';
+                continue;
+            }
             switch ($item->type)
             {
                 case 'single_choice':
@@ -216,7 +222,6 @@ class FormController extends Controller
                     $html .= '<div class="m-l-lg">' . $value . '</div>';
                 break;
             }
-            $html .= '</div>';
         }
         return $html;
     }

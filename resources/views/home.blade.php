@@ -115,8 +115,9 @@
                               <div class="text-sm">点击下方按钮报名：</div>
                               <a href="{{ mp_url('/reg2.modal/select') }}" data-toggle="ajaxModal" class="btn btn-danger">报名</a>
                               @else
-                              <div class="text-sm">点击下方按钮查看我的报名表单：</div>
-                              <a href="{{ mp_url('/ot/regInfo.modal/'.Reg::currentID()) }}" data-toggle="ajaxModal" class="btn btn-danger">查看我的报名</a>                              
+                              <div class="text-sm">点击下方按钮查看学术测试题：</div>
+                              <!--a href="{{ mp_url('/ot/regInfo.modal/'.Reg::currentID()) }}" data-toggle="ajaxModal" class="btn btn-danger">查看我的报名</a-->
+                              <a href="{{ mp_url('/assignments') }}" class="btn btn-danger">查看学术作业</a>
                               @endif
                           </div>
                         </div>

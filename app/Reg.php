@@ -167,7 +167,10 @@ class Reg extends Model
         switch ($this->type)
         {
             case 'delegate':
-                $delegate = Delegate::findOrNew($this->id);
+                $delegate = Delegate::find($this->id);
+                if (is_null($delegate))
+                    $delegate = new Delegate();
+                $delegate->reg_id = $this->id;
                 $delegate->conference_id = $this->conference_id;
                 $delegate->school_id = $this->school_id;
                 $delegate->committee_id = json_decode($this->reginfo)->conference->committee;
@@ -176,9 +179,6 @@ class Reg extends Model
                 break;
             case 'observer':
                 $observer = Observer::find($this->id);
-                if (is_null($observer))
-                    $observer = new Observer();
-                $observer->reg_id = $this->id;
                 $observer->conference_id = $this->conference_id;
                 $observer->school_id = $this->school_id;
                 $observer->committee_id = json_decode($this->reginfo)->conference->committee;

@@ -782,6 +782,14 @@ class HomeController extends Controller
     }
 
     /**
+     *
+     */
+    public function regAssignmentModal()
+    {
+        return view('regAssignmentModal');
+    }
+
+    /**
      * A function to write some temporary code.
      */
     public function blank()

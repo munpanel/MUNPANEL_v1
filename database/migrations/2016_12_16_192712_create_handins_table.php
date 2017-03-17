@@ -31,7 +31,7 @@ class CreateHandinsTable extends Migration
             $table->mediumtext('content');
             $table->string('remark')->nullable();
             $table->timestamps();
-            $table->foreign('reg_id')->references('id')->on('regs')->onDelete('no action');
+            $table->foreign('reg_id')->references('id')->on('regs')->onDelete('cascade');
             $table->foreign('nation_id')->references('id')->on('nations')->onDelete('no action');
             $table->foreign('assignment_id')->references('id')->on('assignments')->onDelete('cascade');
         });

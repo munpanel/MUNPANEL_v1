@@ -320,6 +320,7 @@ class UserController extends Controller
         $regInfo->conference = $conf_info;
         $reg->reginfo = json_encode($regInfo);
         $reg->save();
+        $reg->make();
         foreach ($customTable->actions as $element)
         {
             if (empty($request->{$element->item})) continue;
@@ -327,14 +328,14 @@ class UserController extends Controller
             {
                 case 'assignDelGroup':
                     if ($reg->type != 'delegate') continue;
-                    // $dg = Delegategroup::find($request->{$element->item});
-                    $dg = Committee::findOrFail($conf_info->committee)->bindDelegategroup;
+                    // TODO: 调试 bindDelegategroup 并替换现在方法
+                    $dg = Delegategroup::find($request->{$element->item});
+                    // $dg = Committee::findOrFail($conf_info->committee)->bindDelegategroup;
                     if (is_null($dg)) continue;
                     $dg->delegates()->attach($reg->id);
                 break;
             }
         }
-        $reg->make();
         $reg->addEvent('registration_submitted', '');
         return redirect('/home');
     }

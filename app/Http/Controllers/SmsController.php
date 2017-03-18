@@ -59,7 +59,7 @@ class SmsController extends Controller
                 curl_setopt($ch, CURLOPT_USERPWD  , 'api:key-'.Config::get('luosimao.key_sms'));
 
                 curl_setopt($ch, CURLOPT_POST, TRUE);
-                curl_setopt($ch, CURLOPT_POSTFIELDS, array('mobile' => $mobileList[0], 'message' => $message .'【MUNPANEL】'));
+                curl_setopt($ch, CURLOPT_POSTFIELDS, array('mobile' => $mobile, 'message' => $message .'【MUNPANEL】'));
 
                 $res = curl_exec( $ch );
                 curl_close( $ch );

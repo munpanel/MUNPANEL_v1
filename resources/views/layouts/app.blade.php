@@ -68,7 +68,7 @@
           <div class="bg-success nav-user hidden-xs pos-rlt">
             <div class="nav-avatar pos-rlt">
               <a href="#" class="thumb-sm avatar animated rollIn" data-toggle="dropdown">
-                <img src="{{ 'https://www.gravatar.com/avatar/' . md5( strtolower( trim( Auth::user()->email ) ) ) . '?d='.mp_url('images/avatar.jpg').'&s=320' }}" alt="" class="">
+                <img src="{{ 'https://www.gravatar.com/avatar/' . md5( strtolower( trim( Auth::user()->email ) ) ) . '?d='.mp_url('images/avatar.png').'&s=320' }}" alt="" class="">
                 <span class="caret caret-white"></span>
               </a>
               <ul class="dropdown-menu m-t-sm animated fadeInLeft">

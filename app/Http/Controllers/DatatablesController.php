@@ -392,7 +392,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
                 'id' => $committee->id,
                 'bt' => $committee->father_committee_id,
                 'name' => $committee->name,
-                'dqc' => $committee->allDelegates->count() . ' / ' . $committee->capacity()
+                'dqc' => $committee->allDelegates()->count() . ' / ' . $committee->capacity
             ]);
         }
         return Datatables::of($result)->make(true);

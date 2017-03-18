@@ -187,9 +187,6 @@
   <!-- Parsley -->
   <script src="{{mp_url('/js/parsley/parsley.min.js')}}"></script>
   <script src="{{mp_url('/js/parsley/parsley.extend.js')}}"></script>
-  @if ((!Auth::user()->verified()) || Reg::current()->type == 'unregistered' || (!Reg::selectConfirmed()) || (Reg::current()->assignments->where('reg_assignment', 1)->whereDoesntHave('handins', function ($query) { $query->where('reg_id', Reg::currentID());})->count() > 0))
-  <script src="{{mp_url('/js/reg.firsttime.js')}}"></script>
-  @endif
   @stack('scripts')
   @if (isset($notice_msg))
   <script>

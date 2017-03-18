@@ -57,3 +57,20 @@ function nicetime($date, $concise = false)
         else
             return $date."（现在）";
 }
+
+/**
+ * Validate if the reg type is open to register param和return一会再写
+ */
+function validateRegDate($type)
+{
+    $regDate = json_decode(Reg::currentConference()->option('reg_dates'));
+    foreach ($regDate as $value)
+    {
+        if ($value->use != $type) continue;
+        if (strtotime(date("y-m-d h:i:s")) < strtotime($value->config->start)) return false;
+        elseif ($value->config->end == 'ended') return false;
+        elseif (strtotime(date("y-m-d h:i:s")) > strtotime($value->config->end) && $value->config->end != 'manual') return false;
+        else return true;
+    }
+    return false;
+}

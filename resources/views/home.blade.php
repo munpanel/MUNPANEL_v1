@@ -1,9 +1,26 @@
+@php
+$hasRegAssignment = false;
+if (Reg::current()->type == 'delegate')
+{
+    $a = Reg::current()->delegate->assignments()->where('reg_assignment', 1);
+    $arr = [];
+    foreach ($a as $item)
+        array_push($arr, $item->id);
+    $b = App\Assignment::whereIn('id', $arr)->whereDoesntHave('handins', function ($query) {
+        $query->where('reg_id', Reg::currentID());
+    })->count();
+    if ($b > 0) $hasRegAssignment = true;
+}
+@endphp
 @extends('layouts.app')
 @section('home_active', 'active')
 @push('scripts')
     <script src="{{mp_url('js/charts/easypiechart/jquery.easy-pie-chart.js')}}"></script>
     <script src="{{mp_url('/js/fuelux/fuelux.js')}}"></script>
     <script src="{{mp_url('/js/datepicker/bootstrap-datepicker.js')}}"></script>
+    @if ((!Auth::user()->verified()) || Reg::current()->type == 'unregistered' || (!Reg::selectConfirmed()) || ($hasRegAssignment))
+    <script src="{{mp_url('/js/reg.firsttime.js')}}"></script>
+    @endif
 @endpush
 @push('css')
     <link href="{{mp_url('/js/fuelux/fuelux.css')}}" rel="stylesheet">
@@ -114,10 +131,12 @@
                               @elseif (Reg::current()->type == 'unregistered')
                               <div class="text-sm">点击下方按钮报名：</div>
                               <a href="{{ mp_url('/reg2.modal/select') }}" data-toggle="ajaxModal" class="btn btn-danger">报名</a>
-                              @else
+                              @elseif ($hasRegAssignment)
                               <div class="text-sm">点击下方按钮查看学术测试题：</div>
-                              <!--a href="{{ mp_url('/ot/regInfo.modal/'.Reg::currentID()) }}" data-toggle="ajaxModal" class="btn btn-danger">查看我的报名</a-->
                               <a href="{{ mp_url('/assignments') }}" class="btn btn-danger">查看学术作业</a>
+                              @else
+                              <div class="text-sm">点击下方按钮查看我的报名：</div>
+                              <a href="{{ mp_url('/ot/regInfo.modal/'.Reg::currentID()) }}" data-toggle="ajaxModal" class="btn btn-danger">查看我的报名</a>
                               @endif
                           </div>
                         </div>

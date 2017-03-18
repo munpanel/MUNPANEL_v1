@@ -191,6 +191,8 @@ class UserController extends Controller
      */
     public function reg2(Request $request)
     {
+        if (!validateRegDate($request->type))
+            return view('error', ['msg' => '报名类型不匹配！']);    
         $customTable = json_decode(Reg::currentConference()->option('reg_tables'))->regTable; //todo: table id
         if (!Auth::check())
         {
@@ -694,7 +696,85 @@ class UserController extends Controller
      */
     public function test()
     {
-        dd(\App\Interviewer::list());
+        $js = json_encode('$("#reg2Form").ready(function(e){
+    var group = document.getElementById("committee1branch");
+    var group2 = document.getElementById("committee2branch");
+    group2.style.display = "none";  
+    group.style.display = "none"; 
+});
+$("#select-comm1").change(function(e){
+    var group = document.getElementById("committee1branch");
+    var group2 = document.getElementById("committee2branch");
+    if (document.getElementById("select-comm1").value == "11")
+    {
+        $("select#select-comm2 option").remove();
+        $("select#select-comm2").append(\'<option value="" selected="">请选择</option><option value="10">危机联动体系</option><option value="29">独立委员会组</option>\');
+        $("select#select-branch1 option").remove();
+        $("select#select-branch1").append(\'<option value="11" selected="">东晋纵横</option>\');
+        group.style.display = "none";
+    }
+    else if (document.getElementById("select-comm1").value == "10")
+    {
+        $("select#select-branch1 option").remove();
+        $("select#select-branch2 option").remove();
+        $("select#select-branch1").append(\'<option value="" selected="">请选择</option><option value="17">亚洲分支</option><option value="18">欧洲分支</option><option value="19">东欧分支</option><option value="20">中东分支</option><option value="21">联合国安全理事会</option><option value="22">美洲分支</option><option value="24">舆论媒体</option>\');
+        $("select#select-branch2").append(\'<option value="" selected="">请选择备选会场</option><option value="17">亚洲分支</option><option value="18">欧洲分支</option><option value="19">东欧分支</option><option value="20">中东分支</option><option value="21">联合国安全理事会</option><option value="22">美洲分支</option><option value="24">舆论媒体</option>\');
+        $("select#select-comm2 option").remove();
+        $("select#select-comm2").append(\'<option value="" selected="">请选择</option><option value="11">東晉縱橫</option><option value="29">独立委员会组</option>\');
+        group2.style.display = "none";  
+        group.style.display = "block";      
+    }
+    else
+    {        
+        $("select#select-branch1 option").remove();
+        $("select#select-branch2 option").remove();
+        $("select#select-branch1").append(\'<option value="" selected="">请选择</option><option value="12">共同均衡裁军谈判会议</option><option value="13">G20 Summit</option><option value="14">联合国世界旅游组织第二十二届全体大会</option><option value="15">慕尼黑安全政策会议</option><option value="16">联合国大会社会、人道主义和文化委员会</option>\');
+        $("select#select-branch2").append(\'<option value="" selected="">请选择备选会场</option><option value="12">共同均衡裁军谈判会议</option><option value="13">G20 Summit</option><option value="14">联合国世界旅游组织第二十二届全体大会</option><option value="15">慕尼黑安全政策会议</option><option value="16">联合国大会社会、人道主义和文化委员会</option>\');
+        $("select#select-comm2 option").remove();
+        $("select#select-comm2").append(\'<option value="" selected="">请选择</option><option value="10">危机联动体系</option><option value="11">東晉縱橫</option><option value="29">独立委员会组</option>\');
+        group.style.display = "block";
+    }
+});
+$("#select-comm2").change(function(e){
+    var group = document.getElementById("committee2branch");
+    var e1 = document.getElementById("select-branch3");
+    var e2 = document.getElementById("select-branch4");
+    if (document.getElementById("select-comm2").value == "11")
+    {
+        $("select#select-branch3 option").remove();
+        $("select#select-branch3").append(\'<option value="11" selected="">东晋纵横</option>\');
+        group.style.display = "none";
+    }
+    else if (document.getElementById("select-comm2").value == "10")
+    {
+        $("select#select-branch3 option").remove();
+        $("select#select-branch4 option").remove();
+        $("select#select-branch3").append(\'<option value="" selected="">请选择</option><option value="17">亚洲分支</option><option value="18">欧洲分支</option><option value="19">东欧分支</option><option value="20">中东分支</option><option value="21">联合国安全理事会</option><option value="22">美洲分支</option><option value="24">舆论媒体</option>\');
+        $("select#select-branch4").append(\'<option value="" selected="">请选择备选会场</option><option value="17">亚洲分支</option><option value="18">欧洲分支</option><option value="19">东欧分支</option><option value="20">中东分支</option><option value="21">联合国安全理事会</option><option value="22">美洲分支</option><option value="24">舆论媒体</option>\');
+        group.style.display = "block";
+    }
+    else
+    {        
+        $("select#select-branch3 option").remove();
+        $("select#select-branch4 option").remove();
+        $("select#select-branch3").append(\'<option value="" selected="">请选择</option><option value="12">共同均衡裁军谈判会议</option><option value="13">G20 Summit</option><option value="14">联合国世界旅游组织第二十二届全体大会</option><option value="15">慕尼黑安全政策会议</option><option value="16">联合国大会社会、人道主义和文化委员会</option>\');
+        $("select#select-branch4").append(\'<option value="" selected="">请选择备选会场</option><option value="12">共同均衡裁军谈判会议</option><option value="13">G20 Summit</option><option value="14">联合国世界旅游组织第二十二届全体大会</option><option value="15">慕尼黑安全政策会议</option><option value="16">联合国大会社会、人道主义和文化委员会</option>\');
+        group.style.display = "block";
+    }
+});');
+return view('blank',['testContent' => $js, 'convert' => false]);
+        $a = Reg::current()->delegate->assignments()->where('reg_assignment', 1);
+        $arr = [];
+        foreach ($a as $item)
+            array_push($arr, $item->id);
+        $b = Assignment::whereIn('id', $arr)->whereDoesntHave('handins', function ($query) {
+            $query->where('reg_id', Reg::currentID());
+        })->count();
+        return $b;
+        $c = $b->whereDoesntHave('handins', function ($query) { 
+            $query->where('reg_id', Reg::currentID());
+        });
+        // dd(\App\Interviewer::list());
         if (($handle = fopen("/var/www/munpanel/test.csv", "r")) !== FALSE) {
             $resp = "";
             while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {

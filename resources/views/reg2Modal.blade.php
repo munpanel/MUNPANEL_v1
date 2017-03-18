@@ -343,9 +343,9 @@ $isExperience = isset($customTable->experience) && in_array($regType, $customTab
                 <input name="correct" type="checkbox" data-required="true">
                 <!--i class="fa fa-square-o"></i-->
                 我确认以上报名信息准确无误<br>
-                <input name="agreement" type="checkbox" data-required="true">
-                <!--i class="fa fa-square-o"></i-->
-                我同意环梦模拟联合国参会协议和 MUNPANEL 使用协议 (虽然并没有这两样东西)<br><br>
+                <!--input name="agreement" type="checkbox" data-required="true">
+                <i class="fa fa-square-o"></i>
+                我同意环梦模拟联合国参会协议和 MUNPANEL 使用协议 (虽然并没有这两样东西)<br--><br>
             <!--div class="checkbox">
               <label class="checkbox-custom">
               </label>

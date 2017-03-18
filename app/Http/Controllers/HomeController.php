@@ -112,6 +112,7 @@ class HomeController extends Controller
                 $status = "已缴费";
                 $changable = false;
             }
+            
             if (isset($notice_msg))
                 return view('home', ['percent' => $percent, 'status' => $status, 'changable' => $changable, 'notice_msg' => $notice_msg]);
             else
@@ -175,8 +176,21 @@ class HomeController extends Controller
      */ 
     public function reg2Modal($regType)
     {
+        $regDate = json_decode(Reg::currentConference()->option('reg_dates'));
+        $select = ['delegateUse' => false, 'observerUse' => false, 'volunteerUse' => false, 'delegateMsg' => '不可用', 'observerMsg' => '不可用', 'volunteerMsg' => '不可用'];
+        foreach ($regDate as $value)
+        {
+            if (strtotime(date("y-m-d h:i:s")) < strtotime($value->config->start)) $select[$value->use.'Msg'] = '暂未开启';
+            elseif ($value->config->end == 'ended') $select[$value->use.'Msg'] = '已结束';
+            elseif (strtotime(date("y-m-d h:i:s")) > strtotime($value->config->end) && $value->config->end != 'manual') $select[$value->use.'Msg'] = '已结束';
+            else
+            {
+                unset($select[$value->use.'Msg']);
+                $select[$value->use.'Use'] = true;
+            }
+        }
         if ($regType == 'select')
-            return view('regSelectModal');
+            return view('regSelectModal', $select); 
         $customTable = json_decode(Reg::currentConference()->option('reg_tables'))->regTable; //todo: table id
         $confForm = FormController::render($customTable->conference->items, $regType, 'uses');
         return view('reg2Modal', ['regType' => $regType, 'customTable' => $customTable, 'confForm' => $confForm]);

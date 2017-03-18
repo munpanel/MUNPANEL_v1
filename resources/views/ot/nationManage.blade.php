@@ -47,8 +47,8 @@
                         <th width="20">ID</th>
                         <th width="150">委员会</th>
                         <th width="150">名称</th>
-                        <th width="20"><span data-toggle="tooltip" data-original-title="投票权重" data-placement="top">C</span></th>
-                        <th width="20"><span data-toggle="tooltip" data-original-title="一票否决权" data-placement="top">VP</span></th>
+                        <th width="20"><span data-toggle="tooltip" data-original-title="投票权重" data-placement="bottom">C</span></th>
+                        <th width="20"><span data-toggle="tooltip" data-original-title="一票否决权" data-placement="bottom">VP</span></th>
                         <th>所属国家组</th>
                         <th>代表</th>
                       </tr>

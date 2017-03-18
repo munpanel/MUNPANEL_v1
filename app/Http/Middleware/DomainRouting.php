@@ -28,7 +28,12 @@ class DomainRouting
         {
             //To-Do: query for conference id and redirect invalid domains to portal
             if (is_null(config('munpanel.conference_id'))) //we may route all domains to one conference for debugging and developing.
-                config(['munpanel.conference_id' => $_SERVER['HTTP_HOST']]);
+            {
+                if ($_SERVER['HTTP_HOST'] == 'romun.munpanel.com')
+                    config(['munpanel.conference_id' => 2]);
+                if ($_SERVER['HTTP_HOST'] == 'bjmun.munpanel.com')
+                    config(['munpanel.conference_id' => 1]);
+            }
         }
         return $next($request);
     }

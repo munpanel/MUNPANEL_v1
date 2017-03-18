@@ -60,7 +60,7 @@ if (Reg::current()->type == 'delegate')
                     <span class="arrow right hidden-xs"></span>
                     <div class="panel-body">
                       <p>
-                        点击右侧四字在新窗口中查看一轮通告 TODO: jsonize this place
+                        点击右侧四字在新窗口中查看会议手册
                       </p>
                     </div>
                   </div>
@@ -68,29 +68,24 @@ if (Reg::current()->type == 'delegate')
                 <aside class="bg-primary clearfix lter r-r text-right v-middle">
                   <div class="wrapper">
                     <p class="text-muted h3 font-thin">
-                      <a href="https://bjmun.org/bulletin/bjmunc-2017-announcement1/" target="_blank">一轮通告</a>
+                      <a href="https://romun.net/files/2017/03/ROMUNC2017会议手册1.0.0.pdf" target="_blank">会议手册</a>
                     </p>
                   </div>
                 </aside>
               </section>
               <section class="panel no-borders hbox">
-                <aside class="bg-success lter r-l text-center v-middle">
+                <aside class="bg-success r-l text-center v-middle">
                   <div class="wrapper">
-                    <i class="fa fa-users fa fa-4x"></i>
-                    <p class="text-muted"><em>组织团队</em></p>
+                    <i class="fa fa-clock-o fa-4x"></i>                      
+                    <p class="text-muted"><em>倒计时</em></p>
                   </div>
                 </aside>
                 <aside>
                   <div class="pos-rlt">
                     <span class="arrow left hidden-xs"></span>
-                    <div class="panel-body">
-                      <p>
-                        <b>秘书处:</b><br>秘书长，朱淇惠，北京师范大学附属中学<br>副秘书长，王靖之，中国人民大学附属中学<br>副秘书长，张亦弛，清华大学附属中学<br><br><b>核心学术团队:</b><br>中文学术总监，李潇涵，北京市第二中学<br>中文学术总监，姚楚州，北京市第十五中学<br>英文学术总监，易轩，北京市一零一中学<br>英文学术总监，熊亚馨，北京市第四中学<br><br><b>会务团队:</b><br>艺术总监，徐德尘<br>技术总监，杨昊燃，中国人民大学附属中学分校<br>会务总监，于浩然，北京市一零一中学<br>会务总监，衡莹嘉，北京市第二中学<br>会务总监，潘皓辰，北京市第五中学<br>财务总监，王煦彤，北京市一零一中学
-                      </p>
+                    <div class="panel-body wrapper text-center">
+                      <span>距离会议开始天数</span><p class="h1">{{date_create(date('Y-m-d'))->diff(date_create(Reg::currentConference()->date_start))->format('%a')}}</p>
                     </div>
-                    <!--footer class="panel-footer">
-                      <p>This is a Slogan.</p>
-                    </footer-->
                   </div>
                 </aside>
               </section>

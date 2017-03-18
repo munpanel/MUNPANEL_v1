@@ -4,6 +4,7 @@
                   <span>Home</span>
                 </a>
               </li>
+              @if (Reg::current()->type != 'unregistered')
               <li class="@yield('invoice_active')">
                 <a href="{{ mp_url('/pay/invoice') }}">
                   <i class="fa fa-money"></i>
@@ -52,6 +53,7 @@
                   <span>Live Screen</span>
                 </a>
               </li>
+              @endif
               <li class="@yield('store_active')">
                 <a href="{{ mp_url('/store') }}">
                   <i class="fa fa-shopping-bag"></i>

@@ -1,5 +1,5 @@
 ﻿@extends('layouts.app')
-@section('assignment_active', 'active')
+@section('assignments_active', 'active')
 @push('scripts')
     <script src="{{mp_url('/js/fuelux/fuelux.js')}}"></script>
     <script src="{{mp_url('/js/file-input/bootstrap.file-input.js')}}"></script>
@@ -31,39 +31,27 @@
               <div class="panel-group m-b" id="accordion2">
                 <div class="panel">
                   <div class="panel-heading">
-                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
                       作业概况
-                    </a>
                   </div>
-                  <div id="collapseOne" class="panel-collapse in">
                     <div class="panel-body text-sm">
                       <b>作业标题: </b>{{$assignment->title}}<br><b>提交对象: </b>{{$assignment->scope()}} (以{{$assignment->subject_type == 'individual' ? '个人' : ($assignment->subject_type == 'nation' ? '国家' : '搭档')}}为单位)<br><b>提交形式: </b>{{$assignment->handin_type == 'upload' ? '文件上传' : ($assignment->handin_type == 'form' ? '在线填写表单' : '在线文本编辑器')}}<br><b>提交期限: </b>{{$assignment->deadline}}
                     </div>
-                  </div>
                 </div>
                 <div class="panel">
                   <div class="panel-heading">
-                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
                       作业信息
-                    </a>
                   </div>
-                  <div id="collapseTwo" class="panel-collapse collapse">
                     <div class="panel-body text-sm">
                       {!!$assignment->description!!}
                     </div>
-                  </div>
                 </div>
                 <div class="panel">
                   <div class="panel-heading">
-                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseThree">
                       主席反馈
-                    </a>
                   </div>
-                  <div id="collapseThree" class="panel-collapse collapse">
                     <div class="panel-body text-sm">
                       Sorry, it's not available.
                     </div>
-                  </div>
                 </div>
               </div>
               <!-- / .accordion -->

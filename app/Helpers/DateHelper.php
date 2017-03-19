@@ -59,7 +59,10 @@ function nicetime($date, $concise = false)
 }
 
 /**
- * Validate if the reg type is open to register param和return一会再写
+ * Validate if the reg type is open to register
+ *
+ * @param string $type in ['delegate', 'observer', 'volunteer']
+ * @return bool the type of registration is valid at time on request
  */
 function validateRegDate($type)
 {

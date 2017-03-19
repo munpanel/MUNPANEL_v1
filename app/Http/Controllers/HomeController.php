@@ -181,7 +181,7 @@ class HomeController extends Controller
         foreach ($regDate as $value)
         {
             if (strtotime(date("y-m-d h:i:s")) < strtotime($value->config->start)) $select[$value->use.'Msg'] = '暂未开启';
-            elseif ($value->config->end == 'ended') $select[$value->use.'Msg'] = '已结束';
+            elseif ($value->config->end == 'ended') $select[$value->use.'Msg'] = '已关闭';
             elseif (strtotime(date("y-m-d h:i:s")) > strtotime($value->config->end) && $value->config->end != 'manual') $select[$value->use.'Msg'] = '已结束';
             else
             {
@@ -204,7 +204,7 @@ class HomeController extends Controller
     static public function regManage(Request $request)
     {
         $type = Reg::current()->type;
-        if ($type == 'ot' && Reg::current()->can('edit-users'))
+        if ($type == 'ot' && Reg::current()->can('view-regs'))
         {
             if (isset($request->initialReg))
                 return view('ot.regManage', ['delegates' => Delegate::all(), 'volunteers' => Volunteer::all(), 'observers' => Observer::all(), 'initialModal' => mp_url('/ot/regInfo.modal/'. $request->initialReg)]);
@@ -318,7 +318,7 @@ class HomeController extends Controller
     public function regInfoModal($id)
     {
         $reg = Reg::findOrFail($id);
-        $allRegs = Reg::where('user_id', $reg->user_id)->get(['id', 'type']);
+        $allRegs = Reg::where('user_id', $reg->user_id)->where('conference_id', $reg->conference_id)->get(['id', 'type']);
         $operations = array();
         if ($reg->type == 'delegate')
         {
@@ -487,6 +487,7 @@ class HomeController extends Controller
                 if ($assignment->handin_type == 'form')
                 {
                     $answer = json_decode($handin->content);
+                    if (empty($content->_token)) return redirect(mp_url('/assignment/' . $id . '/form'));
                     $form = json_decode(Form::findOrFail($answer->form)->content);
                     $html = FormController::getMyAnswer($form->items, $answer);
                 } 

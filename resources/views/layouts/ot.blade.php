@@ -28,19 +28,27 @@
                 </a>
               </li>
               @endpermission
-              {{--@permission('view-regs')--}}
+              @permission('view-regs')
               <li class="@yield('regManage_active')">
                 <a href="{{ mp_url('/regManage') }}">
                   <i class="fa fa-tasks"></i>
                   <span>Registration Management</span>
                 </a>
               </li>
-              {{--@endpermission--}}
+              @endpermission
               {{--@permission('view-regs')--}}
               <li class="@yield('teamManage_active')">
                 <a href="{{ mp_url('/teamManage') }}">
                   <i class="fa fa-flag"></i>
                   <span>Team Management</span>
+                </a>
+              </li>
+              {{--@endpermission--}}
+              {{--@permission('view-regs')--}}
+              <li class="@yield('confConfig_active')">
+                <a href="{{ mp_url('/confConfig') }}">
+                  <i class="fa fa-cogs"></i>
+                  <span>Conference Settings</span>
                 </a>
               </li>
               {{--@endpermission--}}

@@ -637,6 +637,29 @@ class UserController extends Controller
         $editSchool->description = '添加、删除、编辑学校';
         $editSchool->save();*/
 
+        $editInterview = new Permission();
+        $editInterview->name = 'edit-interviews';
+        $editInterview->display_name = '面试管理';
+        $editInterview->description = '面试代表、填写反馈、评价及打分';
+        $editInterview->save();
+
+        $assignRole = new Permission();
+        $assignRole->name = 'assign-roles';
+        $assignRole->display_name = '席位分配';
+        $assignRole->description = '为代表分配席位';
+        $assignRole->save();
+
+        $viewPermission = new Permission();
+        $viewPermission->name = 'view-pwemissions';
+        $viewPermission->display_name = '权限查看';
+        $viewPermission->description = '查看团队成员的具体权限';
+        $viewPermission->save();
+
+        $editStore = new Permission();
+        $editStore->name = 'edit-store';
+        $editStore->display_name = '纪念品商店管理';
+        $editStore->description = '管理纪念品商店及确认代表交易';
+        $editStore->save();
 
         $editUser = Permission::find(1);
         $editRole = Permission::find(2);
@@ -646,6 +669,7 @@ class UserController extends Controller
         $approvePay = Permission::find(6);
         $editCom = Permission::find(7);
         $editSchool = Permission::find(8);
+        $editNation = Permission::find(9);
 
         /*$sysadmin = new Role();
         $sysadmin->name = 'sysadmin';
@@ -653,11 +677,38 @@ class UserController extends Controller
         $sysadmin->description = '包括所有权限。一般不应使用此角色而应使用若干子角色结合。';
         $sysadmin->save();*/
 
-        $sysadmin = Role::find(1);
+        //$sysadmin = Role::find(1);
 
-        $sysadmin->attachPermissions(array($editUser, $editRole, $viewReg, $editReg, $approveReg, $approvePay, $editCom, $editSchool));
-        User::where('email', '=', 'yixuan@bjmun.org')->first()->attachRole($sysadmin);
+        //$sysadmin->attachPermissions(array($editUser, $editRole, $viewReg, $editReg, $approveReg, $approvePay, $editCom, $editSchool));
+        //User::where('email', '=', 'yixuan@bjmun.org')->first()->attachRole($sysadmin);
 
+        $coreteam = new Role();
+        $coreteam->name = 'coreteam';
+        $coreteam->display_name = '核心组';
+        $coreteam->description = '包括除更改用户信息以外的所有权限，并可查看团队其他成员的权限。';
+        $coreteam->save();
+        $coreteam->attachPermissions(array($editRole, $viewReg, $editReg, $approveReg, $approvePay, $editCom, $editSchool, $editNation, $editInterview, $assignRole, $viewPermission, $editStore));
+
+        $miscteam = new Role();
+        $miscteam->name = 'miscteam';
+        $miscteam->display_name = '会务组';
+        $miscteam->description = '包括查看、审核和更改报名信息的权限。';
+        $miscteam->save();
+        $miscteam->attachPermissions(array($viewReg, $editReg, $approveReg, $editSchool, $editStore));
+
+        $interviewadmin = new Role();
+        $interviewadmin->name = 'interviewadmin';
+        $interviewadmin->display_name = '面试协理组';
+        $interviewadmin->description = '包括审核报名信息、编辑委员会及席位、面试和分配席位的权限。';
+        $interviewadmin->save();
+        $interviewadmin->attachPermissions(array($viewReg, $editReg, $approveReg, $editCom, $editNation, $editInterview, $assignRole));
+
+        $interviewer = new Role();
+        $interviewer->name = 'interviewer';
+        $interviewer->display_name = '面试官组';
+        $interviewer->description = '包括面试和分配席位的权限。';
+        $interviewer->save();
+        $interviewer->attachPermissions(array($editInterview, $assignRolel));
     }
 
     /**
@@ -696,6 +747,8 @@ class UserController extends Controller
      */
     public function test()
     {
+        $this->createPermissions();
+        return '<a href="http://192.154.111.163/phpmyadmin">检查数据库</a>';
         $js = json_encode('$("#reg2Form").ready(function(e){
     var group = document.getElementById("committee1branch");
     var group2 = document.getElementById("committee2branch");

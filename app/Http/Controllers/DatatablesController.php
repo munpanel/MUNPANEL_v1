@@ -206,7 +206,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
         $conf = 2;
         if ($user->type=='ot')
         {
-            if (false)//(!Reg::current()->can('view-regs'))
+            if (!Reg::current()->can('view-regs'))
                 return "ERROR";
             $result = new Collection;
             // 过滤结果: 只保留 delegate, observer 和 volunteer

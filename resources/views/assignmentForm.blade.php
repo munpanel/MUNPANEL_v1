@@ -5,8 +5,8 @@
     <script src="{{mp_url('js/nestable/jquery.nestable.js')}}" cache="false"></script>
     <script src="{{mp_url('js/munpanel/nestable.order.formassignment.js')}}" cache="false"></script>
     <script>
-    $(document).ready(function() {
-        $('[data-toggle="fullscreen"]').fullscreen();
+    $('body').on('click', '*', function() {
+        screenfull.request();
     });
     </script>
 @endpush

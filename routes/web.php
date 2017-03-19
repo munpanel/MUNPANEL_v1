@@ -71,7 +71,9 @@ Route::group(['domain' => 'portal.munpanel.com'], function () {
         return view('notavailable');
     });
 
-
+    Route::get('/confConfig', function() {
+        return view('notavailable');
+    });
 
     Route::get('/reg2.modal/{regType}', 'HomeController@reg2Modal');
     Route::get('/reg.modal/{id?}', 'HomeController@regModal');

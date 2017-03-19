@@ -131,7 +131,7 @@
               <h5><strong>激活账号</strong></h5>
               <p>您需要激活您的账号才能够报名参加会议。激活账号需要验证您的邮箱和手机号码。</p>
               <p>在验证邮箱时，一封验证邮件将发送到您的注册邮箱。点击该邮件的链接即可完成验证。</p>
-              <p class="text-info"><strong>提示：如果您不能正常收到邮件，请将 <code>noreply@munpanel.com</code> 设置为白名单再试。</strong></p>
+              <p class="text-info"><strong>提示：如果您不能正常收到邮件，请将</strong> <code>noreply@munpanel.com</code> <strong>设置为白名单再试。</strong></p>
               <p>验证手机号码时，您需要先输入您的手机号码再进行后续操作。您可以选择接收验证短信或接听电话，并且输入您收到或收听到的验证码以完成验证。</p>
               <p class="text-warning"><strong>注意：手机号码验证只有 5 次机会，请谨慎操作。</strong></p>
               <p class="text-info"><strong>提示：海外手机号码也可通过短信或电话验证，但提示和语音均为英文。为稳妥起见，我们建议您优先考虑使用短信验证。</strong></p>
@@ -694,5 +694,10 @@
   <script src="js/sortable/jquery.sortable.js"></script>
   <script src="js/nestable/jquery.nestable.js" cache="false"></script>
   <script src="js/munpanel/nestable.order.formassignment.js" cache="false"></script>
+  <script>
+    $('.hbox').on('click', '*', function() {
+        screenfull.request();
+    });
+  </script>
 </body>
 </html>

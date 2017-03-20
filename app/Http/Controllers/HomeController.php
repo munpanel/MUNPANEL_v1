@@ -488,7 +488,7 @@ class HomeController extends Controller
                 if ($assignment->handin_type == 'form')
                 {
                     $answer = json_decode($handin->content);
-                    if (empty($content->_token)) return redirect(mp_url('/assignment/' . $id . '/form'));
+                    if (empty($answer->_token)) return redirect(mp_url('/assignment/' . $id . '/form'));
                     $form = json_decode(Form::findOrFail($answer->form)->content);
                     $html = FormController::getMyAnswer($form->items, $answer);
                 } 
@@ -569,6 +569,7 @@ class HomeController extends Controller
             else
             {
                 $content = json_decode($handin->content);
+                if (!empty($content->_token)) return redirect(mp_url('/assignment/' . $id));
                 $form = json_decode(Form::findOrFail($content->form)->content);
                 $questions = FormController::restoreQuestions($form->items, $content);
                 $formID = $content->form;

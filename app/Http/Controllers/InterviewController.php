@@ -46,7 +46,7 @@ class InterviewController extends Controller
         $interview->interviewer_id = $interviewer->reg_id;
         $interview->status = 'exempted';
         $interview->save();
-        Reg::findOrFail($id)->addEvent('interview_exempted', '{"interviewer":"'.$interviewer->reg->user->name.'"}');
+        Reg::findOrFail($id)->addEvent('interview_exempted', '{"interviewadmin":"'.Auth::user()->name.'","interviewer":"'.$interviewer->reg->user->name.'"}');
         return redirect('/regManage?initialReg='.$id);
     }
 }

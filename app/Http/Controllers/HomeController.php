@@ -327,7 +327,8 @@ class HomeController extends Controller
             {
                 case 'interview_assigned':break;
                 case 'interview_failed':
-                case 'interview_unassigned': $operations[] = 'assignInterview';
+                case 'interview_unassigned': $operations[] = 'assignInterview'; break;                
+                case 'sVerified': $operations[] = 'oVerification'; break;
             }
         }
         return view('ot.regInfoModal', ['reg' => $reg, 'allRegs' => $allRegs, 'operations' => $operations]);
@@ -786,6 +787,8 @@ class HomeController extends Controller
             return view('verificationModal');
         if (Reg::current()->type == 'unregistered')
             return redirect(mp_url('/reg2.modal/select'));
+        if (is_null(Reg::current()->specific()))
+            return redirect(mp_url('/ecosocEasterEgg.modal'));
         return redirect(mp_url('/regAssignment.modal'));
     }
 
@@ -803,6 +806,14 @@ class HomeController extends Controller
     public function regAssignmentModal()
     {
         return view('regAssignmentModal');
+    }
+    
+    /**
+     *
+     */
+    public function ecosocEasterEggModal()
+    {
+        return view('ecosocEasterEggModal');
     }
 
     /**

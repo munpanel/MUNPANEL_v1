@@ -364,6 +364,24 @@ class UserController extends Controller
     }
 
     /**
+     * make a registration ot not verified.
+     *
+     * @param int $id the id of the registration
+     * @return void
+     */
+    public function oNoVerify($id)
+    {
+        if (Reg::current()->type != 'ot' || (!Reg::current()->can('approve-regs')))
+            return "您无权执行该操作！";
+        $reg = Reg::find($id);
+        $specific = $reg->specific();
+        if ($specific->status != 'sVerified')
+            return "无法为此报名者执行该操作！";
+        $reg->enabled = false;
+        $reg->save();
+        $reg->addEvent('ot_verification_rejected', '{"name":"'.Auth::user()->name.'"}');
+    }
+    /**
      * make a registration school verified.
      *
      * @param int $id the id of the registration
@@ -766,15 +784,18 @@ class UserController extends Controller
     }
 
     /**
-     * Reset my registration to avoid ecosoc easteregg
+     * Reset my registration to avoid ecosoc easteregg or after being rejected
      *
      * @return redirect
      */
-    public function resetReg()
+    public function resetReg($force = false)
     {
         $reg = Reg::current();
         $reg->type = 'unregistered';
+        $reg->enabled = true;
         $reg->save();
+        if ($force)
+            $reg->specific()->delete();
         return redirect('/home');
     }
 

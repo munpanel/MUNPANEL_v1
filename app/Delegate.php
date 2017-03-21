@@ -326,4 +326,16 @@ class Delegate extends Model
         return $scope;
     }
 
+    public function hasRegAssignment()
+    {
+        $a = $this->assignments()->where('reg_assignment', 1);
+        if ($a->count() == 0) return 0;
+        $arr = [];
+        foreach ($a as $item)
+            array_push($arr, $item->id);
+        $b = Assignment::whereIn('id', $arr)->whereDoesntHave('handins', function ($query) {
+            $query->where('reg_id', $this->reg->id);
+        })->count();
+        return $b;
+    }
 }

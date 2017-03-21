@@ -2,14 +2,7 @@
 $hasRegAssignment = false;
 if (Reg::current()->type == 'delegate' && isset(Reg::current()->delegate))
 {
-    $a = Reg::current()->delegate->assignments()->where('reg_assignment', 1);
-    $arr = [];
-    foreach ($a as $item)
-        array_push($arr, $item->id);
-    $b = App\Assignment::whereIn('id', $arr)->whereDoesntHave('handins', function ($query) {
-        $query->where('reg_id', Reg::currentID());
-    })->count();
-    if ($b > 0) $hasRegAssignment = true;
+    if (Reg::current()->delegate->hasRegAssignment() > 0) $hasRegAssignment = true;
 }
 @endphp
 @extends('layouts.app')
@@ -126,9 +119,12 @@ if (Reg::current()->type == 'delegate' && isset(Reg::current()->delegate))
                               @elseif (Reg::current()->type == 'unregistered')
                               <div class="text-sm">点击下方按钮报名：</div>
                               <a href="{{ mp_url('/reg2.modal/select') }}" data-toggle="ajaxModal" class="btn btn-danger">报名</a>
+                              @elseif (!Reg::current()->enabled())
+                              <div class="text-sm">点击下方按钮重置报名状态：</div>
+                              <a href="{{ mp_url('/resetReg/true') }}" class="btn btn-danger">重置我的报名</a>
                               @elseif (is_null(Reg::current()->specific()))
                               <div class="text-sm">点击下方按钮重置报名状态：</div>
-                              <a href="{{ mp_url('/assignments') }}" class="btn btn-danger">重置我的报名</a>
+                              <a href="{{ mp_url('/resetReg') }}" class="btn btn-danger">重置我的报名</a>
                               @elseif ($hasRegAssignment)
                               <div class="text-sm">点击下方按钮查看学术测试题：</div>
                               <a href="{{ mp_url('/assignments') }}" class="btn btn-danger">查看学术作业</a>

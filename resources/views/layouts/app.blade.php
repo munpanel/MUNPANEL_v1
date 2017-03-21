@@ -63,7 +63,8 @@
             <i class="fa fa-comment-o"></i>
           </a>
         </header>
-        <section>
+        <section class="scrollable">
+          <div class="slim-scroll" data-height="auto" data-disable-fade-out="true" data-distance="0" data-size="5px">
           <!-- user -->
           <div class="bg-success nav-user hidden-xs pos-rlt">
             <div class="nav-avatar pos-rlt">
@@ -155,7 +156,8 @@
               <!--a href="#" data-dismiss="alert" class="pull-right m-r-n-sm m-t-n-sm"><i class="fa fa-times"></i></a-->
               Proudly Powered and Copyrighted by {{config('munpanel.copyright_year')}} MUNPANEL. A Product of Console iT.
           </div>
-          <!-- / note -->
+          <!-- / note -->        
+          </div>
         </section>
         <footer class="footer bg-gradient hidden-xs">
           <a href="{{mp_url('/selectIdentityModal')}}" data-toggle="ajaxModal" class="btn btn-sm btn-link m-r-n-xs pull-right">
@@ -184,6 +186,7 @@
   <script src="{{mp_url('/js/app.js')}}"></script>
   <script src="{{mp_url('/js/app.plugin.js')}}"></script>
   <script src="{{mp_url('/js/app.data.js')}}"></script>
+  <script src="{{mp_url('js/slimscroll/jquery.slimscroll.min.js')}}" cache="false"></script>
   <!-- Parsley -->
   <script src="{{mp_url('/js/parsley/parsley.min.js')}}"></script>
   <script src="{{mp_url('/js/parsley/parsley.extend.js')}}"></script>

@@ -99,6 +99,11 @@ class HomeController extends Controller
             {
                 $percent = 50;
                 $status = '等待组织团队审核';
+                if (!$reg->enabled)
+                {
+                    $percent = 0;
+                    $status = '审核未通过';
+                }
             }
             else  if ($specific->status == 'oVerified')
             {
@@ -788,6 +793,8 @@ class HomeController extends Controller
             return view('verificationModal');
         if (Reg::current()->type == 'unregistered')
             return redirect(mp_url('/reg2.modal/select'));
+        if (!Reg::current()->enabled)
+            return redirect(mp_url('/regNotVerified.modal'));
         if (is_null(Reg::current()->specific()))
             return redirect(mp_url('/ecosocEasterEgg.modal'));
         return redirect(mp_url('/regAssignment.modal'));
@@ -815,6 +822,14 @@ class HomeController extends Controller
     public function ecosocEasterEggModal()
     {
         return view('ecosocEasterEggModal');
+    }
+
+    /**
+     *
+     */
+    public function regNotVerifiedModal()
+    {
+        return view('regNotVerifiedModal');
     }
 
     /**

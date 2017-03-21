@@ -89,7 +89,8 @@ Route::group(['domain' => 'portal.munpanel.com'], function () {
     Route::post('/saveRegObs', 'UserController@regSaveObs');
 
     Route::get('/ecosocEasterEgg.modal', 'HomeController@ecosocEasterEggModal');
-    Route::get('/resetReg', 'UserController@resetReg');
+    Route::get('/regNotVerified.modal', 'HomeController@regNotVerifiedModal');
+    Route::get('/resetReg/{force?}', 'UserController@resetReg');
 
     Route::get('/roleList', 'HomeController@roleList');
     Route::get('/roleAlloc', 'HomeController@roleAlloc');
@@ -128,6 +129,7 @@ Route::group(['domain' => 'portal.munpanel.com'], function () {
     Route::get('/delBizCard.modal/{id}', 'RoleAllocController@getDelegateBizcard');
     Route::get('/ot/regInfo.modal/{id}', 'HomeController@regInfoModal');
     Route::get('/ot/oVerify/{id}', 'UserController@oVerify');
+    Route::get('/ot/oNoVerify/{id}', 'UserController@oNoVerify');
     Route::post('/ot/assignInterview/{id}', 'InterviewController@assignInterview');
     Route::post('/ot/exemptInterview/{id}', 'InterviewController@exemptInterview');
 

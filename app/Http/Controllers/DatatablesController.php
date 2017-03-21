@@ -215,18 +215,12 @@ class DatatablesController extends Controller //To-Do: Permission Check
             {
                 if ($reg->type == 'unregistered')
                     $type = '未报名';
-                else if ($reg->type == 'ot')
-                    $type = '组织团队';
-                else if ($reg->type == 'dais')
-                    $type = '学术团队';
                 else if ($reg->type == 'delegate')
                     $type = '代表';
                 else if ($reg->type == 'volunteer')
                     $type = '志愿者';
                 else if ($reg->type == 'observer')
                     $type = '观察员';
-                else if ($reg->type == 'school')
-                    $type = '学校';
                 else
                     $type = '未知';
             if (null !== $reg->specific())
@@ -255,6 +249,8 @@ class DatatablesController extends Controller //To-Do: Permission Check
                     $status = '报名学测未完成';
                  if ($type == '代表')
                      $status = $reg->specific()->statusText();
+                if (!$reg->enabled)
+                    $status = '已禁用';
             }
             else $status = '';
                 $school = isset($reg->reginfo) ? json_decode($reg->reginfo)->personinfo->school : '未填写';
@@ -295,14 +291,8 @@ class DatatablesController extends Controller //To-Do: Permission Check
                     $type = '组织团队';
                 else if ($reg->type == 'dais')
                     $type = '学术团队';
-                else if ($reg->type == 'delegate')
-                    $type = '代表';
-                else if ($reg->type == 'volunteer')
-                    $type = '志愿者';
-                else if ($reg->type == 'observer')
-                    $type = '观察员';
                 else if ($reg->type == 'school')
-                    $type = '学校';
+                    $type = '学校理事';
                 else
                     $type = '未知';
                 $school = isset($reg->reginfo) ? json_decode($reg->reginfo)->personinfo->school : '未填写';
@@ -312,7 +302,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
                     'school' => isset($reg->specific()->position) ? $reg->specific()->position : '无',
                     'committee' => isset($reg->specific()->committee) ? $reg->specific()->committee->name : '无',
                     'partner' => $type,
-                    'status' => '无',
+                    'status' => $reg->specific()->scopeRoles
                 ]);
             }
         }

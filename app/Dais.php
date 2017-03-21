@@ -41,4 +41,23 @@ class Dais extends Model
     public function regText() {
         return '学术团队（'.$this->position.'）';
     }
+    
+    public function scopeRoles()
+    {
+        $prefix = '';
+        $scope = '';
+        $i = 0;
+        $n = $this->reg->roles()->count();
+        if ($n == 0) return '无';
+        if (null !== ($this->reg->roles()))
+        {
+            $roles = $this->reg->roles();
+            foreach($roles as $role)
+            {
+                $scope .= $prefix . $role->display_name;
+                $prefix = ', ';
+            }
+        }
+        return $scope;
+    }
 }

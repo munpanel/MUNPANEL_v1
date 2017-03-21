@@ -22,10 +22,19 @@ $isOtOrDais = in_array(Reg::current()->type, ['ot', 'dais']);
               <div class="col-sm-12 b-r">
               @if ($isOtOrDais)
                 @if ($allRegs->count() > 1)
-                <p>{{$reg->user->name}}在本次会议中共包含{{ $allRegs->count() }}个身份。</p>
+                <p>{{$reg->user->name}}在本次会议中共包含以下 {{$allRegs->count()}} 个身份。</p>
+                <ul>
+                  @foreach ($allRegs as $aReg)
+                  <li><strong>{{$aReg->id}}</strong>: {{$aReg->regText()}}</li>
+                  @endforeach
+                </ul>
                 @else
                 <p>{{$reg->user->name}}以<strong>{{ $reg->type == 'delegate' ? '代表' : ($reg->type == 'observer' ? '观察员' : '志愿者') }}</strong>身份报名参加本次会议。</p>
+                <p>报名 ID: {{$reg->id}}
+                @if ($reg->type == 'delegate')
+                <br>委员会: {{$reg->specific()->committee->name}}<br>代表组: $reg->specific()->scopeDelegateGroup()
                 @endif
+                <br>状态: {{$reg->enabled ? $reg->specific()->statusText() : '已禁用'}}</p>
               @else
                 <p>{{$reg->user->name}}，您已以<strong>{{ $reg->type == 'delegate' ? '代表' : ($reg->type == 'observer' ? '观察员' : '志愿者') }}</strong>身份报名参加{{Reg::currentConference()->fullname}}。</p>
               @endif
@@ -68,10 +77,10 @@ $isOtOrDais = in_array(Reg::current()->type, ['ot', 'dais']);
                     <p><i>委员会意向 1</i><br>&emsp;&emsp;{{App\Committee::find($regInfo->conference->committee)->name}}</p>
                     <p><i>委员会意向 2</i><br>&emsp;&emsp;{{App\Committee::find($regInfo->conference->committee2)->name}}</p>
                     <p><i>委员会意向 3</i><br>&emsp;&emsp;{{App\Committee::find($regInfo->conference->committee3)->name}}</p>
-                    <p><i>面试联络方式</i><br>&emsp;&emsp;{{--typeInterview($regInfo->conference->typeInterview)--}}</p>
-                    @if (isset($regInfo->conference->smsInterview) || isset($regInfo->conference->offlineInterview))
-		    <p><i>面试选项</i><br>&emsp;&emsp;{{isset($regInfo->conference->smsInterview) ? '开通面试短信提醒服务' : ''}}{{isset($regInfo->conference->smsInterview) && isset($regInfo->conference->offlineInterview) ? ', ' : ''}}{{isset($regInfo->conference->offlineInterview) ? '接受线下面试' : ''}}</p>
-                    @endif--}}
+                    <p><i>面试联络方式</i><br>&emsp;&emsp;{{--typeInterview($regInfo->conference->typeInterview)</p>--}}
+                    @if (isset($regInfo->conference->smsInterview)
+		                <p><i>面试选项</i><br>&emsp;&emsp;{{isset($regInfo->conference->smsInterview) ? '开通面试短信提醒服务' : ''}}</p>
+                    @endif
                     @if (isset($regInfo->conference->groupOption))
                     <p><i>团队报名选项</i><br>&emsp;&emsp;{{groupOption($regInfo->conference->groupOption)}}</p>
                     @endif

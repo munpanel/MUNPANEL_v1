@@ -772,7 +772,9 @@ class UserController extends Controller
      */
     public function resetReg()
     {
-        Reg::current()->type = 'unregistered';
+        $reg = Reg::current();
+        $reg->type = 'unregistered';
+        $reg->save();
         return redirect('/home');
     }
 

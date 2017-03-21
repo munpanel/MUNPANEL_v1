@@ -1,6 +1,6 @@
 @php
 $hasRegAssignment = false;
-if (Reg::current()->type == 'delegate')
+if (Reg::current()->type == 'delegate' && isset(Reg::current()->delegate))
 {
     $a = Reg::current()->delegate->assignments()->where('reg_assignment', 1);
     $arr = [];

@@ -7,6 +7,6 @@
 
                     {{-- <p><span class="label label-warning">注意</span> 这位代表的面试安排曾被join("、", $rollback_data); 回退，请在笔记中了解回退原因。</p>--}}
                     
-                    <a class="btn btn-info" href="{{mp_url('/ot/oVerify/'.$reg->id)}}">审核通过</a>
+                    <a class="btn btn-success" href="{{mp_url('/ot/oVerify/'.$reg->id)}}">审核通过</a>
 
                 </div>

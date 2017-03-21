@@ -112,7 +112,7 @@ class HomeController extends Controller
                 $status = "已缴费";
                 $changable = false;
             }
-            
+
             if (isset($notice_msg))
                 return view('home', ['percent' => $percent, 'status' => $status, 'changable' => $changable, 'notice_msg' => $notice_msg]);
             else
@@ -173,7 +173,7 @@ class HomeController extends Controller
      * Dynamic form, used in ROMUNC 2017.
      *
      * @return \Illuminate\Http\Response
-     */ 
+     */
     public function reg2Modal($regType)
     {
         $regDate = json_decode(Reg::currentConference()->option('reg_dates'));
@@ -190,7 +190,7 @@ class HomeController extends Controller
             }
         }
         if ($regType == 'select')
-            return view('regSelectModal', $select); 
+            return view('regSelectModal', $select);
         $customTable = json_decode(Reg::currentConference()->option('reg_tables'))->regTable; //todo: table id
         $confForm = FormController::render($customTable->conference->items, $regType, 'uses');
         return view('reg2Modal', ['regType' => $regType, 'customTable' => $customTable, 'confForm' => $confForm]);
@@ -327,7 +327,7 @@ class HomeController extends Controller
             {
                 case 'interview_assigned':break;
                 case 'interview_failed':
-                case 'interview_unassigned': $operations[] = 'assignInterview'; break;                
+                case 'interview_unassigned': $operations[] = 'assignInterview'; break;
                 case 'sVerified': $operations[] = 'oVerification'; break;
             }
         }
@@ -378,7 +378,7 @@ class HomeController extends Controller
     }
 
     /**
-     * (Deprecated) Show the invoice of the user for registration. 
+     * (Deprecated) Show the invoice of the user for registration.
      * This function will be replaced by the more general Order class
      * in the future.
      *
@@ -406,7 +406,7 @@ class HomeController extends Controller
             return view('error', ['msg' => 'You have to use your school account!']);
         return view('school.pay');
     }
-    
+
     /**
      * Change the payment method of a school
      *
@@ -431,7 +431,7 @@ class HomeController extends Controller
     {
         return view('checkoutModal', ['id' => $id]);
     }
-    
+
     /**
      * Show the assignment list page of user.
      *
@@ -444,9 +444,9 @@ class HomeController extends Controller
         if (Reg::current()->type == 'delegate')
         {
             if (Reg::current()->specific()->status == 'reg')//TO-DO: parameters for this
-                return view('error', ['msg' => '请等待学校和/或组织团队审核！']);  
-            //if (Reg::current()->specific()->status != 'paid')//TO-DO: parameters for this  
-                //return view('error', ['msg' => '请先缴费！如果您已通过社团缴费，请等待组织团队确认']); 
+                return view('error', ['msg' => '请等待学校和/或组织团队审核！']);
+            //if (Reg::current()->specific()->status != 'paid')//TO-DO: parameters for this
+                //return view('error', ['msg' => '请先缴费！如果您已通过社团缴费，请等待组织团队确认']);
         }
         $committee = Reg::current()->specific()->committee;
         return view('assignmentsList', ['committee' => $committee, 'type' => Reg::current()->type]);
@@ -491,7 +491,7 @@ class HomeController extends Controller
                     if (empty($answer->_token)) return redirect(mp_url('/assignment/' . $id . '/form'));
                     $form = json_decode(Form::findOrFail($answer->form)->content);
                     $html = FormController::getMyAnswer($form->items, $answer);
-                } 
+                }
                 return view('assignmentHandinInfo', ['assignment' => $assignment, 'handin' => $handin, 'formContent' => $html]);
             }
             else if (in_array($assignment->handin_type, ['upload', 'form']))
@@ -612,7 +612,7 @@ class HomeController extends Controller
             return "Error";
         }
     }
-    
+
 
     /**
      * Show a modal in which admins can choose to import
@@ -637,14 +637,14 @@ class HomeController extends Controller
         if (Reg::current()->type == 'delegate')
         {
             if (Reg::current()->specific()->status == 'reg')//TO-DO: parameters for this
-                return view('error', ['msg' => '请等待学校和/或组织团队审核！']);  
-            if (Reg::current()->specific()->status != 'paid')//TO-DO: parameters for this  
-                return view('error', ['msg' => '请先缴费！如果您已通过社团缴费，请等待组织团队确认']); 
+                return view('error', ['msg' => '请等待学校和/或组织团队审核！']);
+            if (Reg::current()->specific()->status != 'paid')//TO-DO: parameters for this
+                return view('error', ['msg' => '请先缴费！如果您已通过社团缴费，请等待组织团队确认']);
         }
         $committee = Reg::current()->specific()->committee;
         return view('documentsList', ['type' => Reg::current()->type]);
     }
-    
+
     /**
      * Perform actions related to one document.
      *
@@ -687,7 +687,7 @@ class HomeController extends Controller
             return view('documentInfo', ['document' => $document]);
         }
     }
-    
+
     /**
      * Show the details modal of one document.
      *
@@ -708,7 +708,7 @@ class HomeController extends Controller
             $document = Document::findOrFail($id);
         return view('documentDetailsModal', ['document' => $document]);
     }
-    
+
     /**
      * Show the role/delegate list of a committee.
      *
@@ -721,7 +721,7 @@ class HomeController extends Controller
             return view('error', ['msg' => '请等待席位分配发布！']);
         return view('roleList', ['view' => $view]);
     }
-    
+
     /**
      * Show the role allocation page for Dais and Organizing Team
      *
@@ -739,13 +739,13 @@ class HomeController extends Controller
         else if (Reg::current()->type == 'ot')
             return redirect(mp_url('/nationManage'));
         else if (Reg::current()->type != 'dais')
-            return view('error', ['msg' => '您不是该会议学术团队成员，无权进行席位分配！']);            
+            return view('error', ['msg' => '您不是该会议学术团队成员，无权进行席位分配！']);
         if (Reg::current()->specific()->committee->is_allocated)
             return redirect(mp_url('/roleList'));
         $mycommittee = Reg::current()->dais->committee;
         return view('dais.roleAlloc', [
-            'committee' => $mycommittee, 
-            'mustAlloc' => $mycommittee->delegates->where('status', 'paid')->where('nation_id', null)->count(), 
+            'committee' => $mycommittee,
+            'mustAlloc' => $mycommittee->delegates->where('status', 'paid')->where('nation_id', null)->count(),
             'emptyNations' => $mycommittee->emptyNations()->count(),
             'verified' => Delegate::where(function($query) {$query->where('committee_id', Reg::current()->dais->committee->id)->where('status', 'paid');})->orWhere(function($query) {$query->where('committee_id', Reg::current()->dais->committee->id)->where('status', 'oVerified');})->count(),
             'isDouble' => true
@@ -808,7 +808,7 @@ class HomeController extends Controller
     {
         return view('regAssignmentModal');
     }
-    
+
     /**
      *
      */

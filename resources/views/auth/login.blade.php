@@ -37,9 +37,9 @@
       <div class="col-md-4 col-md-offset-4 m-t-lg">
         <section class="panel">
           <header class="panel-heading text-center">
-            登陆
+            登陆&nbsp({{isset($mailLogin)?"Console Mail":"MUNPANEL"}}&nbsp账号)
           </header>
-          <form action="{{ mp_url('/login') }}" method="post" class="panel-body" data-validate="parsley">
+          <form action="{{ isset($mailLogin)?mp_url('/loginMail'):mp_url('/login') }}" method="post" class="panel-body" data-validate="parsley">
             {{ csrf_field() }}
             <div class="form-group">
               <label class="control-label">Email</label>
@@ -59,6 +59,11 @@
 <div class="line line-dashed"></div>
             <p class="text-muted text-center"><small>没有账号?</small></p>
             <a href="{{ mp_url('/register') }}" class="btn btn-white btn-block">新建帐号并报名会议</a>
+            @if (isset($mailLogin))
+            <a href="{{ mp_url('/login') }}" class="btn btn-white btn-block">使用 MUNPANEL 账号登录</a>
+            @else
+            <a href="{{ mp_url('/loginViaConsoleMail') }}" class="btn btn-white btn-block">使用 Console Mail 账号登录</a>
+            @endif
           </form>
         </section>
       </div>

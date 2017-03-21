@@ -7,7 +7,7 @@
        {{csrf_field()}}
        <div class="input-group input-m">
         <select name="reg" class="form-control m-b">
-        @foreach(Auth::user()->regs as $reg)
+        @foreach(Auth::user()->regs->where('conference_id', Reg::currentConferenceID())->where('enabled', true) as $reg)
         <option value="{{$reg->id}}" {{ $reg->id == Reg::current()->id ? 'selected' : '' }}>{{$reg->regText()}}</option>
         @endforeach
         <option value="logout">注销用户</option>

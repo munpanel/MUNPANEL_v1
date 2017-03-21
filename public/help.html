@@ -131,7 +131,7 @@
               <h5><strong>激活账号</strong></h5>
               <p>您需要激活您的账号才能够报名参加会议。激活账号需要验证您的邮箱和手机号码。</p>
               <p>在验证邮箱时，一封验证邮件将发送到您的注册邮箱。点击该邮件的链接即可完成验证。</p>
-              <p class="text-info"><strong>提示：如果您不能正常收到邮件，请将</strong> <code>noreply@munpanel.com</code> <strong>设置为白名单再试。</strong></p>
+              <p class="text-info"><strong>提示：如果您不能正常收到邮件，请检查垃圾箱或将</strong> <code>noreply@munpanel.com</code> <strong>设置为白名单再试。</strong></p>
               <p>验证手机号码时，您需要先输入您的手机号码再进行后续操作。您可以选择接收验证短信或接听电话，并且输入您收到或收听到的验证码以完成验证。</p>
               <p class="text-warning"><strong>注意：手机号码验证只有 5 次机会，请谨慎操作。</strong></p>
               <p class="text-info"><strong>提示：海外手机号码也可通过短信或电话验证，但提示和语音均为英文。为稳妥起见，我们建议您优先考虑使用短信验证。</strong></p>
@@ -398,7 +398,7 @@
                       <li class="dd-item"><div class="dd-handle order"><span class="pull-left media-xs"><i class="fa fa-sort text-muted fa-sm"></i>&nbsp;4</span><div class="clear">将选项移动到占位框内并松开鼠标左键，即完成一次排序动作</div><input name="24[]" type="hidden" value="4"></div></li>
                     </ol>
                   </div>
-                  </div><div class="form-group"><button class="btn btn-success" type="submit">提交作业</button></div></form>
+                  </div><div class="form-group"><button class="btn btn-success" type="button" onclick="alert('您提交了作业！\n请注意：表单类型作业一旦提交，即不可再返回更改！');">提交作业</button></div></form>
                 </div>
               </section>
               
@@ -637,8 +637,12 @@
               <div class="line"></div>
               
               <h4 id="faq" class="m-t-lg">常见问题</h4>
+              <h5><strong>什么是 ECOSOC 彩蛋？报名陷入 ECOSOC 彩蛋该怎么办？</strong></h5>
+              <p>ECOSOC 彩蛋是您的报名出现的一种异常。</p>
+              <p>在 MUNPANEL 开发初期，某个合作会议的组委在开放报名期间不慎删除了其会议下的 ECOSOC 委员会，而该委员会的所有报名信息也被连带删除。这些受影响的用户的类型仍为“代表”，但 MUNPANEL 系统已无法读取他们的报名信息。一个提示框被紧急上线，提醒报名 ECOSOC 委员会的代表重新填写报名表单。</p>
+              <p>您在进入 MUNPANEL 后台时如果遇到了 ECOSOC 彩蛋的提示，就说明您的报名类型对应的数据丢失。您需要根据提示重置您的报名状态，并再次填写报名表单和进入审核流程。</p>
               <h5><strong>问题？</strong></h5>
-              <p>For more how to build chrome app, please check <a href="http://developer.chrome.com/apps/first_app.html" class="text-info"><strong>here</strong></a> </p>
+              <p>For more how to build chrome app, please check <a href="http://developer.chrome.com/apps/first_app.html" class="text-info"><strong>here</strong></a></p>
 
               <h4 id="contact" class="m-t-lg">联系我们</h4>
               <p>Use response.js to support IE8 media queries and html5.js to support html5 markups.</p>
@@ -694,10 +698,5 @@
   <script src="js/sortable/jquery.sortable.js"></script>
   <script src="js/nestable/jquery.nestable.js" cache="false"></script>
   <script src="js/munpanel/nestable.order.formassignment.js" cache="false"></script>
-  <script>
-    $('.hbox').on('click', '*', function() {
-        screenfull.request();
-    });
-  </script>
 </body>
 </html>

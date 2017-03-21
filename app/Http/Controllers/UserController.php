@@ -210,7 +210,7 @@ class UserController extends Controller
         else
             $user = Auth::user();
         $conf = $request->conference_id;
-        $reg = Reg::current();
+        $reg = Reg::find($request->reg_id);
         $reg->user_id = $user->id;
         $reg->conference_id = $conf;
         $reg->type = $request->type;
@@ -319,6 +319,9 @@ class UserController extends Controller
                 break;
             }
         }
+        // 校验 committee 是否非空
+        if (is_null($conf_info->committee))
+            return view('error', ['msg' => '您提交的报名信息似乎有问题，请再试一次。']);
         $regInfo->conference = $conf_info;
         $reg->reginfo = json_encode($regInfo);
         $reg->save();
@@ -340,6 +343,24 @@ class UserController extends Controller
         }
         $reg->addEvent('registration_submitted', '');
         return redirect('/home');
+    }
+
+    /**
+     * make a registration ot verified.
+     *
+     * @param int $id the id of the registration
+     * @return void
+     */
+    public function oVerify($id)
+    {
+        if (Reg::current()->type != 'ot' || (!Reg::current()->can('approve-regs')))
+            return "您无权执行该操作！";
+        $specific = Reg::find($id)->specific();
+        if ($specific->status != 'sVerified')
+            return "无法为此报名者执行该操作！";
+        $specific->status = $specific->nextStatus();
+        $specific->save();
+        Reg::find($id)->addEvent('ot_verification_passed', '{"name":"'.Auth::user()->name.'"}');
     }
 
     /**
@@ -635,7 +656,7 @@ class UserController extends Controller
         $editSchool->name = 'edit-schools';
         $editSchool->display_name = '学校管理';
         $editSchool->description = '添加、删除、编辑学校';
-        $editSchool->save();*/
+        $editSchool->save();
 
         $editInterview = new Permission();
         $editInterview->name = 'edit-interviews';
@@ -675,7 +696,7 @@ class UserController extends Controller
         $sysadmin->name = 'sysadmin';
         $sysadmin->display_name = '系统管理员';
         $sysadmin->description = '包括所有权限。一般不应使用此角色而应使用若干子角色结合。';
-        $sysadmin->save();*/
+        $sysadmin->save();
 
         //$sysadmin = Role::find(1);
 
@@ -707,8 +728,10 @@ class UserController extends Controller
         $interviewer->name = 'interviewer';
         $interviewer->display_name = '面试官组';
         $interviewer->description = '包括面试和分配席位的权限。';
-        $interviewer->save();
-        $interviewer->attachPermissions(array($editInterview, $assignRolel));
+        $interviewer->save();*/
+        
+        $interviewer =Role::find(5);
+        $interviewer->attachPermissions(array($editInterview, $assignRole));
     }
 
     /**
@@ -740,6 +763,17 @@ class UserController extends Controller
             }
         }
         return "えるの室友配对遍历了$room" . "行记录<br>$result1<br>えるの搭档配对遍历了$part" . "行记录<br>$result2";
+    }
+
+    /**
+     * Reset my registration to avoid ecosoc easteregg
+     *
+     * @return redirect
+     */
+    public function resetReg()
+    {
+        Reg::current()->type = 'unregistered';
+        return redirect('/home');
     }
 
     /**

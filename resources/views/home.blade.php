@@ -18,7 +18,7 @@ if (Reg::current()->type == 'delegate')
     <script src="{{mp_url('js/charts/easypiechart/jquery.easy-pie-chart.js')}}"></script>
     <script src="{{mp_url('/js/fuelux/fuelux.js')}}"></script>
     <script src="{{mp_url('/js/datepicker/bootstrap-datepicker.js')}}"></script>
-    @if ((!Auth::user()->verified()) || Reg::current()->type == 'unregistered' || (!Reg::selectConfirmed()) || ($hasRegAssignment))
+    @if ((!Auth::user()->verified()) || Reg::current()->type == 'unregistered' || (!Reg::selectConfirmed()) || ($hasRegAssignment) || (Reg::current()->type != 'unregistered' && is_null(Reg::current()->specific())))
     <script src="{{mp_url('/js/reg.firsttime.js')}}"></script>
     @endif
 @endpush
@@ -68,7 +68,7 @@ if (Reg::current()->type == 'delegate')
                 <aside class="bg-primary clearfix lter r-r text-right v-middle">
                   <div class="wrapper">
                     <p class="text-muted h3 font-thin">
-                      <a href="https://romun.net/files/2017/03/ROMUNC2017会议手册1.0.0.pdf" target="_blank">会议手册</a>
+                      <a href="https://romun.net/files/2017/03/ROMUNC2017会议手册1.1.0.pdf" target="_blank">会议手册</a>
                     </p>
                   </div>
                 </aside>
@@ -126,6 +126,9 @@ if (Reg::current()->type == 'delegate')
                               @elseif (Reg::current()->type == 'unregistered')
                               <div class="text-sm">点击下方按钮报名：</div>
                               <a href="{{ mp_url('/reg2.modal/select') }}" data-toggle="ajaxModal" class="btn btn-danger">报名</a>
+                              @elseif (is_null(Reg::current()->specific()))
+                              <div class="text-sm">点击下方按钮重置报名状态：</div>
+                              <a href="{{ mp_url('/assignments') }}" class="btn btn-danger">重置我的报名</a>
                               @elseif ($hasRegAssignment)
                               <div class="text-sm">点击下方按钮查看学术测试题：</div>
                               <a href="{{ mp_url('/assignments') }}" class="btn btn-danger">查看学术作业</a>
@@ -151,7 +154,6 @@ if (Reg::current()->type == 'delegate')
                   </div>
                 </div>
               </section>
-
             </div>
           </div>
         </section>

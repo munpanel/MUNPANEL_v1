@@ -94,6 +94,11 @@ class HomeController extends Controller
             {
                 $percent = 25;
                 $status = '等待学校审核';
+                if ($type == 'dais')
+                {
+                    $html = FormController::formAssignment($assignment->id, $questions, $formID, $handin->id);
+                    return view('assignmentForm', ['assignment' => $assignment, 'formContent' => $html]);
+                }
             }
             else if ($specific->status == 'sVerified')
             {
@@ -599,8 +604,45 @@ class HomeController extends Controller
                 $formID = $content->form;
             }
             $html = FormController::formAssignment($assignment->id, $questions, $formID, $handin->id);
-            return view('assignmentForm', ['assignment' => $assignment, 'formContent' => $html]);
+            return view('assignmentForm', ['title' => $assignment->title, 'formContent' => $html]);
         }
+    }
+
+    public function daisregForm()
+    {
+        $language = Reg::current()->dais->language;
+        $forms = json_decode(Reg::currentConference()->option('reg_tables'))->daisregForms;
+        $formID = 0;
+        foreach ($forms as $formCfg)
+        {
+            if ($formCfg->language = $language) 
+            {
+                $formID = $formCfg->language;
+                break;
+            }
+        }
+        $form = Form::findOrFail($formID);
+        $questions = FormController::getQuestions(json_decode($form->content));
+        $handin = json_decode(Reg::current()->dais->handin);/*
+        if (is_null($handin))
+        {
+            $content = [];
+            $content['form'] = $form->id;
+            foreach ($questions as $item)
+                $content[$item->id] = "";
+            $handin->content = json_encode((object)$content);
+            $handin->save();
+        }
+        else
+        {
+            $content = json_decode($handin);
+            if (!empty($content->_token)) return redirect(mp_url('/assignment/' . $id));
+            $form = json_decode(Form::findOrFail($content->form)->content);
+            $questions = FormController::restoreQuestions($form->items, $content);
+            $formID = $content->form;
+        }*/
+        $html = FormController::daisregformAssignment($questions, $formID, $handin->id);
+        return view('assignmentForm', ['titie' => $form->name, 'formContent' => $html]);
     }
 
     /**

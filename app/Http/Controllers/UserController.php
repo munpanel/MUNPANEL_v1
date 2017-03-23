@@ -192,7 +192,7 @@ class UserController extends Controller
     public function reg2(Request $request)
     {
         if (!validateRegDate($request->type))
-            return view('error', ['msg' => '报名类型不匹配！']);    
+            return view('error', ['msg' => '报名类型不匹配！']);
         $customTable = json_decode(Reg::currentConference()->option('reg_tables'))->regTable; //todo: table id
         if (!Auth::check())
         {
@@ -320,8 +320,10 @@ class UserController extends Controller
             }
         }
         // 校验 committee 是否非空
-        if (is_null($conf_info->committee))
+        if ($reg->type == 'delegate' && is_null($conf_info->committee))
             return view('error', ['msg' => '您提交的报名信息似乎有问题，请再试一次。']);
+        if ($reg->type == 'dais' && is_null($conf_info->language))
+            return view('error', ['msg' => '您提交的申请信息似乎有问题，请再试一次。']);
         $regInfo->conference = $conf_info;
         $reg->reginfo = json_encode($regInfo);
         $reg->save();
@@ -344,7 +346,7 @@ class UserController extends Controller
         $reg->addEvent('registration_submitted', '');
         return redirect('/home');
     }
-
+    
     /**
      * make a registration ot verified.
      *

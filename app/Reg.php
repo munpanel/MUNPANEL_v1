@@ -195,6 +195,17 @@ class Reg extends Model
                 $volunteer->status = $volunteer->nextStatus();
                 $volunteer->save();
                 break;
+            case 'dais':
+                $dais = Dais::find($this->id);
+                if (is_null($dais))
+                    $dais = new Dais();
+                $dais->reg_id = $this->id;
+                $dais->conference_id = $this->conference_id;
+                $dais->school_id = $this->school_id;
+                //$dais->status = $dais->nextStatus();
+                $dais->handin = '{"language":"'.json_decode($this->reginfo)->conference->language.'"}';
+                $dais->save();
+                break;
         }
     }
     

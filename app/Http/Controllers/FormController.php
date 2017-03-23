@@ -92,6 +92,38 @@ class FormController extends Controller
         $num = 0;
         if (!empty($handinID)) $html .= '<input type="hidden" value="'.$handinID.'" name="handin">';
         $html .= '<input type="hidden" value="'.$formID.'" name="form">';
+        $html .= $this->formAssignmentTableItems($tableItems);
+        $html .= '<div class="form-group"><button type="submit" class="btn btn-success">提交作业</button></div></form>';
+        return $html;
+    }
+
+    /**
+     * Render the daisreg assignment form to html
+     *
+     * @param array $tableItems the table items ($*->items)
+     * @param int $formID the ID of form
+     * @param int $handinID the ID of handin
+     * @return string HTML clip of the table
+     */
+    public static function daisregformAssignment($tableItems, $formID, $handin)
+    {
+        $html = '<form method="POST" action="'.mp_url('/daisregForm/formSubmit').'" class="m-t-lg m-b">'.csrf_field();
+        $num = 0;
+        $html .= '<input type="hidden" value="'.$formID.'" name="form">';
+        $html .= $this->formAssignmentTableItems($tableItems);
+        $html .= '<div class="form-group"><button type="submit" class="btn btn-success">提交</button></div></form>';
+        return $html;
+    }
+
+    /**
+     * Render the assignment form to html
+     *
+     * @param array $tableItems the table items ($*->items)
+     * @return string HTML clip of the table
+     */
+    public function formAssignmentTableItems($tableItems)
+    {
+        $html = '';
         foreach ($tableItems as $item)
         {
             $html .= '<div class="form-group"><span class="badge form-assignment">'.++$num.'</span>&nbsp;<label>'.$item->title.'</label><div class="';
@@ -127,6 +159,10 @@ class FormController extends Controller
                     $placeholder = isset($item->placeholder) ? $item->placeholder : '';
                     $html .= singleInput('text',$item->id,'',null,null,false,$placeholder);
                     break;
+                case "text_field":
+                    $placeholder = isset($item->placeholder) ? $item->placeholder : '';
+                    $html .= textField($item->id, '' , false, $placeholder);
+                    break;
                 case "order":
                     $li = 0;
                     $html .= '<ol class="dd-list">';
@@ -138,7 +174,6 @@ class FormController extends Controller
             }
             $html .= '</div></div>';
         }
-        $html .= '<div class="form-group"><button type="submit" class="btn btn-success">提交作业</button></div></form>';
         return $html;
     }
 

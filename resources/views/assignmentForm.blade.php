@@ -17,7 +17,7 @@
 @section('content')
   <section class="vbox">
     <header class="header bg-white b-b">
-      <p class="pull-center">{{$assignment->title}}</p>
+      <p class="pull-center">{{$title}}</p>
     </header>
     <section class="scrollable wrapper">
       <div class="container">

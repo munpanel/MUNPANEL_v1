@@ -84,6 +84,20 @@ function singleInput($type, $name, $value = '', $text = null, $id = null, $requi
     if ($type != 'text') $html .= '<br>';
     return $html;
 }
+
+/**
+ * make single textarea item HTML DOM
+ *
+ * @param string $name name of HTTP POST request
+ * @param string $text text of the input
+ * @param bool $required 'data_required' for parsley
+ * @return string HTML DOM element <input ...>...
+ */
+function textField($name, $text, $required = false, $placeholder = '')
+{
+    $html = '<textarea name="'.$name.'" class="form-control" placeholder="'.$placeholder.'" type="text"></textarea>';
+    return $html;
+}
 /**
  * Render one item of the table to html
  *

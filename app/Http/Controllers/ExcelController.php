@@ -25,7 +25,7 @@ use Excel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Hash;
-ese Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Auth;
 
 
 class ExcelController extends Controller

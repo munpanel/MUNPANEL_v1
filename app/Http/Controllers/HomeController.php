@@ -72,7 +72,7 @@ class HomeController extends Controller
             //return $del->count();
             return view('school.home', ['del' => $school->delegates->count(), 'vol' => $school->volunteers->count()]);
         }
-        else if ($type == 'dais')
+        else if ($type == 'dais' && $reg->specific()->status == 'success')
         {
             return view('dais.home');
         }
@@ -105,10 +105,16 @@ class HomeController extends Controller
                     $status = '审核未通过';
                 }
             }
-            else  if ($specific->status == 'oVerified')
+            else if ($specific->status == 'oVerified')
             {
                 $percent = 75;
                 $status = '待缴费';
+                $changable = false;
+            }
+            else if ($specific->status == 'fail')
+            {
+                $percent = 0;
+                $status = '未通过';
                 $changable = false;
             }
             else
@@ -199,6 +205,19 @@ class HomeController extends Controller
         $customTable = json_decode(Reg::currentConference()->option('reg_tables'))->regTable; //todo: table id
         $confForm = FormController::render($customTable->conference->items, $regType, 'uses');
         return view('reg2Modal', ['regType' => $regType, 'customTable' => $customTable, 'confForm' => $confForm]);
+    }
+
+    /**
+     * Show the dais registration form modal.
+     * Dynamic form, used in BJMUNSS 2017.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function daisregModal()
+    {
+        $customTable = json_decode(Reg::currentConference()->option('reg_tables'))->daisregTable; //todo: table id
+        $confForm = FormController::render($customTable->conference->items, $regType);
+        return view('reg2Modal', ['regType' => 'dais', 'customTable' => $customTable, 'confForm' => $confForm]);
     }
 
     /**

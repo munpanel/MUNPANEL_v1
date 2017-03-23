@@ -78,6 +78,7 @@ Route::group(['domain' => 'portal.munpanel.com'], function () {
     });
 
     Route::get('/reg2.modal/{regType}', 'HomeController@reg2Modal');
+    Route::get('/daisreg.modal', 'HomeController@daisregModal');
     Route::get('/reg.modal/{id?}', 'HomeController@regModal');
     Route::get('/ot/userDetails.modal/{id}', ['middleware' => ['permission:edit-users'], 'uses' => 'HomeController@userDetailsModal']);
     Route::get('/ot/schoolDetails.modal/{id}', ['middleware' => ['permission:edit-schools'], 'uses' => 'HomeController@schoolDetailsModal']);

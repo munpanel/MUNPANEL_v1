@@ -92,7 +92,7 @@ function singleInput($type, $name, $value = '', $text = null, $id = null, $requi
  * @param string $useCompare 用于判断上述内容的数据源（item下的变量名）
  * @return string HTML clip of the table
  */
-function singleRegItem($item, $useParam, $useCompare)
+function singleRegItem($item, $useParam, $useCompare = null)
 {
     $html = '';
     if (isset($item->title) && $item->type != 'group')
@@ -124,7 +124,7 @@ function singleRegItem($item, $useParam, $useCompare)
                 $html .= '<label>'.$item->title.'</label>';
             foreach ($item->items as $subitem)
             {
-                if (!in_array($useParam, $subitem->{$useCompare})) continue;
+                if (!empty($useCompare) && !in_array($useParam, $item->{$useCompare})) continue;
                 $html .= singleRegItem($subitem, $useParam, $useCompare);
             }
             $html .= '</div>';

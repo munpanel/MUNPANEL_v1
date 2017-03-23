@@ -57,13 +57,15 @@ $isExperience = isset($customTable->experience) && in_array($regType, $customTab
               </div>
               <label>　出生日期 *</label>
               <input name="dateofbirth" class="datepicker-input form-control input" type="text" size="16" placeholder="yyyy-mm-dd" data-type="dateIso" data-required="true">
-              <label>　省份 *</label>
+              @if (isset($customTable->info- >contact->alt_phone))
+              <label>　省份 {{$customTable->info->province == 'mandatory' ? '*' : ''}}</label>
               {!!provinceSelect()!!}
+              @endif
             </div>
             <div class="form-group pull-in clearfix">
               <div class="col-sm-9">
               <label>学校 *</label>
-                <input name="school" class="form-control" type="text" data-required="true">
+                <input name="school" class="form-control" type="text" data-required="true" placeholder="请填写学校全名">
               </div>
               <div class="col-sm-3">
                 <label>毕业年份 *</label>

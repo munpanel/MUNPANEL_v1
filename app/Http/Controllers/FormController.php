@@ -21,7 +21,7 @@ class FormController extends Controller
      * @param string $useCompare 用于判断上述内容的数据源（item下的变量名）
      * @return string HTML clip of the table
      */
-    public static function render($tableItems, $useParam, $useCompare)
+    public static function render($tableItems, $useParam, $useCompare = null)
     {
         $html = '';
         foreach ($tableItems as $item)
@@ -29,7 +29,7 @@ class FormController extends Controller
             // 使用 $useParam 比对 $item->{$useCompare} 的值确定下一项是否对用户有效
             // 例：在 regTable 中，检查 $item->uses 是否存在 $regType 的值
             // TODO: 基于委员会的判断时，对父委员会的判断 
-            if (!in_array($useParam, $item->{$useCompare})) continue;
+            if (!empty($useCompare) && !in_array($useParam, $item->{$useCompare})) continue;
             switch ($item->type)
             {
                   // 预设的表单项

@@ -249,11 +249,9 @@ class DatatablesController extends Controller //To-Do: Permission Check
                     $status = '报名学测未完成';
                  if ($type == '代表')
                      $status = $reg->specific()->statusText();
-                if (!$reg->enabled)
-                    $status = '已禁用';
             }
             else $status = '';
-                $school = isset($reg->reginfo) ? json_decode($reg->reginfo)->personinfo->school : '未填写';
+            # if (!$reg->enabled) $status = '已禁用';
                 $result->push([
                     'details' => '<a href="ot/regInfo.modal/'. $reg->id .'" data-toggle="ajaxModal" id="'. $reg->id .'" class="details-modal"><i class="fa fa-search-plus"></i></a>',
                     'name' => $reg->user->name,
@@ -302,7 +300,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
                     'school' => isset($reg->specific()->position) ? $reg->specific()->position : '无',
                     'committee' => isset($reg->specific()->committee) ? $reg->specific()->committee->name : '无',
                     'partner' => $type,
-                    'status' => $reg->specific()->scopeRoles
+                    'status' => $reg->specific()->scopeRoles()
                 ]);
             }
         }

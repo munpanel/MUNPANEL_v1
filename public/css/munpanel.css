@@ -227,3 +227,8 @@ ul.timeline-small>li>.timeline-panel:after {
 .dd-handle.order {    
     padding: 10px 15px;
 }
+
+.modal-content>.panel {
+    margin-bottom: 0px;
+    border-radius: 4px
+}

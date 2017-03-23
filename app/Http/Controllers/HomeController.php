@@ -216,7 +216,7 @@ class HomeController extends Controller
     public function daisregModal()
     {
         $customTable = json_decode(Reg::currentConference()->option('reg_tables'))->daisregTable; //todo: table id
-        $confForm = FormController::render($customTable->conference->items, $regType);
+        $confForm = FormController::render($customTable->conference->items, 'dais');
         return view('reg2Modal', ['regType' => 'dais', 'customTable' => $customTable, 'confForm' => $confForm]);
     }
 
@@ -352,7 +352,7 @@ class HomeController extends Controller
                 case 'interview_assigned':break;
                 case 'interview_failed':
                 case 'interview_unassigned': $operations[] = 'assignInterview'; break;
-                case 'sVerified': $operations[] = 'oVerification'; break;
+                case 'sVerified': if ($reg->enabled) $operations[] = 'oVerification'; break;
             }
         }
         return view('ot.regInfoModal', ['reg' => $reg, 'allRegs' => $allRegs, 'operations' => $operations]);

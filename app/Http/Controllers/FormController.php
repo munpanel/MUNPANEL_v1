@@ -89,7 +89,6 @@ class FormController extends Controller
     public static function formAssignment($assignmentID, $tableItems, $formID, $handinID = 0)
     {
         $html = '<form method="POST" action="'.mp_url('/assignment/'.$assignmentID.'/formSubmit').'" class="m-t-lg m-b">'.csrf_field();
-        $num = 0;
         if (!empty($handinID)) $html .= '<input type="hidden" value="'.$handinID.'" name="handin">';
         $html .= '<input type="hidden" value="'.$formID.'" name="form">';
         $html .= $this->formAssignmentTableItems($tableItems);
@@ -108,9 +107,8 @@ class FormController extends Controller
     public static function daisregformAssignment($tableItems, $formID, $handin)
     {
         $html = '<form method="POST" action="'.mp_url('/daisregForm/formSubmit').'" class="m-t-lg m-b">'.csrf_field();
-        $num = 0;
         $html .= '<input type="hidden" value="'.$formID.'" name="form">';
-        $html .= $this->formAssignmentTableItems($tableItems);
+        $html .= FormController::formAssignmentTableItems($tableItems);
         $html .= '<div class="form-group"><button type="submit" class="btn btn-success">提交</button></div></form>';
         return $html;
     }
@@ -121,9 +119,10 @@ class FormController extends Controller
      * @param array $tableItems the table items ($*->items)
      * @return string HTML clip of the table
      */
-    public function formAssignmentTableItems($tableItems)
+    public static function formAssignmentTableItems($tableItems)
     {
         $html = '';
+        $num = 0;
         foreach ($tableItems as $item)
         {
             $html .= '<div class="form-group"><span class="badge form-assignment">'.++$num.'</span>&nbsp;<label>'.$item->title.'</label><div class="';

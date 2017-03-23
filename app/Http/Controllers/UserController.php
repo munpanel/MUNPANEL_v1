@@ -194,6 +194,8 @@ class UserController extends Controller
         if (!validateRegDate($request->type))
             return view('error', ['msg' => '报名类型不匹配！']);
         $customTable = json_decode(Reg::currentConference()->option('reg_tables'))->regTable; //todo: table id
+        if ($request->type == 'dais')
+            $customTable = json_decode(Reg::currentConference()->option('reg_tables'))->daisregTable; //todo: table id
         if (!Auth::check())
         {
             if (is_object(User::where('email', $request->email)->first()))
@@ -308,15 +310,18 @@ class UserController extends Controller
                 }
             }
         }
-        $targets = (array)$customTable->targets;
-        foreach ($targets as $key => $item)
+        if (isset($customTable->targets))
         {
-            switch ($key)
+            $targets = (array)$customTable->targets;
+            foreach ($targets as $key => $item)
             {
-                case 'committee':
-                if (!empty($request->{$targets['committee']}))
-                    $conf_info->committee = $request->{$targets['committee']};
-                break;
+                switch ($key)
+                {
+                    case 'committee':
+                    if (!empty($request->{$targets['committee']}))
+                        $conf_info->committee = $request->{$targets['committee']};
+                    break;
+                }
             }
         }
         // 校验 committee 是否非空
@@ -328,6 +333,7 @@ class UserController extends Controller
         $reg->reginfo = json_encode($regInfo);
         $reg->save();
         $reg->make();
+        if (isset($customTable->targets))
         foreach ($customTable->actions as $element)
         {
             if (empty($request->{$element->item})) continue;

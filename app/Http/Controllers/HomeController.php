@@ -17,6 +17,8 @@ use App\School;
 use App\Delegate;
 use App\Volunteer;
 use App\Observer;
+use App\Dais;
+use App\Orgteam;
 use App\User;
 use App\Assignment;
 use App\Handin;
@@ -96,8 +98,7 @@ class HomeController extends Controller
                 $status = '等待学校审核';
                 if ($type == 'dais')
                 {
-                    $html = FormController::formAssignment($assignment->id, $questions, $formID, $handin->id);
-                    return view('assignmentForm', ['assignment' => $assignment, 'formContent' => $html]);
+                    return redirect(mp_url('/daisregForm'));
                 }
             }
             else if ($specific->status == 'sVerified')
@@ -115,6 +116,16 @@ class HomeController extends Controller
                 $percent = 75;
                 $status = '待缴费';
                 $changable = false;
+                if ($type == 'dais')
+                {
+                    $percent = 75;
+                    $status = '等待面试';
+                    if (!$reg->enabled)
+                    {
+                        $percent = 0;
+                        $status = '面试未通过';
+                    }
+                }
             }
             else if ($specific->status == 'fail')
             {
@@ -610,14 +621,14 @@ class HomeController extends Controller
 
     public function daisregForm()
     {
-        $language = Reg::current()->dais->language;
+        $language = json_decode(Reg::current()->dais->handin)->language;
         $forms = json_decode(Reg::currentConference()->option('reg_tables'))->daisregForms;
         $formID = 0;
         foreach ($forms as $formCfg)
         {
             if ($formCfg->language = $language) 
             {
-                $formID = $formCfg->language;
+                $formID = $formCfg->formID;
                 break;
             }
         }
@@ -641,8 +652,8 @@ class HomeController extends Controller
             $questions = FormController::restoreQuestions($form->items, $content);
             $formID = $content->form;
         }*/
-        $html = FormController::daisregformAssignment($questions, $formID, $handin->id);
-        return view('assignmentForm', ['titie' => $form->name, 'formContent' => $html]);
+        $html = FormController::daisregformAssignment($questions, $formID, null);
+        return view('assignmentForm', ['title' => $form->name, 'formContent' => $html]);
     }
 
     /**
@@ -974,5 +985,15 @@ class HomeController extends Controller
         $form = json_decode($form1->content);
         $html = FormController::getMyAnswer($form->items, $answer);
         return redirect(mp_url('/assignment/' . $id));
+    }
+
+    public function daisregFormSubmit(Request $request)
+    {
+        $dais = Dais::findOrFail(Reg::current()->id);
+        $answer = $request->all();
+        $dais->handin = json_encode($answer);
+        $dais->status = 'sVerified';
+        $dais->save();
+        return redirect(mp_url('/home'));
     }
 }

@@ -86,12 +86,13 @@ class FormController extends Controller
      * @param int $handinID the ID of handin
      * @return string HTML clip of the table
      */
-    public static function formAssignment($assignmentID, $tableItems, $formID, $handinID = 0)
+    public static function formAssignment($assignmentID, $tableItems, $formID, $target, $handin = null)
     {
-        $html = '<form method="POST" action="'.mp_url('/assignment/'.$assignmentID.'/formSubmit').'" class="m-t-lg m-b">'.csrf_field();
-        if (!empty($handinID)) $html .= '<input type="hidden" value="'.$handinID.'" name="handin">';
+        if (!empty($handin)) $content = (array)$handin->content;
+        $html = '<form method="POST" id="assignmentForm" action="'.mp_url($target.'/true').'" class="m-t-lg m-b">'.csrf_field();
+        if (!empty($handin)) $html .= '<input type="hidden" value="'.$handin->id.'" name="handin">';
         $html .= '<input type="hidden" value="'.$formID.'" name="form">';
-        $html .= $this->formAssignmentTableItems($tableItems);
+        $html .= $this->formAssignmentTableItems($tableItems, $handin);
         $html .= '<div class="form-group"><button type="submit" class="btn btn-success">提交作业</button></div></form>';
         return $html;
     }
@@ -104,11 +105,12 @@ class FormController extends Controller
      * @param int $handinID the ID of handin
      * @return string HTML clip of the table
      */
-    public static function daisregformAssignment($tableItems, $formID, $handin)
+    public static function daisregformAssignment($tableItems, $formID, $target, $handin)
     {
-        $html = '<form method="POST" action="'.mp_url('/daisregForm/formSubmit').'" class="m-t-lg m-b">'.csrf_field();
+        if (!empty($handin)) $content = (array)$handin;
+        $html = '<form method="POST" id="assignmentForm" action="'.mp_url($target.'/true').'" class="m-t-lg m-b">'.csrf_field();
         $html .= '<input type="hidden" value="'.$formID.'" name="form">';
-        $html .= FormController::formAssignmentTableItems($tableItems);
+        $html .= FormController::formAssignmentTableItems($tableItems, $handin);
         $html .= '<div class="form-group"><button type="submit" class="btn btn-success">提交</button></div></form>';
         return $html;
     }
@@ -119,7 +121,7 @@ class FormController extends Controller
      * @param array $tableItems the table items ($*->items)
      * @return string HTML clip of the table
      */
-    public static function formAssignmentTableItems($tableItems)
+    public static function formAssignmentTableItems($tableItems, $handin)
     {
         $html = '';
         $num = 0;
@@ -156,11 +158,11 @@ class FormController extends Controller
                     break;
                 case "fill_in":
                     $placeholder = isset($item->placeholder) ? $item->placeholder : '';
-                    $html .= singleInput('text',$item->id,'',null,null,false,$placeholder);
+                    $html .= singleInput('text', $item->id, (isset($handin[$item->id]) ? $handin[$item->id] : ''), null, null, false, $placeholder);
                     break;
                 case "text_field":
                     $placeholder = isset($item->placeholder) ? $item->placeholder : '';
-                    $html .= textField($item->id, '' , false, $placeholder);
+                    $html .= textField($item->id, (isset($handin[$item->id]) ? $handin[$item->id] : ''), false, $placeholder);
                     break;
                 case "order":
                     $li = 0;

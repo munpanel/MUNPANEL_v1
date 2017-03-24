@@ -8,6 +8,9 @@
     $('body').on('click', '*', function() {
         screenfull.request();
     });
+    $('textarea').blur(function() {
+        jQuery.post('{{mp_url($target)}}', $('#assignmentForm').serialize());
+    });
     </script>
 @endpush
 @push('css')
@@ -17,7 +20,7 @@
 @section('content')
   <section class="vbox">
     <header class="header bg-white b-b">
-      <p class="pull-center">{{$title}}</p>
+      <center><p>{{$title}}</p></center>
     </header>
     <section class="scrollable wrapper">
       <div class="container">

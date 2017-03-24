@@ -614,8 +614,9 @@ class HomeController extends Controller
                 $questions = FormController::restoreQuestions($form->items, $content);
                 $formID = $content->form;
             }
-            $html = FormController::formAssignment($assignment->id, $questions, $formID, $handin->id);
-            return view('assignmentForm', ['title' => $assignment->title, 'formContent' => $html]);
+            $target = '/assignment/'.$assignmentID.'/formSubmit';
+            $html = FormController::formAssignment($assignment->id, $questions, $formID, $target, $handin);
+            return view('assignmentForm', ['title' => $assignment->title, 'formContent' => $html, 'target' => $target]);
         }
     }
 
@@ -652,8 +653,9 @@ class HomeController extends Controller
             $questions = FormController::restoreQuestions($form->items, $content);
             $formID = $content->form;
         }*/
-        $html = FormController::daisregformAssignment($questions, $formID, null);
-        return view('assignmentForm', ['title' => $form->name, 'formContent' => $html]);
+        $target = '/daisregForm/formSubmit';
+        $html = FormController::daisregformAssignment($questions, $formID, $target, $handin);
+        return view('assignmentForm', ['title' => $form->name, 'formContent' => $html, 'target' => $target]);
     }
 
     /**
@@ -974,26 +976,29 @@ class HomeController extends Controller
         return view('blank', ['testContent' => $html, 'convert' => true]);
     }
 
-    public function formAssignmentSubmit(Request $request, $id)
+    public function formAssignmentSubmit(Request $request, $id, $submit = false)
     {
         $handin = Handin::findOrFail($request->handin);
         $answer = $request->all();
+        if (!$submit)
+            unset($answer['_token']);
         $handin->content = json_encode($answer);
         $handin->save();
-        $assignment = Assignment::findOrFail($handin->assignment_id);
-        $form1 = Form::findOrFail($request->form);
-        $form = json_decode($form1->content);
-        $html = FormController::getMyAnswer($form->items, $answer);
-        return redirect(mp_url('/assignment/' . $id));
+        if ($submit)
+            return redirect(mp_url('/assignment/' . $id));
     }
 
-    public function daisregFormSubmit(Request $request)
+    public function daisregFormSubmit(Request $request, $submit = false)
     {
         $dais = Dais::findOrFail(Reg::current()->id);
         $answer = $request->all();
+        if ($submit)
+            $dais->status = 'sVerified';
+        else
+            unset($answer['_token']);
         $dais->handin = json_encode($answer);
-        $dais->status = 'sVerified';
         $dais->save();
-        return redirect(mp_url('/home'));
+        if ($submit)
+            return redirect(mp_url('/home'));
     }
 }

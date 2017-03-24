@@ -96,7 +96,17 @@ $isOtOrDais = Reg::current()->type == 'ot';
           <div class="modal-body">
             <div class="row">
               <div class="col-sm-12 b-r">
+              @if (isset($formContent))
+              <p>{{$isOtOrDais ? '该用户' : '您'}}已经填写了{{$formTitle}}。</p>
+              <section class="panel text-sm">
+                  <div class="panel-body">
+                  label>您的提交</label>
+                  {!!$formContent!!}
+                </div>
+              </section>
+              @else
               <p>该用户仍未填写申请表单！</p>
+              @endif
               </div>
             </div>
           </div>

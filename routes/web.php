@@ -131,6 +131,7 @@ Route::group(['domain' => 'portal.munpanel.com'], function () {
     Route::get('/dais/linkPartner.modal', 'RoleAllocController@linkPartnerModal');
     Route::get('/delBizCard.modal/{id}', 'RoleAllocController@getDelegateBizcard');
     Route::get('/ot/regInfo.modal/{id}', 'HomeController@regInfoModal');
+    Route::get('/ot/daisregInfo.modal/{id}', 'HomeController@regInfoModal');
     Route::get('/ot/oVerify/{id}', 'UserController@oVerify');
     Route::get('/ot/oNoVerify/{id}', 'UserController@oNoVerify');
     Route::post('/ot/assignInterview/{id}', 'InterviewController@assignInterview');

@@ -19,12 +19,9 @@
           @elseif (is_null(Reg::current()->specific()))
           <div class="text-sm">点击下方按钮重置报名状态：</div>
           <a href="{{ mp_url('/resetReg') }}" class="btn btn-danger">重置我的报名</a>
-          @elseif ($hasRegAssignment)
-          <div class="text-sm">点击下方按钮完成简答题：</div>
-          <a href="{{ mp_url('/daisAssignment') }}" class="btn btn-danger">查看简答题</a>
           @else
           <div class="text-sm">点击下方按钮查看我的报名：</div>
-          <a href="{{ mp_url('/ot/regInfo.modal/'.Reg::currentID()) }}" data-toggle="ajaxModal" class="btn btn-danger">查看我的报名</a>
+          <a href="{{ mp_url('/ot/daisregInfo.modal/'.Reg::currentID()) }}" data-toggle="ajaxModal" class="btn btn-danger">查看我的报名</a>
           @endif
       </div>
     </div>

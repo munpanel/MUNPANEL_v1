@@ -375,6 +375,30 @@ class HomeController extends Controller
     }
 
     /**
+     * Show the dais registration info modal.
+     *
+     * @param int $id UID of dais queried
+     * @return \Illuminate\Http\Response
+     */
+    public function daisregInfoModal($id)
+    {
+        $reg = Reg::findOrFail($id);
+        $allRegs = Reg::where('user_id', $reg->user_id)->where('conference_id', $reg->conference_id)->get(['id', 'type']);
+        $operations = array();
+        $status = $reg->status();
+        $answer = json_decode($reg->dais->handin);
+        $form = Form::findOrFail($answer->form);
+        $formCt = json_decode($form->content);
+        $formName = $form->name;
+        $html = FormController::getMyAnswer($formCt->items, $answer);
+        switch($status)
+        {
+            case 'sVerified': if ($reg->enabled) $operations[] = 'oVerification'; break;
+        }
+        return view('ot.daisregInfoModal', ['reg' => $reg, 'allRegs' => $allRegs, 'operations' => $operations, 'formContent' => $html, 'formTitle' => $formName]);
+    }
+
+    /**
      * Show the school details modal.
      *
      * @param int $id ID of school queried

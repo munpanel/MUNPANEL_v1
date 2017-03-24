@@ -385,7 +385,7 @@ class HomeController extends Controller
         $reg = Reg::findOrFail($id);
         $allRegs = Reg::where('user_id', $reg->user_id)->where('conference_id', $reg->conference_id)->get(['id', 'type']);
         $operations = array();
-        $status = $reg->status();
+        $status = $reg->status;
         $answer = json_decode($reg->dais->handin);
         $form = Form::findOrFail($answer->form);
         $formCt = json_decode($form->content);

@@ -100,7 +100,7 @@ $isOtOrDais = Reg::current()->type == 'ot';
               <p>{{$isOtOrDais ? '该用户' : '您'}}已经填写了{{$formTitle}}。</p>
               <section class="panel text-sm">
                   <div class="panel-body">
-                  label>您的提交</label>
+                  <label>您的提交</label>
                   {!!$formContent!!}
                 </div>
               </section>

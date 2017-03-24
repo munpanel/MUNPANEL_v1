@@ -4,6 +4,7 @@
                   <span>Home</span>
                 </a>
               </li>
+              @if (Reg::current()->dais->status == 'success')
               <li class="@yield('roles_active')">
                 <a href="{{ mp_url('/roleAlloc') }}">
                   <i class="fa fa-wheelchair"></i>
@@ -35,6 +36,7 @@
                   <span>Console</span>
                 </a>
               </li>
+              @endif
               <!--li class="@yield('store_active')">
                 <a href="{{ mp_url('/store') }}">
                   <i class="fa fa-shopping-bag"></i>

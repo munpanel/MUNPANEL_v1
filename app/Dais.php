@@ -60,4 +60,16 @@ class Dais extends Model
         }
         return $scope;
     }
+
+    public function statusText() {
+        switch($this->status)
+        {
+            case 'reg': return '等待完成申请测试';
+            case 'sVerified': return '等待组织团队审核';
+            case 'oVerified':  return '组织团队审核已通过';
+            case 'unpaid': return '待缴费';
+            case 'paid': return '报名成功';
+            default: return '未知状态';
+        }
+    }
 }

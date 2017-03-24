@@ -223,14 +223,16 @@ class FormController extends Controller
     public static function getMyAnswer($questions, $answers)
     {
         $html = '';
+        $nl = '';
         $i = 0;
         $arr_answers = (array)$answers;
         foreach ($arr_answers as $key => $value)
         {
             // 排除 _token 和 handin
-            if (in_array($key, ['_token', 'handin', 'form'])) continue;
+            if (in_array($key, ['_token', 'handin', 'form', 'language'])) continue;
             $item = $questions[$key - 1];
-            $html .= '<div class="form-group"><span class="badge form-assignment text-xs">'.++$i.'</span>&nbsp;'.$item->title;
+            $html .= $nl;
+            $html .= '<div class="form-group"><table><tbody><tr><td valign="top"><span class="badge form-assignment text-xs">'.++$i.'</span></td><td>&nbsp;</td><td>'.$item->title.'</td></tr></tbody></table>';
             if (empty($value))
             {
                 $html .= '<div class="m-l-lg">未作答</div>';
@@ -255,9 +257,11 @@ class FormController extends Controller
                     }
                 break;
                 case 'fill_in':
+                case 'text_field':
                     $html .= '<div class="m-l-lg">' . $value . '</div>';
                 break;
             }
+            $nl = '<br>';
         }
         return $html;
     }

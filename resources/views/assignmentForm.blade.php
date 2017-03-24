@@ -20,7 +20,7 @@
 @section('content')
   <section class="vbox">
     <header class="header bg-white b-b">
-      <center><p>{{$title}}</p></center>
+      <p>{{$title}}</p>
     </header>
     <section class="scrollable wrapper">
       <div class="container">

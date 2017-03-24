@@ -158,11 +158,11 @@ class FormController extends Controller
                     break;
                 case "fill_in":
                     $placeholder = isset($item->placeholder) ? $item->placeholder : '';
-                    $html .= singleInput('text', $item->id, (isset($handin[$item->id]) ? $handin[$item->id] : ''), null, null, false, $placeholder);
+                    $html .= singleInput('text', $item->id, (isset($handin->{$item->id}) ? $handin->{$item->id} : ''), null, null, false, $placeholder);
                     break;
                 case "text_field":
                     $placeholder = isset($item->placeholder) ? $item->placeholder : '';
-                    $html .= textField($item->id, (isset($handin[$item->id]) ? $handin[$item->id] : ''), false, $placeholder);
+                    $html .= textField($item->id, (isset($handin->{$item->id}) ? $handin->{$item->id} : ''), false, $placeholder);
                     break;
                 case "order":
                     $li = 0;

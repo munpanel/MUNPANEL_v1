@@ -622,20 +622,25 @@ class HomeController extends Controller
 
     public function daisregForm()
     {
-        $language = json_decode(Reg::current()->dais->handin)->language;
-        $forms = json_decode(Reg::currentConference()->option('reg_tables'))->daisregForms;
+        $handin = json_decode(Reg::current()->dais->handin);
         $formID = 0;
-        foreach ($forms as $formCfg)
+        if (isset($handin->form))
+            $formID = $handin->form;
+        else
         {
-            if ($formCfg->language = $language) 
+            $language = $handin->language;
+            $forms = json_decode(Reg::currentConference()->option('reg_tables'))->daisregForms;
+            foreach ($forms as $formCfg)
             {
-                $formID = $formCfg->formID;
-                break;
+                if ($formCfg->language = $language) 
+                {
+                    $formID = $formCfg->formID;
+                    break;
+                }
             }
         }
         $form = Form::findOrFail($formID);
-        $questions = FormController::getQuestions(json_decode($form->content));
-        $handin = json_decode(Reg::current()->dais->handin);/*
+        $questions = FormController::getQuestions(json_decode($form->content));/*
         if (is_null($handin))
         {
             $content = [];

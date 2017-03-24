@@ -54,12 +54,12 @@
                 </a>
               </li>
               @endif
-              <li class="@yield('store_active')">
+              <!--li class="@yield('store_active')">
                 <a href="{{ mp_url('/store') }}">
                   <i class="fa fa-shopping-bag"></i>
                   <span>Souvenir Store</span>
                 </a>
-              </li>
+              </li-->
               <li class="@yield('fb_active')">
                 <a href="{{ mp_url('/fb') }}">
                   <i class="fa fa-pencil"></i>

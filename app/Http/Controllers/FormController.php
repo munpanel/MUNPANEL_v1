@@ -127,7 +127,7 @@ class FormController extends Controller
         $num = 0;
         foreach ($tableItems as $item)
         {
-            $html .= '<div class="form-group"><span class="badge form-assignment">'.++$num.'</span>&nbsp;<label>'.$item->title.'</label><div class="';
+            $html .= '<div class="form-group"><table><tbody><tr><td valign="top"><span class="badge form-assignment">'.++$num.'</span></td><td>&nbsp;</td><td><label>'.$item->title.'</label></td></tr></tbody></table><div class="';
             $html .= $item->type == 'order' ? 'dd ' : '';
             $html .= 'm-l-30">';
             $i = 0;

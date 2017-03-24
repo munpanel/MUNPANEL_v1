@@ -95,7 +95,7 @@ function singleInput($type, $name, $value = '', $text = null, $id = null, $requi
  */
 function textField($name, $text, $required = false, $placeholder = '')
 {
-    $html = '<textarea name="'.$name.'" class="form-control" placeholder="'.$placeholder.'" type="text">';
+    $html = '<textarea name="'.$name.'" class="form-control assignment" placeholder="'.$placeholder.'" type="text">';
     $html .= str_replace(["\r\n","\\r\\n"],'&#13;&#10;',$text);
     $html .= '</textarea>';
     return $html;

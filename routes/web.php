@@ -11,9 +11,15 @@
 |
 */
 
+Route::group(['domain' => 'www.munpanel.com'], function () {
+    Route::get('/', function () {
+        return view('landing');
+    });
+});
+
 Route::group(['domain' => 'portal.munpanel.com'], function () {
     Route::get('/', function () {
-         return 'hello';
+        return "Portal under development";
     });
 });
 

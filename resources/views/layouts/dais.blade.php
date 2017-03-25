@@ -5,6 +5,14 @@
                 </a>
               </li>
               @if (Reg::current()->dais->status == 'success')
+              @permission('view-regs')
+              <li class="@yield('regManage_active')">
+                <a href="{{ mp_url('/regManage') }}">
+                  <i class="fa fa-tasks"></i>
+                  <span>Registration Management</span>
+                </a>
+              </li>
+              @endpermission
               <li class="@yield('roles_active')">
                 <a href="{{ mp_url('/roleAlloc') }}">
                   <i class="fa fa-wheelchair"></i>

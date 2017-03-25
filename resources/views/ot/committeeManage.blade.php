@@ -43,10 +43,10 @@
                             <i class="fa fa-sort"></i>
                           </span>
                         </th-->
-                        <th>ID</th>
-                        <th><span data-toggle="tooltip" data-original-title="所属父委员会 ID" data-placement="bottom">BT</span></th>
+                        <th width="20">ID</th>
+                        <th width="20"><span data-toggle="tooltip" data-original-title="所属父委员会 ID" data-placement="bottom">BT</span></th>
                         <th>名称</th>
-                        <th><span data-toggle="tooltip" data-original-title="报名人数 / 定员" data-placement="bottom">DQ / C</span></th>
+                        <th width="50"><span data-toggle="tooltip" data-original-title="报名人数 / 定员" data-placement="bottom">DQ / C</span></th>
                       </tr>
                     </thead>
                   </table>

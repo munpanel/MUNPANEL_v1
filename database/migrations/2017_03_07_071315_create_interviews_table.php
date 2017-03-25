@@ -27,7 +27,6 @@ class CreateInterviewsTable extends Migration
             $table->integer('conference_id')->unsigned();
             $table->integer('reg_id')->unsigned();
             $table->integer('interviewer_id')->nullabled()->unsigned();
-            $table->boolean('retest');
             $table->dateTime('arranged_at')->nullable();
             $table->dateTime('finished_at')->nullable();
             $table->enum('status', ['assigned', 'arranged', 'cancelled', 'passed', 'failed', 'undecided', 'retest', 'exempted']);

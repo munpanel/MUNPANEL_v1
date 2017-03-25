@@ -6,7 +6,7 @@ $(document).ready(function() {
         columns: [
             {data: 'details', name: 'details', orderable: false},
             {data: 'name', name: 'name', orderable: false},
-            {data: 'partner', name: 'partner', orderable: false},
+            {data: 'partner', name: 'partner', orderable: true},
             {data: 'committee', name: 'committee', orderable: true},
             {data: 'school', name: 'school', orderable: true},
             {data: 'status', name: 'status', orderable: true}
@@ -62,7 +62,7 @@ $(document).ready(function() {
             "infoEmpty": "无记录",
             "infoFiltered": "(从 _MAX_ 条记录过滤)"
         },
-        "order": [[3, "asc"]],
+        "order": [[2, "asc"]],
     });
     var table=$('#team-table').DataTable();
     $("#searchButton").click(function() {

@@ -18,7 +18,7 @@
       <section class="vbox">
             <header class="header bg-white b-b clearfix">
               <a href="{{mp_url('dais/lockAlloc')}}" class="btn btn-sm btn-success {{$mustAlloc > 0 ? 'disabled ': ''}}pull-right details-modal" id="ra-confirm"><i class="fa fa-check"></i> 完成并锁定</a> 
-              <p>BJMUNC2017 {{$committee->display_name}} 席位分配</p>
+              <p>{{Reg::currentConference()->name}} {{$committee->display_name}} 席位分配</p>
             </header><section class="scrollable wrapper">
           <div class="tab-content">
             <div class="tab-pane active" id="static">

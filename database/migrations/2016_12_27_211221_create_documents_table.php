@@ -24,12 +24,15 @@ class CreateDocumentsTable extends Migration
     {
         Schema::create('documents', function (Blueprint $table) {
             $table->increments('id'); 
+            $table->integer('conference_id')->unsigned();
             $table->string('title');
             $table->mediumText('description');
             $table->mediumText('path');
             $table->integer('views')->unsigned()->default(0);
             $table->integer('downloads')->unsigned()->default(0);
             $table->timestamps();
+            $table->unique(['title', 'conference_id']);
+            $table->foreign('conference_id')->references('id')->on('conferences')->onDelete('cascade');
         });
     }
 

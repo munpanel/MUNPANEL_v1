@@ -92,7 +92,7 @@ class FormController extends Controller
         $html = '<form method="POST" id="assignmentForm" action="'.mp_url($target.'/true').'" class="m-t-lg m-b">'.csrf_field();
         if (!empty($handin)) $html .= '<input type="hidden" value="'.$handin->id.'" name="handin">';
         $html .= '<input type="hidden" value="'.$formID.'" name="form">';
-        $html .= $this->formAssignmentTableItems($tableItems, $handin);
+        $html .= FormController::formAssignmentTableItems($tableItems, $handin);
         $html .= '<div class="form-group"><button type="submit" class="btn btn-success">提交作业</button></div></form>';
         return $html;
     }

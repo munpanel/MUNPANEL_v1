@@ -638,7 +638,7 @@ class HomeController extends Controller
                 $questions = FormController::restoreQuestions($form->items, $content);
                 $formID = $content->form;
             }
-            $target = '/assignment/'.$assignmentID.'/formSubmit';
+            $target = '/assignment/'.$assignment->id.'/formSubmit';
             $html = FormController::formAssignment($assignment->id, $questions, $formID, $target, $handin);
             return view('assignmentForm', ['title' => $assignment->title, 'formContent' => $html, 'target' => $target]);
         }

@@ -37,6 +37,7 @@ $isOtOrDais = Reg::current()->type == 'ot';
               @else
                 <p>{{$reg->user->name}}，您已成功提交{{Reg::currentConference()->fullname}}学术团队申请。</p>
               @endif
+              @if (isset($regInfo))
                 <section class="panel text-sm">
                   <div class="panel-body">
                     <label>个人信息</label>
@@ -88,6 +89,7 @@ $isOtOrDais = Reg::current()->type == 'ot';
                     @endif
                   </div>
                 </section>
+                @endif
               </div>
             </div>
           </div>
@@ -98,12 +100,7 @@ $isOtOrDais = Reg::current()->type == 'ot';
               <div class="col-sm-12 b-r">
               @if (isset($formContent))
               <p>{{$isOtOrDais ? '该用户' : '您'}}已经填写了{{$formTitle}}。</p>
-              <section class="panel text-sm">
-                  <div class="panel-body">
-                  <label>您的提交</label>
-                  {!!$formContent!!}
-                </div>
-              </section>
+              @include('components.formAnswer')
               @else
               <p>该用户仍未填写申请表单！</p>
               @endif

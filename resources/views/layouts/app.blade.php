@@ -141,10 +141,8 @@
             <ul class="nav">
                 @if (Reg::current()->type == 'school')
                 @include('layouts.school')
-                @elseif (Reg::current()->type == 'ot')
+                @elseif (Reg::current()->type == 'ot' || Reg::current()->type == 'dais')
                 @include('layouts.ot')
-                @elseif (Reg::current()->type == 'dais')
-                @include('layouts.dais')
                 @else
                 @include('layouts.delegate')
                 @endif

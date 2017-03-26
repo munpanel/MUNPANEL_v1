@@ -39,6 +39,7 @@ $isOtOrDais = in_array(Reg::current()->type, ['ot', 'dais']);
               @else
                 <p>{{$reg->user->name}}，您已以<strong>{{ $reg->type == 'delegate' ? '代表' : ($reg->type == 'observer' ? '观察员' : '志愿者') }}</strong>身份报名参加{{Reg::currentConference()->fullname}}。</p>
               @endif
+              @if (isset($regInfo))
                 <section class="panel text-sm">
                   <div class="panel-body">
                     <label>个人信息</label>
@@ -90,6 +91,7 @@ $isOtOrDais = in_array(Reg::current()->type, ['ot', 'dais']);
                     @endif
                   </div>
                 </section>
+                @endif
               </div>
             </div>
           </div>

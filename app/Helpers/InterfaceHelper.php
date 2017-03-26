@@ -46,7 +46,7 @@ function regStatSingle($committee)
 function regStat($committees, $obs, $vol)
 {
     $result = '<div class="dd" id="nestable2"><ol class="dd-list">';
-
+    if ($committees->count() > 0)
     foreach ($committees as $committee)
     {
         if (empty($committee->parentCommittee))
@@ -55,8 +55,8 @@ function regStat($committees, $obs, $vol)
             $result .= $resultSingle;
         }
     }
-    $result .= '<li class="dd-item" data-id="98"><div class="dd-handle">观察员<span class="pull-right">报名人数: ' . $obs . '</span></li>';
-    $result .= '<li class="dd-item" data-id="99"><div class="dd-handle">志愿者<span class="pull-right">报名人数: ' . $vol . '</span></li>';
+    $result .= '<li class="dd-item" data-id="98"><div class="dd-handle">观察员<span class="pull-right">报名人数: ' . $obs . '</span></div></li>';
+    $result .= '<li class="dd-item" data-id="99"><div class="dd-handle">志愿者<span class="pull-right">报名人数: ' . $vol . '</span></div></li>';
     $result .= '</ol></div>';
     return $result;
 }

@@ -66,7 +66,14 @@ class HomeController extends Controller
                     $hasChildComm = true;
                     break;
                 }
-            return view('ot.home', ['committees' => Reg::currentConference()->committees, 'vol' => Reg::currentConference()->volunteers->count(), 'obs' => Reg::currentConference()->observers->count(), 'del' => Reg::currentConference()->delegates->count(), 'hasChildComm' => $hasChildComm]);
+            return view('ot.home', [
+                'committees' => Reg::currentConference()->committees, 
+                'vol' => Reg::currentConference()->volunteers->count(), 
+                'obs' => Reg::currentConference()->observers->count(), 
+                'del' => Reg::currentConference()->delegates->count(), 
+                'dais' => Reg::currentConference()->dais->count(), 
+                'hasChildComm' => $hasChildComm
+            ]);
         }
         else if ($type == 'school')
         {
@@ -76,7 +83,13 @@ class HomeController extends Controller
         }
         else if ($type == 'dais' && $reg->specific()->status == 'success')
         {
-            return view('dais.home');
+            
+            return view('ot.home', [
+                'vol' => Reg::currentConference()->volunteers->count(), 
+                'obs' => Reg::currentConference()->observers->count(), 
+                'del' => Reg::currentConference()->delegates->count(), 
+                'dais' => Reg::currentConference()->dais->count(), 
+            ]);
         }
         else
         {
@@ -244,7 +257,7 @@ class HomeController extends Controller
     static public function regManage(Request $request)
     {
         $type = Reg::current()->type;
-        if ($type == 'ot' && Reg::current()->can('view-regs'))
+        if (Reg::current()->can('view-regs'))
         {
             if (isset($request->initialReg))
                 return view('ot.regManage', ['delegates' => Delegate::all(), 'volunteers' => Volunteer::all(), 'observers' => Observer::all(), 'initialModal' => mp_url('/ot/regInfo.modal/'. $request->initialReg)]);
@@ -284,7 +297,7 @@ class HomeController extends Controller
      */
     public function userManage()
     {
-        if ( Reg::current()->type != 'ot' )
+        if (!Reg::current()->can('edit-users'))
             return 'Error';
         return view('ot.userManage');
     }
@@ -296,7 +309,7 @@ class HomeController extends Controller
      */
     public function schoolManage()
     {
-        if ( Reg::current()->type != 'ot' )
+        if (!Reg::current()->can('edit-schools'))
             return 'Error';
         return view('ot.schoolManage');
     }
@@ -308,7 +321,7 @@ class HomeController extends Controller
      */
     public function committeeManage()
     {
-        if ( Reg::current()->type != 'ot' )
+        if (!Reg::current()->can('edit-committees'))
             return 'Error';
         return view('ot.committeeManage');
     }
@@ -320,7 +333,7 @@ class HomeController extends Controller
      */
     public function nationManage()
     {
-        if ( Reg::current()->type != 'ot' )
+        if (!Reg::current()->can('edit-nations'))
             return 'Error';
         return view('ot.nationManage');
     }
@@ -333,7 +346,7 @@ class HomeController extends Controller
      */
     public function userDetailsModal($id)
     {
-        if (Reg::current()->type != 'ot')
+        if (!Reg::current()->can('edit-users'))
             return "Error";
         if ($id == 'new')
         {
@@ -406,7 +419,7 @@ class HomeController extends Controller
      */
     public function schoolDetailsModal($id)
     {
-        if (Reg::current()->type != 'ot')
+        if (!Reg::current()->can('edit-schools'))
             return "Error";
         if ($id == 'new')
         {
@@ -428,7 +441,7 @@ class HomeController extends Controller
      */
     public function committeeDetailsModal($id)
     {
-        if (Reg::current()->type != 'ot')
+        if (!Reg::current()->can('edit-committees'))
             return "Error";
         if ($id == 'new')
         {

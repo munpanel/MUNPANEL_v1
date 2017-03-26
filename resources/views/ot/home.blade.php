@@ -1,9 +1,10 @@
 @extends('layouts.app')
 @section('home_active', 'active')
 @push('scripts')
-  <script src="js/sortable/jquery.sortable.js"></script>
   <script src="js/nestable/jquery.nestable.js" cache="false"></script>
   <script src="js/nestable/demo.js" cache="false"></script>
+  <script src="js/charts/sparkline/jquery.sparkline.min.js"></script>
+  <script src="js/charts/easypiechart/jquery.easy-pie-chart.js"></script>
 @endpush
 @push('css')
   <link href="js/nestable/nestable.css" rel="stylesheet" type="text/css" cache="false">
@@ -12,27 +13,31 @@
 <section class="vbox">
   <header class="header bg-white b-b">
     <p>欢迎组织团队成员 {{Auth::user()->name}}</p>
+    @if (Reg::current()->type == 'ot')
+      @include('components.otHomeSparklineStat')
+    @endif
   </header>
   <section class="scrollable wrapper">
     <div class="row">
-        <div class="col-md-6 col-md-offset-3">
-            <div class="panel panel-default">
-                <div class="panel-heading">会议报名情况<span class="pull-right">代表总数: {{$del}}</span>
-@if ($hasChildComm)
-<button class="btn btn-xs btn-white m-l active" id="nestable-menu" data-toggle="class:show">
-              <i class="fa fa-plus text"></i>
-              <span class="text">全部展开</span>
-              <i class="fa fa-minus text-active"></i>
-              <span class="text-active">全部折叠</span>
-            </button>
-@endif
-                </div>
-
-                <div class="panel-body">
-                  {!!regStat($committees, $obs, $vol)!!}
-                </div>
-            </div>
+      @if (Reg::currentConference()->status == 'daisreg')
+      <div class="col-md-8 col-md-offset-2">
+        @include('components.otTodoStatDaisreg')
+      </div>
+      @elseif (in_array(Reg::currentConference()->status, ['reg', 'regstop']))
+        @if (Reg::current()->can('view-regs'))
+        <div class="col-md-4">
+          @include('components.otRegStat')        
         </div>
+        @endif
+      <div class="col-md-8 {{Reg::current()->can('view-regs') ? 'col-md-offset-2' : ''}}">
+        @if (Reg::current()->can('view-regs'))
+          @include('components.otTodoStatReg')
+        @endif
+        @if (Reg::current()->can('edit-interviews'))
+          @include('components.otTodoStatInterview')
+        @endif
+      </div>
+      @endif
     </div>  
   </section>
 </section>

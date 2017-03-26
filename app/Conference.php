@@ -49,6 +49,8 @@ class Conference extends Model
 
     public function option($key)
     {
-        return $this->options()->where('key', $key)->first()->value;
+        if (is_object($this->options()->where('key', $key)->first()))
+            return $this->options()->where('key', $key)->first()->value;
+        return null;
     }
 }

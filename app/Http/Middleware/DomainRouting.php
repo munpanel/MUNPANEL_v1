@@ -32,7 +32,7 @@ class DomainRouting
                 if ($_SERVER['HTTP_HOST'] == 'romun.munpanel.com')
                     config(['munpanel.conference_id' => 2]);
                 if ($_SERVER['HTTP_HOST'] == 'bjmun.munpanel.com')
-                    config(['munpanel.conference_id' => 1]);
+                    config(['munpanel.conference_id' => 3]);
             }
         }
         return $next($request);

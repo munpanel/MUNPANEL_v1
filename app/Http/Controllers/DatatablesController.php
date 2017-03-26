@@ -247,6 +247,8 @@ class DatatablesController extends Controller //To-Do: Permission Check
                     $status = '成功';
                  else if ($reg->specific()->status == 'init')
                     $status = '报名学测未完成';
+                 else if ($reg->specific()->status == 'fail')
+                    $status = '审核未通过';
                  if ($type == '代表')
                      $status = $reg->specific()->statusText();
             }

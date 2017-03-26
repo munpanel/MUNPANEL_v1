@@ -381,12 +381,11 @@ class UserController extends Controller
     {
         if (Reg::current()->type != 'ot' || (!Reg::current()->can('approve-regs')))
             return "您无权执行该操作！";
-        $reg = Reg::find($id);
-        $specific = $reg->specific();
+        $specific = Reg::find($id)->specific();
         if ($specific->status != 'sVerified')
             return "无法为此报名者执行该操作！";
-        $reg->enabled = false;
-        $reg->save();
+        $specific->status = $specific->nextStatus();
+        $specific->save();
         $reg->addEvent('ot_verification_rejected', '{"name":"'.Auth::user()->name.'"}');
     }
     /**

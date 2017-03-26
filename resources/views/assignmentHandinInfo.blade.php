@@ -71,12 +71,6 @@
                   <center><b><a href="{{mp_url('/assignment/'.$assignment->id.'/download')}}">点此下载</a></b></center>
                   @else
                   @include("components.formAnswer")
-                  <section class="panel text-sm bg-white">
-                    <div class="panel-body">
-                      <label>您的提交</label>
-                      {!!$formContent!!}
-                    </div>
-                  </section>
                   @endif
                 </footer>
               </section>

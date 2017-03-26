@@ -29,7 +29,7 @@
           @include('components.otRegStat')        
         </div>
         @endif
-      <div class="col-md-8 {{Reg::current()->can('view-regs') ? 'col-md-offset-2' : ''}}">
+      <div class="col-md-8 {{!Reg::current()->can('view-regs') ? 'col-md-offset-2' : ''}}">
         @if (Reg::current()->can('view-regs'))
           @include('components.otTodoStatReg')
         @endif

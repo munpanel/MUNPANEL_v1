@@ -1,4 +1,4 @@
-<div class="panel panel-default">
+<div class="panel">
   <div class="panel-heading">会议报名情况<span class="pull-right">代表总数: {{$del}}</span>
     @if ($hasChildComm)
     <button class="btn btn-xs btn-white m-l active" id="nestable-menu" data-toggle="class:show">

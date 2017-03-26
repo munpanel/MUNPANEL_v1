@@ -37,6 +37,11 @@ class Conference extends Model
         return $this->hasMany('App\Observer');
     }
 
+    public function dais() 
+    {
+        return $this->hasMany('App\Dais');
+    }
+
     public function forms()
     {
         return $this->hasMany('App\Form');

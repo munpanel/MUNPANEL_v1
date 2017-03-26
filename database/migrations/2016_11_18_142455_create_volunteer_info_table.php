@@ -26,7 +26,7 @@ class CreateVolunteerInfoTable extends Migration
             $table->integer('reg_id')->unsigned();
             $table->integer('conference_id')->unsigned();
             $table->integer('school_id')->unsigned()->nullable();
-            $table->enum('status', ['reg','sVerified', 'oVerified', 'unpaid', 'paid'])->default('reg');
+            $table->enum('status', ['reg','sVerified', 'oVerified', 'unpaid', 'paid', 'fail'])->default('reg');
             $table->timestamps();
             $table->primary('reg_id');
             $table->foreign('reg_id')->references('id')->on('regs')->onDelete('cascade');

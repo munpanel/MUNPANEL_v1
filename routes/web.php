@@ -33,6 +33,8 @@ Route::group(['domain' => 'portal.munpanel.com'], function () {
         return view('signin');
     });
 
+    Route::get('/showEmail/{id}', 'EmailController@showEmail');
+
     Auth::routes();
     Route::get('/loginViaConsoleMail', 'Auth\\LoginController@loginConsoleMail');
     Route::post('/loginMail', 'Auth\\LoginController@doLoginMail');

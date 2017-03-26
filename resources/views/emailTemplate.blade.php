@@ -105,7 +105,9 @@
   font-size: 1px;
 }
 </style>
+@if(!isset($webView))
 <div class="extra">完整HTML版邮件请见：{{mp_url('/showEmail/'.$id)}}</div>
+@endif
 <div class="container">
   <div class="header">
     <img src="{{mp_url('/email/munpanel.png')}}">

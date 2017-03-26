@@ -47,6 +47,7 @@ if (Reg::current()->type == 'delegate' && isset(Reg::current()->delegate))
                   </div>
                 </aside>
               </section>
+              @if (Reg::currentConferenceID() == 2)
               <section class="panel no-borders hbox">
                 <aside>
                   <div class="pos-rlt">
@@ -82,6 +83,7 @@ if (Reg::current()->type == 'delegate' && isset(Reg::current()->delegate))
                   </div>
                 </aside>
               </section>
+              @endif
               <!--div class="text-center m-b">
                 <i class="fa fa-spinner fa fa-spin"></i>
               </div-->

@@ -656,7 +656,7 @@ class HomeController extends Controller
             $forms = json_decode(Reg::currentConference()->option('reg_tables'))->daisregForms;
             foreach ($forms as $formCfg)
             {
-                if ($formCfg->language = $language) 
+                if ($formCfg->language == $language) 
                 {
                     $formID = $formCfg->formID;
                     break;

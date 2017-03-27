@@ -1,5 +1,5 @@
                 <div id="pre_select" style="display: block;">
-                    <h3>安排面试</h3>
+                    <h3 class="m-t-sm">安排面试</h3>
 
                     {{-- <p><span class="label label-warning">注意</span> 这是二次面试分配。</p> --}}
                     <p>此代表已经通过审核，将需要为其安排面试。</p>
@@ -14,7 +14,7 @@
                 </div>
 
                 <div id="do_assign" style="display: none;">
-                    <h3>分配面试官</h3>
+                    <h3 class="m-t-sm">分配面试官</h3>
 
                     {{-- <p><span class="label label-warning">注意</span> 这是二次面试分配。</p>--}}
 
@@ -45,6 +45,6 @@
                 </div>
 
                 <div id="do_exempt" style="display: none;">
-                    <h3>免试指派席位</h3>
+                    <h3 class="m-t-sm">免试指派席位</h3>
 
                     <p>将会以免试通过方式完成此代表的面试流程，请在此列表中选择面试官，选定的面试官将可以直接为此代表分配席位。</p>

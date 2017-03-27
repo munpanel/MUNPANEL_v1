@@ -392,15 +392,19 @@ class HomeController extends Controller
         $reg = Reg::findOrFail($id);
         $allRegs = Reg::where('user_id', $reg->user_id)->where('conference_id', $reg->conference_id)->get(['id', 'type']);
         $operations = array();
-        $status = $reg->status;
+        $status = $reg->dais->status;
         $answer = json_decode($reg->dais->handin);
-        $form = Form::findOrFail($answer->form);
-        $formCt = json_decode($form->content);
-        $formName = $form->name;
-        $html = FormController::getMyAnswer($formCt->items, $answer);
+        $html = $formName = '';
+        if (isset($answer->form))
+        {
+            $form = Form::findOrFail($answer->form);
+            $formCt = json_decode($form->content);
+            $formName = $form->name;
+            $html = FormController::getMyAnswer($formCt->items, $answer);
+        }
         switch($status)
         {
-            case 'sVerified': if ($reg->enabled) $operations[] = 'oVerification'; break;
+            case 'sVerified': $operations[] = 'oVerification'; break;
         }
         return view('ot.daisregInfoModal', ['reg' => $reg, 'allRegs' => $allRegs, 'operations' => $operations, 'formContent' => $html, 'formTitle' => $formName]);
     }

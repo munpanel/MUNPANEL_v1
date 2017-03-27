@@ -258,7 +258,7 @@ class FormController extends Controller
                 break;
                 case 'fill_in':
                 case 'text_field':
-                    $html .= '<div class="m-l-lg">' . $value . '</div>';
+                    $html .= '<div class="m-l-lg">' . nl2br($value) . '</div>';
                 break;
             }
             $nl = '<br>';

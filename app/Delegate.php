@@ -140,6 +140,7 @@ class Delegate extends Model
             case 'oVerified':  return '组织团队审核已通过';
             case 'unpaid': return '待缴费';
             case 'paid': return '报名成功';
+            case 'fail': return '审核未通过';
             case 'interview_assigned': return $this->interviewText() . '已分配';
             case 'interview_arranged': return $this->interviewText() . '已安排';
             case 'interview_passed': return $this->interviewText() . '通过';

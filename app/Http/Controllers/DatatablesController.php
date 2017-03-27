@@ -210,7 +210,10 @@ class DatatablesController extends Controller //To-Do: Permission Check
                 return "ERROR";
             $result = new Collection;
             // 过滤结果: 只保留 delegate, observer 和 volunteer
-            $regs = Reg::where('conference_id', 2)->whereIn('type', ['delegate','volunteer','observer'])->with(['user' => function($q) {$q->select('name', 'id');}])->get(['id', 'user_id', 'type']);
+            if (Reg::currentConference()->status == 'daisreg')
+                $regs = Reg::where('conference_id', Reg::currentConferenceID())->where('type', 'dais')->with(['user' => function($q) {$q->select('name', 'id');}])->get(['id', 'user_id', 'type']);
+            else
+                $regs = Reg::where('conference_id', Reg::currentConferenceID())->whereIn('type', ['delegate','volunteer','observer'])->with(['user' => function($q) {$q->select('name', 'id');}])->get(['id', 'user_id', 'type']);
             foreach ($regs as $reg)
             {
                 if ($reg->type == 'unregistered')
@@ -221,6 +224,8 @@ class DatatablesController extends Controller //To-Do: Permission Check
                     $type = '志愿者';
                 else if ($reg->type == 'observer')
                     $type = '观察员';
+                else if ($reg->type == 'dais')
+                    $type = '学术团队';
                 else
                     $type = '未知';
             if (null !== $reg->specific())
@@ -249,13 +254,18 @@ class DatatablesController extends Controller //To-Do: Permission Check
                     $status = '报名学测未完成';
                  else if ($reg->specific()->status == 'fail')
                     $status = '审核未通过';
-                 if ($type == '代表')
+                 if (in_array($reg->type, ['delegate', 'dais']))
                      $status = $reg->specific()->statusText();
             }
             else $status = '';
             # if (!$reg->enabled) $status = '已禁用';
+       
+            if (Reg::currentConference()->status == 'daisreg')
+                $detail =  '<a href="ot/daisregInfo.modal/'. $reg->id .'" data-toggle="ajaxModal" id="'. $reg->id .'" class="details-modal"><i class="fa fa-search-plus"></i></a>';
+            else
+                $detail =  '<a href="ot/regInfo.modal/'. $reg->id .'" data-toggle="ajaxModal" id="'. $reg->id .'" class="details-modal"><i class="fa fa-search-plus"></i></a>';
                 $result->push([
-                    'details' => '<a href="ot/regInfo.modal/'. $reg->id .'" data-toggle="ajaxModal" id="'. $reg->id .'" class="details-modal"><i class="fa fa-search-plus"></i></a>',
+                    'details' => $detail,
                     'name' => $reg->user->name,
                     'school' => isset($reg->specific()->delegategroups) ? $reg->specific()->scopeDelegateGroup(true, 5) : '无',
                     'committee' => isset($reg->specific()->committee) ? $reg->specific()->committee->name : '无',

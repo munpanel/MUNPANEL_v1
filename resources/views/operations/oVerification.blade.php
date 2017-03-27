@@ -1,8 +1,8 @@
                 <div id="ot_verify" style="display: block;">
-                    <h3>报名信息审核</h3>
+                    <h3 class="m-t-sm">报名信息审核</h3>
 
                     {{-- <p><span class="label label-warning">注意</span> 这是二次面试分配。</p> --}}
-                    <p>此代表报名参加本次会议，请在“信息”页确认此代表的报名信息。</p>
+                    <p>{{$reg->user->name}}{{$reg->type == 'dais' ? '申请成为本次会议学术团队成员' : '报名参加本次会议'}}，请在“信息”页确认此代表的报名信息。</p>
                     <p>点击<strong>通过审核</strong>按钮后，您或组委其他成员将可以对此代表进行后续操作。</p>
                     @if (Reg::current()->type == 'delegate' && Reg::current()->delegate->hasRegAssignment() > 0)
                     <p><span class="label label-warning">注意</span> 这位代表仍有 {{Reg::current()->delegate->hasRegAssignment()}} 项早期学术作业未完成。</p>
@@ -12,11 +12,11 @@
 
                 </div>
                 <div id="ot_noverify_confirm" style="display: none;">
-                    <h3>危险！</h3>
+                    <h3 class="m-t-sm">危险！</h3>
 
                     {{-- <p><span class="label label-warning">注意</span> 这是二次面试分配。</p>--}}
 
-                    <p>如果您不通过此参会者的报名，其所有报名信息都将被删除！</p>
+                    <p>如果您不通过此参会者的{{$reg->type == 'dais' ? '申请' : '报名'}}，其所有报名信息都将被删除！</p>
                     <p>您确实要继续吗？</p>
 
                    <a class="btn btn-danger" href="{{mp_url('/ot/oNoVerify/'.$reg->id)}}">是</a>

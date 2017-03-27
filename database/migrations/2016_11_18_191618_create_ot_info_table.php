@@ -24,12 +24,14 @@ class CreateOtInfoTable extends Migration
     {
         Schema::create('ot_info', function (Blueprint $table) {
             $table->integer('reg_id')->unsigned();
+            $table->integer('conference_id')->unsigned()->nullable();
             $table->integer('school_id')->unsigned()->nullable();
             $table->string('position');
             $table->timestamps();
             $table->primary('reg_id');
             $table->foreign('reg_id')->references('id')->on('regs')->onDelete('cascade');
             $table->foreign('school_id')->references('id')->on('schools')->onDelete('cascade');
+            $table->foreign('conference_id')->references('id')->on('conferences')->onDelete('cascade');
         });
     }
 

@@ -292,7 +292,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
                 return "ERROR";
             $result = new Collection;
             // 过滤结果: 只保留 delegate, observer 和 volunteer
-            $regs = Reg::where('conference_id', 2)->whereIn('type', ['ot', 'dais', 'school'])->with(['user' => function($q) {$q->select('name', 'id');}])->get(['id', 'user_id', 'type']);
+            $regs = Reg::where('conference_id', Reg::currentConferenceID())->whereIn('type', ['ot', 'dais', 'school'])->with(['user' => function($q) {$q->select('name', 'id');}])->get(['id', 'user_id', 'type']);
             foreach ($regs as $reg)
             {
                 if ($reg->type == 'unregistered')

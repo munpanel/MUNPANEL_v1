@@ -11,6 +11,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Reg;
+
 class FormController extends Controller
 {
     /**
@@ -32,7 +34,28 @@ class FormController extends Controller
             if (!empty($useCompare) && !in_array($useParam, $item->{$useCompare})) continue;
             switch ($item->type)
             {
-                  // 预设的表单项
+                // 预设的表单项
+                case 'preCommittee': $html .= '
+                <div class="form-group">
+                  <label>委员会 *</label>
+                  <select id="" name="committee" class="form-control" data-required="true">
+                    <option value="" selected="">请选择</option>';
+                foreach (Reg::currentConference()->committees as $committee)
+                    $html .= '<option value="'.$committee->id.'">'.$committee->name.'</option>';
+                $html .= '</select></div>';
+                break;
+                case 'prePartnerName': $html .='
+                <div class="form-group">
+                  <label>搭档姓名</label>
+                  <input name="partnername" class="form-control" type="text" placeholder="无则空">
+                </div>';
+                break;
+                case 'preRoommateName': $html .='
+                <div class="form-group">
+                  <label>室友姓名</label>
+                  <input name="roommatename" class="form-control" type="text" placeholder="无则空">
+                </div>';
+                break;
                 case 'preGroupOptions': $html .='
                 <div class="form-group">
                   <label>团队报名选项</label>

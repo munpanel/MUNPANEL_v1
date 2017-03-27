@@ -56,16 +56,16 @@ class HomeController extends Controller
         $activep['home'] = true;
         $reg = Reg::current();
         $type = $reg->type;
+        $committees = Reg::currentConference()->committees;
+        $hasChildComm = false;
+        foreach ($committees as $committee)
+            if ($committee->childCommittees->count() > 0)
+            {
+                $hasChildComm = true;
+                break;
+            }
         if ($type == 'ot')
         {
-            $committees = Reg::currentConference()->committees;
-            $hasChildComm = false;
-            foreach ($committees as $committee)
-                if ($committee->childCommittees->count() > 0)
-                {
-                    $hasChildComm = true;
-                    break;
-                }
             return view('ot.home', [
                 'committees' => Reg::currentConference()->committees, 
                 'vol' => Reg::currentConference()->volunteers->count(), 
@@ -88,6 +88,7 @@ class HomeController extends Controller
                 'obs' => Reg::currentConference()->observers->count(), 
                 'del' => Reg::currentConference()->delegates->count(), 
                 'dais' => Reg::currentConference()->dais->count(), 
+                'hasChildComm' => $hasChildComm
             ]);
         }
         else

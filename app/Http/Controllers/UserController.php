@@ -221,14 +221,19 @@ class UserController extends Controller
         //if (!empty($request->committee)) 
         $regInfo = new \stdClass();
         $personal_info = new \stdClass();
-        $personal_info->dateofbirth = $request->dateofbirth; 
-        $personal_info->province = $request->province; 
+        if (!empty($request->dateofbirth))
+            $personal_info->dateofbirth = $request->dateofbirth; 
+        if (!empty($request->province))
+            $personal_info->province = $request->province; 
         $personal_info->school = $request->school; 
         $school = School::where('name', $request->school)->first();
         if (!empty($school)) $reg->school_id = $school->id;
-        $personal_info->yearGraduate = $request->yearGraduate; 
-        $personal_info->typeDocument = $request->typeDocument; 
-        $personal_info->sfz = $request->sfz;         
+        $personal_info->yearGraduate = $request->yearGraduate;
+        if (!empty($request->sfz))
+        {
+            $personal_info->typeDocument = $request->typeDocument; 
+            $personal_info->sfz = $request->sfz;
+        }   
         $personal_info->tel = $request->tel; 
         if (!empty($request->tel2))
             $personal_info->tel2 = $request->tel2; 
@@ -237,10 +242,13 @@ class UserController extends Controller
         if (!empty($request->skype))
             $personal_info->skype = $request->skype; 
         if (!empty($request->wechat))
-            $personal_info->wechat = $request->wechat;         
-        $personal_info->parentname = $request->parentname; 
-        $personal_info->parentrelation = $request->parentrelation; 
-        $personal_info->parenttel = $request->parenttel;
+            $personal_info->wechat = $request->wechat;            
+        if (!empty($request->parentname))
+        {
+            $personal_info->parentname = $request->parentname; 
+            $personal_info->parentrelation = $request->parentrelation; 
+            $personal_info->parenttel = $request->parenttel;
+        }
         $regInfo->personinfo = $personal_info;
         if (isset($customTable->experience) && in_array($reg->type, $customTable->experience->uses))
         {
@@ -296,6 +304,15 @@ class UserController extends Controller
             {
                 switch ($item->type)
                 {
+                    case 'preCommittee':
+                        $conf_info->committee = $request->committee;
+                    break;
+                    case 'prePartnerName':
+                        $conf_info->partnername = $request->partnername;
+                    break;
+                    case 'preRoommateName':
+                        $conf_info->roommatename = $request->roommatename;
+                    break;
                     case 'preGroupOptions':
                         $conf_info->groupOption = $request->groupOption;
                     break;

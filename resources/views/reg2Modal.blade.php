@@ -55,8 +55,10 @@ $isExperience = isset($customTable->experience) && in_array($regType, $customTab
                   <input name="gender" id="female" type="radio" value="female"> <i class="fa fa-check text-active"></i>女
                 </label>
               </div>
-              <label>　出生日期 *</label>
-              <input name="dateofbirth" class="datepicker-input form-control input" type="text" size="16" placeholder="yyyy-mm-dd" data-type="dateIso" data-required="true">
+              @if (isset($customTable->info->dateofbirth))
+              <label>　出生日期 {{$customTable->info->dateofbirth == 'mandatory' ? '*' : ''}}</label>
+              <input name="dateofbirth" class="datepicker-input form-control input" type="text" size="16" placeholder="yyyy-mm-dd" data-type="dateIso"{{$customTable->info->dateofbirth == 'mandatory' ? ' data-required="true"' : ''}}>
+              @endif
               @if (isset($customTable->info->province))
               <label>　省份 {{$customTable->info->province == 'mandatory' ? '*' : ''}}</label>
               {!!provinceSelect()!!}
@@ -72,6 +74,7 @@ $isExperience = isset($customTable->experience) && in_array($regType, $customTab
                 <input name="yearGraduate" class="form-control" type="text" data-required="true">
               </div>
             </div>
+            @if (isset($customTable->info->sfz))
             <div class="form-group pull-in clearfix">
               <div class="col-sm-4">
               <label>证件类型及号码 *</label>
@@ -88,9 +91,15 @@ $isExperience = isset($customTable->experience) && in_array($regType, $customTab
                 <input id="text-sfz" name="sfz" class="form-control" type="text" placeholder="中国大陆 18 位身份证号（末尾 X 大写）" data-required="true" pattern="^(\d{6})(\d{4})(\d{2})(\d{2})(\d{3})([0-9]|X)$">
               </div>
             </div>
+            @endif
             <div class="form-group">
               <label>电话 *</label>
+              @if (Auth::check())
+              <input type="hidden" name="user_id" value="{{ Auth::id() }}">
+              <input name="tel" disabled="" class="form-control" type="text" value="{{ Auth::user()->tel }}" data-required="true" data-trigger="change">
+              @else
               <input name="tel" class="form-control" type="text" data-required="true">
+              @endif
             </div>
             @if (isset($customTable->info->contact->alt_phone))
             <div class="form-group">
@@ -116,6 +125,7 @@ $isExperience = isset($customTable->experience) && in_array($regType, $customTab
               <input name="wechat" class="form-control" type="text" {{$customTable->info->contact->wechat == 'mandatory' ? 'data-required="true"' : ''}}>
             </div>
             @endif
+            @if (isset($customTable->info->emergency))
             <div class="form-group pull-in clearfix">
               <div class="col-sm-6">
               <label>紧急联络人 *</label>
@@ -130,6 +140,7 @@ $isExperience = isset($customTable->experience) && in_array($regType, $customTab
               <label>紧急联络人电话 *</label>
               <input name="parenttel" class="form-control" type="text" data-required="true">
             </div>
+            @endif
           </div>
           @if ($isExperience){{--(isset($customTable->experience) && in_array($regType, $customTable->experience->uses))--}}
           <div class="step-pane" id="step2">

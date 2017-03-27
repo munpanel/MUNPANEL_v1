@@ -94,7 +94,7 @@ $isExperience = isset($customTable->experience) && in_array($regType, $customTab
             @endif
             <div class="form-group">
               <label>电话 *</label>
-              @if (Auth::check())
+              @if (Auth::check() && !empty(Auth::user()->tel))
               <input type="hidden" name="user_id" value="{{ Auth::id() }}">
               <input name="tel" disabled="" class="form-control" type="text" value="{{ Auth::user()->tel }}" data-required="true" data-trigger="change">
               @else
@@ -104,25 +104,25 @@ $isExperience = isset($customTable->experience) && in_array($regType, $customTab
             @if (isset($customTable->info->contact->alt_phone))
             <div class="form-group">
               <label>备用电话{{$customTable->info->contact->alt_phone == 'mandatory' ? ' *' : ''}}</label>
-              <input name="tel2" class="form-control" type="text" placeholder="选填；如果您的主电话号码无法使用，我们将通过备用电话联系您" {{$customTable->info->contact->alt_phone == 'mandatory' ? 'data-required="true"' : ''}}>
+              <input name="tel2" class="form-control" type="text" placeholder="选填；如果您的主电话号码无法使用，我们将通过备用电话联系您" {{$customTable->info->contact->alt_phone == 'mandatory' ? 'data-required=true' : ''}}>
             </div>
             @endif
             @if (isset($customTable->info->contact->qq))
             <div class="form-group">
               <label>QQ{{$customTable->info->contact->qq == 'mandatory' ? ' *' : ''}}</label>
-              <input name="qq" class="form-control" type="text" {{$customTable->info->contact->qq == 'mandatory' ? 'data-required="true"' : ''}}>
+              <input name="qq" class="form-control" type="text" {{$customTable->info->contact->qq == 'mandatory' ? 'data-required=true' : ''}}>
             </div>
             @endif
             @if (isset($customTable->info->contact->skype))
             <div class="form-group">
               <label>Skype{{$customTable->info->contact->skype == 'mandatory' ? ' *' : ''}}</label>
-              <input name="skype" class="form-control" type="text" {{$customTable->info->contact->skype == 'mandatory' ? 'data-required="true"' : ''}}>
+              <input name="skype" class="form-control" type="text" {{$customTable->info->contact->skype == 'mandatory' ? 'data-required=true' : ''}}>
             </div>
             @endif
             @if (isset($customTable->info->contact->wechat))
             <div class="form-group">
               <label>微信{{$customTable->info->contact->wechat == 'mandatory' ? ' *' : ''}}</label>
-              <input name="wechat" class="form-control" type="text" {{$customTable->info->contact->wechat == 'mandatory' ? 'data-required="true"' : ''}}>
+              <input name="wechat" class="form-control" type="text" {{$customTable->info->contact->wechat == 'mandatory' ? 'data-required=true' : ''}}>
             </div>
             @endif
             @if (isset($customTable->info->emergency))

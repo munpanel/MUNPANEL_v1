@@ -39,7 +39,7 @@ class Dais extends Model
     }
 
     public function regText() {
-        return '学术团队（'.$this->position.'）';
+        return '学术团队 ('.(!empty($this->position) ? $this->position : $this->statusText()).')';
     }
     
     public function scopeRoles()

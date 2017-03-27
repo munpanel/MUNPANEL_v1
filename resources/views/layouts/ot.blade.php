@@ -69,6 +69,7 @@
                 </a>
               </li>
               @endpermission
+              @if (Reg::current()->type == 'ot')
               {{--@permission('view-regs')--}}
               <li class="@yield('teamManage_active')">
                 <a href="{{ mp_url('/teamManage') }}">
@@ -85,6 +86,7 @@
                 </a>
               </li>
               {{--@endpermission--}}
+              @endif
               @permission('edit-nations')
               <li class="@yield('nationManage_active')">
                 <a href="{{ mp_url('/nationManage') }}">

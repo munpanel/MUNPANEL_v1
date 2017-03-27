@@ -4,7 +4,7 @@
     <p><i>姓名</i><br>&emsp;&emsp;{{$reg->user->name}}</p>
     <p><i>邮箱</i><br>&emsp;&emsp;{{$reg->user->email}}</p>
     <!-- dateofbirth -->
-    <p><i>性别{{!empty($regInfo->personinfo->dateofbirth) ? '及出生日期' : ''}}</i><br>&emsp;&emsp;{{$reg->gender == 'male' ? '男' : '女'}}{{!empty($regInfo->personinfo->dateofbirth) ? ' / ' . $regInfo->personinfo->dateofbirth}}</p>
+    <p><i>性别{{!empty($regInfo->personinfo->dateofbirth) ? '及出生日期' : ''}}</i><br>&emsp;&emsp;{{$reg->gender == 'male' ? '男' : '女'}}{{!empty($regInfo->personinfo->dateofbirth) ? ' / ' . $regInfo->personinfo->dateofbirth : ''}}</p>
     <!-- province -->
     @if (!empty($regInfo->personinfo->province))
     <p><i>省份</i><br>&emsp;&emsp;{{province($regInfo->personinfo->province)}}</p>

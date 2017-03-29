@@ -3,18 +3,28 @@
                   <i class="fa fa-home"></i>
                   <span>Home</span>
                 </a>
-              </li>              
-              @if (Reg::current()->type == 'dais' && Reg::current()->dais->status == 'success')
+              </li>
+              @permission('edit-interviews')
+              <li class="@yield('interview_active')">
+                <a href="{{ mp_url('/interviews') }}">
+                  <i class="fa fa-comments"></i>
+                  <span>Interviews</span>
+                </a>
+              </li>
+              @endpermission
+              @permission('assign-roles')
               <li class="@yield('roles_active')">
                 <a href="{{ mp_url('/roleAlloc') }}">
                   <i class="fa fa-wheelchair"></i>
                   <span>Role Allocation</span>
                 </a>
               </li>
+              @endpermission
+              @if (Reg::current()->type == 'dais' && Reg::current()->dais->status == 'success')
               <li class="dropdown-submenu @yield('assignments_active')">
                 <a href="{{ mp_url('/assignments') }}" class="dropdown-toggle" > <!-- data-toggle="dropdown"-->
                   <i class="fa fa-flask"></i>
-                  <span>Assignments & Handins</span>
+                  <span>Assignments &amp; Handins</span>
                 </a>
               </li>
               <li class="@yield('documents_active')">

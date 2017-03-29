@@ -396,7 +396,7 @@ class HomeController extends Controller
         $status = $reg->dais->status;
         $answer = json_decode($reg->dais->handin);
         $html = $formName = '';
-        if (isset($answer->form))
+        if (isset($answer->_token))
         {
             $form = Form::findOrFail($answer->form);
             $formCt = json_decode($form->content);

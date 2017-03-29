@@ -1,0 +1,69 @@
+@extends('layouts.app')
+@section('interview_active', 'active')
+@section('content')
+<section class="vbox">
+  <header class="header b-b bg-white">
+    @if ($iid == -1) 
+      <p>{{Reg::currentConference()->name}} 的所有面试</p> 
+    @elseif ($iid == 0)
+      <p>您的面试队列</p>
+    @else
+      <p>{{Reg::find(@iid)->user->name}}的面试队列</p> 
+    @endif 
+    @permission('view-all-interviews')
+    <div class="btn-group pull-right">
+      <button class="btn btn-white btn-sm dropdown-toggle" aria-expanded="false" data-toggle="dropdown"><i class="fa fa-eye"></i> 查看 <span class="caret"></span></button>
+      <ul class="dropdown-menu">
+        <li><a href="{{mp_url('/byInterviewerModal')}}">查看面试官的队列...</a></li>      
+        <li class="divider"></li>
+        @if ($iid != -1) 
+        <li><a href="{{mp_url('/interviews/-1')}}">查看所有面试</a></li>
+        @endif
+        @if ($iid != 0) 
+        <li><a href="{{mp_url('/interviews')}}">查看我的面试</a></li>
+        @endif
+      </ul>
+    </div>
+    @endpermission
+  </header>
+  <section class="scrollable wrapper">
+    @if ($interviews->count() == 0)
+    <div class="container">
+      @if ($iid == -1)
+      <p>本次会议并没有任何面试安排。</p>
+      @else
+      <p>{{$iid != 0 ? Reg::find(@iid)->user->name : '您'}}的面试队列空空如也。</p>
+      @endif
+    </div>
+    @else
+    <div class="row">
+      <div class="col-md-4">
+        <section class="panel pos-rlt clearfix">
+          <header class="panel-heading">
+            <ul class="nav nav-pills pull-right">
+              <li>
+                <a class="panel-toggle text-muted" href="#"><i class="fa fa-caret-down text-active"></i><i class="fa fa-caret-up text"></i></a>
+              </li>
+            </ul>
+            未安排的面试 ({{$interviews->where('status', 'assigned')->count()}})
+          </header>
+          <div class="panel-body clearfix">
+            @if ($interviews->where('status', 'assigned')->count() > 0)
+              @foreach ($interviews->where('status', 'assigned') as $interview)
+                @include('components.interview')
+              @endforeach
+            @else
+              @if ($iid == -1)
+              <p>本次会议目前没有未安排的面试。</p>
+              @else
+              <p>{{$iid != 0 ? Reg::find(@iid)->user->name : '您'}}没有未安排的面试。</p>
+              @endif
+            @endif
+          </div>
+        </section>
+      </div>
+    </div>
+    @endif
+  </section>
+</section>
+@endsection

@@ -20,6 +20,29 @@ use Illuminate\Support\Facades\Auth;
 
 class InterviewController extends Controller
 {
+    public function interviews($id = 0)
+    {
+        if (!Reg::current()->can('edit-interviews'))
+            return view('error', ['message' => '您没有面试官身份，无权进行该操作！']);
+        $interviews = new Collection;
+        if ($id == -1)
+        {
+            if (!Reg::current()->can('view-all-interviews'))
+                return view('error', ['message' => '您没有权限进行该操作！']);
+            $interviews = Interview::where('conference_id', Reg::currentConferenceID())->get();
+        }
+        elseif ($id == 0)
+            $interviews = Interview::where('interviewer_id', Reg::currentID())->get();
+        else
+        {
+            $reg = Interviewer::find($id);
+            if (is_null($reg))
+                return view('error', ['message' => '此人不是您所在会议的面试官！']);
+            $interviews = Interview::where('interviewer_id', $id)->get();
+        }
+        return view('interviewList', ['interviews' => $interviews, 'iid' => $id]);
+    }
+
     public function assignInterview(Request $request, $id)
     {
         //To-Do: permission check

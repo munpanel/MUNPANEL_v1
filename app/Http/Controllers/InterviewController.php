@@ -17,6 +17,7 @@ use App\Interview;
 use App\Interviewer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Collection;
 
 class InterviewController extends Controller
 {
@@ -30,17 +31,20 @@ class InterviewController extends Controller
             if (!Reg::current()->can('view-all-interviews'))
                 return view('error', ['message' => '您没有权限进行该操作！']);
             $interviews = Interview::where('conference_id', Reg::currentConferenceID())->get();
+            $id = -1;
         }
-        elseif ($id == 0)
+        elseif ($id == 0 || $id == Reg::currentID())
             $interviews = Interview::where('interviewer_id', Reg::currentID())->get();
         else
         {
+            if (!Reg::current()->can('view-all-interviews'))
+                return view('error', ['message' => '您没有权限进行该操作！']);
             $reg = Interviewer::find($id);
             if (is_null($reg))
                 return view('error', ['message' => '此人不是您所在会议的面试官！']);
             $interviews = Interview::where('interviewer_id', $id)->get();
         }
-        return view('interviewList', ['interviews' => $interviews, 'iid' => $id]);
+        return view('dais.interviewList', ['interviews' => $interviews, 'iid' => $id]);
     }
 
     public function assignInterview(Request $request, $id)

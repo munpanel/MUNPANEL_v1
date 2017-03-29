@@ -1,5 +1,8 @@
 @extends('layouts.app')
 @section('interview_active', 'active')
+@push('scripts')
+<script src="{{mp_url('js/fuelux/fuelux.js')}}"></script>
+@endpush
 @section('content')
 <section class="vbox">
   <header class="header b-b bg-white">
@@ -8,7 +11,7 @@
     @elseif ($iid == 0)
       <p>您的面试队列</p>
     @else
-      <p>{{Reg::find(@iid)->user->name}}的面试队列</p> 
+      <p>{{Reg::find($iid)->user->name}}的面试队列</p> 
     @endif 
     @permission('view-all-interviews')
     <div class="btn-group pull-right">
@@ -32,7 +35,7 @@
       @if ($iid == -1)
       <p>本次会议并没有任何面试安排。</p>
       @else
-      <p>{{$iid != 0 ? Reg::find(@iid)->user->name : '您'}}的面试队列空空如也。</p>
+      <p>{{$iid != 0 ? Reg::find($iid)->user->name : '您'}}的面试队列空空如也。</p>
       @endif
     </div>
     @else
@@ -49,14 +52,64 @@
           </header>
           <div class="panel-body clearfix">
             @if ($interviews->where('status', 'assigned')->count() > 0)
-              @foreach ($interviews->where('status', 'assigned') as $interview)
+              @foreach ($interviews->where('status', 'assigned')->sortByDesc('updated_at') as $interview)
                 @include('components.interview')
               @endforeach
             @else
               @if ($iid == -1)
               <p>本次会议目前没有未安排的面试。</p>
               @else
-              <p>{{$iid != 0 ? Reg::find(@iid)->user->name : '您'}}没有未安排的面试。</p>
+              <p>{{$iid != 0 ? Reg::find($iid)->user->name : '您'}}没有未安排的面试。</p>
+              @endif
+            @endif
+          </div>
+        </section>
+      </div>
+      <div class="col-md-4">
+        <section class="panel pos-rlt clearfix">
+          <header class="panel-heading">
+            <ul class="nav nav-pills pull-right">
+              <li>
+                <a class="panel-toggle text-muted" href="#"><i class="fa fa-caret-down text-active"></i><i class="fa fa-caret-up text"></i></a>
+              </li>
+            </ul>
+            未完成的面试 ({{$interviews->whereIn('status', ['arranged', 'undecided'])->count()}})
+          </header>
+          <div class="panel-body clearfix">
+            @if ($interviews->whereIn('status', ['arranged', 'undecided'])->count() > 0)
+              @foreach ($interviews->whereIn('status', ['arranged', 'undecided'])->sortByDesc('updated_at') as $interview)
+                @include('components.interview')
+              @endforeach
+            @else
+              @if ($iid == -1)
+              <p>本次会议目前没有未完成的面试。</p>
+              @else
+              <p>{{$iid != 0 ? Reg::find($iid)->user->name : '您'}}没有未完成的面试。</p>
+              @endif
+            @endif
+          </div>
+        </section>
+      </div>
+      <div class="col-md-4">
+        <section class="panel pos-rlt clearfix">
+          <header class="panel-heading">
+            <ul class="nav nav-pills pull-right">
+              <li>
+                <a class="panel-toggle text-muted" href="#"><i class="fa fa-caret-down text-active"></i><i class="fa fa-caret-up text"></i></a>
+              </li>
+            </ul>
+            已完成的面试 ({{$interviews->whereIn('status', ['passed', 'failed', 'exempted', 'cancelled'])->count()}})
+          </header>
+          <div class="panel-body clearfix">
+            @if ($interviews->whereIn('status', ['passed', 'failed', 'exempted', 'cancelled'])->count() > 0)
+              @foreach ($interviews->whereIn('status', ['passed', 'failed', 'exempted', 'cancelled'])->sortByDesc('updated_at') as $interview)
+                @include('components.interview')
+              @endforeach
+            @else
+              @if ($iid == -1)
+              <p>本次会议目前没有已完成的面试。</p>
+              @else
+              <p>{{$iid != 0 ? Reg::find($iid)->user->name : '您'}}没有已完成的面试。</p>
               @endif
             @endif
           </div>

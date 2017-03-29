@@ -34,6 +34,7 @@ Route::group(['domain' => 'portal.munpanel.com'], function () {
     });
 
     Route::get('/showEmail/{id}', 'EmailController@showEmail');
+    Route::get('/daisBJMUN', 'EmailController@daisBJMUN');
 
     Auth::routes();
     Route::get('/loginViaConsoleMail', 'Auth\\LoginController@loginConsoleMail');
@@ -142,6 +143,8 @@ Route::group(['domain' => 'portal.munpanel.com'], function () {
     Route::get('/ot/daisregInfo.modal/{id}', 'HomeController@daisregInfoModal');
     Route::get('/ot/oVerify/{id}', 'UserController@oVerify');
     Route::get('/ot/oNoVerify/{id}', 'UserController@oNoVerify');
+
+    Route::get('/interviews/{id?}', 'InterviewController@interviews');
     Route::post('/ot/assignInterview/{id}', 'InterviewController@assignInterview');
     Route::post('/ot/exemptInterview/{id}', 'InterviewController@exemptInterview');
 

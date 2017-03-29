@@ -236,3 +236,23 @@ ul.timeline-small>li>.timeline-panel:after {
 textarea.assignment {
     min-height: 170px;
 }
+
+.btn-danger.mp-disabled,
+.btn-danger.mp-disabled:hover,
+.btn-danger.mp-disabled:focus,
+.btn-danger.mp-disabled:active,
+.btn-danger.mp-disabled.active,
+.btn-danger[mp-disabled],
+.btn-danger[mp-disabled]:hover,
+.btn-danger[mp-disabled]:focus,
+.btn-danger[mp-disabled]:active,
+.btn-danger[mp-disabled].active,
+fieldset[mp-disabled] .btn-danger,
+fieldset[mp-disabled] .btn-danger:hover,
+fieldset[mp-disabled] .btn-danger:focus,
+fieldset[mp-disabled] .btn-danger:active,
+fieldset[mp-disabled] .btn-danger.active {
+  background-color: #fb6b5b;
+  border-color: #fb6b5b;
+  cursor: default;
+} 

@@ -6,7 +6,7 @@
               </li>
               @permission('edit-interviews')
               <li class="@yield('interview_active')">
-                <a href="{{ mp_url('/interviews') }}">
+                <a href="{{ mp_url('/interviews'.(Reg::current()->can('view-all-interviews') ? '/-1' : '')) }}">
                   <i class="fa fa-comments"></i>
                   <span>Interviews</span>
                 </a>

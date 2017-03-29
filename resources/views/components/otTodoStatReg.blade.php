@@ -24,7 +24,7 @@ $regs = oVerifyStat(Reg::currentConferenceID());
       <div class="inline">
         <div class="easypiechart easyPieChart" data-size="100" data-line-width="4" data-percent="0" data-loop="false">
           <span class="h3">0</span>%
-          <div class="easypie-text">已缴费</div>
+          <div class="easypie-text">已分配</div>
           <canvas></canvas>
         </div>
       </div>

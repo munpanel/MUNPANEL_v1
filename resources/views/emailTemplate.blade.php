@@ -105,7 +105,7 @@
   font-size: 1px;
 }
 </style>
-@if(!isset($webView))
+@if(!isset($webView) && !isset($fromHuman))
 <div class="extra">完整HTML版邮件请见：{{mp_url('/showEmail/'.$id)}}</div>
 @endif
 <div class="container">
@@ -128,6 +128,8 @@
 </div>
 
 <div class="extra center">
+  @if(!isset($fromHuman))
   Automatic email. Do not reply.<br>
+  @endif
   Sent to {{$receiver->name.' '.$receiver->address}} by MUNPANEL System.<br>
 </div>

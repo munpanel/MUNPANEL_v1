@@ -141,8 +141,12 @@
             <ul class="nav">
                 @if (Reg::current()->type == 'school')
                 @include('layouts.school')
-                @elseif (Reg::current()->type == 'ot' || Reg::current()->type == 'dais')
+                @elseif (Reg::current()->type == 'ot')
                 @include('layouts.ot')
+                @elseif (Reg::current()->type == 'dais')
+                @include('layouts.dais')
+                @elseif (Reg::current()->type == 'interviewer')
+                @include('layouts.interviewer')
                 @else
                 @include('layouts.delegate')
                 @endif
@@ -154,7 +158,7 @@
               <!--a href="#" data-dismiss="alert" class="pull-right m-r-n-sm m-t-n-sm"><i class="fa fa-times"></i></a-->
               Proudly Powered and Copyrighted by {{config('munpanel.copyright_year')}} MUNPANEL. A Product of Console iT.
           </div>
-          <!-- / note -->        
+          <!-- / note -->
           </div>
         </section>
         <footer class="footer bg-gradient hidden-xs">

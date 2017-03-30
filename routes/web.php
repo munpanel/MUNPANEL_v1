@@ -145,6 +145,7 @@ Route::group(['domain' => 'portal.munpanel.com'], function () {
     Route::get('/ot/oNoVerify/{id}', 'UserController@oNoVerify');
 
     Route::get('/interviews/{id?}', 'InterviewController@interviews');
+    Route::any('/interview/{id}/{action}', 'InterviewController@interview');
     Route::post('/ot/assignInterview/{id}', 'InterviewController@assignInterview');
     Route::post('/ot/exemptInterview/{id}', 'InterviewController@exemptInterview');
 

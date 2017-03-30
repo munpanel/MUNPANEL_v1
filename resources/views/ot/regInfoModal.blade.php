@@ -86,7 +86,7 @@ $isOtOrDais = in_array(Reg::current()->type, ['ot', 'dais']);
               <tbody>
               <tr>
               <td>状态</td>
-              <td>{{$interview->status}}</td>
+              <td>{{$interview->statusText()}}</td>
               </tr>
               <tr>
               <td>面试官</td>

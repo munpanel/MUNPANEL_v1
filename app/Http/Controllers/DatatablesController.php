@@ -292,7 +292,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
                 return "ERROR";
             $result = new Collection;
             // 过滤结果: 只保留 delegate, observer 和 volunteer
-            $regs = Reg::where('conference_id', Reg::currentConferenceID())->whereIn('type', ['ot', 'dais', 'school'])->with(['user' => function($q) {$q->select('name', 'id');}])->get(['id', 'user_id', 'type']);
+            $regs = Reg::where('conference_id', Reg::currentConferenceID())->whereIn('type', ['ot', 'dais', 'school', 'interviewer'])->with(['user' => function($q) {$q->select('name', 'id');}])->get(['id', 'user_id', 'type']);
             foreach ($regs as $reg)
             {
                 if ($reg->type == 'unregistered')
@@ -303,6 +303,8 @@ class DatatablesController extends Controller //To-Do: Permission Check
                     $type = '学术团队';
                 else if ($reg->type == 'school')
                     $type = '学校理事';
+                else if ($reg->type == 'interviewer')
+                    $type = '面试官';
                 else
                     $type = '未知';
                 $school = isset($reg->reginfo) ? json_decode($reg->reginfo)->personinfo->school : '未填写';
@@ -312,7 +314,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
                     'school' => isset($reg->specific()->position) ? $reg->specific()->position : '无',
                     'committee' => isset($reg->specific()->committee) ? $reg->specific()->committee->name : '无',
                     'partner' => $type,
-                    'status' => $reg->specific()->scopeRoles()
+                    'status' => $reg->type != 'interviewer' ? $reg->specific()->scopeRoles() : '无'
                 ]);
             }
         }

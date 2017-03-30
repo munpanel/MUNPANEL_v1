@@ -51,11 +51,11 @@ function nicetime($date, $concise = false)
             if ($difference != 0)
                 return "$difference$periods[$j]{$tense}";
             else
-                return "现在";
+                return "刚刚";
         if ($difference != 0)
             return $date."（$difference $periods[$j]{$tense}）";
         else
-            return $date."（现在）";
+            return $date."（刚刚）";
 }
 
 /**

@@ -1,4 +1,4 @@
-                <div id="pre_select" style="display: block;">
+                <div id="interviewOpSelect" style="display: block;">
                     <h3 class="m-t-sm">安排面试</h3>
 
                     {{-- <p><span class="label label-warning">注意</span> 这是二次面试分配。</p> --}}
@@ -8,12 +8,12 @@
 
                     {{-- <p><span class="label label-warning">注意</span> 这位代表的面试安排曾被join("、", $rollback_data); 回退，请在笔记中了解回退原因。</p>--}}
 
-                    <button name="" type="button" class="btn btn-info" onclick="$('#do_assign').show(); $('#pre_select').hide();">分配面试</button>
-                    <button name="" type="button" class="btn btn-info" onclick="$('#do_exempt').show(); $('#pre_select').hide();">免试通过</button>
+                    <button name="" type="button" class="btn btn-info" onclick="$('#doAssign').show(); $('#interviewOpSelect').hide();">分配面试</button>
+                    <button name="" type="button" class="btn btn-info" onclick="$('#doExempt').show(); $('#interviewOpSelect').hide();">免试通过</button>
 
                 </div>
 
-                <div id="do_assign" style="display: none;">
+                <div id="doAssign" style="display: none;">
                     <h3 class="m-t-sm">分配面试官</h3>
 
                     {{-- <p><span class="label label-warning">注意</span> 这是二次面试分配。</p>--}}
@@ -38,13 +38,38 @@
                         <p>分配完成之后，MUNPANEL 将自动通知代表和面试官。</p>
 
                    <button name="submit" type="submit" class="btn btn-info">分配面试官</button>
-                   <button name="cancel" type="button" class="btn btn-link" onclick="$('#do_assign').hide(); $('#pre_select').show();">取消</button>
+                   <button name="cancel" type="button" class="btn btn-link" onclick="$('#doAssign').hide(); $('#interviewOpSelect').show();">取消</button>
 
                    </form>
 
                 </div>
 
-                <div id="do_exempt" style="display: none;">
+                <div id="doExempt" style="display: none;">
                     <h3 class="m-t-sm">免试指派席位</h3>
 
                     <p>将会以免试通过方式完成此代表的面试流程，请在此列表中选择面试官，选定的面试官将可以直接为此代表分配席位。</p>
+
+                    <form action="{{mp_url('/ot/exemptInterview/'.$reg->id)}}" method="post">
+                    {{csrf_field()}}
+
+                          <div class="m-b">
+                            <select style="width:260px" class="interviewer-list" name="interviewer">
+                                @foreach (\App\Interviewer::list() as $name => $group)
+                                <optgroup label="{{$name}}">
+                                    @foreach ($group as $iid => $iname)
+                                    <option value="{{$iid}}">{{$iname}}</option>
+                                    @endforeach
+                                </optgroup>
+                                @endforeach
+                            </select>
+                          </div>
+
+                        <p>分配完成之后，MUNPANEL 将自动通知代表和面试官。</p>
+
+                   <button name="submit" type="submit" class="btn btn-info">面试通过</button>
+                   <button name="cancel" type="button" class="btn btn-link" onclick="$('#doAssign').hide(); $('#interviewOpSelect').show();">取消</button>
+
+                   </form>
+
+                </div>
+

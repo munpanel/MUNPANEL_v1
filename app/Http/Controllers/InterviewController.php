@@ -23,7 +23,7 @@ class InterviewController extends Controller
 {
     public function interviews($id = 0)
     {
-        if (!Reg::current()->can('edit-interviews'))
+        if ((!Reg::current()->can('edit-interviews')) && Reg::current()->type != 'interviewer')
             return view('error', ['message' => '您没有面试官身份，无权进行该操作！']);
         $interviews = new Collection;
         if ($id == -1)
@@ -45,6 +45,46 @@ class InterviewController extends Controller
             $interviews = Interview::where('interviewer_id', $id)->get();
         }
         return view('dais.interviewList', ['interviews' => $interviews, 'iid' => $id]);
+    }
+
+    public function interview(Request $request, $id, $action)
+    {
+        $interview = Interview::findOrFail($id);
+        if ($interview->interviewer_id != Reg::currentID())
+        {
+            return "error!";
+        }
+        switch($action)
+        {
+            case "arrange":
+                $interview->status = 'arranged';
+                $interview->arranged_at = $request->arrangeTime;
+                $interview->arranging_notes = $request->notes;
+                //To-Do: event
+                $interview->save();
+                break;
+            case "exempt":
+                break;
+            case "rollBack":
+                break;
+            case "cancel":
+                break;
+            case "rate":
+                break;
+            case "arrangeModal":
+                return view('interviewer.arrangeModal', ['id' => $id]);
+            case "exemptModal":
+                return view('interviewer.exemptModal', ['id' => $id]);
+            case "rollBackModal":
+                return view('interviewer.rollBackModal', ['id' => $id]);
+            case "cancelModal":
+                return view('interviewer.cancelModal', ['id' => $id]);
+            case "rateModal":
+                return view('interviewer.rateModal', ['id' => $id]);
+            default:
+                return "error";
+        }
+        //To-Do: return redirect blablabla
     }
 
     public function assignInterview(Request $request, $id)

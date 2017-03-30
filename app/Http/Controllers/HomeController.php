@@ -67,11 +67,11 @@ class HomeController extends Controller
         if ($type == 'ot')
         {
             return view('ot.home', [
-                'committees' => Reg::currentConference()->committees, 
-                'vol' => Reg::currentConference()->volunteers->count(), 
-                'obs' => Reg::currentConference()->observers->count(), 
-                'del' => Reg::currentConference()->delegates->count(), 
-                'dais' => Reg::currentConference()->dais->count(), 
+                'committees' => Reg::currentConference()->committees,
+                'vol' => Reg::currentConference()->volunteers->count(),
+                'obs' => Reg::currentConference()->observers->count(),
+                'del' => Reg::currentConference()->delegates->count(),
+                'dais' => Reg::currentConference()->dais->count(),
                 'hasChildComm' => $hasChildComm
             ]);
         }
@@ -84,12 +84,16 @@ class HomeController extends Controller
         else if ($type == 'dais' && $reg->specific()->status == 'success')
         {
             return view('ot.home', [
-                'vol' => Reg::currentConference()->volunteers->count(), 
-                'obs' => Reg::currentConference()->observers->count(), 
-                'del' => Reg::currentConference()->delegates->count(), 
-                'dais' => Reg::currentConference()->dais->count(), 
+                'vol' => Reg::currentConference()->volunteers->count(),
+                'obs' => Reg::currentConference()->observers->count(),
+                'del' => Reg::currentConference()->delegates->count(),
+                'dais' => Reg::currentConference()->dais->count(),
                 'hasChildComm' => $hasChildComm
             ]);
+        }
+        else if ($type == 'interviewer')
+        {
+            return view('interviewer.home');
         }
         else
         {
@@ -668,7 +672,7 @@ class HomeController extends Controller
             $forms = json_decode(Reg::currentConference()->option('reg_tables'))->daisregForms;
             foreach ($forms as $formCfg)
             {
-                if ($formCfg->language == $language) 
+                if ($formCfg->language == $language)
                 {
                     $formID = $formCfg->formID;
                     break;

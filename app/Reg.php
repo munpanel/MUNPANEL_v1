@@ -19,8 +19,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Reg extends Model
 {
-    protected $fillable = ['user_id','conference_id','school_id','type','enabled','gender','reginfo','accomodate','roommate_reg_id'];    
-    
+    protected $fillable = ['user_id','conference_id','school_id','type','enabled','gender','reginfo','accomodate','roommate_reg_id'];
+
     /**
      * The attributes that should be hidden for arrays.
      *
@@ -51,7 +51,7 @@ class Reg extends Model
     public function events() {
         return $this->hasMany('App\Event');
     }
-    
+
     public function delegate() {
         return $this->hasOne('App\Delegate');
     }
@@ -67,17 +67,21 @@ class Reg extends Model
     public function observer() {
         return $this->hasOne('App\Observer');
     }
-    
-    public function ot() {        
+
+    public function ot() {
         return $this->hasOne('App\Orgteam');
     }
 
     public function specific() {
         return $this->{$this->type};
     }
-    
+
+     public function interviewer() {
+        return $this->hasOne('App\Interviewer');
+    }
+
     public function roommate() {
-        return $this->belongsTo('App\User', 'roommate_reg_id'); 
+        return $this->belongsTo('App\User', 'roommate_reg_id');
     }
 
     public function interviews()
@@ -161,7 +165,7 @@ class Reg extends Model
         return null;
     }
 
-    
+
     public function make()
     {
         switch ($this->type)
@@ -208,8 +212,8 @@ class Reg extends Model
                 break;
         }
     }
-    
-    public function assignRoommateByName() 
+
+    public function assignRoommateByName()
     {
         // TODO: 重写所有的 roommatename
         if (!$this->accomodate) return $this->user->name . "&#09;0&#09;未申请住宿";
@@ -222,7 +226,7 @@ class Reg extends Model
             // TODO: 重写以下 1 行
             $roommates = Reg::where('name', $roommate_name);
             $count = $roommates->count();
-            if ($count == 0) 
+            if ($count == 0)
             {
                 $notes = "{'reason':'未找到室友$roommate_name" . "的报名记录'}";
                 $this->addEvent('roommate_auto_fail', $notes);
@@ -250,14 +254,14 @@ class Reg extends Model
                 if (isset($this->notes)) $this->notes .= "\n";
                 $this->notes .= "$roommate_name" . "并未报名！";
                 $this->save();
-                return $myname  ."&#09;".$roommate->id . "&#09;室友姓名$roommate_name&#09;未报名参会"; 
+                return $myname  ."&#09;".$roommate->id . "&#09;室友姓名$roommate_name&#09;未报名参会";
             }
             if ($roommate->type != 'delegate' && $roommate->type != 'volunteer' )
             {
                 if (isset($this->notes)) $this->notes .= "\n";
                 $this->notes .= "$roommate_name" . "组委/学团";
                 $this->save();
-                return $myname  ."&#09;".$roommate->id . "&#09;室友姓名$roommate_name&#09;组委/学团"; 
+                return $myname  ."&#09;".$roommate->id . "&#09;室友姓名$roommate_name&#09;组委/学团";
             }
             */
             $typedroommate = $roommate->specific();
@@ -287,7 +291,7 @@ class Reg extends Model
                 $this->addEvent('roommate_auto_fail', $notes);
                 return $myname  ."&#09;".$roommate->id . "&#09;室友姓名$roommate_name&#09;室友为异性";
             }
-            $this->roommate_user_id = $roommate->id;       
+            $this->roommate_user_id = $roommate->id;
             $this->save();
             $this->addEvent('roommate_auto_success', '');
             $roommate->roommate_user_id = $this->user->id;

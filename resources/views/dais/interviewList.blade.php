@@ -2,27 +2,33 @@
 @section('interview_active', 'active')
 @push('scripts')
 <script src="{{mp_url('js/fuelux/fuelux.js')}}"></script>
+<script src="{{mp_url('js/moment.min.js')}}"></script>
+<script src="{{mp_url('js/bootstrap-datetimepicker.min.js')}}"></script>
+<script src="{{mp_url('js/markdown/epiceditor.js')}}"></script>
+@endpush
+@push('css')
+<link href="{{mp_url('css/bootstrap-datetimepicker.min.css')}}" rel="stylesheet">
 @endpush
 @section('content')
 <section class="vbox">
   <header class="header b-b bg-white">
-    @if ($iid == -1) 
-      <p>{{Reg::currentConference()->name}} 的所有面试</p> 
+    @if ($iid == -1)
+      <p>{{Reg::currentConference()->name}} 的所有面试</p>
     @elseif ($iid == 0)
       <p>您的面试队列</p>
     @else
-      <p>{{Reg::find($iid)->user->name}}的面试队列</p> 
-    @endif 
+      <p>{{Reg::find($iid)->user->name}}的面试队列</p>
+    @endif
     @permission('view-all-interviews')
     <div class="btn-group pull-right">
       <button class="btn btn-white btn-sm dropdown-toggle" aria-expanded="false" data-toggle="dropdown"><i class="fa fa-eye"></i> 查看 <span class="caret"></span></button>
       <ul class="dropdown-menu">
-        <li><a href="{{mp_url('/byInterviewerModal')}}">查看面试官的队列...</a></li>      
+        <li><a href="{{mp_url('/byInterviewerModal')}}">查看面试官的队列...</a></li>
         <li class="divider"></li>
-        @if ($iid != -1) 
+        @if ($iid != -1)
         <li><a href="{{mp_url('/interviews/-1')}}">查看所有面试</a></li>
         @endif
-        @if ($iid != 0) 
+        @if ($iid != 0)
         <li><a href="{{mp_url('/interviews')}}">查看我的面试</a></li>
         @endif
       </ul>

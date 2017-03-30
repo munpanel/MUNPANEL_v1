@@ -28,11 +28,14 @@ class CreateInterviewsTable extends Migration
             $table->integer('reg_id')->unsigned();
             $table->integer('interviewer_id')->nullabled()->unsigned();
             $table->dateTime('arranged_at')->nullable();
+            $table->text('arranging_notes')->nullable();
             $table->dateTime('finished_at')->nullable();
             $table->enum('status', ['assigned', 'arranged', 'cancelled', 'passed', 'failed', 'undecided', 'retest', 'exempted']);
             $table->boolean('retest')->default(false);
-            $table->float('score')->nullable();
-            $table->text('feedback')->nullable();
+            $table->float('score')->nullable(); // Total
+            $table->text('internal_fb')->nullable();
+            $table->text('public_fb')->nullable();
+            $table->text('scores')->nullable(); // JSON
             $table->timestamps();
             $table->foreign('conference_id')->references('id')->on('conferences')->onDelete('cascade');
             $table->foreign('reg_id')->references('id')->on('regs')->onDelete('cascade');

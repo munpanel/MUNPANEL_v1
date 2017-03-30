@@ -56,18 +56,29 @@ function daisregStat($cid)
  */
 function interviewStat($cid, $rid = 0)
 {
-    $interviews = $unarranged = 0;
+    $interviewsc = $unarranged = 0;
+    $interviews = Interview::where('conference_id', $cid)->get();
     if ($rid == -1)
     {
-        $interviews = Interview::where('conference_id', $cid)->get();
         $interviewsc = $interviews->count();
         $unarranged = $interviews->where('status', 'assigned')->count();
         $unfinished = $interviews->where('status', 'arranged')->count();
         $exempted = $interviews->where('status', 'exempted')->count();
+        $cancelled = $interviews->where('status', 'cancelled')->count();
+        $success = $interviews->where('status', 'passed')->count();
+    }
+    elseif ($rid == 0)
+    {
+        $interviews = Interview::where('conference_id', $cid)->where('interviewer_id', Reg::currentID())->get();
+        $interviewsc = $interviews->count();
+        $unarranged = $interviews->where('status', 'assigned')->count();
+        $unfinished = $interviews->where('status', 'arranged')->count();
+        $exempted = $interviews->where('status', 'exempted')->count();
+        $cancelled = $interviews->where('status', 'cancelled')->count();
         $success = $interviews->where('status', 'passed')->count();
     }
     $arranged = $interviewsc - $unarranged;
-    $finished = $arranged - $unfinished - $exempted;
+    $finished = $arranged - $unfinished - $exempted - $cancelled;
     $roleSetable = $exempted + $success;
     return ['all' => $interviewsc, 'unarranged' => $unarranged, 'arranged' => $arranged, 'unfinished' => $unfinished, 'finished' => $finished, 'passed' => $roleSetable];
 }

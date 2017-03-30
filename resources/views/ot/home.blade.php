@@ -33,7 +33,7 @@
         @if (Reg::current()->can('view-regs'))
           @include('components.otTodoStatReg')
         @endif
-        @if (Reg::current()->can('edit-interviews'))
+        @if (Reg::current()->can('edit-interviews') || Reg::current()->type == 'interviewer')
           @include('components.otTodoStatInterview')
         @endif
       </div>

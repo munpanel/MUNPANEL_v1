@@ -386,6 +386,7 @@ class UserController extends Controller
         $specific->status = $specific->nextStatus();
         $specific->save();
         Reg::find($id)->addEvent('ot_verification_passed', '{"name":"'.Auth::user()->name.'"}');
+        return redirect('/regManage?initialReg='.$id);
     }
 
     /**
@@ -404,6 +405,7 @@ class UserController extends Controller
         $specific->status = $specific->nextStatus();
         $specific->save();
         $reg->addEvent('ot_verification_rejected', '{"name":"'.Auth::user()->name.'"}');
+        return redirect('/regManage?initialReg='.$id);
     }
     /**
      * make a registration school verified.

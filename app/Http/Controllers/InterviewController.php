@@ -31,7 +31,6 @@ class InterviewController extends Controller
             if (!Reg::current()->can('view-all-interviews'))
                 return view('error', ['message' => '您没有权限进行该操作！']);
             $interviews = Interview::where('conference_id', Reg::currentConferenceID())->get();
-            $id = -1;
         }
         elseif ($id == 0 || $id == Reg::currentID())
             $interviews = Interview::where('interviewer_id', Reg::currentID())->get();
@@ -52,7 +51,7 @@ class InterviewController extends Controller
         $interview = Interview::findOrFail($id);
         if ($interview->interviewer_id != Reg::currentID())
         {
-            return "error!";
+            return view('error', ['message' => '您没有权限进行该操作！']);
         }
         switch($action)
         {
@@ -60,12 +59,23 @@ class InterviewController extends Controller
                 $interview->status = 'arranged';
                 $interview->arranged_at = $request->arrangeTime;
                 $interview->arranging_notes = $request->notes;
-                //To-Do: event
+                $type = intval($request->typeInterview);
                 $interview->save();
+                $interview->reg->addEvent('interview_arranged', '{"interviewer":"'.Auth::user()->name.'","time":"'.date(' n 月 j 日 H:i ', strtotime($interview->arranged_at)).'","method":"'.typeInterview($type).'"}');
                 break;
             case "exempt":
+                $interview->status = 'exempted';
+                $interview->finished_at = date('Y-m-d H:i:s');
+                $interview->arranging_notes = $request->notes;
+                $interview->save();
+                $interview->reg->addEvent('interview_exempted', '{"interviewadmin":"'.Auth::user()->name.'","interviewer":"并"}');
                 break;
             case "rollBack":
+                $interview->status = 'cancelled';
+                $interview->finished_at = date('Y-m-d H:i:s');
+                $interview->arranging_notes = $request->notes;
+                $interview->save();
+                $interview->reg->addEvent('interview_cancelled', '{"interviewer":"'.Auth::user()->name.'"}');
                 break;
             case "cancel":
                 break;
@@ -74,17 +84,17 @@ class InterviewController extends Controller
             case "arrangeModal":
                 return view('interviewer.arrangeModal', ['id' => $id]);
             case "exemptModal":
-                return view('interviewer.exemptModal', ['id' => $id]);
+                return view('interviewer.exemptModal', ['id' => $id, 'mode' => 'exempt']);
             case "rollBackModal":
-                return view('interviewer.rollBackModal', ['id' => $id]);
+                return view('interviewer.exemptModal', ['id' => $id, 'mode' => 'rollback']);
             case "cancelModal":
                 return view('interviewer.cancelModal', ['id' => $id]);
             case "rateModal":
                 return view('interviewer.rateModal', ['id' => $id]);
             default:
-                return "error";
+                return view('error', ['msg' => '指令无效！']);
         }
-        //To-Do: return redirect blablabla
+        return redirect(mp_url('/interviews')); //blablabla
     }
 
     public function assignInterview(Request $request, $id)

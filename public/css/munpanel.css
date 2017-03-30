@@ -256,3 +256,10 @@ fieldset[mp-disabled] .btn-danger.active {
   border-color: #fb6b5b;
   cursor: default;
 } 
+
+.mp-modal-header {
+    padding: 1px;
+    min-height: 0;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+}

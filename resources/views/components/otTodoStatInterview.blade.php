@@ -1,5 +1,8 @@
 @php
-$interviews = interviewStat(Reg::currentConferenceID(), -1);
+$myself = Reg::current();
+$iid = 0;
+if ($myself->can('view-all-interviews')) $iid = -1;
+$interviews = interviewStat(Reg::currentConferenceID(), $iid);
 @endphp
 <div class="panel">
   <div class="panel-heading">
@@ -21,7 +24,7 @@ $interviews = interviewStat(Reg::currentConferenceID(), -1);
       <small class="text-muted block">等待面试队列</small>
       <h4>{{$interviews['unfinished']}}</h4>
       <div class="inline">
-        <div class="easypiechart easyPieChart" data-size="100" data-line-width="4" data-percent="{{$interviews['arranged'] > 0 ? ($interviews['finished'] * 100 / $interviews['arranged']) : 0}}" data-loop="false">
+        <div class="easypiechart easyPieChart" data-size="100" data-line-width="4" data-percent="{{$interviews['arranged'] > 0 ? ($interviews['finished'] * 100 / ($interviews['unfinished'] + $interviews['finished'])) : 0}}" data-loop="false">
           <span class="h3">0</span>%
           <div class="easypie-text">面试完成</div>
           <canvas></canvas>

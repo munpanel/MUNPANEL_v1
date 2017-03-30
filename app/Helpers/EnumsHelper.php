@@ -58,6 +58,7 @@ function typeID($code)
     if ($code == 2) return "护照 (Passport)";
     if ($code == 3) return "港澳回乡证";
     if ($code == 4) return "台胞证";
+    if ($code == 5) return "US Social Security Card";
     return "undefined";
 }
 
@@ -84,7 +85,7 @@ function levelOfConfs($code)
  */
 function typeInterview($code)
 {
-    if ($code == 1) return "电话 (包括备用电话)";
+    if ($code == 1) return "电话";
     if ($code == 2) return "QQ";
     if ($code == 3) return "Skype";
     if ($code == 4) return "微信";

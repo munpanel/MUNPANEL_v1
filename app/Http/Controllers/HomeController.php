@@ -93,6 +93,13 @@ class HomeController extends Controller
         }
         else if ($type == 'interviewer')
         {
+            return view('ot.home', [
+                'vol' => Reg::currentConference()->volunteers->count(),
+                'obs' => Reg::currentConference()->observers->count(),
+                'del' => Reg::currentConference()->delegates->count(),
+                'dais' => Reg::currentConference()->dais->count(),
+                'hasChildComm' => $hasChildComm
+            ]);
             return view('interviewer.home');
         }
         else

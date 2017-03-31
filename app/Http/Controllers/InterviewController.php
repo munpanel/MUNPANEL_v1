@@ -82,7 +82,16 @@ class InterviewController extends Controller
             case "rate":
                 $interview->status = $request->result . 'ed';
                 $interview->finished_at = date('Y-m-d H:i:s');
-                $interview->score = $request->score;
+                $scores = array();
+                $score = 0;
+                $scoresOptions = json_decode(Reg::currentConference()->option('interview_scores'));
+                foreach($scoresOptions as $key => $value)
+                {
+                    $scores[$key] = $request->$key;
+                    $score += intval($request->$key) * $value->weight;
+                }
+                $interview->scores = json_encode($scores);
+                $interview->score = $score * 2;
                 $interview->public_fb = $request->public_fb;
                 $interview->internal_fb = $request->internal_fb;
                 $interview->save();

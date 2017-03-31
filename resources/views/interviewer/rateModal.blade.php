@@ -6,16 +6,16 @@
    <div class="modal-body">
      <div class="row">
        <div class="col-sm-12 b-r">
-        <form id="rateForm" class="form-horizontal" data-validate="parsley" action="{{mp_url('/interview/'.$id.'/arrange')}}" method="post">
+        <form id="rateForm" class="form-horizontal" data-validate="parsley" action="{{mp_url('/interview/'.$id.'/rate')}}" method="post">
             {{csrf_field()}}
                 <div class="form-group">
                   <label class="col-sm-2 control-label">面试结果</label>
                   <div class="col-lg-6 btn-group" data-toggle="buttons">
                     <label class="btn btn-sm btn-success">
-                        <input type="radio" name="pass" value="1"> <i class="fa fa-check text-active"></i> 通过
+                        <input type="radio" name="result" value="pass"> <i class="fa fa-check text-active"></i> 通过
                     </label>
                     <label class="btn btn-sm btn-danger">
-                        <input type="radio" name="pass" value="1" data-required="true"> <i class="fa fa-check text-active"></i> 不通过
+                        <input type="radio" name="result" value="fail" data-required="true"> <i class="fa fa-check text-active"></i> 不通过
                     </label>
                   </div>
                   <label class="col-sm-2 control-label">综合评分</label>
@@ -110,12 +110,6 @@ var opts_ext = {
 
 var editor_int = new EpicEditor(opts_int).load();
 var editor_ext = new EpicEditor(opts_ext).load();
-
-$('#rateForm').submit(function(e){
-    if (!$( '#rateform' ).parsley( 'validate' )) {
-        e.preventDefault();
-    }
-});
 
 $('.rateRadio').change(function(){
 score = 0;

@@ -76,7 +76,14 @@ class InterviewController extends Controller
                 $interview->reg->addEvent('interview_exempted', '{"interviewadmin":"'.Auth::user()->name.'","interviewer":"并"}');
                 break;
             case "rollBack":
-            case "rollback":
+                if ($interview->status != 'assigned')
+                    return view('error', ['msg' => '状态错误！']);
+                $interview->status = 'cancelled';
+                $interview->finished_at = date('Y-m-d H:i:s');
+                $interview->arranging_notes = $request->notes;
+                $interview->save();
+                $interview->reg->addEvent('interview_cancelled', '{"interviewer":"'.Auth::user()->name.'"}');
+                break;
             case "cancel":
                 if ($interview->status != 'arranged')
                     return view('error', ['msg' => '状态错误！']);
@@ -84,6 +91,12 @@ class InterviewController extends Controller
                 $interview->finished_at = date('Y-m-d H:i:s');
                 $interview->arranging_notes = $request->notes;
                 $interview->save();
+                $newInterview = new Interview;
+                $newInterview->conference_id = Reg::currentConferenceID();
+                $newInterview->reg_id = $interview->reg_id;
+                $newInterview->interviewer_id = Reg::currentID();
+                $newInterview->status = 'assigned';
+                $newInterview->save();
                 $interview->reg->addEvent('interview_cancelled', '{"interviewer":"'.Auth::user()->name.'"}');
                 break;
             case "rate":
@@ -111,7 +124,7 @@ class InterviewController extends Controller
             case "exemptModal":
                 return view('interviewer.exemptModal', ['id' => $id, 'mode' => 'exempt']);
             case "rollBackModal":
-                return view('interviewer.exemptModal', ['id' => $id, 'mode' => 'rollback']);
+                return view('interviewer.exemptModal', ['id' => $id, 'mode' => 'rollBack']);
             case "cancelModal":
                 return view('interviewer.exemptModal', ['id' => $id, 'mode' => 'cancel']);
             case "rateModal":

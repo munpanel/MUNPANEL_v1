@@ -10,3 +10,13 @@
                   <span>Interviews</span>
                 </a>
               </li>
+              @foreach(Auth::user()->regs->where('conference_id', Reg::currentConferenceID())->where('enabled', true) as $reg)
+              @if ($reg->type == 'ot' || $reg->type == 'dais')
+              <li>
+                <a href="{{ mp_url('/doSwitchIdentity/'.$reg->id) }}">
+                  <i class="fa fa-comments"></i>
+                  <span>返回 {{$reg->regText()}} 身份</span>
+                </a>
+              </li>
+              @endif
+              @endforeach

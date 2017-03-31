@@ -23,7 +23,7 @@ class InterviewController extends Controller
 {
     public function interviews($id = 0)
     {
-        if ((!Reg::current()->can('edit-interviews')) && Reg::current()->type != 'interviewer')
+        if ((!Reg::current()->can('view-all-interviews')) && Reg::current()->type != 'interviewer')
             return view('error', ['msg' => '您没有面试官身份，无权进行该操作！']);
         $interviews = new Collection;
         if ($id == -1)
@@ -56,14 +56,19 @@ class InterviewController extends Controller
         switch($action)
         {
             case "arrange":
+                if ($interview->status != 'assigned')
+                    return view('error', ['msg' => '状态错误！']);
                 $interview->status = 'arranged';
                 $interview->arranged_at = $request->arrangeTime;
                 $interview->arranging_notes = $request->notes;
                 $type = intval($request->typeInterview);
                 $interview->save();
                 $interview->reg->addEvent('interview_arranged', '{"interviewer":"'.Auth::user()->name.'","time":"'.date(' n 月 j 日 H:i ', strtotime($interview->arranged_at)).'","method":"'.typeInterview($type).'"}');
+                Reg::findOrFail($id)->user->sendSMS('感谢您以代表身份报名'.Reg::currentConference()->name.'。面试官'.Auth::user()->name.'已为您安排一场于'.date(' n 月 j 日 H:i ', strtotime($interview->arranged_at)).'进行的'.typeInterview($type).'面试。请保持联系方式畅通，预祝面试愉快。');
                 break;
             case "exempt":
+                if ($interview->status != 'assigned')
+                    return view('error', ['msg' => '状态错误！']);
                 $interview->status = 'exempted';
                 $interview->finished_at = date('Y-m-d H:i:s');
                 $interview->arranging_notes = $request->notes;
@@ -73,6 +78,8 @@ class InterviewController extends Controller
             case "rollBack":
             case "rollback":
             case "cancel":
+                if ($interview->status != 'arranged')
+                    return view('error', ['msg' => '状态错误！']);
                 $interview->status = 'cancelled';
                 $interview->finished_at = date('Y-m-d H:i:s');
                 $interview->arranging_notes = $request->notes;
@@ -80,6 +87,8 @@ class InterviewController extends Controller
                 $interview->reg->addEvent('interview_cancelled', '{"interviewer":"'.Auth::user()->name.'"}');
                 break;
             case "rate":
+                if ($interview->status != 'arranged')
+                    return view('error', ['msg' => '状态错误！']);
                 $interview->status = $request->result . 'ed';
                 $interview->finished_at = date('Y-m-d H:i:s');
                 $scores = array();
@@ -125,6 +134,7 @@ class InterviewController extends Controller
         $interview->status = 'assigned';
         $interview->save();
         Reg::findOrFail($id)->addEvent('interview_assigned', '{"interviewer":"'.$interviewer->reg->user->name.'"}');
+        Reg::findOrFail($id)->user->sendSMS('感谢您以代表身份报名'.Reg::currentConference()->name.'。现已为您分配面试官'.$interviewer->reg->name().'，登录系统查看详情。请保持联系方式畅通，预祝面试愉快。');
         return redirect('/regManage?initialReg='.$id);
     }
 

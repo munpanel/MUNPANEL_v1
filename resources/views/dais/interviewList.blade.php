@@ -29,7 +29,11 @@
         <li><a href="{{mp_url('/interviews/-1')}}">查看所有面试</a></li>
         @endif
         @if ($iid != 0)
-        <li><a href="{{mp_url('/interviews')}}">查看我的面试</a></li>
+        @foreach(Auth::user()->regs->where('conference_id', Reg::currentConferenceID())->where('enabled', true) as $reg)
+        @if ($reg->type == 'interviewer')
+        <li><a href="{{mp_url('/doSwitchIdentity/'.$reg->id)}}">查看我的面试</a></li>
+        @endif
+        @endforeach
         @endif
       </ul>
     </div>

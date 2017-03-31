@@ -24,12 +24,12 @@ class InterviewController extends Controller
     public function interviews($id = 0)
     {
         if ((!Reg::current()->can('edit-interviews')) && Reg::current()->type != 'interviewer')
-            return view('error', ['message' => '您没有面试官身份，无权进行该操作！']);
+            return view('error', ['msg' => '您没有面试官身份，无权进行该操作！']);
         $interviews = new Collection;
         if ($id == -1)
         {
             if (!Reg::current()->can('view-all-interviews'))
-                return view('error', ['message' => '您没有权限进行该操作！']);
+                return view('error', ['msg' => '您没有权限进行该操作！']);
             $interviews = Interview::where('conference_id', Reg::currentConferenceID())->get();
         }
         elseif ($id == 0 || $id == Reg::currentID())
@@ -37,10 +37,10 @@ class InterviewController extends Controller
         else
         {
             if (!Reg::current()->can('view-all-interviews'))
-                return view('error', ['message' => '您没有权限进行该操作！']);
+                return view('error', ['msg' => '您没有权限进行该操作！']);
             $reg = Interviewer::find($id);
             if (is_null($reg))
-                return view('error', ['message' => '此人不是您所在会议的面试官！']);
+                return view('error', ['msg' => '此人不是您所在会议的面试官！']);
             $interviews = Interview::where('interviewer_id', $id)->get();
         }
         return view('dais.interviewList', ['interviews' => $interviews, 'iid' => $id]);
@@ -51,7 +51,7 @@ class InterviewController extends Controller
         $interview = Interview::findOrFail($id);
         if ($interview->interviewer_id != Reg::currentID())
         {
-            return view('error', ['message' => '您没有权限进行该操作！']);
+            return view('error', ['msg' => '您没有权限进行该操作！']);
         }
         switch($action)
         {

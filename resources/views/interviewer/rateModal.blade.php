@@ -24,7 +24,7 @@
                 <div class="form-group">
 <label class="col-sm-2 control-label">评分</label>
                   <div class="col-lg-10">
-@foreach (json_decode(Reg::currentConference()->option('interview_scores')) as $key => $value)
+@foreach ($scoresOptions as $key => $value)
                     <div class="btn-group m-b-xs" data-toggle="buttons">
                       <label class="btn btn-sm btn-primary disabled">
                           {{$value->name}}
@@ -120,7 +120,7 @@ $('#rateForm').submit(function(e){
 $('.rateRadio').change(function(){
 score = 0;
 
-@foreach (json_decode(Reg::currentConference()->option('interview_scores')) as $key => $value)
+@foreach ($scoresOptions as $key => $value)
 score += $("input:radio[name ='{{$key}}']:checked").val() * {{$value->weight}};
 
 @endforeach

@@ -97,7 +97,7 @@ class InterviewController extends Controller
             case "cancelModal":
                 return view('interviewer.exemptModal', ['id' => $id, 'mode' => 'cancel']);
             case "rateModal":
-                return view('interviewer.rateModal', ['id' => $id]);
+                return view('interviewer.rateModal', ['id' => $id, 'scoresOptions' => json_decode(Reg::currentConference()->option('interview_scores'))]);
             default:
                 return view('error', ['msg' => '指令无效！']);
         }

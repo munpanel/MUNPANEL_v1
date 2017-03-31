@@ -8,16 +8,17 @@
    <header class="header bg-warning bg-gradient mp-modal-header">
       <center><h4>退回面试</h4></center>
    </header>
+   @elseif ($mode == 'cancel')
+   <header class="header bg-warning bg-gradient mp-modal-header">
+      <center><h4>取消面试</h4></center>
+   </header>
    @endif
    <div class="modal-body">
      <div class="row">
        <div class="col-sm-12 b-r">
-        @if ($mode == 'exempt')
-        <form id="assignForm" class="form-horizontal" data-validate="parsley" action="{{mp_url('/interview/'.$id.'/exempt')}}" method="post">
-        <input type="hidden" name="mode" value="exempt">
-        @elseif ($mode == 'rollback')
-        <form id="assignForm" class="form-horizontal" data-validate="parsley" action="{{mp_url('/interview/'.$id.'/rollBack')}}" method="post">
-        <input type="hidden" name="mode" value="rollback">
+        @if (!empty($mode))
+        <form id="assignForm" class="form-horizontal" data-validate="parsley" action="{{mp_url('/interview/'.$id.'/'.$mode)}}" method="post">
+        <input type="hidden" name="mode" value="{{$mode}}">
         @else
         <form id="assignForm" class="form-horizontal" data-validate="parsley" method="post">
         @endif
@@ -34,6 +35,8 @@
              <button type="submit" class="btn btn-sm btn-success text-uc m-t-n-xs m-r-xs pull-right"><i class="fa fa-check"></i> 面试通过</button>
              @elseif ($mode == 'rollback')
              <button type="submit" class="btn btn-sm btn-success text-uc m-t-n-xs m-r-xs pull-right"><i class="fa fa-check"></i> 退回面试</button>
+             @elseif ($mode == 'cancel')
+             <button type="submit" class="btn btn-sm btn-success text-uc m-t-n-xs m-r-xs pull-right"><i class="fa fa-check"></i> 取消面试</button>
              @endif
            </p>
          </form>

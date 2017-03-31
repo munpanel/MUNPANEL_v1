@@ -263,3 +263,8 @@ fieldset[mp-disabled] .btn-danger.active {
     border-top-left-radius: 6px;
     border-top-right-radius: 6px;
 }
+
+.control-inline-h {
+    margin-top:7px;
+    margin-bottom:7px;
+}

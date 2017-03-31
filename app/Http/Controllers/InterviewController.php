@@ -83,8 +83,8 @@ class InterviewController extends Controller
                 $interview->status = $request->result . 'ed';
                 $interview->finished_at = date('Y-m-d H:i:s');
                 $interview->score = $request->score;
-                $interview->public_fb = $request->notes;
-                $interview->internal_fb = $request->fb_int;
+                $interview->public_fb = $request->public_fb;
+                $interview->internal_fb = $request->internal_fb;
                 $interview->save();
                 $interview->reg->addEvent('interview_' . $request->result . 'ed', '{"interviewer":"'.Auth::user()->name.'"}');
                 break;

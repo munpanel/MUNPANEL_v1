@@ -183,7 +183,7 @@
   <form id="logout-form" action="{{ mp_url('/logout') }}" method="POST" style="display: none;"> {{ csrf_field() }} </form>
 	<script src="{{mp_url('/js/jquery.min.js')}}"></script>
   <!-- Bootstrap -->
-  <script src="{{mp_url('/js/bootstrap.js')}}"></script>
+  <script src="{{mp_url('/js/bootstrap.min.js')}}"></script>
   <!-- App -->
   <script src="{{mp_url('/js/app.js')}}"></script>
   <script src="{{mp_url('/js/app.plugin.js')}}"></script>

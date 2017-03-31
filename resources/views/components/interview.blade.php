@@ -14,9 +14,15 @@
       完成于: {{date('Y-m-d H:i', strtotime($interview->finished_at))}}<br>
       @endif
       状态: {{$interview->statusText()}}<br>
+      @if (in_array($interview->status, ['arranged', 'undecided', 'exempted', 'cancelled']))      
+      面试备注: {{$interview->arranging_notes or '无'}}
+      @endif
       @if (in_array($interview->status, ['passed', 'failed']))
       评分: {{$interview->score}}<br>
-      反馈: {{$interview->feedback or '无'}}<br>
+      反馈: {{$interview->public_fb or '无'}}
+        @if (!empty($interview->internal_fb))
+        <br>内部反馈: {{$interview->internal_fb or '无'}}
+        @endif
       @endif
     </p>
     @if (Reg::current()->type == 'interviewer')

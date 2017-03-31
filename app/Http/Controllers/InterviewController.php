@@ -71,15 +71,22 @@ class InterviewController extends Controller
                 $interview->reg->addEvent('interview_exempted', '{"interviewadmin":"'.Auth::user()->name.'","interviewer":"并"}');
                 break;
             case "rollBack":
+            case "rollback":
+            case "cancel":
                 $interview->status = 'cancelled';
                 $interview->finished_at = date('Y-m-d H:i:s');
                 $interview->arranging_notes = $request->notes;
                 $interview->save();
                 $interview->reg->addEvent('interview_cancelled', '{"interviewer":"'.Auth::user()->name.'"}');
                 break;
-            case "cancel":
-                break;
             case "rate":
+                $interview->status = $request->result . 'ed';
+                $interview->finished_at = date('Y-m-d H:i:s');
+                $interview->score = $request->score;
+                $interview->public_fb = $request->notes;
+                $interview->internal_fb = $request->fb_int;
+                $interview->save();
+                $interview->reg->addEvent('interview_' . $request->result . 'ed', '{"interviewer":"'.Auth::user()->name.'"}');
                 break;
             case "arrangeModal":
                 return view('interviewer.arrangeModal', ['id' => $id]);
@@ -88,7 +95,7 @@ class InterviewController extends Controller
             case "rollBackModal":
                 return view('interviewer.exemptModal', ['id' => $id, 'mode' => 'rollback']);
             case "cancelModal":
-                return view('interviewer.cancelModal', ['id' => $id]);
+                return view('interviewer.exemptModal', ['id' => $id, 'mode' => 'cancel']);
             case "rateModal":
                 return view('interviewer.rateModal', ['id' => $id]);
             default:

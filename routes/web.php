@@ -34,11 +34,27 @@ Route::group(['domain' => 'portal.munpanel.com'], function () {
     });
 
     Route::get('/showEmail/{id}', 'EmailController@showEmail');
-    Route::get('/daisBJMUN', 'EmailController@daisBJMUN');
+    //Route::get('/daisBJMUN', 'EmailController@daisBJMUN');
 
-    Auth::routes();
+    Route::get('/startCaptchaServlet', 'GeeTestController@startCaptcha');
+
+    // Authentication Routes...
+    Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
+    Route::post('login', 'Auth\LoginController@login')->middleware('geetest');
+    Route::post('logout', 'Auth\LoginController@logout')->name('logout');
     Route::get('/loginViaConsoleMail', 'Auth\\LoginController@loginConsoleMail');
-    Route::post('/loginMail', 'Auth\\LoginController@doLoginMail');
+    Route::post('/loginMail', 'Auth\\LoginController@doLoginMail')->middleware('geetest');
+
+
+    // Registration Routes...
+    Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('register');
+    Route::post('register', 'Auth\RegisterController@register')->middleware('geetest');
+
+    // Password Reset Routes...
+    Route::get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('password.request');
+    Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
+    Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
+    Route::post('password/reset', 'Auth\ResetPasswordController@reset');
 
     Route::get('/verifyEmail', 'HomeController@verifyEmail');
     Route::get('/verifyTel', 'HomeController@verifyTel');

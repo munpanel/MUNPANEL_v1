@@ -2771,6 +2771,12 @@ fieldset[disabled] .btn-gplus.active {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+.geetest_logo {
+    display: none;
+}
+.geetest_success_logo {
+    display: none;
+}
 @media screen and (min-width: 992px) {
   .col-lg-2-4 {
     width: 20.000%;

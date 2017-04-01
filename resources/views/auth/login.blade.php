@@ -49,13 +49,16 @@
               <label class="control-label">密码</label>
               <input type="password" id="password" name="password" class="form-control" data-required="true">
             </div>
+            <div id="embed-captcha"></div>
+            <p id="wait" class="show">正在加载验证码......</p>
+            <p id="notice" class="hide">请先完成验证</p>
             <div class="checkbox">
               <label>
                 <input type="checkbox" name="remember"> 记住我
               </label>
             </div>
             <a href="{{ mp_url('/password/reset') }}" class="pull-right m-t-xs"><small>忘记密码?</small></a>
-            <button type="submit" class="btn btn-info">登陆</button>
+            <button type="submit" class="btn btn-info" id="login-submit">登陆</button>
 <div class="line line-dashed"></div>
             <p class="text-muted text-center"><small>没有账号?</small></p>
             <a href="{{ mp_url('/register') }}" class="btn btn-white btn-block">新建帐号并报名会议</a>
@@ -79,6 +82,7 @@
 	<script src="js/jquery.min.js"></script>
   <!-- Bootstrap -->
   <script src="js/bootstrap.js"></script>
+  <script src="{{mp_url('/js/gt.js')}}"></script>
   <!-- app -->
   <script src="js/app.js"></script>
   <script src="js/app.plugin.js"></script>
@@ -86,5 +90,40 @@
   <!-- Parsley -->
   <script src="js/parsley/parsley.min.js"></script>
   <script src="js/parsley/parsley.extend.js"></script>
+    <script>
+        var handlerEmbed = function (captchaObj) {
+            $("#login-submit").click(function (e) {
+                var validate = captchaObj.getValidate();
+                if (!validate) {
+                    $("#notice")[0].className = "show";
+                    setTimeout(function () {
+                        $("#notice")[0].className = "hide";
+                    }, 2000);
+                    e.preventDefault();
+                }
+            });
+            captchaObj.appendTo("#embed-captcha");
+            captchaObj.onReady(function () {
+                $("#wait")[0].className = "hide";
+            });
+        };
+        $.ajax({
+            url: "{{mp_url('startCaptchaServlet?t=')}}" + (new Date()).getTime(), // prevent cache
+            type: "get",
+            dataType: "json",
+            success: function (data) {
+                //console.log(data);
+                initGeetest({
+                    gt: data.gt,
+                    challenge: data.challenge,
+                    new_captcha: data.new_captcha,
+                    width: '100%',
+                    product: "float",
+                    offline: !data.success,
+                    protocol: 'https://'
+                }, handlerEmbed);
+            }
+        });
+    </script>
 </body>
 </html>

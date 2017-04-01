@@ -67,7 +67,10 @@
                 <input type="checkbox" name="check" data-required="true"> 我就读于成员校</a>
               </label>
             </div-->
-            <button type="submit" class="btn btn-info">注册</button>
+            <div id="embed-captcha"></div>
+            <p id="wait" class="show">正在加载验证码......</p>
+            <p id="notice" class="hide">请先完成验证</p>
+            <button type="submit" class="btn btn-info" id="reg-submit">注册</button>
             <div class="line line-dashed"></div>
             <p class="text-muted text-center"><small>已有账号?</small></p>
             <a href="{{ mp_url('/login') }}" class="btn btn-white btn-block">登陆</a>
@@ -88,6 +91,7 @@
 	<script src="js/jquery.min.js"></script>
   <!-- Bootstrap -->
   <script src="js/bootstrap.js"></script>
+  <script src="{{mp_url('/js/gt.js')}}"></script>
   <!-- app -->
   <script src="js/app.js"></script>
   <script src="js/app.plugin.js"></script>
@@ -95,5 +99,40 @@
   <!-- Parsley -->
   <script src="js/parsley/parsley.min.js"></script>
   <script src="js/parsley/parsley.extend.js"></script>
+    <script>
+        var handlerEmbed = function (captchaObj) {
+            $("#reg-submit").click(function (e) {
+                var validate = captchaObj.getValidate();
+                if (!validate) {
+                    $("#notice")[0].className = "show";
+                    setTimeout(function () {
+                        $("#notice")[0].className = "hide";
+                    }, 2000);
+                    e.preventDefault();
+                }
+            });
+            captchaObj.appendTo("#embed-captcha");
+            captchaObj.onReady(function () {
+                $("#wait")[0].className = "hide";
+            });
+        };
+        $.ajax({
+            url: "{{mp_url('startCaptchaServlet?t=')}}" + (new Date()).getTime(), // prevent cache
+            type: "get",
+            dataType: "json",
+            success: function (data) {
+                //console.log(data);
+                initGeetest({
+                    gt: data.gt,
+                    challenge: data.challenge,
+                    new_captcha: data.new_captcha,
+                    width: '100%',
+                    product: "float",
+                    offline: !data.success,
+                    protocol: 'https://'
+                }, handlerEmbed);
+            }
+        });
+    </script>
 </body>
 </html>

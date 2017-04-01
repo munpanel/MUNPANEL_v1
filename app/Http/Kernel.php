@@ -68,5 +68,6 @@ class Kernel extends HttpKernel
         'role' => \App\Http\Middleware\EntrustRole::class,
         'permission' => \App\Http\Middleware\EntrustPermission::class,
         'ability' => \App\Http\Middleware\EntrustAbility::class,
+        'geetest' => \App\Http\Middleware\CheckGeeTest::class,
     ];
 }

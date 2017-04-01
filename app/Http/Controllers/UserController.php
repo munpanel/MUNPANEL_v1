@@ -97,7 +97,7 @@ class UserController extends Controller
      *
      * @param Request $request
      * return void
-     */ 
+     */
     public function regSaveVol(Request $request)
     {
         //$user = Auth::user();
@@ -204,7 +204,7 @@ class UserController extends Controller
             }
             $user = new User;
             $user->name = $request->name;
-            $user->email = $request->email; 
+            $user->email = $request->email;
             $user->password = Hash::make($request->password2);
             $user->type = 'unregistered';
             $user->save();
@@ -218,35 +218,35 @@ class UserController extends Controller
         $reg->type = $request->type;
         $reg->enabled = true;
         $reg->gender = $request->gender;
-        //if (!empty($request->committee)) 
+        //if (!empty($request->committee))
         $regInfo = new \stdClass();
         $personal_info = new \stdClass();
         if (!empty($request->dateofbirth))
-            $personal_info->dateofbirth = $request->dateofbirth; 
+            $personal_info->dateofbirth = $request->dateofbirth;
         if (!empty($request->province))
-            $personal_info->province = $request->province; 
-        $personal_info->school = $request->school; 
+            $personal_info->province = $request->province;
+        $personal_info->school = $request->school;
         $school = School::where('name', $request->school)->first();
         if (!empty($school)) $reg->school_id = $school->id;
         $personal_info->yearGraduate = $request->yearGraduate;
         if (!empty($request->sfz))
         {
-            $personal_info->typeDocument = $request->typeDocument; 
+            $personal_info->typeDocument = $request->typeDocument;
             $personal_info->sfz = $request->sfz;
-        }   
-        $personal_info->tel = $request->tel; 
+        }
+        $personal_info->tel = $request->tel;
         if (!empty($request->tel2))
-            $personal_info->tel2 = $request->tel2; 
+            $personal_info->tel2 = $request->tel2;
         if (!empty($request->qq))
-            $personal_info->qq = $request->qq; 
+            $personal_info->qq = $request->qq;
         if (!empty($request->skype))
-            $personal_info->skype = $request->skype; 
+            $personal_info->skype = $request->skype;
         if (!empty($request->wechat))
-            $personal_info->wechat = $request->wechat;            
+            $personal_info->wechat = $request->wechat;
         if (!empty($request->parentname))
         {
-            $personal_info->parentname = $request->parentname; 
-            $personal_info->parentrelation = $request->parentrelation; 
+            $personal_info->parentname = $request->parentname;
+            $personal_info->parentrelation = $request->parentrelation;
             $personal_info->parenttel = $request->parenttel;
         }
         $regInfo->personinfo = $personal_info;
@@ -316,7 +316,7 @@ class UserController extends Controller
                     case 'preGroupOptions':
                         $conf_info->groupOption = $request->groupOption;
                     break;
-                    case 'preRemarks': 
+                    case 'preRemarks':
                         $conf_info->remarks = $request->remarks;
                     break;
                     case 'group':
@@ -369,7 +369,7 @@ class UserController extends Controller
         $reg->addEvent('registration_submitted', '');
         return redirect('/home');
     }
-    
+
     /**
      * make a registration ot verified.
      *
@@ -523,7 +523,7 @@ class UserController extends Controller
             }
             fclose($handle);
             return $resp;
-        }       
+        }
     }
 
     /**
@@ -773,7 +773,7 @@ class UserController extends Controller
         $interviewer->display_name = '面试官组';
         $interviewer->description = '包括面试和分配席位的权限。';
         $interviewer->save();*/
-        
+
         $interviewer =Role::find(5);
         $interviewer->attachPermissions(array($editInterview, $assignRole));
     }
@@ -828,15 +828,15 @@ class UserController extends Controller
     /**
      * A function to write some temporary code.
      */
-    public function test()
+    public function test(Request $request)
     {
         $this->createPermissions();
         return '<a href="http://192.154.111.163/phpmyadmin">检查数据库</a>';
         $js = json_encode('$("#reg2Form").ready(function(e){
     var group = document.getElementById("committee1branch");
     var group2 = document.getElementById("committee2branch");
-    group2.style.display = "none";  
-    group.style.display = "none"; 
+    group2.style.display = "none";
+    group.style.display = "none";
 });
 $("#select-comm1").change(function(e){
     var group = document.getElementById("committee1branch");
@@ -857,11 +857,11 @@ $("#select-comm1").change(function(e){
         $("select#select-branch2").append(\'<option value="" selected="">请选择备选会场</option><option value="17">亚洲分支</option><option value="18">欧洲分支</option><option value="19">东欧分支</option><option value="20">中东分支</option><option value="21">联合国安全理事会</option><option value="22">美洲分支</option><option value="24">舆论媒体</option>\');
         $("select#select-comm2 option").remove();
         $("select#select-comm2").append(\'<option value="" selected="">请选择</option><option value="11">東晉縱橫</option><option value="29">独立委员会组</option>\');
-        group2.style.display = "none";  
-        group.style.display = "block";      
+        group2.style.display = "none";
+        group.style.display = "block";
     }
     else
-    {        
+    {
         $("select#select-branch1 option").remove();
         $("select#select-branch2 option").remove();
         $("select#select-branch1").append(\'<option value="" selected="">请选择</option><option value="12">共同均衡裁军谈判会议</option><option value="13">G20 Summit</option><option value="14">联合国世界旅游组织第二十二届全体大会</option><option value="15">慕尼黑安全政策会议</option><option value="16">联合国大会社会、人道主义和文化委员会</option>\');
@@ -890,7 +890,7 @@ $("#select-comm2").change(function(e){
         group.style.display = "block";
     }
     else
-    {        
+    {
         $("select#select-branch3 option").remove();
         $("select#select-branch4 option").remove();
         $("select#select-branch3").append(\'<option value="" selected="">请选择</option><option value="12">共同均衡裁军谈判会议</option><option value="13">G20 Summit</option><option value="14">联合国世界旅游组织第二十二届全体大会</option><option value="15">慕尼黑安全政策会议</option><option value="16">联合国大会社会、人道主义和文化委员会</option>\');
@@ -907,7 +907,7 @@ return view('blank',['testContent' => $js, 'convert' => false]);
             $query->where('reg_id', Reg::currentID());
         })->count();
         return $b;
-        $c = $b->whereDoesntHave('handins', function ($query) { 
+        $c = $b->whereDoesntHave('handins', function ($query) {
             $query->where('reg_id', Reg::currentID());
         });
         // dd(\App\Interviewer::list());

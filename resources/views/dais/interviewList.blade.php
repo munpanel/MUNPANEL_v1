@@ -30,7 +30,7 @@
         @endif
         @if ($iid != 0)
         @foreach(Auth::user()->regs->where('conference_id', Reg::currentConferenceID())->where('enabled', true) as $reg)
-        @if ($reg->type == 'interviewer')
+        @if ($reg->type == 'interviewer' || $reg->can('edit-interviews'))
         <li><a href="{{mp_url('/doSwitchIdentity/'.$reg->id)}}">查看我的面试</a></li>
         @endif
         @endforeach

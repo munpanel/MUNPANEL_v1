@@ -389,6 +389,7 @@ class HomeController extends Controller
                 case 'interview_unassigned': $operations[] = 'assignInterview'; break;
                 case 'sVerified': if ($reg->enabled) $operations[] = 'oVerification'; break;
             }
+            if ($reg->delegate->status != 'fail') array_push($operations, 'setDelgroup');
         }
         return view('ot.regInfoModal', ['reg' => $reg, 'allRegs' => $allRegs, 'operations' => $operations]);
     }

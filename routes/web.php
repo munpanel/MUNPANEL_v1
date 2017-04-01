@@ -160,6 +160,7 @@ Route::group(['domain' => 'portal.munpanel.com'], function () {
     Route::get('/ot/daisregInfo.modal/{id}', 'HomeController@daisregInfoModal');
     Route::get('/ot/oVerify/{id}', 'UserController@oVerify');
     Route::get('/ot/oNoVerify/{id}', 'UserController@oNoVerify');
+    Route::post('/ot/setDelgroup', 'UserController@setDelgroup');
 
     Route::get('/interviews/{id?}', 'InterviewController@interviews');
     Route::any('/interview/{id}/{action}', 'InterviewController@interview');

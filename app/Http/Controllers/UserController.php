@@ -440,6 +440,24 @@ class UserController extends Controller
     }
 
     /**
+     * set delegate group for a single delegate.
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function setDelGroup(Request $request)
+    {
+        if (Reg::current()->type != 'ot' || (!Reg::current()->can('edit-regs')))
+            return "您无权执行该操作！";
+        $specific = Reg::find($id)->specific();
+        if ($specific->status == 'fail')
+            return "无法为此报名者执行该操作！";
+        // Step 1 清空代表的所有代表组
+        // Step 2 根据 $request 中选择的项的 array 为代表重新加入所有代表组
+        return redirect('/regManage?initialReg='.$id);
+    }
+
+    /**
      * set a registration to a certain status.
      *
      * @param int $id the id of the registration

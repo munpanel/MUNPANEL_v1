@@ -4,7 +4,7 @@
                   <span>Home</span>
                 </a>
               </li>
-              @permission('view-all-interviews')
+              @permission('edit-interviews')
               <li class="@yield('interview_active')">
                 <a href="{{ mp_url('/interviews'.(Reg::current()->can('view-all-interviews') ? '/-1' : '')) }}">
                   <i class="fa fa-comments"></i>

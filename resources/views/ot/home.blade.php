@@ -24,9 +24,9 @@
         @include('components.otTodoStatDaisreg')
       </div>
       @elseif (in_array(Reg::currentConference()->status, ['reg', 'regstop']))
-        @if (Reg::current()->can('view-regs'))
+        @if (Reg::current()->can('view-regs') && Reg::current()->type == 'ot')
         <div class="col-md-4">
-          @include('components.otRegStat')        
+          @include('components.otRegStat')
         </div>
         @endif
       <div class="col-md-8 {{!Reg::current()->can('view-regs') ? 'col-md-offset-2' : ''}}">

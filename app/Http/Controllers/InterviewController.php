@@ -23,7 +23,7 @@ class InterviewController extends Controller
 {
     public function interviews($id = 0)
     {
-        if ((!Reg::current()->can('view-all-interviews')) && Reg::current()->type != 'interviewer')
+        if (!Reg::current()->can('edit-interviews')) // && Reg::current()->type != 'interviewer')
             return view('error', ['msg' => '您没有面试官身份，无权进行该操作！']);
         $interviews = new Collection;
         if ($id == -1)

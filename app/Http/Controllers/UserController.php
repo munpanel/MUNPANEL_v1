@@ -449,12 +449,12 @@ class UserController extends Controller
     {
         if (Reg::current()->type != 'ot' || (!Reg::current()->can('edit-regs')))
             return "您无权执行该操作！";
-        $specific = Reg::find($id)->specific();
-        if ($specific->status == 'fail')
+        $reg = Reg::find($request->id);
+        $specific = $reg->specific();
+        if ($reg->type != 'delegate' || $specific->status == 'fail')
             return "无法为此报名者执行该操作！";
-        // Step 1 清空代表的所有代表组
-        // Step 2 根据 $request 中选择的项的 array 为代表重新加入所有代表组
-        return redirect('/regManage?initialReg='.$id);
+        $specific->delegategroups()->sync($request->delgroup);
+        return redirect('/regManage?initialReg='.$request->id);
     }
 
     /**
@@ -792,7 +792,9 @@ class UserController extends Controller
         $interviewer->description = '包括面试和分配席位的权限。';
         $interviewer->save();*/
 
-        $interviewer =Role::find(5);
+        $editInterview = Permission::find(10);
+        $assignRole = Permission::find(11);
+        $interviewer=Role::find(5);
         $interviewer->attachPermissions(array($editInterview, $assignRole));
     }
 

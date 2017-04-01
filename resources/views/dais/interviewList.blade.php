@@ -31,12 +31,15 @@
         @if ($iid != 0)
         @foreach(Auth::user()->regs->where('conference_id', Reg::currentConferenceID())->where('enabled', true) as $reg)
         @if ($reg->type == 'interviewer' || $reg->can('edit-interviews'))
-        <li><a href="{{mp_url('/doSwitchIdentity/'.$reg->id)}}">查看我的面试</a></li>
+        <li><a href="{{--mp_url('/doSwitchIdentity/'.$reg->id)--}}{{mp_url('/interviews/')}}">查看我的面试</a></li>
         @endif
         @endforeach
         @endif
       </ul>
     </div>
+    @if ($interviews->where('status', 'assigned')->count() > 0)
+    <a href="" class="btn btn-white btn-sm pull-right m-r-xs"><i class="fa fa-deaf"></i> 查看已取消的面试</a>
+    @endif
     @endpermission
   </header>
   <section class="scrollable wrapper">
@@ -108,11 +111,11 @@
                 <a class="panel-toggle text-muted" href="#"><i class="fa fa-caret-down text-active"></i><i class="fa fa-caret-up text"></i></a>
               </li>
             </ul>
-            已完成的面试 ({{$interviews->whereIn('status', ['passed', 'failed', 'exempted', 'cancelled'])->count()}})
+            已完成的面试 ({{$interviews->whereIn('status', ['passed', 'failed', 'exempted'])->count()}})
           </header>
           <div class="panel-body clearfix">
-            @if ($interviews->whereIn('status', ['passed', 'failed', 'exempted', 'cancelled'])->count() > 0)
-              @foreach ($interviews->whereIn('status', ['passed', 'failed', 'exempted', 'cancelled'])->sortByDesc('updated_at') as $interview)
+            @if ($interviews->whereIn('status', ['passed', 'failed', 'exempted'])->count() > 0)
+              @foreach ($interviews->whereIn('status', ['passed', 'failed', 'exempted'])->sortByDesc('updated_at') as $interview)
                 @include('components.interview')
               @endforeach
             @else

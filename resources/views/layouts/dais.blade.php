@@ -5,11 +5,11 @@
                 </a>
               </li>
               @if (Reg::current()->dais->status == 'success')
-              @permission('view-regs')
-              <li class="@yield('regManage_active')">
-                <a href="{{ mp_url('/regManage') }}">
-                  <i class="fa fa-tasks"></i>
-                  <span>Registration Management</span>
+              @permission('edit-interviews')
+              <li class="@yield('interview_active')">
+                <a href="{{ mp_url('/interviews'.(Reg::current()->can('view-all-interviews') ? '/-1' : '')) }}">
+                  <i class="fa fa-comments"></i>
+                  <span>Interviews</span>
                 </a>
               </li>
               @endpermission
@@ -44,6 +44,14 @@
                   <span>Console</span>
                 </a>
               </li>
+              @permission('view-regs')
+              <li class="@yield('regManage_active')">
+                <a href="{{ mp_url('/regManage') }}">
+                  <i class="fa fa-tasks"></i>
+                  <span>Registration Management</span>
+                </a>
+              </li>
+              @endpermission
               @endif
               <!--li class="@yield('store_active')">
                 <a href="{{ mp_url('/store') }}">

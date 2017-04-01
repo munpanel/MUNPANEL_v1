@@ -204,7 +204,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
     {
         $user = Reg::current();
         $conf = 2;
-        if ($user->type=='ot')
+        if (in_array($user->type, ['ot', 'dais', 'school']))
         {
             if (!Reg::current()->can('view-regs'))
                 return "ERROR";

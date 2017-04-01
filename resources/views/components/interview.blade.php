@@ -25,7 +25,7 @@
         @endif
       @endif
     </p>
-    @if (Reg::current()->type == 'interviewer')
+    @if ($interview->interviewer_id == Reg::currentID())
         @if ($interview->status == 'assigned')
         <a href="{{mp_url('/interview/'.$interview->id.'/arrangeModal')}}" class="btn btn-xs btn-warning pull-right" data-toggle="ajaxModal">安排面试</a>
         <a href="{{mp_url('/interview/'.$interview->id.'/exemptModal')}}" class="btn btn-xs btn-info pull-right m-r-xs" data-toggle="ajaxModal">免试通过</a>

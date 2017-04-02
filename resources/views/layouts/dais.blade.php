@@ -5,14 +5,6 @@
                 </a>
               </li>
               @if (Reg::current()->dais->status == 'success')
-              @permission('edit-interviews')
-              <li class="@yield('interview_active')">
-                <a href="{{ mp_url('/interviews'.(Reg::current()->can('view-all-interviews') ? '/-1' : '')) }}">
-                  <i class="fa fa-comments"></i>
-                  <span>Interviews</span>
-                </a>
-              </li>
-              @endpermission
               <li class="@yield('roles_active')">
                 <a href="{{ mp_url('/roleAlloc') }}">
                   <i class="fa fa-wheelchair"></i>
@@ -45,12 +37,7 @@
                 </a>
               </li>
               @permission('view-regs')
-              <li class="@yield('regManage_active')">
-                <a href="{{ mp_url('/regManage') }}">
-                  <i class="fa fa-tasks"></i>
-                  <span>Registration Management</span>
-                </a>
-              </li>
+              {{--那么这个人就有个ot身份--}}
               @endpermission
               @endif
               <!--li class="@yield('store_active')">

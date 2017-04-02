@@ -20,6 +20,7 @@ use App\School;
 use App\Committee;
 use App\Permission;
 use App\Role;
+use App\Interviewer;
 use App\Assignment;
 use App\Delegategroup;
 use App\Conference;
@@ -850,6 +851,14 @@ class UserController extends Controller
      */
     public function test(Request $request)
     {
+        $ints = Interviewer::all();
+        foreach($ints as $int)
+        {
+            $int->reg->type = 'interviewer';
+            $int->reg->save();
+            $int->reg->roles()->detach();
+        }
+        return ".";
         $this->createPermissions();
         return '<a href="http://192.154.111.163/phpmyadmin">检查数据库</a>';
         $js = json_encode('$("#reg2Form").ready(function(e){

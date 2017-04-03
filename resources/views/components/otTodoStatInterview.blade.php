@@ -1,11 +1,8 @@
 @php
 $myself = Reg::current();
 $interviewsA = [];
-$iid = 0;
 if ($myself->can('view-all-interviews')) 
-{
     array_push($interviewsA, interviewStat(Reg::currentConferenceID(), -1));
-}
 foreach(Auth::user()->regs->where('conference_id', Reg::currentConferenceID())->where('enabled', true) as $reg)
     if ($reg->type == 'interviewer')
         array_push($interviewsA, interviewStat(Reg::currentConferenceID(), $reg->id));

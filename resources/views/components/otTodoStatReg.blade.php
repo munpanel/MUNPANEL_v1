@@ -3,7 +3,7 @@ $regs = oVerifyStat(Reg::currentConferenceID());
 @endphp
 <div class="panel">
   <div class="panel-heading">
-    待办事项统计 {{Reg::current()->hasRole('coreteam') ? '(组委)' : ''}}
+    待办事项统计 {{Reg::current()->hasRole('coreteam') ? '(报名)' : ''}}
   </div>
   <div class="panel-body">
     <div class="text-center col-sm-3">

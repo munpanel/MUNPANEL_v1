@@ -1,3 +1,6 @@
+@php
+$canInterview = Auth::user()->regs->where('conference_id', Reg::currentConferenceID())->where('type', 'interviewer')->where('enabled', true)->count();
+@endphp
 @extends('layouts.app')
 @section('interview_active', 'active')
 @push('scripts')
@@ -24,7 +27,9 @@
       <button class="btn btn-white btn-sm dropdown-toggle" aria-expanded="false" data-toggle="dropdown"><i class="fa fa-eye"></i> 查看 <span class="caret"></span></button>
       <ul class="dropdown-menu">
         <li><a href="{{mp_url('/byInterviewerModal')}}">查看面试官的队列...</a></li>
+        @if ($iid == -1 && $canInterview > 0)
         <li class="divider"></li>
+        @endif
         @if ($iid != -1)
         <li><a href="{{mp_url('/interviews/-1')}}">查看所有面试</a></li>
         @endif
@@ -37,7 +42,7 @@
         @endif
       </ul>
     </div>
-    @if ($interviews->where('status', 'assigned')->count() > 0)
+    @if ($interviews->where('status', 'cancelled')->count() > 0)
     <a href="" class="btn btn-white btn-sm pull-right m-r-xs"><i class="fa fa-deaf"></i> 查看已取消的面试</a>
     @endif
     @endpermission

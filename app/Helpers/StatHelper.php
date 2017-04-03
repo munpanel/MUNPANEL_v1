@@ -56,7 +56,7 @@ function daisregStat($cid)
  */
 function interviewStat($cid, $rid = 0)
 {
-    $interviewsc = $unarranged = 0;
+    $interviewsc = $unarranged = $unfinished = $exempted = $cancelled = $success = 0;
     $interviews = Interview::where('conference_id', $cid)->get();
     if ($rid == -1)
     {
@@ -67,9 +67,10 @@ function interviewStat($cid, $rid = 0)
         $cancelled = $interviews->where('status', 'cancelled')->count();
         $success = $interviews->where('status', 'passed')->count();
     }
-    elseif ($rid == 0)
+    else
     {
-        $interviews = Interview::where('conference_id', $cid)->where('interviewer_id', Reg::currentID())->get();
+        if ($rid == 0) $rid = Reg::currentID();
+        $interviews = Interview::where('conference_id', $cid)->where('interviewer_id', $rid)->get();
         $interviewsc = $interviews->count();
         $unarranged = $interviews->where('status', 'assigned')->count();
         $unfinished = $interviews->where('status', 'arranged')->count();

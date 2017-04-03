@@ -1235,6 +1235,6 @@ return view('blank',['testContent' => $js, 'convert' => false]);
         if ($reg->user_id != Auth::user()->id)
             return 'error';
         $reg->login(true);
-        return redirect('/home');
+        return redirect(isset($request->target) ? $request->target : '/home');
     }
 }

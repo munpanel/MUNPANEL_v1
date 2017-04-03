@@ -8,11 +8,20 @@
               @foreach(Auth::user()->regs->where('conference_id', Reg::currentConferenceID())->where('enabled', true) as $reg)
               @if ($reg->type == 'interviewer')
               <li class="@yield('interview_active')">
-                <a href="{{ mp_url('/doSwitchIdentity/'.$reg->id) }}">
+                <a href="{{ mp_url('/doSwitchIdentity/'.$reg->id.'?target=/interviews') }}">
                   <i class="fa fa-comments"></i>
                   <span>Interviews</span>
                 </a>
               </li>
+              @permission('view-regs')
+              {{-- 用于面试协理给代表分配面试官 --}}
+              <li class="@yield('regManage_active')">
+                <a href="{{ mp_url('/regManage') }}">
+                  <i class="fa fa-tasks"></i>
+                  <span>Arrangement</span>
+                </a>
+              </li>
+              @endpermission
               @endif
               @endforeach
               <li class="@yield('roles_active')">

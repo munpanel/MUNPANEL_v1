@@ -14,7 +14,7 @@
               @if ($reg->type == 'ot' || $reg->type == 'dais')
               <li>
                 <a href="{{ mp_url('/doSwitchIdentity/'.$reg->id) }}">
-                  <i class="fa fa-comments"></i>
+                  <i class="fa fa-sign-out"></i>
                   <span>返回 {{$reg->regText()}} 身份</span>
                 </a>
               </li>

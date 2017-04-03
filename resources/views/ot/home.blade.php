@@ -1,3 +1,9 @@
+@php
+$canInterview = false;
+foreach(Auth::user()->regs->where('conference_id', Reg::currentConferenceID())->where('enabled', true) as $reg)
+    if ($reg->type == 'interviewer')
+        $canInterview = true;
+@endphp
 @extends('layouts.app')
 @section('home_active', 'active')
 @push('scripts')
@@ -33,7 +39,7 @@
         @if (Reg::current()->can('view-regs'))
           @include('components.otTodoStatReg')
         @endif
-        @if (Reg::current()->can('edit-interviews') || Reg::current()->type == 'interviewer')
+        @if ($canInterview || Reg::current()->type == 'interviewer' || Reg::current()->can('view-all-interviews'))
           @include('components.otTodoStatInterview')
         @endif
       </div>

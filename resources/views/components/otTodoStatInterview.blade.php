@@ -1,12 +1,19 @@
 @php
 $myself = Reg::current();
+$interviewsA = [];
 $iid = 0;
-if ($myself->can('view-all-interviews')) $iid = -1;
-$interviews = interviewStat(Reg::currentConferenceID(), $iid);
+if ($myself->can('view-all-interviews')) 
+{
+    array_push($interviewsA, interviewStat(Reg::currentConferenceID(), -1));
+}
+foreach(Auth::user()->regs->where('conference_id', Reg::currentConferenceID())->where('enabled', true) as $reg)
+    if ($reg->type == 'interviewer')
+        array_push($interviewsA, interviewStat(Reg::currentConferenceID(), $reg->id));
 @endphp
+@foreach ($interviewsA as $interviews)
 <div class="panel">
   <div class="panel-heading">
-    待办事项统计 {{Reg::current()->hasRole('coreteam') ? '(面试官)' : ''}}
+    待办事项统计 {{$interviews['iid'] == -1 ? '(所有面试)' : '(我的面试)'}}
   </div>
   <div class="panel-body">
     <div class="text-center col-sm-3">
@@ -55,3 +62,4 @@ $interviews = interviewStat(Reg::currentConferenceID(), $iid);
     </div>
   </div>
  </div>
+@endforeach

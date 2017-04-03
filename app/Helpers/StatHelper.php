@@ -80,5 +80,5 @@ function interviewStat($cid, $rid = 0)
     $arranged = $interviewsc - $unarranged;
     $finished = $arranged - $unfinished - $exempted - $cancelled;
     $roleSetable = $exempted + $success;
-    return ['all' => $interviewsc, 'unarranged' => $unarranged, 'arranged' => $arranged, 'unfinished' => $unfinished, 'finished' => $finished, 'passed' => $roleSetable];
+    return ['iid' => $rid, 'all' => $interviewsc, 'unarranged' => $unarranged, 'arranged' => $arranged, 'unfinished' => $unfinished, 'finished' => $finished, 'passed' => $roleSetable];
 }

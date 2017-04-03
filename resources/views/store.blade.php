@@ -1,13 +1,13 @@
 ﻿@extends('layouts.app')
 @section('store_active', 'active')
 @push('scripts')
-    <script src="{{mp_url('/js/jquery.dataTables.min.js')}}"></script>
-    <script src="{{mp_url('/js/store.js')}}"></script>
-    <script src="{{mp_url('/js/fuelux/fuelux.js')}}"></script>
+    <script src="{{cdn_url('/js/jquery.dataTables.min.js')}}"></script>
+    <script src="{{cdn_url('/js/store.js')}}"></script>
+    <script src="{{cdn_url('/js/fuelux/fuelux.js')}}"></script>
 @endpush
 @push('css')
-    <link rel="stylesheet" href="{{mp_url('/css/jquery.dataTables.min.css')}}" type="text/css" />
-    <link rel="stylesheet" href="{{mp_url('/js/fuelux/fuelux.css')}}" type="text/css" />
+    <link rel="stylesheet" href="{{cdn_url('/css/jquery.dataTables.min.css')}}" type="text/css" />
+    <link rel="stylesheet" href="{{cdn_url('/js/fuelux/fuelux.css')}}" type="text/css" />
 @endpush
 @section('content')
 <section class="vbox">

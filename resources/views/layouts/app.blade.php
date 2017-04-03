@@ -10,18 +10,18 @@
 
     <title>{{Reg::currentConference()->name}} | MUNPANEL</title>
 
-    <link rel="icon" href="{{mp_url('/images/favicon.ico')}}" type="image/x-icon" />
-    <link rel="shortcut icon" href="{{mp_url('/images/favicon.ico')}}" type="image/x-icon" />
+    <link rel="icon" href="{{cdn_url('/images/favicon.ico')}}" type="image/x-icon" />
+    <link rel="shortcut icon" href="{{cdn_url('/images/favicon.ico')}}" type="image/x-icon" />
 
     <!-- Styles -->
-    <link rel="stylesheet" href="{{mp_url('/css/bootstrap.css')}}" type="text/css" />
-    <link rel="stylesheet" href="{{mp_url('/css/animate.css')}}" type="text/css" />
-    <link rel="stylesheet" href="{{mp_url('/css/font-awesome.min.css')}}" type="text/css" />
-    <link rel="stylesheet" href="{{mp_url('/css/font.css')}}" type="text/css" cache="false" />
-    <link rel="stylesheet" href="{{mp_url('/css/plugin.css')}}" type="text/css" />
-    <link rel="stylesheet" href="{{mp_url('/css/app.css')}}" rel="stylesheet" />
+    <link rel="stylesheet" href="{{cdn_url('/css/bootstrap.css')}}" type="text/css" />
+    <link rel="stylesheet" href="{{cdn_url('/css/animate.css')}}" type="text/css" />
+    <link rel="stylesheet" href="{{cdn_url('/css/font-awesome.min.css')}}" type="text/css" />
+    <link rel="stylesheet" href="{{cdn_url('/css/font.css')}}" type="text/css" cache="false" />
+    <link rel="stylesheet" href="{{cdn_url('/css/plugin.css')}}" type="text/css" />
+    <link rel="stylesheet" href="{{cdn_url('/css/app.css')}}" rel="stylesheet" />
     @stack('css')
-    <link rel="stylesheet" href="{{mp_url('/css/munpanel.css')}}" type="text/css" />
+    <link rel="stylesheet" href="{{cdn_url('/css/munpanel.css')}}" type="text/css" />
 
     <!-- Scripts -->
     <script>
@@ -30,10 +30,10 @@
         ]); ?>
     </script>
     <!--[if lt IE 9]>
-      <script src="{{mp_url('/js/ie/respond.min.js')}}" cache="false"></script>
-      <script src="{{mp_url('/js/ie/html5.js')}}" cache="false"></script>
-      <script src="{{mp_url('/js/ie/excanvas.js')}}" cache="false"></script>
-      <script src="{{mp_url('/js/ie/fix.js')}}" cache="false"></script>
+      <script src="{{cdn_url('/js/ie/respond.min.js')}}" cache="false"></script>
+      <script src="{{cdn_url('/js/ie/html5.js')}}" cache="false"></script>
+      <script src="{{cdn_url('/js/ie/excanvas.js')}}" cache="false"></script>
+      <script src="{{cdn_url('/js/ie/fix.js')}}" cache="false"></script>
     <![endif]-->
 @if (Config::get('analytics.enabled'))
     <script>
@@ -181,17 +181,17 @@
     <!-- /.vbox -->
   </section>
   <form id="logout-form" action="{{ mp_url('/logout') }}" method="POST" style="display: none;"> {{ csrf_field() }} </form>
-	<script src="{{mp_url('/js/jquery.min.js')}}"></script>
+	<script src="{{cdn_url('/js/jquery.min.js')}}"></script>
   <!-- Bootstrap -->
-  <script src="{{mp_url('/js/bootstrap.min.js')}}"></script>
+  <script src="{{cdn_url('/js/bootstrap.min.js')}}"></script>
   <!-- App -->
-  <script src="{{mp_url('/js/app.js')}}"></script>
-  <script src="{{mp_url('/js/app.plugin.js')}}"></script>
-  <script src="{{mp_url('/js/app.data.js')}}"></script>
-  <script src="{{mp_url('js/slimscroll/jquery.slimscroll.min.js')}}" cache="false"></script>
+  <script src="{{cdn_url('/js/app.js')}}"></script>
+  <script src="{{cdn_url('/js/app.plugin.js')}}"></script>
+  <script src="{{cdn_url('/js/app.data.js')}}"></script>
+  <script src="{{cdn_url('js/slimscroll/jquery.slimscroll.min.js')}}" cache="false"></script>
   <!-- Parsley -->
-  <script src="{{mp_url('/js/parsley/parsley.min.js')}}"></script>
-  <script src="{{mp_url('/js/parsley/parsley.extend.js')}}"></script>
+  <script src="{{cdn_url('/js/parsley/parsley.min.js')}}"></script>
+  <script src="{{cdn_url('/js/parsley/parsley.extend.js')}}"></script>
   @stack('scripts')
   @if (isset($notice_msg))
   <script>

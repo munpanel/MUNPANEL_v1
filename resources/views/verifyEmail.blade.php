@@ -3,19 +3,19 @@
 <head>
   <meta charset="utf-8" />
   <title>Account Verification | MUNPANEL</title>
-  <link rel="icon" href="{{mp_url('/images/favicon.ico')}}" type="image/x-icon" />
-  <link rel="shortcut icon" href="{{mp_url('/images/favicon.ico')}}" type="image/x-icon" />
+  <link rel="icon" href="{{cdn_url('/images/favicon.ico')}}" type="image/x-icon" />
+  <link rel="shortcut icon" href="{{cdn_url('/images/favicon.ico')}}" type="image/x-icon" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-  <link rel="stylesheet" href="css/bootstrap.css" type="text/css" />
-  <link rel="stylesheet" href="css/animate.css" type="text/css" />
-  <link rel="stylesheet" href="css/font-awesome.min.css" type="text/css" />
-  <link rel="stylesheet" href="css/font.css" type="text/css" cache="false" />
-  <link rel="stylesheet" href="css/plugin.css" type="text/css" />
-  <link rel="stylesheet" href="css/app.css" type="text/css" />
+  <link rel="stylesheet" href="{{cdn_url('css/bootstrap.css')}}" type="text/css" />
+  <link rel="stylesheet" href="{{cdn_url('css/animate.css')}}" type="text/css" />
+  <link rel="stylesheet" href="{{cdn_url('css/font-awesome.min.css')}}" type="text/css" />
+  <link rel="stylesheet" href="{{cdn_url('css/font.css')}}" type="text/css" cache="false" />
+  <link rel="stylesheet" href="{{cdn_url('css/plugin.css')}}" type="text/css" />
+  <link rel="stylesheet" href="{{cdn_url('css/app.css')}}" type="text/css" />
   <!--[if lt IE 9]>
-    <script src="js/ie/respond.min.js" cache="false"></script>
-    <script src="js/ie/html5.js" cache="false"></script>
-    <script src="js/ie/fix.js" cache="false"></script>
+    <script src="{{cdn_url('js/ie/respond.min.js')}}" cache="false"></script>
+    <script src="{{cdn_url('js/ie/html5.js')}}" cache="false"></script>
+    <script src="{{cdn_url('js/ie/fix.js')}}" cache="false"></script>
   <![endif]-->
 @if (Config::get('analytics.enabled'))
     <script>
@@ -54,15 +54,15 @@
     </div>
   </footer>
   <!-- / footer -->
-	<script src="js/jquery.min.js"></script>
+	<script src="{{cdn_url('js/jquery.min.js')}}"></script>
   <!-- Bootstrap -->
-  <script src="js/bootstrap.js"></script>
+  <script src="{{cdn_url('js/bootstrap.js')}}"></script>
   <!-- app -->
-  <script src="js/app.js"></script>
-  <script src="js/app.plugin.js"></script>
-  <script src="js/app.data.js"></script>
+  <script src="{{cdn_url('js/app.js')}}"></script>
+  <script src="{{cdn_url('js/app.plugin.js')}}"></script>
+  <script src="{{cdn_url('js/app.data.js')}}"></script>
   <!-- Parsley -->
-  <script src="js/parsley/parsley.min.js"></script>
-  <script src="js/parsley/parsley.extend.js"></script>
+  <script src="{{cdn_url('js/parsley/parsley.min.js')}}"></script>
+  <script src="{{cdn_url('js/parsley/parsley.extend.js')}}"></script>
 </body>
 </html>

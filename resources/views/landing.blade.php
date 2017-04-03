@@ -2,10 +2,10 @@
     <head>
         <meta charset="utf-8">
         <title>MUNPANEL</title>
-        <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+        <link rel="shortcut icon" href="{{cdn_url('images/favicon.ico')}}" type="image/x-icon">
         <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">  
-        <link href="css/style.css" rel="stylesheet">  
-        <link href="css/colors/style-color-01.css" rel="stylesheet">    
+        <link href="{{cdn_url('css/style.css')}}" rel="stylesheet">  
+        <link href="{{cdn_url('css/colors/style-color-01.css')}}" rel="stylesheet">    
         <link rel="stylesheet" href="css/simple-line-icons.css">
         <link href="http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,300,600,700" rel="stylesheet" type="text/css">
     </head>
@@ -95,9 +95,9 @@
 
     </div>
 
-    <!--[if lte IE 7]><script src="js/icons-lte-ie7.js"></script><![endif]-->
-    <script src="js/jquery.min.js"></script>
-    <script src="js/scripts.js"></script>
+    <!--[if lte IE 7]><script src="{{cdn_url('js/icons-lte-ie7.js')}}"></script><![endif]-->
+    <script src="{{cdn_url('js/jquery.min.js')}}"></script>
+    <script src="{{cdn_url('js/scripts.js')}}"></script>
                              
 
 

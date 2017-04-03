@@ -199,6 +199,8 @@ return [
         Vinkla\Pusher\PusherServiceProvider::class,
         Yajra\Datatables\DatatablesServiceProvider::class,
         App\Providers\EntrustServiceProvider::class,
+        Fideloper\Proxy\TrustedProxyServiceProvider::class,
+        Torann\GeoIP\GeoIPServiceProvider::class,
 
     ],
 
@@ -232,6 +234,7 @@ return [
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         'File' => Illuminate\Support\Facades\File::class,
         'Gate' => Illuminate\Support\Facades\Gate::class,
+        'GeoIP' => Torann\GeoIP\Facades\GeoIP::class,
         'Google2FA' => PragmaRX\Google2FA\Vendor\Laravel\Facade::class,
         'Hash' => Illuminate\Support\Facades\Hash::class,
         'Lang' => Illuminate\Support\Facades\Lang::class,

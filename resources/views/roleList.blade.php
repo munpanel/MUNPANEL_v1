@@ -5,13 +5,13 @@
     @section('roles_active', 'active')
 @endif
 @push('scripts')
-    <script src="{{mp_url('/js/jquery.dataTables.min.js')}}"></script>
-    <script src="{{mp_url('/js/datatables/fnReloadAjax.js')}}"></script>
-    <script src="{{mp_url('/js/roleList.js')}}"></script>
+    <script src="{{cdn_url('/js/jquery.dataTables.min.js')}}"></script>
+    <script src="{{cdn_url('/js/datatables/fnReloadAjax.js')}}"></script>
+    <script src="{{cdn_url('/js/roleList.js')}}"></script>
 @endpush
 @push('css')
-    <link rel="stylesheet" href="{{mp_url('/css/jquery.dataTables.min.css')}}" type="text/css" />
-    <link rel="stylesheet" href="{{mp_url('/css/bootstrap-editable.css')}}" type="text/css" />
+    <link rel="stylesheet" href="{{cdn_url('/css/jquery.dataTables.min.css')}}" type="text/css" />
+    <link rel="stylesheet" href="{{cdn_url('/css/bootstrap-editable.css')}}" type="text/css" />
 @endpush
 @section('content')
 <section class="vbox">

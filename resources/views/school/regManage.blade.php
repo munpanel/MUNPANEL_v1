@@ -1,12 +1,12 @@
 @extends('layouts.app')
 @section('regManage_active', 'active')
 @push('scripts')
-    <script src="{{mp_url('/js/jquery.dataTables.min.js')}}"></script>
-    <script src="{{mp_url('/js/datatables/fnReloadAjax.js')}}"></script>
-    <script src="{{mp_url('/js/school.regManage.js')}}"></script>
+    <script src="{{cdn_url('/js/jquery.dataTables.min.js')}}"></script>
+    <script src="{{cdn_url('/js/datatables/fnReloadAjax.js')}}"></script>
+    <script src="{{cdn_url('/js/school.regManage.js')}}"></script>
 @endpush
 @push('css')
-    <link rel="stylesheet" href="{{mp_url('/css/jquery.dataTables.min.css')}}" type="text/css" />
+    <link rel="stylesheet" href="{{cdn_url('/css/jquery.dataTables.min.css')}}" type="text/css" />
 @endpush
 @section('content')
 <section class="vbox">

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('store_active', 'active')
 @push('css')
-<link href="{{mp_url('css/store.css')}}" rel="stylesheet" type="text/css">
+<link href="{{cdn_url('css/store.css')}}" rel="stylesheet" type="text/css">
 @endpush('css')
 @section('content')
 <div class="container">

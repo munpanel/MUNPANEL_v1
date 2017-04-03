@@ -23,6 +23,12 @@ Route::group(['domain' => 'portal.munpanel.com'], function () {
     });
 });
 
+Route::group(['domain' => 'static.munpanel.com'], function () {
+    Route::get('/', function () {
+        return "MUNPANEL static caching service provided by Akamai and ChinaNetCenter (网宿科技)";
+    });
+});
+
 
 //Route::group(['domain' => '{domain}'], function () {
     Route::get('/', function () {

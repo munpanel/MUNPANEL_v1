@@ -1,11 +1,11 @@
 ﻿@extends('layouts.app')
 @section('document_active', 'active')
 @push('scripts')
-    <script src="{{mp_url('/js/jquery.dataTables.min.js')}}"></script>
-    <script src="{{mp_url('/js/documentsList.js')}}"></script>
+    <script src="{{cdn_url('/js/jquery.dataTables.min.js')}}"></script>
+    <script src="{{cdn_url('/js/documentsList.js')}}"></script>
 @endpush
 @push('css')
-    <link rel="stylesheet" href="{{mp_url('/css/jquery.dataTables.min.css')}}" type="text/css" />
+    <link rel="stylesheet" href="{{cdn_url('/css/jquery.dataTables.min.css')}}" type="text/css" />
 @endpush
 @section('content')
 <section class="vbox">

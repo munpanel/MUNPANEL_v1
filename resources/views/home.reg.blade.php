@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('home_active', 'active')
 @push('scripts')
-    <script src="{{mp_url('js/charts/easypiechart/jquery.easy-pie-chart.js')}}"></script>
+    <script src="{{cdn_url('js/charts/easypiechart/jquery.easy-pie-chart.js')}}"></script>
 @endpush
 @section('content')
       <section class="vbox">

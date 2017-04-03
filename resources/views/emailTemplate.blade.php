@@ -110,7 +110,7 @@
 @endif
 <div class="container">
   <div class="header">
-    <img src="{{mp_url('/email/munpanel.png')}}">
+    <img src="{{cdn_url('/email/munpanel.png')}}">
   </div>
   <div class="body">
     <p>{!!$content!!}</p>

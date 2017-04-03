@@ -1,11 +1,11 @@
 ﻿@extends('layouts.app')
 @section('document_active', 'active')
 @push('scripts')
-    <script src="{{mp_url('/js/fuelux/fuelux.js')}}"></script>
-    <script src="{{mp_url('/js/file-input/bootstrap.file-input.js')}}"></script>
+    <script src="{{cdn_url('/js/fuelux/fuelux.js')}}"></script>
+    <script src="{{cdn_url('/js/file-input/bootstrap.file-input.js')}}"></script>
 @endpush
 @push('css')
-    <link rel="stylesheet" href="{{mp_url('/js/fuelux/fuelux.css')}}" type="text/css" />
+    <link rel="stylesheet" href="{{cdn_url('/js/fuelux/fuelux.css')}}" type="text/css" />
 @endpush
 @section('content')
       <section class="vbox">

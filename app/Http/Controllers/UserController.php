@@ -851,6 +851,7 @@ class UserController extends Controller
      */
     public function test(Request $request)
     {
+        dd(geoip(\Request::ip()));
         $ints = Interviewer::all();
         foreach($ints as $int)
         {
@@ -859,6 +860,7 @@ class UserController extends Controller
             $int->reg->roles()->detach();
         }
         return ".";
+        return secure_url('https://test.com//test');
         $this->createPermissions();
         return '<a href="http://192.154.111.163/phpmyadmin">检查数据库</a>';
         $js = json_encode('$("#reg2Form").ready(function(e){

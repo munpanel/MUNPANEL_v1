@@ -8,15 +8,15 @@ if (Reg::current()->type == 'delegate' && isset(Reg::current()->delegate))
 @extends('layouts.app')
 @section('home_active', 'active')
 @push('scripts')
-    <script src="{{mp_url('js/charts/easypiechart/jquery.easy-pie-chart.js')}}"></script>
-    <script src="{{mp_url('/js/fuelux/fuelux.js')}}"></script>
-    <script src="{{mp_url('/js/datepicker/bootstrap-datepicker.js')}}"></script>
+    <script src="{{cdn_url('js/charts/easypiechart/jquery.easy-pie-chart.js')}}"></script>
+    <script src="{{cdn_url('/js/fuelux/fuelux.js')}}"></script>
+    <script src="{{cdn_url('/js/datepicker/bootstrap-datepicker.js')}}"></script>
     @if ((!Auth::user()->verified()) || (Reg::currentConference()->status == 'reg' && Reg::current()->type == 'unregistered') || (!Reg::selectConfirmed()) || (!Reg::current()->enabled) || ($hasRegAssignment) || (Reg::current()->type != 'unregistered' && is_null(Reg::current()->specific())))
-    <script src="{{mp_url('/js/reg.firsttime.js')}}"></script>
+    <script src="{{cdn_url('/js/reg.firsttime.js')}}"></script>
     @endif
 @endpush
 @push('css')
-    <link href="{{mp_url('/js/fuelux/fuelux.css')}}" rel="stylesheet">
+    <link href="{{cdn_url('/js/fuelux/fuelux.css')}}" rel="stylesheet">
 @endpush
 @section('content')
       <section class="vbox">

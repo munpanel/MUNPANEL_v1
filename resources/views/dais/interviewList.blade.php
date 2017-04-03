@@ -4,13 +4,13 @@ $canInterview = Auth::user()->regs->where('conference_id', Reg::currentConferenc
 @extends('layouts.app')
 @section('interview_active', 'active')
 @push('scripts')
-<script src="{{mp_url('js/fuelux/fuelux.js')}}"></script>
-<script src="{{mp_url('js/moment.min.js')}}"></script>
-<script src="{{mp_url('js/bootstrap-datetimepicker.min.js')}}"></script>
-<script src="{{mp_url('js/markdown/epiceditor.js')}}"></script>
+<script src="{{cdn_url('js/fuelux/fuelux.js')}}"></script>
+<script src="{{cdn_url('js/moment.min.js')}}"></script>
+<script src="{{cdn_url('js/bootstrap-datetimepicker.min.js')}}"></script>
+<script src="{{cdn_url('js/markdown/epiceditor.js')}}"></script>
 @endpush
 @push('css')
-<link href="{{mp_url('css/bootstrap-datetimepicker.min.css')}}" rel="stylesheet">
+<link href="{{cdn_url('css/bootstrap-datetimepicker.min.css')}}" rel="stylesheet">
 @endpush
 @section('content')
 <section class="vbox">

@@ -7,13 +7,13 @@ foreach(Auth::user()->regs->where('conference_id', Reg::currentConferenceID())->
 @extends('layouts.app')
 @section('home_active', 'active')
 @push('scripts')
-  <script src="js/nestable/jquery.nestable.js" cache="false"></script>
-  <script src="js/nestable/demo.js" cache="false"></script>
-  <script src="js/charts/sparkline/jquery.sparkline.min.js"></script>
-  <script src="js/charts/easypiechart/jquery.easy-pie-chart.js"></script>
+  <script src="{{cdn_url('js/nestable/jquery.nestable.js')}}"></script>
+  <script src="{{cdn_url('js/nestable/demo.js')}}"></script>
+  <script src="{{cdn_url('js/charts/sparkline/jquery.sparkline.min.js')}}"></script>
+  <script src="{{cdn_url('js/charts/easypiechart/jquery.easy-pie-chart.js')}}"></script>
 @endpush
 @push('css')
-  <link href="js/nestable/nestable.css" rel="stylesheet" type="text/css" cache="false">
+  <link href="{{cdn_url('js/nestable/nestable.css')}}" rel="stylesheet" type="text/css" cache="false">
 @endpush
 @section('content')
 <section class="vbox">

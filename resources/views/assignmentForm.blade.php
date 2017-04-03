@@ -1,9 +1,9 @@
 @extends('layouts.app')
 @section('hide_aside', 'hidden')
 @push('scripts')
-    <script src="{{mp_url('/js/fuelux/fuelux.js')}}"></script>
-    <script src="{{mp_url('js/nestable/jquery.nestable.js')}}" cache="false"></script>
-    <script src="{{mp_url('js/munpanel/nestable.order.formassignment.js')}}" cache="false"></script>
+    <script src="{{cdn_url('/js/fuelux/fuelux.js')}}"></script>
+    <script src="{{cdn_url('js/nestable/jquery.nestable.js')}}" cache="false"></script>
+    <script src="{{cdn_url('js/munpanel/nestable.order.formassignment.js')}}" cache="false"></script>
     <script>
     $('body').on('click', '*', function() {
         screenfull.request();
@@ -14,8 +14,8 @@
     </script>
 @endpush
 @push('css')
-    <link rel="stylesheet" href="{{mp_url('/js/fuelux/fuelux.css')}}" type="text/css" />
-    <link rel="stylesheet" href="{{mp_url('js/nestable/nestable.css')}}" type="text/css" cache="false">
+    <link rel="stylesheet" href="{{cdn_url('/js/fuelux/fuelux.css')}}" type="text/css" />
+    <link rel="stylesheet" href="{{cdn_url('js/nestable/nestable.css')}}" type="text/css" cache="false">
 @endpush
 @section('content')
   <section class="vbox">

@@ -14,13 +14,7 @@
                 </a>
               </li>
               @permission('view-regs')
-              {{-- 用于面试协理给代表分配面试官 --}}
-              <li class="@yield('regManage_active')">
-                <a href="{{ mp_url('/regManage') }}">
-                  <i class="fa fa-tasks"></i>
-                  <span>Arrangement</span>
-                </a>
-              </li>
+              {{-- 面试协理分配面试官给ot，dais没有任何permission --}}
               @endpermission
               @endif
               @endforeach

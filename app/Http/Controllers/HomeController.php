@@ -83,7 +83,7 @@ class HomeController extends Controller
         }
         else if ($type == 'dais' && $reg->specific()->status == 'success')
         {
-            return view('ot.home', [
+            return view('dais.home', [
                 'vol' => Reg::currentConference()->volunteers->count(),
                 'obs' => Reg::currentConference()->observers->count(),
                 'del' => Reg::currentConference()->delegates->count(),
@@ -93,14 +93,13 @@ class HomeController extends Controller
         }
         else if ($type == 'interviewer')
         {
-            return view('ot.home', [
+            return view('interviewer.home', [
                 'vol' => Reg::currentConference()->volunteers->count(),
                 'obs' => Reg::currentConference()->observers->count(),
                 'del' => Reg::currentConference()->delegates->count(),
                 'dais' => Reg::currentConference()->dais->count(),
                 'hasChildComm' => $hasChildComm
             ]);
-            return view('interviewer.home');
         }
         else
         {

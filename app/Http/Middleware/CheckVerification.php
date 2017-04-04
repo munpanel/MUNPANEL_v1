@@ -33,14 +33,14 @@ class CheckVerification
         if (null !== $user) // if user is not logged in, the Auth middleware will do the job.
         {
             $route = $request->route()->uri;
-            /*
+            ///*
             if (substr($route, 0, 6) != 'verify') {
                 if ($user->emailVerificationToken != 'success')
                     return redirect(mp_url('/verifyEmail'));
                 if ($user->telVerifications != -1) //3/2/1: tries left; -1: activated
                     return redirect(mp_url('/verifyTel'));
             }
-            */
+            //*/
             $cid = config('munpanel.conference_id');
             if (isset($cid)) //portal pages otherwise, will use Auth::user() instead
             {

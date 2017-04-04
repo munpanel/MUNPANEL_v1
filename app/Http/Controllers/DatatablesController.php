@@ -105,7 +105,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
                     'partner' => "无",
                     'approval' => $status,
                 ]);
- 
+
             }
             //TO-DO: Observers
         }
@@ -186,7 +186,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
                     'partner' => "无",
                     'status' => $status,
                 ]);
-  
+
             }
             //TO-DO: Observers
         }
@@ -259,7 +259,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
             }
             else $status = '';
             # if (!$reg->enabled) $status = '已禁用';
-       
+
             if (Reg::currentConference()->status == 'daisreg')
                 $detail =  '<a href="ot/daisregInfo.modal/'. $reg->id .'" data-toggle="ajaxModal" id="'. $reg->id .'" class="details-modal"><i class="fa fa-search-plus"></i></a>';
             else
@@ -314,7 +314,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
                     'school' => isset($reg->specific()->position) ? $reg->specific()->position : '无',
                     'committee' => isset($reg->specific()->committee) ? $reg->specific()->committee->name : '无',
                     'partner' => $type,
-                    'status' => $reg->type == 'ot' ? $reg->specific()->scopeRoles() : '不可用'
+                    'status' => $reg->type == 'ot' ? $reg->specific()->scopeRoles() : '不适用'
                 ]);
             }
             return Datatables::of($result)->make(true);
@@ -340,7 +340,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
                     'name' => $user->name,
                 ]);
             }
- 
+
         return Datatables::of($result)->make(true);
     }
 
@@ -399,7 +399,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
         }
         return Datatables::of($result)->make(true);
     }
-    
+
     /**
      * Show assignment datatables json
      *
@@ -409,8 +409,8 @@ class DatatablesController extends Controller //To-Do: Permission Check
     {
         $result = new Collection;
         if (Reg::current()->type == 'dais')
-            $assignments = /*Reg::current()->dais->Assignment();*/Assignment::all(); // TODO: get docs per committee 
-        else 
+            $assignments = /*Reg::current()->dais->Assignment();*/Assignment::all(); // TODO: get docs per committee
+        else
             $assignments = Reg::current()->delegate->assignments();//Assignment::all();//get(['id', 'title', 'deadline']);
         $i = 0;
         foreach($assignments as $assignment)
@@ -424,10 +424,10 @@ class DatatablesController extends Controller //To-Do: Permission Check
                 else if ($assignment->subject_type == 'partner')
                 {
                     if (isset(Reg::current()->delegate->partner)) $handin = Handin::where('assignment_id', $assignment->id)->where('user_id', Reg::current()->delegate->partner->id)->orderBy('id', 'desc')->first();
-                    if (!isset($handin)) $handin = Handin::where('assignment_id', $assignment->id)->where('reg_id', Reg::current()->id)->orderBy('id', 'desc')->first();                
+                    if (!isset($handin)) $handin = Handin::where('assignment_id', $assignment->id)->where('reg_id', Reg::current()->id)->orderBy('id', 'desc')->first();
                 }
                 else
-                    $handin = Handin::where('assignment_id', $assignment->id)->where('reg_id', Reg::current()->id)->orderBy('id', 'desc')->first();                
+                    $handin = Handin::where('assignment_id', $assignment->id)->where('reg_id', Reg::current()->id)->orderBy('id', 'desc')->first();
                 if (is_null($handin)) //TO-DO: ddl check
                     $title = $title."<b class=\"badge bg-danger pull-right\">未提交</b>";
             }
@@ -436,7 +436,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
                 $detailline = '<a href="assignment/'. $assignment->id . '/handins"><i class="fa fa-folder-open"></i></a>';
                 $detailline .= '&nbsp;<a href="assignmentDetails.modal/'. $assignment->id.'"><i class="fa fa-pencil"></i></a>';
                 $handin = Handin::where('assignment_id', $assignment->id)->count(); //TODO: 构建排除重复提交的查询数字
-                $title = $title."<b class=\"badge bg-danger pull-right\">" . $handin . " 份提交</b>"; 
+                $title = $title."<b class=\"badge bg-danger pull-right\">" . $handin . " 份提交</b>";
             }
             $result->push([
                 //'id' => $assignment->id,
@@ -509,7 +509,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
         }
         return Datatables::of($result)->make(true);
     }
-    
+
     /**
      * Show document datatables json
      *
@@ -566,7 +566,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
         }
         return Datatables::of($result)->make(true);
     }
-    
+
     /**
      * Show good datatables json
      *
@@ -601,7 +601,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
                     </div>&nbsp;<button class="btn btn-success" type="submit"><i class="fa fa-plus"></i> 加入购物车</button></form>';
             }
             $result->push([
-                'id' => ++$i, 
+                'id' => ++$i,
                 'image' => '<a href="'. mp_url('/store/good.modal/'.$good->id).'" data-toggle="ajaxModal" class="details-modal"><img src="'. mp_url('/store/goodimg/' . $good->id) . '" class="shop-image-small"></a>',
                 'title' => '<a href="'. mp_url('/store/good.modal/'.$good->id).'" data-toggle="ajaxModal" class="details-modal">'.$good->name.'</a>',
                 'price' => '¥' . number_format($good->price, 2),
@@ -610,7 +610,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
         }
         return Datatables::of($result)->make(true);
     }
-        
+
     /**
      * Show role datatables json (by nation)
      *
@@ -619,10 +619,10 @@ class DatatablesController extends Controller //To-Do: Permission Check
     public function roleListByNation()
     {
         $result = new Collection;
-        
+
         return Datatables::of($result)->make(true);
     }
-    
+
     /**
      * Show role datatables json (by delegate)
      *
@@ -631,10 +631,10 @@ class DatatablesController extends Controller //To-Do: Permission Check
     public function roleListByDelegate()
     {
         $result = new Collection;
-        
+
         return Datatables::of($result)->make(true);
     }
-    
+
     /**
      * Show role datatables json (for management)
      *
@@ -665,7 +665,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
             {
                 $select .= ' disabled="disabled"';
                 $delnames = $nation->scopeDelegate();
-            }            
+            }
             else
             {
                 $command .= ' disabled';
@@ -690,7 +690,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
         }
         return Datatables::of($result)->make(true);
     }
-    
+
     /**
      * Show delegate datatables json (for role management)
      *

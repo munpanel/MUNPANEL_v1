@@ -58,27 +58,18 @@ function interviewStat($cid, $rid = 0)
 {
     $interviewsc = $unarranged = $unfinished = $exempted = $cancelled = $success = 0;
     $interviews = Interview::where('conference_id', $cid)->get();
-    if ($rid == -1)
-    {
-        $interviewsc = $interviews->count();
-        $unarranged = $interviews->where('status', 'assigned')->count();
-        $unfinished = $interviews->where('status', 'arranged')->count();
-        $exempted = $interviews->where('status', 'exempted')->count();
-        $cancelled = $interviews->where('status', 'cancelled')->count();
-        $success = $interviews->where('status', 'passed')->count();
-    }
-    else
+    if ($rid != -1)
     {
         if ($rid == 0) $rid = Reg::currentID();
         $interviews = Interview::where('conference_id', $cid)->where('interviewer_id', $rid)->get();
-        $interviewsc = $interviews->count();
-        $unarranged = $interviews->where('status', 'assigned')->count();
-        $unfinished = $interviews->where('status', 'arranged')->count();
-        $exempted = $interviews->where('status', 'exempted')->count();
-        $cancelled = $interviews->where('status', 'cancelled')->count();
-        $success = $interviews->where('status', 'passed')->count();
     }
-    $arranged = $interviewsc - $unarranged;
+    $interviewsc = $interviews->count();
+    $unarranged = $interviews->where('status', 'assigned')->count();
+    $unfinished = $interviews->where('status', 'arranged')->count();
+    $exempted = $interviews->where('status', 'exempted')->count();
+    $cancelled = $interviews->where('status', 'cancelled')->count();
+    $success = $interviews->where('status', 'passed')->count();
+    $arranged = $interviewsc - $unarranged - $cancelled;
     $finished = $arranged - $unfinished - $exempted - $cancelled;
     $roleSetable = $exempted + $success;
     return ['iid' => $rid, 'all' => $interviewsc, 'unarranged' => $unarranged, 'arranged' => $arranged, 'unfinished' => $unfinished, 'finished' => $finished, 'passed' => $roleSetable];

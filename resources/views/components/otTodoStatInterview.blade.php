@@ -1,19 +1,16 @@
 @php
 $myself = Reg::current();
-$interviewsA = [];
-if ($myself->can('view-all-interviews')) 
-    array_push($interviewsA, interviewStat(Reg::currentConferenceID(), -1));
 foreach(Auth::user()->regs->where('conference_id', Reg::currentConferenceID())->where('enabled', true) as $reg)
     if ($reg->type == 'interviewer')
-        array_push($interviewsA, interviewStat(Reg::currentConferenceID(), $reg->id));
+        $interviews = interviewStat(Reg::currentConferenceID(), $reg->id);
 @endphp
-@foreach ($interviewsA as $interviews)
 <div class="panel">
   <div class="panel-heading">
-    待办事项统计 {{$interviews['iid'] == -1 ? '(所有面试)' : '(我的面试)'}}
+    待办事项统计 (我的面试)
   </div>
   <div class="panel-body">
     <div class="text-center col-sm-3">
+      <a href="{{mp_url('/interviews')}}">
       <small class="text-muted block">未安排面试</small>
       <h4>{{$interviews['unarranged']}}</h4>
       <div class="inline">
@@ -22,9 +19,10 @@ foreach(Auth::user()->regs->where('conference_id', Reg::currentConferenceID())->
           <div class="easypie-text">已安排</div>
           <canvas></canvas>
         </div>
-      </div>
+      </div></a>
     </div>
     <div class="text-center col-sm-3">
+      <a href="{{mp_url('/interviews')}}">
       <small class="text-muted block">等待面试队列</small>
       <h4>{{$interviews['unfinished']}}</h4>
       <div class="inline">
@@ -33,7 +31,7 @@ foreach(Auth::user()->regs->where('conference_id', Reg::currentConferenceID())->
           <div class="easypie-text">面试完成</div>
           <canvas></canvas>
         </div>
-      </div>
+      </div></a>
     </div>
     <div class="text-center col-sm-3">
       <small class="text-muted block">等待分配席位</small>
@@ -59,4 +57,3 @@ foreach(Auth::user()->regs->where('conference_id', Reg::currentConferenceID())->
     </div>
   </div>
  </div>
-@endforeach

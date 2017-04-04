@@ -409,7 +409,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
     {
         $result = new Collection;
         if (Reg::current()->type == 'dais')
-            $assignments = /*Reg::current()->dais->Assignment();*/Assignment::all(); // TODO: get docs per committee
+            $assignments = /*Reg::current()->dais->Assignment();*/Assignment::where('conference_id', Reg::currentConferenceID())->get(); // TODO: get docs per committee
         else
             $assignments = Reg::current()->delegate->assignments();//Assignment::all();//get(['id', 'title', 'deadline']);
         $i = 0;

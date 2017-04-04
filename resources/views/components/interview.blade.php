@@ -31,13 +31,15 @@
         <a href="{{mp_url('/interview/'.$interview->id.'/exemptModal')}}" class="btn btn-xs btn-info pull-right m-r-xs" data-toggle="ajaxModal">免试通过</a>
         <a href="{{mp_url('/interview/'.$interview->id.'/rollBackModal')}}" class="btn btn-xs btn-white pull-right m-r-xs" data-toggle="ajaxModal"><span class='text-danger'>退回面试</span></a>
         @elseif ($interview->status == 'arranged')
-          @if (strtotime(date('Y-m-d H:i:s')) < strtotime($interview->arranged_at) - 1800)
+{{--      @if (strtotime(date('Y-m-d H:i:s')) < strtotime($interview->arranged_at) - 1800)
           <a href="{{mp_url('/interview/'.$interview->id.'/cancelModal')}}" class="btn btn-xs btn-danger pull-right" data-toggle="ajaxModal">取消面试</a>
           @elseif (strtotime(date('Y-m-d H:i:s')) > strtotime($interview->arranged_at))
           <a href="{{mp_url('/interview/'.$interview->id.'/rateModal')}}" class="btn btn-xs btn-info pull-right" data-toggle="ajaxModal">评分</a>
           @else
           <div class="btn btn-xs btn-danger pull-right mp-disabled" data-original-title="距离面试已不足 30 分钟，不允许取消面试！" data-toggle="tooltip" data-placement="left">取消面试</div>
-          @endif
+          @endif--}}
+          <a href="{{mp_url('/interview/'.$interview->id.'/rateModal')}}" class="btn btn-xs btn-info pull-right" data-toggle="ajaxModal">评分</a>
+          <a href="{{mp_url('/interview/'.$interview->id.'/cancelModal')}}" class="btn btn-xs btn-danger pull-right m-r-xs" data-toggle="ajaxModal">取消面试</a>
         @elseif (in_array($interview->status, ['passed', 'exempted']))
         <a href="" class="btn btn-xs btn-success pull-right" data-toggle="ajaxModal">分配席位</a>
         @endif

@@ -30,7 +30,8 @@ function oVerifyStat($cid)
     $volUnOVerify = Volunteer::where('conference_id', $cid)->where('status', 'sVerified')->count();
     $volOVerify = Volunteer::where('conference_id', $cid)->count() - $volUnOVerify;
     $all = Reg::where('conference_id', $cid)->whereIn('type', ['delegate', 'observer', 'volunteer'])->count();
-    return ['oVerified' => $delOVerify + $obsOVerify + $volOVerify, 'oUnverified' => $delUnOVerify + $obsUnOVerify + $volUnOVerify, 'all' => $all];
+    $interviews = Interview::where('conference_id', $cid)->whereNotIn('status', ['failed'])->groupBy('reg_id')->get()->count();
+    return ['oVerified' => $delOVerify + $obsOVerify + $volOVerify, 'oUnverified' => $delUnOVerify + $obsUnOVerify + $volUnOVerify, 'all' => $all, 'delOVerify' => $delOVerify, 'interviews' => $interviews];
 }
 
 /**
@@ -57,7 +58,7 @@ function daisregStat($cid)
 function interviewStat($cid, $rid = 0)
 {
     $interviewsc = $unarranged = $unfinished = $exempted = $cancelled = $success = 0;
-    $interviews = Interview::where('conference_id', $cid)->get();
+    $interviews = Interview::where('conference_id', $cid)->groupBy('reg_id')->get();
     if ($rid != -1)
     {
         if ($rid == 0) $rid = Reg::currentID();

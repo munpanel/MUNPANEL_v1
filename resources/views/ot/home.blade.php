@@ -39,7 +39,7 @@ foreach(Auth::user()->regs->where('conference_id', Reg::currentConferenceID())->
         @if (Reg::current()->can('view-regs'))
           @include('components.otTodoStatReg')
         @endif
-        @if ($canInterview || Reg::current()->type == 'interviewer' || Reg::current()->can('view-all-interviews'))
+        @if ($canInterview || Reg::current()->type == 'interviewer')
           @include('components.otTodoStatInterview')
         @endif
       </div>

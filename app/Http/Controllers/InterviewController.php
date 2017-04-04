@@ -64,7 +64,7 @@ class InterviewController extends Controller
                 $type = intval($request->typeInterview);
                 $interview->save();
                 $interview->reg->addEvent('interview_arranged', '{"interviewer":"'.Auth::user()->name.'","time":"'.date(' n 月 j 日 H:i ', strtotime($interview->arranged_at)).'","method":"'.typeInterview($type).'"}');
-                Reg::findOrFail($id)->user->sendSMS('感谢您以代表身份报名'.Reg::currentConference()->name.'。面试官'.Auth::user()->name.'已为您安排一场于'.date(' n 月 j 日 H:i ', strtotime($interview->arranged_at)).'进行的'.typeInterview($type).'面试。请保持联系方式畅通，预祝面试愉快。');
+                $interview->reg->user->sendSMS('感谢您以代表身份报名'.Reg::currentConference()->name.'。面试官'.Auth::user()->name.'已为您安排一场于'.date(' n 月 j 日 H:i ', strtotime($interview->arranged_at)).'进行的'.typeInterview($type).'面试。请保持联系方式畅通，预祝面试愉快。');
                 break;
             case "exempt":
                 if ($interview->status != 'assigned')
@@ -113,11 +113,11 @@ class InterviewController extends Controller
                     $score += intval($request->$key) * $value->weight;
                 }
                 $interview->scores = json_encode($scores);
-                $interview->score = $score * 2;
+                $interview->score = $score;// * 2;
                 $interview->public_fb = $request->public_fb;
                 $interview->internal_fb = $request->internal_fb;
                 $interview->save();
-                $interview->reg->addEvent('interview_' . $request->result . 'ed', '{"interviewer":"'.Auth::user()->name.'"}');
+                $interview->reg->addEvent('interview_' . $interview->status, '{"interviewer":"'.Auth::user()->name.'"}');
                 break;
             case "arrangeModal":
                 return view('interviewer.arrangeModal', ['id' => $id]);
@@ -164,5 +164,15 @@ class InterviewController extends Controller
         $interview->save();
         Reg::findOrFail($id)->addEvent('interview_exempted', '{"interviewadmin":"'.Auth::user()->name.'","interviewer":"'.$interviewer->reg->user->name.'"}');
         return redirect('/regManage?initialReg='.$id);
+    }
+
+    public function findInterviewerModal()
+    {
+        return view('interviewer.findInterviewerModal');
+    }
+
+    public function gotoInterviewer(Request $request)
+    {
+        return redirect(mp_url('/interviews/'.$request->interviewer));
     }
 }

@@ -7,10 +7,12 @@ $canInterview = Auth::user()->regs->where('conference_id', Reg::currentConferenc
 <script src="{{cdn_url('js/fuelux/fuelux.js')}}"></script>
 <script src="{{cdn_url('js/moment.min.js')}}"></script>
 <script src="{{cdn_url('js/bootstrap-datetimepicker.min.js')}}"></script>
-<script src="{{cdn_url('js/markdown/epiceditor.js')}}"></script>
+<script src="{{cdn_url('js/markdown/epiceditor.js')}}"></script>  
+<script src="{{cdn_url('/js/select2/select2.min.js')}}"></script>
 @endpush
 @push('css')
 <link href="{{cdn_url('css/bootstrap-datetimepicker.min.css')}}" rel="stylesheet">
+<link rel="stylesheet" href="{{cdn_url('js/select2/select2.css')}}" type="text/css" />
 @endpush
 @section('content')
 <section class="vbox">
@@ -26,8 +28,8 @@ $canInterview = Auth::user()->regs->where('conference_id', Reg::currentConferenc
     <div class="btn-group pull-right">
       <button class="btn btn-white btn-sm dropdown-toggle" aria-expanded="false" data-toggle="dropdown"><i class="fa fa-eye"></i> 查看 <span class="caret"></span></button>
       <ul class="dropdown-menu">
-        <li><a href="{{mp_url('/byInterviewerModal')}}">查看面试官的队列...</a></li>
-        @if ($iid == -1 && $canInterview > 0)
+        <li><a href="{{mp_url('/findInterviewer.modal')}}" data-toggle="ajaxModal">查看面试官的队列...</a></li>
+        @if ($iid != -1 || $canInterview > 0)
         <li class="divider"></li>
         @endif
         @if ($iid != -1)

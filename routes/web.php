@@ -172,6 +172,8 @@ Route::group(['domain' => 'static.munpanel.com'], function () {
     Route::any('/interview/{id}/{action}', 'InterviewController@interview');
     Route::post('/ot/assignInterview/{id}', 'InterviewController@assignInterview');
     Route::post('/ot/exemptInterview/{id}', 'InterviewController@exemptInterview');
+    Route::get('/findInterviewer.modal', 'InterviewController@findInterviewerModal');
+    Route::post('/gotoInterviewer', 'InterviewController@gotoInterviewer');
 
     //Route::get('/dais/assignments', 'HomeController@assignment');
 

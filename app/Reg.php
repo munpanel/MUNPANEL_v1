@@ -56,6 +56,10 @@ class Reg extends Model
         return $this->hasMany('App\Handin');
     }
 
+    public function notes() {
+        return $this->hasMany('App\Note');
+    }
+
     public function delegate() {
         return $this->hasOne('App\Delegate');
     }

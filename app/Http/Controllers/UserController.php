@@ -28,6 +28,7 @@ use App\Card;
 use App\Dais;
 use App\Good;
 use App\Order;
+use App\Note;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -1238,5 +1239,24 @@ return view('blank',['testContent' => $js, 'convert' => false]);
             return 'error';
         $reg->login(true);
         return redirect(isset($request->target) ? $request->target : '/home');
+    }
+
+    /**
+     *
+     */
+    public function newNote(Request $request)
+    {
+        if (!in_array(Reg::current()->type, ['ot', 'dais', 'interviewer']))
+            return 'error';
+        $note = new Note;
+        $note->reg_id = $request->reg_id;
+        $note->user_id = $request->noter_id;
+        $note->content = $request->text;
+        $note->save();
+        if (Reg::current()->type == 'ot')
+            return redirect('/regManage?initialReg='.$request->reg_id);
+        if (Reg::current()->type == 'interviewer')
+            return redirect('/interviews');
+        return redirect('/home');
     }
 }

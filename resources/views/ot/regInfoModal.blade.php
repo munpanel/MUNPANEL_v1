@@ -189,29 +189,29 @@ $handins = $reg->handins;
             <div class="row">
               <div class="col-sm-12 b-r">
                 <ul class="timeline timeline-small">
-                  {{--@foreach($reg->notes as $note)--}}
+                  @foreach($reg->notes as $note)
                   <li>
                     <div class="timeline-badge"><i class="fa fa-user fa-fw"></i></div>{{--TODO: 插入笔记者 gravatar 头像--}}
                     <div class="timeline-panel">
                       <div class="timeline-heading">
-                        <h4 class="timeline-title">伊原摩耶花{{--$note->user->name--}}<small class="text-muted">&emsp;面试官<br><i class="fa fa-clock-o fa-fw"></i>2017-04-05 16:11:16（6 小时前）{{--nicetime($note->created_at)--}}</small></h4>
+                        <h4 class="timeline-title">{{$note->user->user->name}}&nbsp;<small class="text-muted">{{$note->user->regText()}}<br><i class="fa fa-clock-o fa-fw"></i>{{nicetime($note->created_at)}}</small></h4>
                       </div>
                       <div class="timeline-body">
-                        <!--p>{{--$note->content--}}</p-->
-<p>在通过/不通过旁边增加待定状态，home页额外增加待定的仪表盘，包括每个人自己队列里的待定和全局的待定；然后面试页面需要增加待定状态的队列，处于待定状态的代表在队列里还需要进行一次通过/不通过的操作，不通过的话和普通的不通过相同，通过的话，可以进行分配席位的操作，同时，在操作页面里将会出现两个钮：“安排分支内转面试”、“安排全局转面试”。（这些面试和安排二次面试、高阶面试类似的处理，不作额外区分，手动备注分支还是全局还是啥---adamyi）</p>
+                        <p>{{$note->content}}</p>
                       </div>
                     </div>
                   </li>
-                  {{--@endforeach--}}
+                  @endforeach
                   <li>
                     <div class="timeline-badge"><i class="fa fa-user fa-fw"></i></div>{{--TODO: 插入笔记者 gravatar 头像--}}
                     <div class="timeline-panel">
-                      <form method="post">
+                      <form method="post" action="{{mp_url('/newNote')}}">
                         <div class="timeline-heading">
-                          <button class="btn btn-sm btn-success pull-right m-b-xs m-t-n-xs" type="submit" href="">添加笔记</button>
-                          <h4 class="timeline-title">{{Auth::user()->name}}<small class="text-muted">&emsp;{{Reg::current()->regText()}}</small></h4>
+                          <button class="btn btn-sm btn-success pull-right m-b-xs m-t-n-xs" type="submit">添加笔记</button>
+                          <h4 class="timeline-title">{{Auth::user()->name}}&nbsp;<small class="text-muted">{{Reg::current()->regText()}}</small></h4>
                         </div>
                         <div class="timeline-body">
+                          {{csrf_field()}}
                           <input type="hidden" name="reg_id" value="{{$reg->id}}">
                           <input type="hidden" name="noter_id" value="{{Reg::currentID()}}">
                           <input name="text" class="form-control" type="text" data-required="true" data-trigger="change" style="width:100%" placeholder="添加对{{$reg->user->name}}的笔记...">

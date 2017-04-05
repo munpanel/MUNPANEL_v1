@@ -108,7 +108,7 @@ class InterviewController extends Controller
                 $scores = array();
                 $score = 0;
                 $scoresOptions = json_decode(Reg::currentConference()->option('interview_scores'));
-                foreach($scoresOptions as $key => $value)
+                foreach($scoresOptions->criteria as $key => $value)
                 {
                     $scores[$key] = $request->$key;
                     $score += intval($request->$key) * $value->weight;

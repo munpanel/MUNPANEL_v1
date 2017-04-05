@@ -118,7 +118,7 @@ score = 0;
 score += $("input:radio[name ='{{$key}}']:checked").val() * {{$value->weight}};
 
 @endforeach
-score *= {{$scoreOptions->total / 5}};
+score *= {{$scoresOptions->total / 5}};
 if (isNaN(score))
     $('#finalScore').html('<h4 class="control-inline-h"><strong>不完整</strong></h4>');
 else

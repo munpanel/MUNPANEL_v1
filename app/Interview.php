@@ -49,11 +49,12 @@ class Interview extends Model
         $scores = json_decode($this->scores);
         $score = 0;
         $result = "";
-        foreach($scoresOptions as $key => $value)
+        foreach($scoresOptions->criteria as $key => $value)
         {
             $result.= $value->name . $scores->$key . "&nbsp";
             $score += $scores->$key * $value->weight;
         }
+        $score *= $scoresOptions->total / 5;
         $result =  "<a style='cursor: pointer;' class='details-popover' data-html='1' data-placement='right' data-trigger='click' data-original-title='详细评分 - ".number_format($score, 1, '.', '')."' data-toggle='popover' data-content='".$result."'>";
         $score = round($score * 2);
         for ($i = 0 ; $i < 5 ; $i++)

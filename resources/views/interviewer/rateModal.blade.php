@@ -24,7 +24,7 @@
                 <div class="form-group">
 <label class="col-sm-2 control-label">评分</label>
                   <div class="col-lg-10">
-@foreach ($scoresOptions as $key => $value)
+@foreach ($scoresOptions->criteria as $key => $value)
                     <div class="btn-group m-b-xs" data-toggle="buttons">
                       <label class="btn btn-sm btn-primary disabled">
                           {{$value->name}}
@@ -114,11 +114,11 @@ var editor_ext = new EpicEditor(opts_ext).load();
 $('.rateRadio').change(function(){
 score = 0;
 
-@foreach ($scoresOptions as $key => $value)
+@foreach ($scoresOptions->criteria as $key => $value)
 score += $("input:radio[name ='{{$key}}']:checked").val() * {{$value->weight}};
 
 @endforeach
-score *= 2;
+score *= {{$scoreOptions->total / 5}};
 if (isNaN(score))
     $('#finalScore').html('<h4 class="control-inline-h"><strong>不完整</strong></h4>');
 else

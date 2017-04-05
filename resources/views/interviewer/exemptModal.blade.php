@@ -4,7 +4,7 @@
    <header class="header bg-info bg-gradient mp-modal-header">
       <center><h4>免试通过</h4></center>
    </header>
-   @elseif ($mode == 'rollback')
+   @elseif ($mode == 'rollBack')
    <header class="header bg-warning bg-gradient mp-modal-header">
       <center><h4>退回面试</h4></center>
    </header>

@@ -30,7 +30,7 @@ function oVerifyStat($cid)
     $volUnOVerify = Volunteer::where('conference_id', $cid)->where('status', 'sVerified')->count();
     $volOVerify = Volunteer::where('conference_id', $cid)->count() - $volUnOVerify;
     $all = Reg::where('conference_id', $cid)->whereIn('type', ['delegate', 'observer', 'volunteer'])->count();
-    $interviews = Interview::where('conference_id', $cid)->whereNotIn('status', ['failed'])->groupBy('reg_id')->get()->count();
+    $interviews = Interview::where('conference_id', $cid)->whereNotIn('status', ['cancelled', 'failed'])->groupBy('reg_id')->get()->count();
     return ['oVerified' => $delOVerify + $obsOVerify + $volOVerify, 'oUnverified' => $delUnOVerify + $obsUnOVerify + $volUnOVerify, 'all' => $all, 'delOVerify' => $delOVerify, 'interviews' => $interviews];
 }
 
@@ -58,20 +58,29 @@ function daisregStat($cid)
 function interviewStat($cid, $rid = 0)
 {
     $interviewsc = $unarranged = $unfinished = $exempted = $cancelled = $success = 0;
-    $interviews = Interview::where('conference_id', $cid)->groupBy('reg_id')->get();
-    if ($rid != -1)
+    $interviews = Interview::where('conference_id', $cid)->get();
+    if ($rid == -1)
+    {
+        $interviewsc = $interviews->groupBy('reg_id')->count();
+        $unarranged = $interviews->where('status', 'assigned')->groupBy('reg_id')->count();
+        $unfinished = $interviews->where('status', 'arranged')->groupBy('reg_id')->count();
+        $exempted = $interviews->where('status', 'exempted')->groupBy('reg_id')->count();
+        $cancelled = $interviews->where('status', 'cancelled')->groupBy('reg_id')->count();
+        $success = $interviews->where('status', 'passed')->groupBy('reg_id')->count();
+    }
+    else
     {
         if ($rid == 0) $rid = Reg::currentID();
         $interviews = Interview::where('conference_id', $cid)->where('interviewer_id', $rid)->get();
+        $interviewsc = $interviews->count();
+        $unarranged = $interviews->where('status', 'assigned')->count();
+        $unfinished = $interviews->where('status', 'arranged')->count();
+        $exempted = $interviews->where('status', 'exempted')->count();
+        $cancelled = $interviews->where('status', 'cancelled')->count();
+        $success = $interviews->where('status', 'passed')->count();
     }
-    $interviewsc = $interviews->count();
-    $unarranged = $interviews->where('status', 'assigned')->count();
-    $unfinished = $interviews->where('status', 'arranged')->count();
-    $exempted = $interviews->where('status', 'exempted')->count();
-    $cancelled = $interviews->where('status', 'cancelled')->count();
-    $success = $interviews->where('status', 'passed')->count();
-    $arranged = $interviewsc - $unarranged - $cancelled;
-    $finished = $arranged - $unfinished - $exempted;
+    $arranged = $interviewsc - $unarranged;
+    $finished = $arranged - $unfinished - $exempted - $cancelled;
     $roleSetable = $exempted + $success;
-    return ['iid' => $rid, 'all' => $interviewsc, 'unarranged' => $unarranged, 'arranged' => $arranged, 'unfinished' => $unfinished, 'finished' => $finished, 'passed' => $roleSetable];
+    return ['iid' => $rid, 'all' => $interviewsc, 'cancelled' => $cancelled, 'unarranged' => $unarranged, 'arranged' => $arranged, 'unfinished' => $unfinished, 'finished' => $finished, 'passed' => $roleSetable];
 }

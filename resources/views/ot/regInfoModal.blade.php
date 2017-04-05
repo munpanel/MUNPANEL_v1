@@ -1,7 +1,7 @@
 @php
 $i = 0;
 $regInfo = json_decode($reg->reginfo);
-$isOtOrDais = in_array(Reg::current()->type, ['ot', 'dais']);
+$isOtOrDais = in_array(Reg::current()->type, ['ot', 'dais', 'interviewer']);
 $handins = $reg->handins;
 @endphp
 <div class="modal-dialog">

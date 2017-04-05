@@ -47,17 +47,23 @@
       @endif                
     @endif
     <label>会议信息</label>
+    @if (isset($regInfo->conference->committee1))
     <p><i>委员会意向 1</i><br>&emsp;&emsp;{{App\Committee::find($regInfo->conference->committee1)->name}}
     @if (isset($regInfo->conference->branch1) || isset($regInfo->conference->branch2))
     <br>&emsp;&emsp;会场意向: {{isset($regInfo->conference->branch1) ? App\Committee::find($regInfo->conference->branch1)->name : ''}}{{isset($regInfo->conference->branch2) ? (', '.App\Committee::find($regInfo->conference->branch2)->name) : ''}}
     @endif
     </p>
+    @endif
+    @if (isset($regInfo->conference->committee2))
     <p><i>委员会意向 2</i><br>&emsp;&emsp;{{App\Committee::find($regInfo->conference->committee2)->name}}
     @if (isset($regInfo->conference->branch3) || isset($regInfo->conference->branch4))
     <br>&emsp;&emsp;会场意向: {{isset($regInfo->conference->branch3) ? App\Committee::find($regInfo->conference->branch3)->name : ''}}{{isset($regInfo->conference->branch4) ? (', '.App\Committee::find($regInfo->conference->branch4)->name) : ''}}
     @endif
     </p>
+    @endif
+    @if (isset($regInfo->conference->typeInterview))
     <p><i>面试联络方式</i><br>&emsp;&emsp;{{typeInterview($regInfo->conference->typeInterview)}}</p>
+    @endif
     @if (isset($regInfo->conference->groupOption))
     <p><i>团队报名选项</i><br>&emsp;&emsp;{{groupOption($regInfo->conference->groupOption)}}</p>
     @endif

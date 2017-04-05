@@ -12,6 +12,8 @@
 namespace App\Http\Controllers;
 
 use App\Reg;
+use App\Handin;
+use App\Form;
 
 class FormController extends Controller
 {
@@ -309,5 +311,24 @@ class FormController extends Controller
             array_push($result, $item);
         }
         return $result;
+    }
+
+    /**
+     * phpdoc 以后再写
+     *
+     * @param int $id
+     * @return view
+     */
+    public function showFormWindow($id)
+    {
+        $handin = Handin::find($id);
+        if (is_null($handin))
+            return view('dais.formHandinWindow', ['error' => '错误', 'errmsg' => '该提交不存在！']);
+        if ($handin->assignment->handin_type != 'form')
+            return view('dais.formHandinWindow', ['error' => '错误', 'errmsg' => '该提交对应的学术作业并非表单类型！']);
+        $answer = json_decode($handin->content);
+        $form = json_decode(Form::findOrFail($answer->form)->content);
+        $html = $this->getMyAnswer($form->items, $answer);
+        return view('dais.formHandinWindow', ['handin' => $handin, 'name' => $handin->reg->user->name, 'formContent' => $html]);
     }
 }

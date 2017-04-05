@@ -6,23 +6,23 @@
     <h4><a href="{{mp_url('/ot/regInfo.modal/'.$interview->reg->id)}}" class="" data-toggle="ajaxModal">{{$interview->reg->user->name}}</a></h4>
       <p>报名 ID: {{$interview->reg->id}}<br>
       委员会: {{isset($interview->interviewer->committee) ? $interview->interviewer->committee->name : $interview->reg->specific()->committee->name}}<br>
-      面试官: {{$interview->interviewer->reg->user->name}}<br>
+      面试官: {{$interview->interviewer->nicename()}}<br>
       @if (in_array($interview->status, ['arranged', 'undecided', 'passed', 'failed']))
-      面试时间: {{date('Y-m-d H:i', strtotime($interview->arranged_at))}}<br>
+      面试时间: {{nicetime($interview->arranged_at)}}<br>
       @endif
       @if (in_array($interview->status, ['undecided', 'passed', 'failed']))
-      完成于: {{date('Y-m-d H:i', strtotime($interview->finished_at))}}<br>
+      完成于: {{nicetime($interview->finished_at)}}<br>
       @endif
       状态: {{$interview->statusText()}}<br>
-      @if (in_array($interview->status, ['arranged', 'undecided', 'exempted', 'cancelled']))      
+      @if (in_array($interview->status, ['arranged', 'undecided', 'exempted', 'cancelled']))
       面试备注: {{$interview->arranging_notes or '无'}}
       @endif
       @if (in_array($interview->status, ['passed', 'failed']))
       评分: {{$interview->score}}<br>
       反馈: {{$interview->public_fb or '无'}}
-        @if (!empty($interview->internal_fb))
+      @if (!empty($interview->internal_fb))
         <br>内部反馈: {{$interview->internal_fb or '无'}}
-        @endif
+      @endif
       @endif
     </p>
     @if ($interview->interviewer_id == Reg::currentID())

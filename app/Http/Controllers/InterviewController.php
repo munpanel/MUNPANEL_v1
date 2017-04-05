@@ -63,7 +63,7 @@ class InterviewController extends Controller
                 $interview->arranging_notes = $request->notes;
                 $type = intval($request->typeInterview);
                 $interview->save();
-                $interview->reg->addEvent('interview_arranged', '{"interviewer":"'.Auth::user()->name.'","time":"'.date(' n 月 j 日 H:i ', strtotime($interview->arranged_at)).'","method":"'.typeInterview($type).'"}');
+                $interview->reg->addEvent('interview_arranged', '{"interviewer":"'.Auth::user()->name.'","time":"'.$interview->arranged_at).'","method":"'.typeInterview($type).'"}');
                 $interview->reg->user->sendSMS('感谢您以代表身份报名'.Reg::currentConference()->name.'。面试官'.Auth::user()->name.'已为您安排一场于'.date(' n 月 j 日 H:i ', strtotime($interview->arranged_at)).'进行的'.typeInterview($type).'面试。请保持联系方式畅通，预祝面试愉快。');
                 break;
             case "exempt":

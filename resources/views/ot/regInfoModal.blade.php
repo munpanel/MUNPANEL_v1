@@ -71,7 +71,7 @@ $isOtOrDais = in_array(Reg::current()->type, ['ot', 'dais']);
                 @endif
               </div>
             </div>
-          </div>          
+          </div>
         </section>
         <section class="tab-pane" id="interview">
           <div class="modal-body">
@@ -96,6 +96,34 @@ $isOtOrDais = in_array(Reg::current()->type, ['ot', 'dais']);
               <td>分配时间</td>
               <td>{{nicetime($interview->created_at)}}</td>
               </tr>
+              @if (!is_null($interview->arranged_at))
+              <tr>
+              <td>面试时间</td>
+              <td>{{nicetime($interview->created_at)}}</td>
+              </tr>
+              @endif
+              @if (!is_null($interview->finished_at))
+              <tr>
+              <td>完成时间</td>
+              <td>{{nicetime($interview->finished_at)}}</td>
+              </tr>
+              @endif
+              @if (in_array($interview->status, ['passed', 'failed']))
+              <tr>
+              <td>面试评价</td>
+              <td>{{$interview->public_fb ?? '无'}}</td>
+              </tr>
+              @if (Reg::current()->can('view-all-interviews') || $interview->interviewer_id == Reg::currentID())
+              <tr>
+              <td>面试评分</td>
+              <td>{!!$interview->scoreHTML()!!}</td>
+              </tr>
+              <tr>
+              <td>内部评价</td>
+              <td>{{$interview->internal_fb ?? '无'}}</td>
+              </tr>
+              @endif
+              @endif
               </tbody>
               </table>
               @endforeach
@@ -118,7 +146,7 @@ $isOtOrDais = in_array(Reg::current()->type, ['ot', 'dais']);
               @endif
               </div>
             </div>
-          </div>          
+          </div>
         </section>
         @endif
         </div>

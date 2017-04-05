@@ -12,6 +12,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Config;
 
 class Interview extends Model
 {
@@ -42,4 +43,31 @@ class Interview extends Model
             default: return '未知状态';
         }
     }
+
+    public function scoreHTML() {
+        $scoresOptions = json_decode(Reg::currentConference()->option('interview_scores'));
+        $scores = json_decode($this->scores);
+        $score = 0;
+        $result = "";
+        foreach($scoresOptions as $key => $value)
+        {
+            $result.= $value->name . $scores->$key . "&nbsp";
+            $score += $scores->$key * $value->weight;
+        }
+        $result =  "<a style='cursor: pointer;' class='details-popover' data-html='1' data-placement='right' data-trigger='click' data-original-title='详细评分 - ".number_format($score, 1, '.', '')."' data-toggle='popover' data-content='".$result."'>";
+        $score = floor($score * 2);
+        for ($i = 0 ; $i < 5 ; $i++)
+        {
+            $score -= 2;
+            if ($score > -1)
+                $result .= "<i class='fa fa-star fa-fw'></i>";
+            else if ($score == -1)
+                $result .= "<i class='fa fa-star-half-o fa-fw'></i>";
+            else
+                $result .= "<i class='fa fa-star-o fa-fw'></i>";
+        }
+        $result .= "</a>";
+        return $result;
+    }
+
 }

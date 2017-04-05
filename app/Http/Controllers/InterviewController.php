@@ -113,8 +113,9 @@ class InterviewController extends Controller
                     $scores[$key] = $request->$key;
                     $score += intval($request->$key) * $value->weight;
                 }
+                $score *= $scoresOptions->total / 5;
                 $interview->scores = json_encode($scores);
-                $interview->score = $score;// * 2;
+                $interview->score = round($score, 1);
                 $interview->public_fb = $request->public_fb;
                 $interview->internal_fb = $request->internal_fb;
                 $interview->save();

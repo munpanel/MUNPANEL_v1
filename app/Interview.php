@@ -55,7 +55,7 @@ class Interview extends Model
             $score += $scores->$key * $value->weight;
         }
         $result =  "<a style='cursor: pointer;' class='details-popover' data-html='1' data-placement='right' data-trigger='click' data-original-title='详细评分 - ".number_format($score, 1, '.', '')."' data-toggle='popover' data-content='".$result."'>";
-        $score = floor($score * 2);
+        $score = round($score * 2);
         for ($i = 0 ; $i < 5 ; $i++)
         {
             $score -= 2;

@@ -384,12 +384,12 @@ class HomeController extends Controller
         if ($reg->type == 'delegate')
         {
             $status = $reg->delegate->realStatus();
-            if (Reg::current()->can('view-all-regs')) {
+            if (Reg::current()->can('view-regs')) {
                 switch($status)
                 {
                     case 'interview_assigned':break;
                     case 'interview_failed':
-                    case 'interview_unassigned': $operations[] = 'assignInterview'; break;
+                    case 'interview_unassigned': if (Reg::current()->can('view-all-interviews')) $operations[] = 'assignInterview'; break;
                     case 'sVerified': if ($reg->enabled) $operations[] = 'oVerification'; break;
                 }
             }

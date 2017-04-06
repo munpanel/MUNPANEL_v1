@@ -92,6 +92,7 @@
                 </li-->
                 <li>
                   <a href="{{ mp_url('/changePwd.modal') }}" data-toggle="ajaxModal">修改密码</a>
+                  <a href="{{mp_url('/selectIdentityModal')}}" data-toggle="ajaxModal">切换身份</a>
                   <a href="{{ mp_url('/help.html') }}">帮助</a>
                   <a href="{{ mp_url('/logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">注销</a>
                 </li>

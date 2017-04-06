@@ -1249,15 +1249,15 @@ return view('blank',['testContent' => $js, 'convert' => false]);
         $list = new Collection;
         $ots = Orgteam::with('reg.user')->get();
         foreach ($ots as $ot)
-            if (!$list->contains($ot->reg->user))
+            if ($ot->conference_id == Reg::currentConferenceID() && !$list->contains($ot->reg->user))
                 $list->push($ot->reg->user);
         $daises = Dais::with('reg.user')->get();
         foreach ($daises as $dais)
-            if (!$list->contains($dais->reg->user))
+            if ($dais->conference_id == Reg::currentConferenceID() && !$list->contains($dais->reg->user))
                 $list->push($dais->reg->user);
         $interviewers = Interviewer::with('reg.user')->get();
         foreach ($interviewers as $interviewer)
-            if (!$list->contains($interviewer->reg->user))
+            if ($interviewer->conference_id == Reg::currentConferenceID() && !$list->contains($interviewer->reg->user))
                 $list->push($interviewer->reg->user);
         $sorted = $list->sortBy('id');
         $result = array();

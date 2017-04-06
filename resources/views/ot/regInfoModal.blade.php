@@ -3,8 +3,8 @@ $i = 0;
 $regInfo = json_decode($reg->reginfo);
 $isOtOrDais = in_array(Reg::current()->type, ['ot', 'dais', 'interviewer']);
 $handins = $reg->handins;
-$events = $reg->events;
-$notes = $reg->notes;
+$events = $reg->events()->orderBy('created_at', 'dsc')->get();
+$notes = $reg->notes()->orderBy('created_at', 'dsc')->get();
 $interviewers = $reg->interviews()->orderBy('created_at', 'dsc')->get();
 @endphp
 <link href="{{cdn_url('css/jquery.atwho.css')}}" rel="stylesheet">

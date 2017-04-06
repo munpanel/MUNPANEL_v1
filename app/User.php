@@ -108,7 +108,7 @@ class User extends Authenticatable
     }
 
     public function identityHTML() {
-        $regs = $this->regs;
+        $regs = $this->regs()->where('conference_id', Reg::currentConferenceID())->get();
         $count = $regs->count();
         if ($count == 0)
             return "无任何身份";

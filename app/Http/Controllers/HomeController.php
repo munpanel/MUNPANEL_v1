@@ -51,7 +51,7 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $activep['home'] = true;
         $reg = Reg::current();
@@ -72,7 +72,8 @@ class HomeController extends Controller
                 'obs' => Reg::currentConference()->observers->count(),
                 'del' => Reg::currentConference()->delegates->count(),
                 'dais' => Reg::currentConference()->dais->count(),
-                'hasChildComm' => $hasChildComm
+                'hasChildComm' => $hasChildComm,
+                'initialModal' => $request->initmodal
             ]);
         }
         else if ($type == 'school')
@@ -88,7 +89,8 @@ class HomeController extends Controller
                 'obs' => Reg::currentConference()->observers->count(),
                 'del' => Reg::currentConference()->delegates->count(),
                 'dais' => Reg::currentConference()->dais->count(),
-                'hasChildComm' => $hasChildComm
+                'hasChildComm' => $hasChildComm,
+                'initialModal' => $request->initmodal
             ]);
         }
         else if ($type == 'interviewer')
@@ -98,7 +100,8 @@ class HomeController extends Controller
                 'obs' => Reg::currentConference()->observers->count(),
                 'del' => Reg::currentConference()->delegates->count(),
                 'dais' => Reg::currentConference()->dais->count(),
-                'hasChildComm' => $hasChildComm
+                'hasChildComm' => $hasChildComm,
+                'initialModal' => $request->initmodal,
             ]);
         }
         else
@@ -159,9 +162,9 @@ class HomeController extends Controller
             }
 
             if (isset($notice_msg))
-                return view('home', ['percent' => $percent, 'status' => $status, 'changable' => $changable, 'notice_msg' => $notice_msg]);
+                return view('home', ['percent' => $percent, 'status' => $status, 'changable' => $changable, 'notice_msg' => $notice_msg, 'initialModal' => $request->initmodal]);
             else
-                return view('home', ['percent' => $percent, 'status' => $status, 'changable' => $changable]);
+                return view('home', ['percent' => $percent, 'status' => $status, 'changable' => $changable, 'initialModal' => $request->initmodal]);
         }
     }
 

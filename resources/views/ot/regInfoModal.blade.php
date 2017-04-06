@@ -242,6 +242,7 @@ function newPopup(url) {
     url,'popUpWindow','height=750,width=600,left=10,top=10,resizable=no,scrollbars=yes,toolbar=no,menubar=no,location=no,directories=no,status=yes')
 }
 </script>
+@if ($isOtOrDais)
 <script src="{{cdn_url('js/jquery.caret.js')}}"></script>
 <script src="{{cdn_url('js/jquery.atwho.js')}}"></script>
 <script>
@@ -249,6 +250,7 @@ $('#add_notes').atwho({
         at: "@",
         data: "{{mp_url('ajax/atwhoList')}}",
         displayTpl: "<li>${name} </li>",
-        insertTpl: "@${name}(${id})",
+        insertTpl: "@(${id})${name}",
 });
 </script>
+@endif

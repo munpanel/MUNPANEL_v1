@@ -11,10 +11,12 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Note;
 use App\Reg;
 use App\User;
+use App\Email;
 
 class NoteController extends Controller
 {
@@ -26,10 +28,25 @@ class NoteController extends Controller
         if (!in_array(Reg::current()->type, ['ot', 'dais', 'interviewer']))
             return 'error';
         $note = new Note;
+        $reg = Reg::findOrFail($request->reg_id);
+        if ($reg->conference_id != Reg::currentConferenceID())
+            return "error";
         $note->reg_id = $request->reg_id;
         $note->user_id = Auth::id();
         $note->content = $request->text;
         $note->save();
+        $mentioned = extract_mention($note->content);
+        foreach ($mentioned as $user) {
+            $mail = new Email;
+            $mail->id = generateID();
+            $mail->conference_id = Reg::currentConferenceID();
+            $mail->title = Reg::currentConference()->name.' 新的笔记提及';
+            $mail->setReceiver($user);
+            $mail->sender = Auth::user()->name;
+            $mail->content = '在'.Reg::currentConference()->name.'中，'.Auth::user()->name.'在'.$reg->name().'的面试笔记中提到了您。该笔记内容如下：<br/><pre>'.$note->content.'</pre>';
+            $mail->send();
+            $mail->save();
+        }
         if (Reg::current()->type == 'ot')
             return redirect('/regManage?initialReg='.$request->reg_id);
         if (Reg::current()->type == 'interviewer')

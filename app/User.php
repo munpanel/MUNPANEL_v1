@@ -68,7 +68,7 @@ class User extends Authenticatable
         $url = mp_url('/verifyEmail/'.$this->email.'/'.$this->emailVerificationToken);
         $mail = new Email;
         $mail->id = generateID();
-        $mail->conference_id = 2; //ToDo
+        $mail->conference_id = Reg::currentConferenceID();
         $mail->title = 'MUNPANEL 账号验证';
         $mail->setReceiver($this);
         $mail->sender = 'MUNPANEL Team';

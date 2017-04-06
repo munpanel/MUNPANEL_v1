@@ -854,6 +854,7 @@ class UserController extends Controller
      */
     public function test(Request $request)
     {
+        dd(extract_mention($request->text));
         dd(geoip(\Request::ip()));
         $ints = Interviewer::all();
         foreach($ints as $int)

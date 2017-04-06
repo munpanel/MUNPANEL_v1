@@ -384,14 +384,17 @@ class HomeController extends Controller
         if ($reg->type == 'delegate')
         {
             $status = $reg->delegate->realStatus();
-            switch($status)
-            {
-                case 'interview_assigned':break;
-                case 'interview_failed':
-                case 'interview_unassigned': $operations[] = 'assignInterview'; break;
-                case 'sVerified': if ($reg->enabled) $operations[] = 'oVerification'; break;
+            if (Reg::current()->can('view-all-regs')) {
+                switch($status)
+                {
+                    case 'interview_assigned':break;
+                    case 'interview_failed':
+                    case 'interview_unassigned': $operations[] = 'assignInterview'; break;
+                    case 'sVerified': if ($reg->enabled) $operations[] = 'oVerification'; break;
+                }
             }
-            if ($reg->delegate->status != 'fail') array_push($operations, 'setDelgroup');
+            if (Reg::current()->type == 'ot' || Reg::current()->type == 'dais')
+                if ($reg->delegate->status != 'fail') array_push($operations, 'setDelgroup');
         }
         return view('ot.regInfoModal', ['reg' => $reg, 'allRegs' => $allRegs, 'operations' => $operations]);
     }

@@ -19,9 +19,8 @@ function extract_mention($text)
         if(empty($match))
                 return array();
 
-        $user = intval(end($match[1]));
         $users = array();
-        foreach($match as $user)
+        foreach($match[1] as $user)
         {
             $user = \App\User::find(intval($user));
             if (empty($user))

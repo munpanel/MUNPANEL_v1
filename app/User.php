@@ -44,7 +44,7 @@ class User extends Authenticatable
     public function regs() {
         return $this->hasMany('App\Reg');
     }
-    
+
     public function invoiceItems() {
         $items = array();
         if ($this->type == 'delegate')
@@ -53,7 +53,7 @@ class User extends Authenticatable
             array_push($items, array(3, '二十一世纪饭店住宿费', 170));
         return $items;
     }
-    
+
     public function invoiceAmount() {
         $items = $this->invoiceItems();
         $sum = 0;
@@ -105,6 +105,24 @@ class User extends Authenticatable
         if ($this->telVerifications != -1) //3/2/1: tries left; -1: activated
             return false;
         return true;
+    }
+
+    public function identityHTML() {
+        $regs = $this->regs;
+        $count = $regs->count();
+        if ($count == 0)
+            return "无任何身份";
+        if ($count == 1)
+            return $regs[0]->regText();
+        $result = "";
+        $prefix = "";
+        foreach ($regs as $reg)
+        {
+            $result .= $prefix.$reg->regText();
+            $prefix = "、";
+        }
+        $result =  "<a style='cursor: pointer;' class='details-popover' data-html='1' data-placement='right' data-trigger='click' data-original-title='".$this->name."' data-toggle='popover' data-content='".$result."'>".$count."项身份</a>";
+        return $result;
     }
 
 }

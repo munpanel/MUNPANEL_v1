@@ -19,6 +19,7 @@ use App\Observer;
 use App\School;
 use App\Committee;
 use App\Permission;
+use App\Orgteam;
 use App\Role;
 use App\Interviewer;
 use App\Assignment;
@@ -32,6 +33,7 @@ use App\Note;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Collection;
 
 class UserController extends Controller
 {
@@ -1241,22 +1243,31 @@ return view('blank',['testContent' => $js, 'convert' => false]);
         return redirect(isset($request->target) ? $request->target : '/home');
     }
 
-    /**
-     *
-     */
-    public function newNote(Request $request)
+    public function atwhoList()
     {
-        if (!in_array(Reg::current()->type, ['ot', 'dais', 'interviewer']))
-            return 'error';
-        $note = new Note;
-        $note->reg_id = $request->reg_id;
-        $note->user_id = $request->noter_id;
-        $note->content = $request->text;
-        $note->save();
-        if (Reg::current()->type == 'ot')
-            return redirect('/regManage?initialReg='.$request->reg_id);
-        if (Reg::current()->type == 'interviewer')
-            return redirect('/interviews');
-        return redirect('/home');
+        $list = new Collection;
+        $ots = Orgteam::with('reg.user')->get();
+        foreach ($ots as $ot)
+            if (!$list->contains($ot->reg->user))
+                $list->push($ot->reg->user);
+        $daises = Dais::with('reg.user')->get();
+        foreach ($daises as $dais)
+            if (!$list->contains($dais->reg->user))
+                $list->push($dais->reg->user);
+        $interviewers = Interviewer::with('reg.user')->get();
+        foreach ($interviewers as $interviewer)
+            if (!$list->contains($interviewer->reg->user))
+                $list->push($interviewer->reg->user);
+        $sorted = $list->sortBy('id');
+        $result = array();
+        foreach($sorted as $user)
+        {
+            $result[] = array(
+                    'id' => $user->id,
+                    'name' => $user->name,
+            );
+        }
+        return json_encode($result);
     }
+
 }

@@ -3,7 +3,11 @@ $i = 0;
 $regInfo = json_decode($reg->reginfo);
 $isOtOrDais = in_array(Reg::current()->type, ['ot', 'dais', 'interviewer']);
 $handins = $reg->handins;
+$events = $reg->events;
+$notes = $reg->notes;
+$interviewers = $reg->interviews()->orderBy('created_at', 'dsc')->get();
 @endphp
+<link href="{{cdn_url('css/jquery.atwho.css')}}" rel="stylesheet">
 <div class="modal-dialog">
       <div class="modal-content">
         <header class="header bg-dark bg-gradient">
@@ -86,11 +90,11 @@ $handins = $reg->handins;
           <div class="modal-body">
             <div class="row">
               <div class="col-sm-12 b-r">
-                @if ($reg->events->count() == 0)
+                @if ($events->count() == 0)
                 <p>该用户暂无任何事件。</p>
                 @else
                 <ul class="timeline timeline-small">
-                  @foreach($reg->events as $event)
+                  @foreach($events as $event)
                   <li>
                     <div class="timeline-badge {{$event->eventtype->level}}"><i class="fa fa-{{$event->eventtype->icon}} fa-fw"></i></div>
                     <div class="timeline-panel">
@@ -113,10 +117,10 @@ $handins = $reg->handins;
           <div class="modal-body">
             <div class="row">
               <div class="col-sm-12 b-r">
-              @if ($reg->interviews->count() == 0)
+              @if ($interviewers->count() == 0)
                 <p>暂无任何对{{$isOtOrDais ? '该用户' : '您'}}分配的面试。</p>
               @else
-              @foreach ($reg->interviews()->orderBy('created_at', 'dsc')->get() as $interview)
+              @foreach ($interviewers as $interview)
               <h3 class="m-t-sm">{{$interview->id == $reg->currentInterviewID() ? '当前面试信息' : '早前面试信息'}}</h3>
               <table class="table table-bordered table-striped table-hover">
               <tbody>
@@ -189,12 +193,12 @@ $handins = $reg->handins;
             <div class="row">
               <div class="col-sm-12 b-r">
                 <ul class="timeline timeline-small">
-                  @foreach($reg->notes as $note)
+                  @foreach($notes as $note)
                   <li>
                     <div class="timeline-badge"><i class="fa fa-user fa-fw"></i></div>{{--TODO: 插入笔记者 gravatar 头像--}}
                     <div class="timeline-panel">
                       <div class="timeline-heading">
-                        <h4 class="timeline-title">{{$note->user->user->name}}&nbsp;<small class="text-muted">{{$note->user->regText()}}<br><i class="fa fa-clock-o fa-fw"></i>{{nicetime($note->created_at)}}</small></h4>
+                        <h4 class="timeline-title">{{$note->noter->name}}&nbsp;<small class="text-muted">{!!$note->noter->identityHTML()!!}<br><i class="fa fa-clock-o fa-fw"></i>{{nicetime($note->created_at)}}</small></h4>
                       </div>
                       <div class="timeline-body">
                         <p>{{$note->content}}</p>
@@ -205,16 +209,15 @@ $handins = $reg->handins;
                   <li>
                     <div class="timeline-badge"><i class="fa fa-user fa-fw"></i></div>{{--TODO: 插入笔记者 gravatar 头像--}}
                     <div class="timeline-panel">
-                      <form method="post" action="{{mp_url('/newNote')}}">
+                      <form method="post" action="{{mp_url('/newNote')}}" id="add_notes_form">
                         <div class="timeline-heading">
                           <button class="btn btn-sm btn-success pull-right m-b-xs m-t-n-xs" type="submit">添加笔记</button>
-                          <h4 class="timeline-title">{{Auth::user()->name}}&nbsp;<small class="text-muted">{{Reg::current()->regText()}}</small></h4>
+                          <h4 class="timeline-title">{{Auth::user()->name}}&nbsp;<small class="text-muted">{!!Auth::user()->identityHTML()!!}</small></h4>
                         </div>
                         <div class="timeline-body">
                           {{csrf_field()}}
                           <input type="hidden" name="reg_id" value="{{$reg->id}}">
-                          <input type="hidden" name="noter_id" value="{{Reg::currentID()}}">
-                          <input name="text" class="form-control" type="text" data-required="true" data-trigger="change" style="width:100%" placeholder="添加对{{$reg->user->name}}的笔记...">
+                          <input name="text" id="add_notes" class="form-control" type="text" data-required="true" data-trigger="change" style="width:100%" placeholder="添加对{{$reg->user->name}}的笔记...">
                         </div>
                       </form>
                     </div>
@@ -238,4 +241,14 @@ function newPopup(url) {
   popupWindow = window.open(
     url,'popUpWindow','height=750,width=600,left=10,top=10,resizable=no,scrollbars=yes,toolbar=no,menubar=no,location=no,directories=no,status=yes')
 }
+</script>
+<script src="{{cdn_url('js/jquery.caret.js')}}"></script>
+<script src="{{cdn_url('js/jquery.atwho.js')}}"></script>
+<script>
+$('#add_notes').atwho({
+        at: "@",
+        data: "{{mp_url('ajax/atwhoList')}}",
+        displayTpl: "<li>${name} </li>",
+        insertTpl: "@${name}(${id})",
+});
 </script>

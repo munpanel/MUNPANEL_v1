@@ -15,13 +15,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Note extends Model
 {
-    protected $fillable = ['reg_id', 'user_id', 'content'];
+    protected $fillable = ['reg_id', 'noter_id', 'content'];
 
     public function reg() {
         return $this->belongsTo('App\Reg');
     }
 
-    public function user() {
-        return $this->belongsTo('App\Reg', 'user_id');
+    public function noter() {
+        return $this->belongsTo('App\User', 'user_id');
     }
 }

@@ -175,7 +175,7 @@ Route::group(['domain' => 'static.munpanel.com'], function () {
     Route::post('/ot/exemptInterview/{id}', 'InterviewController@exemptInterview');
     Route::get('/findInterviewer.modal', 'InterviewController@findInterviewerModal');
     Route::post('/gotoInterviewer', 'InterviewController@gotoInterviewer');
-    Route::post('/newNote', 'UserController@newNote');
+    Route::post('/newNote', 'NoteController@newNote');
 
     //Route::get('/dais/assignments', 'HomeController@assignment');
 
@@ -227,6 +227,7 @@ Route::group(['domain' => 'static.munpanel.com'], function () {
     Route::get('/ajax/roleAllocDelegates', 'DatatablesController@roleAllocDelegates');
     Route::get('/ajax/roleListByNation', 'DatatablesController@roleListByNation');
     Route::get('/ajax/roleListByDelegate', 'DatatablesController@roleListByDelegate');
+    Route::get('/ajax/atwhoList', 'UserController@atwhoList');
 
     Route::get('/chat', 'ChatController@getIndex');
     Route::post('/chat/message', 'ChatController@postMessage');

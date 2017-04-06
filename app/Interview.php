@@ -51,7 +51,7 @@ class Interview extends Model
         $result = "";
         foreach($scoresOptions->criteria as $key => $value)
         {
-            $result.= $value->name . $scores->$key . "&nbsp";
+            $result.= $value->name . $scores->$key . "&nbsp;";
             $score += $scores->$key * $value->weight;
         }
         $score *= $scoresOptions->total / 5;

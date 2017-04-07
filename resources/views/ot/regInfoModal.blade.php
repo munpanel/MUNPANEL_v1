@@ -242,6 +242,11 @@ function newPopup(url) {
   popupWindow = window.open(
     url,'popUpWindow','height=750,width=600,left=10,top=10,resizable=no,scrollbars=yes,toolbar=no,menubar=no,location=no,directories=no,status=yes')
 }
+$('#add_notes_form').submit(function(e){
+    e.preventDefault();
+    $.post('{{mp_url('/newNote')}}', $('#add_notes_form').serialize())
+    $("#ajaxModal").load("{{mp_url('/ot/regInfo.modal/'.$reg->id.'?active=notes')}}");
+});
 </script>
 @if ($isOtOrDais)
 <!--script src="{{cdn_url('js/jquery.caret.js')}}"></script>

@@ -39,6 +39,15 @@
           <header class="panel-heading text-center">
             登陆&nbsp({{isset($mailLogin)?"Console Mail":"MUNPANEL"}}&nbsp账号)
           </header>
+          @if (count($errors) > 0)
+              <div class="alert alert-danger">
+                  <ul>
+                      @foreach ($errors->all() as $error)
+                          <li>{{ $error }}</li>
+                      @endforeach
+                  </ul>
+              </div>
+          @endif
           <form action="{{ isset($mailLogin)?mp_url('/loginMail'):mp_url('/login') }}" method="post" class="panel-body" data-validate="parsley">
             {{ csrf_field() }}
             <div class="form-group">

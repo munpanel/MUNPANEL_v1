@@ -39,7 +39,16 @@
           <header class="panel-heading bg bg-primary text-center">
             注册
           </header>
-{{$errors->first('password')}}
+          @if (count($errors) > 0)
+              <div class="alert alert-danger">
+                  <ul>
+                      @foreach ($errors->all() as $error)
+                          <li>{{ $error }}</li>
+                      @endforeach
+                  </ul>
+              </div>
+          @endif
+{{--$errors->first('password')--}}
           <form action="{{ mp_url('/register') }}" method="post" class="panel-body" data-validate="parsley">
             {{ csrf_field() }}
             <div class="form-group">

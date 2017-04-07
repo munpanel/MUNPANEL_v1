@@ -48,6 +48,7 @@
                             <i class="fa fa-sort"></i>
                           </span>
                         </th-->
+                        <th>ID</th>
                         <th>姓名</th>
                         <th>类别</th>
                         <th>委员会</th>

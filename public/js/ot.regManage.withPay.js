@@ -5,6 +5,7 @@ $(document).ready(function() {
         ajax: 'ajax/registrations',
         columns: [
             {data: 'details', name: 'details', orderable: false},
+            {data: 'id', name: 'id', orderable: true},
             {data: 'name', name: 'name', orderable: false},
             {data: 'school', name: 'school', orderable: true},
             {data: 'committee', name: 'committee', orderable: true},

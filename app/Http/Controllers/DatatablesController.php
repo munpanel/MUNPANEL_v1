@@ -266,6 +266,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
                 $detail =  '<a href="ot/regInfo.modal/'. $reg->id .'" data-toggle="ajaxModal" id="'. $reg->id .'" class="details-modal"><i class="fa fa-search-plus"></i></a>';
                 $result->push([
                     'details' => $detail,
+                    'id' => $reg->id,
                     'name' => $reg->user->name,
                     'school' => isset($reg->specific()->delegategroups) ? $reg->specific()->scopeDelegateGroup(true, 5) : '无',
                     'committee' => isset($reg->specific()->committee) ? $reg->specific()->committee->name : '无',

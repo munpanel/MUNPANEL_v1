@@ -80,7 +80,7 @@ function interviewStat($cid, $rid = 0)
         $success = $interviews->where('status', 'passed')->count();
     }
     $arranged = $interviewsc - $unarranged;
-    $finished = $arranged - $unfinished - $exempted - $cancelled;
+    $finished = $arranged - $unfinished;
     $roleSetable = $exempted + $success;
     return ['iid' => $rid, 'all' => $interviewsc, 'cancelled' => $cancelled, 'unarranged' => $unarranged, 'arranged' => $arranged, 'unfinished' => $unfinished, 'finished' => $finished, 'passed' => $roleSetable];
 }

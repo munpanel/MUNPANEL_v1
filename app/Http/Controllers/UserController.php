@@ -384,12 +384,14 @@ class UserController extends Controller
     {
         if (Reg::current()->type != 'ot' || (!Reg::current()->can('approve-regs')))
             return "您无权执行该操作！";
-        $specific = Reg::find($id)->specific();
+        $reg = Reg::findOrFail($id);
+        $specific = $reg->specific();
         if ($specific->status != 'sVerified')
             return "无法为此报名者执行该操作！";
         $specific->status = $specific->nextStatus();
         $specific->save();
-        Reg::find($id)->addEvent('ot_verification_passed', '{"name":"'.Auth::user()->name.'"}');
+        $reg->addEvent('ot_verification_passed', '{"name":"'.Auth::user()->name.'"}');
+        return 'success';
         return redirect('/regManage?initialReg='.$id);
     }
 
@@ -403,13 +405,15 @@ class UserController extends Controller
     {
         if (Reg::current()->type != 'ot' || (!Reg::current()->can('approve-regs')))
             return "您无权执行该操作！";
-        $specific = Reg::find($id)->specific();
+        $reg = Reg::findOrFail($id);
+        $specific = $reg->specific();
         if ($specific->status != 'sVerified')
             return "无法为此报名者执行该操作！";
-        $specific->status = $specific->nextStatus();
+        $specific->status = 'fail';
         $specific->save();
         $reg->addEvent('ot_verification_rejected', '{"name":"'.Auth::user()->name.'"}');
-        return redirect('/regManage?initialReg='.$id);
+        return 'success';
+        //return redirect('/regManage?initialReg='.$id);
     }
     /**
      * make a registration school verified.

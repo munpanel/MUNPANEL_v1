@@ -76,11 +76,11 @@
 $('#assignInterviewForm').submit(function(e){
     e.preventDefault();
     $.post('{{mp_url('/ot/assignInterview/'.$reg->id)}}', $('#assignInterviewForm').serialize())
-    $("#ajaxModal").load("{{mp_url('/ot/regInfo.modal/'.$reg->id.'?active=operations')}}");
+    $("#ajaxModal").load("{{mp_url('/ot/regInfo.modal/'.$reg->id.'?active=interviews')}}");
 });
 $('#exemptInterviewForm').submit(function(e){
     e.preventDefault();
     $.post('{{mp_url('/ot/exemptInterview/'.$reg->id)}}', $('#exemptInterviewForm').serialize())
-    $("#ajaxModal").load("{{mp_url('/ot/regInfo.modal/'.$reg->id.'?active=operations')}}");
+    $("#ajaxModal").load("{{mp_url('/ot/regInfo.modal/'.$reg->id.'?active=interviews')}}");
 });
 </script>

@@ -20,7 +20,7 @@
 
                     <p>请在此列表中选择面试官，面试官姓名右侧显示了面试官当前分配的未完成面试数量。</p>
 
-                    <form action="{{mp_url('/ot/assignInterview/'.$reg->id)}}" method="post">
+                    <form action="{{mp_url('/ot/assignInterview/'.$reg->id)}}" method="post" id="assignInterviewForm">
                     {{csrf_field()}}
 
                           <div class="m-b">
@@ -49,7 +49,7 @@
 
                     <p>将会以免试通过方式完成此代表的面试流程，请在此列表中选择面试官，选定的面试官将可以直接为此代表分配席位。</p>
 
-                    <form action="{{mp_url('/ot/exemptInterview/'.$reg->id)}}" method="post">
+                    <form action="{{mp_url('/ot/exemptInterview/'.$reg->id)}}" method="post" id="exemptInterviewForm">
                     {{csrf_field()}}
 
                           <div class="m-b">
@@ -67,9 +67,20 @@
                         <p>分配完成之后，MUNPANEL 将自动通知代表和面试官。</p>
 
                    <button name="submit" type="submit" class="btn btn-info">面试通过</button>
-                   <button name="cancel" type="button" class="btn btn-link" onclick="$('#doAssign').hide(); $('#interviewOpSelect').show();">取消</button>
+                   <button name="cancel" type="button" class="btn btn-link" onclick="$('#doExempt').hide(); $('#interviewOpSelect').show();">取消</button>
 
                    </form>
 
                 </div>
-
+<script>
+$('#assignInterviewForm').submit(function(e){
+    e.preventDefault();
+    $.post('{{mp_url('/ot/assignInterview/'.$reg->id)}}', $('#assignInterviewForm').serialize())
+    $("#ajaxModal").load("{{mp_url('/ot/regInfo.modal/'.$reg->id.'?active=operations')}}");
+});
+$('#exemptInterviewForm').submit(function(e){
+    e.preventDefault();
+    $.post('{{mp_url('/ot/exemptInterview/'.$reg->id)}}', $('#exemptInterviewForm').serialize())
+    $("#ajaxModal").load("{{mp_url('/ot/regInfo.modal/'.$reg->id.'?active=operations')}}");
+});
+</script>

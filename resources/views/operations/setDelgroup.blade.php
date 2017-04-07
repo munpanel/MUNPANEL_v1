@@ -7,7 +7,7 @@ foreach ($regDelgroups as $group)
 @endphp
 <div id="ot_verify" style="display: block;">
   <h3 class="m-t-sm">设定代表组</h3>
-  <form method="post" action="{{mp_url('/ot/setDelgroup')}}">
+  <form method="post" action="{{mp_url('/ot/setDelgroup')}}" id="setDelgroupForm">
     <p>请点击以下项目的复选框以变更{{$reg->user->name}}归属的代表组。</p>
     {{csrf_field()}}
     <input type="hidden" name="id" value="{{$reg->id}}">
@@ -27,3 +27,10 @@ foreach ($regDelgroups as $group)
     <button name="" type="button" class="btn btn-danger m-l-xs" onclick="">重置</button>
   </form>
 </div>
+<script>
+$('#setDelgroupForm').submit(function(e){
+    e.preventDefault();
+    $.post('{{mp_url('/ot/setDelgroup')}}', $('#setDelGroupForm').serialize())
+    $("#ajaxModal").load("{{mp_url('/ot/regInfo.modal/'.$reg->id.'?active=operations')}}");
+});
+</script>

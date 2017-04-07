@@ -6,24 +6,27 @@ $handins = $reg->handins;
 $events = $reg->events()->orderBy('created_at', 'dsc')->get();
 $notes = $reg->notes()->orderBy('created_at', 'dsc')->get();
 $interviewers = $reg->interviews()->orderBy('created_at', 'dsc')->get();
+$active = request()->active;
+if (empty($active))
+    $active = 'info';
 @endphp
 <link href="{{cdn_url('css/jquery.atwho.css')}}" rel="stylesheet">
 <div class="modal-dialog">
       <div class="modal-content">
         <header class="header bg-dark bg-gradient">
           <ul class="nav nav-tabs">
-            <li class="active"><a href="#info" data-toggle="tab" aria-expanded="true">信息</a></li>
-            <li class=""><a href="#handins" data-toggle="tab" aria-expanded="false">作业</a></li>
-            <li class=""><a href="#events" data-toggle="tab" aria-expanded="false">事件</a></li>
-            <li class=""><a href="#interview" data-toggle="tab" aria-expanded="false">面试</a></li>
+            <li id="infoTab"><a href="#info" data-toggle="tab" aria-expanded="false">信息</a></li>
+            <li id="handinsTab"><a href="#handins" data-toggle="tab" aria-expanded="false">作业</a></li>
+            <li id="eventsTab"><a href="#events" data-toggle="tab" aria-expanded="false">事件</a></li>
+            <li id="interviewTab"><a href="#interview" data-toggle="tab" aria-expanded="false">面试</a></li>
             @if ($isOtOrDais)
-            <li class=""><a href="#operations" data-toggle="tab" aria-expanded="false">操作</a></li>
-            <li class=""><a href="#notes" data-toggle="tab" aria-expanded="false">笔记</a></li>
+            <li id="operationsTab"><a href="#operations" data-toggle="tab" aria-expanded="false">操作</a></li>
+            <li id="notesTab"><a href="#notes" data-toggle="tab" aria-expanded="false">笔记</a></li>
             @endif
           </ul>
         </header>
       <div class="tab-content">
-        <section class="tab-pane active" id="info">
+        <section class="tab-pane" id="info">
           <div class="modal-body">
             <div class="row">
               <div class="col-sm-12 b-r">
@@ -217,7 +220,7 @@ $interviewers = $reg->interviews()->orderBy('created_at', 'dsc')->get();
                         <div class="timeline-body">
                           {{csrf_field()}}
                           <input type="hidden" name="reg_id" value="{{$reg->id}}">
-                          <input name="text" id="add_notes" class="form-control" type="text" data-required="true" data-trigger="change" style="width:100%" placeholder="添加对{{$reg->user->name}}的笔记...">
+                          <input name="text" id="add_notes" class="form-control" type="text" data-required="true" data-trigger="change" style="width:100%" placeholder="添加对{{$reg->user->name}}的笔记..." autocomplete="off">
                         </div>
                       </form>
                     </div>
@@ -232,25 +235,30 @@ $interviewers = $reg->interviews()->orderBy('created_at', 'dsc')->get();
       </div><!-- /.modal-content -->
 </div>
 <script type="text/javascript">
-$(document).ready(function() {
-      $(".interviewer-list").select2();
-});
-</script>
-<script type="text/javascript">
+$('#{{$active}}').addClass('active');
+$('#{{$active}}Tab').addClass('active');
+$('#{{$active}}Tab > a').attr('aria-expanded', 'true');
 function newPopup(url) {
   popupWindow = window.open(
     url,'popUpWindow','height=750,width=600,left=10,top=10,resizable=no,scrollbars=yes,toolbar=no,menubar=no,location=no,directories=no,status=yes')
 }
 </script>
 @if ($isOtOrDais)
-<script src="{{cdn_url('js/jquery.caret.js')}}"></script>
-<script src="{{cdn_url('js/jquery.atwho.js')}}"></script>
+<!--script src="{{cdn_url('js/jquery.caret.js')}}"></script>
+<script src="{{cdn_url('js/jquery.atwho.js')}}"></script-->
 <script>
-$('#add_notes').atwho({
-        at: "@",
-        data: "{{mp_url('ajax/atwhoList')}}",
-        displayTpl: "<li>${name} </li>",
-        insertTpl: "@(${id})${name}",
+$(document).ready(function(){
+    $(".interviewer-list").select2();
+    $.getScript( "{{cdn_url('js/jquery.caret.js')}}", function( data, textStatus, jqxhr  ) {
+        $.getScript( "{{cdn_url('js/jquery.atwho.js')}}", function( data, textStatus, jqxhr  ) {
+            $('#add_notes').atwho({
+                at: "@",
+                data: "{{mp_url('ajax/atwhoList')}}",
+                displayTpl: "<li>${name} </li>",
+                insertTpl: "@(${id})${name}",
+            });
+        });
+    });
 });
 </script>
 @endif

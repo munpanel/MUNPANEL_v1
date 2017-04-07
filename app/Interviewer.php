@@ -32,7 +32,7 @@ class Interviewer extends Model
     }
 
     public function regText() {
-        return '面试官';
+        return '面试官'. (empty($this->committee_id)?'':'（'.$this->committee->name.'）');
     }
 
     public function nicename() {

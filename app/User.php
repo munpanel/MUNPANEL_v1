@@ -114,6 +114,12 @@ class User extends Authenticatable
             return "无任何身份";
         if ($count == 1)
             return $regs[0]->regText();
+        $result =  "<a style='cursor: pointer;' class='details-popover' data-html='1' data-placement='right' data-trigger='click' data-original-title='".$this->name."' data-toggle='popover' data-content='".$this->identityText()."'>".$count."项身份</a>";
+        return $result;
+    }
+
+    public function identityText() {
+        $regs = $this->regs()->where('conference_id', Reg::currentConferenceID())->get();
         $result = "";
         $prefix = "";
         foreach ($regs as $reg)
@@ -121,7 +127,6 @@ class User extends Authenticatable
             $result .= $prefix.$reg->regText();
             $prefix = "、";
         }
-        $result =  "<a style='cursor: pointer;' class='details-popover' data-html='1' data-placement='right' data-trigger='click' data-original-title='".$this->name."' data-toggle='popover' data-content='".$result."'>".$count."项身份</a>";
         return $result;
     }
 

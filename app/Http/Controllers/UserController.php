@@ -1266,6 +1266,7 @@ return view('blank',['testContent' => $js, 'convert' => false]);
             $result[] = array(
                     'id' => $user->id,
                     'name' => $user->name,
+                    'position' => $user->identityText(),
             );
         }
         return json_encode($result);

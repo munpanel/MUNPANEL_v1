@@ -254,7 +254,7 @@ $(document).ready(function(){
             $('#add_notes').atwho({
                 at: "@",
                 data: "{{mp_url('ajax/atwhoList')}}",
-                displayTpl: "<li>${name} </li>",
+                displayTpl: "<li>${name} <small>${position}</small></li>",
                 insertTpl: "@(${id})${name}",
             });
         });

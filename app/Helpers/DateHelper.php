@@ -70,9 +70,9 @@ function validateRegDate($type)
     foreach ($regDate as $value)
     {
         if ($value->use != $type) continue;
-        if (strtotime(date("y-m-d h:i:s")) < strtotime($value->config->start)) return false;
+        if (strtotime(date("y-m-d H:i:s")) < strtotime($value->config->start)) return false;
         elseif ($value->config->end == 'ended') return false;
-        elseif (strtotime(date("y-m-d h:i:s")) > strtotime($value->config->end) && $value->config->end != 'manual') return false;
+        elseif (strtotime(date("y-m-d H:i:s")) > strtotime($value->config->end) && $value->config->end != 'manual') return false;
         else return true;
     }
     return false;

@@ -14,7 +14,7 @@
     @if (!empty($regInfo->personinfo->sfz))
     <p><i>证件类型及号码</i><br>&emsp;&emsp;{{typeID($regInfo->personinfo->typeDocument)}} / {{$regInfo->personinfo->sfz}} </p>
     @endif
-    <p><i>电话</i><br>&emsp;&emsp;{{$regInfo->personinfo->tel}}</p>
+    <p><i>电话</i><br>&emsp;&emsp;{{$reg->user->tel}}</p>
     <!-- alt_phone -->
     @if (!empty($regInfo->personinfo->alt_phone))                
     <p><i>备用电话</i><br>&emsp;&emsp;{{$regInfo->personinfo->alt_phone}}</p>

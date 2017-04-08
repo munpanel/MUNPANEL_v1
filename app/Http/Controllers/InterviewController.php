@@ -163,7 +163,9 @@ class InterviewController extends Controller
     public function exemptInterview(Request $request, $id)
     {
         //To-Do: permission check
-        //To-Do: status check
+        $reg = Reg::findOrFail($id);
+        if ($reg->specific()->realStatus() != 'interview_unassigned')
+            return "Already assigned an interview!";
         $interviewer = Interviewer::findOrFail($request->interviewer);
         $interview = new Interview;
         $interview->conference_id = Reg::currentConferenceID();

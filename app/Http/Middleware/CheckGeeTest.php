@@ -37,14 +37,12 @@ class CheckGeeTest
             if ($result) {
                 return $next($request);
             } else{
-                return "a";
                 return redirect()->back();
             }
         }else{  //服务器宕机,走failback模式
             if ($GtSdk->fail_validate($request->geetest_challenge,$request->geetest_validate,$request->geetest_seccode)) {
                 return $next($request);
             }else{
-                return "b";
                 return redirect()->back();
             }
         }

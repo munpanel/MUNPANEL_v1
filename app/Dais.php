@@ -28,6 +28,10 @@ class Dais extends Model
         return $this->belongsTo('App\Committee');
     }
 
+    public function user() {
+        return $this->reg->user;
+    }
+
     public function reg()
     {
         return $this->belongsTo('App\reg');

@@ -30,6 +30,8 @@ class Email extends Model
 
     public function send()
     {
+        if (is_null($this->receiverArray['address']))
+            $this->receiverArray = json_decode($this->receiver, true);
         $this->content = '<h1>您好，'.$this->receiverArray['name'].'</h1>'.$this->content;
         Mail::to($this->receiverArray['address'], $this->receiverArray['name'])->send(new GeneralMail($this));
     }

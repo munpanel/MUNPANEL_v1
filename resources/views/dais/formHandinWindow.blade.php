@@ -7,8 +7,11 @@
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
+    @if (isset($error))
+    <title>错误</title>
+    @else
     <title>{{$name}}的学术作业提交 | MUNPANEL</title>
+    @endif
 
     <link rel="icon" href="{{mp_url('/images/favicon.ico')}}" type="image/x-icon" />
     <link rel="shortcut icon" href="{{mp_url('/images/favicon.ico')}}" type="image/x-icon" />

@@ -322,6 +322,8 @@ class FormController extends Controller
     public function showFormWindow($id)
     {
         $handin = Handin::find($id);
+        if (Reg::current()->type != 'dais' && Reg::current()->type != 'interviewer' && Reg::current()->type != 'ot' && $handin->reg_id != Reg::currentID())
+            return view('dais.formHandinWindow', ['error' => '错误', 'errmsg' => '无查看权限！']);
         if (is_null($handin))
             return view('dais.formHandinWindow', ['error' => '错误', 'errmsg' => '该提交不存在！']);
         if ($handin->assignment->handin_type != 'form')

@@ -40,6 +40,8 @@ Route::group(['domain' => 'static.munpanel.com'], function () {
     });
 
     Route::get('/showEmail/{id}', 'EmailController@showEmail');
+    //Route::get('/sendDaisResult', 'EmailController@sendDaisResult');
+    Route::get('/resendMail/{id}', 'EmailController@resend');
     //Route::get('/daisBJMUN', 'EmailController@daisBJMUN');
 
     Route::get('/startCaptchaServlet', 'GeeTestController@startCaptcha');

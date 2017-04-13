@@ -114,6 +114,8 @@ class GeetestLib {
         $url          = "http://api.geetest.com/validate.php";
         $codevalidate = $this->post_request($url, $query);
         $obj = json_decode($codevalidate);
+        if (!is_object($obj)) // Server side network issues, patch by Adam Yi
+            return 1;
         if ($obj->{'seccode'} == md5($seccode)) {
             return 1;
         } else {

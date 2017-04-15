@@ -128,7 +128,7 @@ if (empty($active))
               <table class="table table-bordered table-striped table-hover">
               <tbody>
               <tr>
-              <td>状态</td>
+              <td style="min-width:80px">状态</td>
               <td>{{$interview->statusText()}}</td>
               </tr>
               <tr>

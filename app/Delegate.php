@@ -82,7 +82,8 @@ class Delegate extends Model
     }
 
     public function interviewStatus($retest = false) {
-        $interview = $this->interviews()->where('retest', $retest)->orderBy('created_at', 'dsc')->first();
+        $interview = $this->interviews()->where('retest', $retest)->orderBy('created_at', 'desc')->first();
+        $status = 'unassigned';
         if (is_object($interview))
         {
             switch($interview->status)
@@ -96,8 +97,6 @@ class Delegate extends Model
                 case 'undecided': $status = 'undecided'; break;
                 case 'retest': $status = $this->interviewStatus(true);
             }
-        } else {
-            $status = 'unassigned';
         }
         if($retest)
             return 'retest_' . $status;

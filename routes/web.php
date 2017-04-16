@@ -35,6 +35,8 @@ Route::group(['domain' => 'static.munpanel.com'], function () {
         return redirect(secure_url('home'));
     });
 
+    Route::get('/keepalive', 'SessionController@keepalive');
+
     Route::get('/signin', function () {
         return view('signin');
     });

@@ -728,11 +728,11 @@ class UserController extends Controller
         $editSchool->description = '添加、删除、编辑学校';
         $editSchool->save();
 
-        $editInterview = new Permission();
-        $editInterview->name = 'edit-interviews';
-        $editInterview->display_name = '面试管理';
-        $editInterview->description = '面试代表、填写反馈、评价及打分';
-        $editInterview->save();
+        $assignInterview = new Permission();
+        $assignInterview->name = 'assign-interviews';
+        $assignInterview->display_name = '面试管理';
+        $assignInterview->description = '面试代表、填写反馈、评价及打分';
+        $assignInterview->save();
 
         $assignRole = new Permission();
         $assignRole->name = 'assign-roles';
@@ -792,18 +792,17 @@ class UserController extends Controller
         $interviewadmin->display_name = '面试协理组';
         $interviewadmin->description = '包括审核报名信息、编辑委员会及席位、面试和分配席位的权限。';
         $interviewadmin->save();
-        $interviewadmin->attachPermissions(array($viewReg, $editReg, $approveReg, $editCom, $editNation, $editInterview, $assignRole));
+        $interviewadmin->attachPermissions(array($viewReg, $editReg, $approveReg, $editCom, $editNation, $editInterview, $assignRole));*/
 
-        $interviewer = new Role();
-        $interviewer->name = 'interviewer';
-        $interviewer->display_name = '面试官组';
-        $interviewer->description = '包括面试和分配席位的权限。';
-        $interviewer->save();*/
+        $interviewer = Role::find(2);
+                
+        $editReg = new Permission();
+        $editReg->name = 'edit-ot';
+        $editReg->display_name = '会议团队成员管理';
+        $editReg->description = "增删、编辑、管理会议组织团队和学术团队成员";
+        $editReg->save();
 
-        $editInterview = Permission::find(10);
-        $assignRole = Permission::find(11);
-        $interviewer=Role::find(5);
-        $interviewer->attachPermissions(array($editInterview, $assignRole));
+        $interviewer->attachPermissions($editReg);
     }
 
     /**

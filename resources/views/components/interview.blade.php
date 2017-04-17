@@ -3,7 +3,7 @@
     @if (isset($interview->score))
     <h4 class="pull-right {{$interview->status == 'passed' ? 'text-success' : 'text-danger'}}"><strong>{{$interview->score}}</strong></h4>
     @endif
-    <h4><a href="{{mp_url('/ot/regInfo.modal/'.$interview->reg->id)}}" class="" data-toggle="ajaxModal">{{$interview->reg->user->name}}</a></h4>
+    <h4><a href="{{mp_url('/ot/regInfo.modal/'.$interview->reg->id.'#interview')}}" class="" data-toggle="ajaxModal">{{$interview->reg->user->name}}</a></h4>
       <p>报名 ID: {{$interview->reg->id}}<br>
       委员会: {{isset($interview->interviewer->committee) ? $interview->interviewer->committee->name : $interview->reg->specific()->committee->name}}<br>
       面试官: {{$interview->interviewer->nicename()}}<br>

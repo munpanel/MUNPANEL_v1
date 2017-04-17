@@ -63,7 +63,7 @@ $(document).ready(function() {
             "infoEmpty": "无记录",
             "infoFiltered": "(从 _MAX_ 条记录过滤)"
         },
-        "order": [[2, "asc"]],
+        "order": [[1, "asc"]],
     });
     var table=$('#registration-table').DataTable();
     $("#searchButton").click(function() {

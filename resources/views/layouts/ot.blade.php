@@ -52,22 +52,22 @@
                 </a>
               </li>
               @endpermission
-              {{--@permission('view-regs')--}}
+              @permission('edit-ot')
               <li class="@yield('teamManage_active')">
                 <a href="{{ mp_url('/teamManage') }}">
                   <i class="fa fa-flag"></i>
                   <span>Team Management</span>
                 </a>
               </li>
-              {{--@endpermission--}}
-              {{--@permission('view-regs')--}}
+              @endpermission
+              @permission('edit-ot')
               <li class="@yield('confConfig_active')">
                 <a href="{{ mp_url('/confConfig') }}">
                   <i class="fa fa-cogs"></i>
                   <span>Conference Settings</span>
                 </a>
               </li>
-              {{--@endpermission--}}
+              @endpermission
               @permission('edit-nations')
               <li class="@yield('nationManage_active')">
                 <a href="{{ mp_url('/nationManage') }}">

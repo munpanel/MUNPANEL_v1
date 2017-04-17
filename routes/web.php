@@ -187,7 +187,7 @@ Route::group(['domain' => 'static.munpanel.com'], function () {
     //Route::get('/regschools', 'UserController@regSchool');
     Route::get('/test', 'UserController@test');
     Route::get('/blank', 'HomeController@blank');
-    //Route::get('/createPermissions', 'UserController@createPermissions');
+    Route::get('/createPermissions', 'UserController@createPermissions');
 
     Route::get('/school/payment', 'HomeController@schoolPay');
     Route::get('/school/pay/change/{method}', 'HomeController@changeSchoolPaymentMethod');

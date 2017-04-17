@@ -19,7 +19,6 @@ $interviews = interviewStat(Reg::currentConferenceID(), -1);
         </div>
       </div></a>
     </div>
-    @if (Reg::current()->can('view-all-interviews'))
     <div class="text-center col-sm-3">
       <a href="{{mp_url('/regManage')}}">
       <small class="text-muted block">未分配面试代表</small>
@@ -32,7 +31,6 @@ $interviews = interviewStat(Reg::currentConferenceID(), -1);
         </div>
       </div></a>
     </div>
-    @endif
     <div class="text-center col-sm-3">
       <small class="text-muted block">未安排面试代表</small>
       <h4>{{$interviews['unarranged']}}</h4>
@@ -55,7 +53,6 @@ $interviews = interviewStat(Reg::currentConferenceID(), -1);
         </div>
       </div>
     </div>
-    @if (Reg::current()->can('approve-regs-pay'))
     <div class="text-center col-sm-3">
       <small class="text-muted block">未缴费人员</small>
       <h4>0</h4>
@@ -67,6 +64,5 @@ $interviews = interviewStat(Reg::currentConferenceID(), -1);
         </div>
       </div>
     </div>
-    @endif
   </div>
  </div>

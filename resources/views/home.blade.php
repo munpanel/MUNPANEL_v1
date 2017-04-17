@@ -105,7 +105,7 @@ if (Reg::current()->type == 'delegate' && isset(Reg::current()->delegate))
                  @else
                  <br>您的报名类型为<b> {{ Reg::current()->type == 'unregistered' ? '未注册' : (Reg::current()->type == 'delegate' ? '代表' : (Reg::current()->type == 'volunteer' ? '志愿者':'观察员')) }}</b>
                  @endif
-                 @if (Config::get('munpanel.registration_enabled'))
+                 @if (validateRegDate(Reg::current()->type))
                  ，如需查看当前报名信息或修改信息，请点击下方的表单按钮。<br>请注意，如您已通过审核，重新编辑信息将导致您回到待审核状态。<br>
                  @else
                   。当前报名已截止，您无法编辑报名信息，如需查看当前报名信息，请点击下方的表单按钮。

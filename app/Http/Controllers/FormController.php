@@ -243,9 +243,10 @@ class FormController extends Controller
      *
      * @param array $questions the object of form, from json_decode ($*->items)
      * @param object $answers the object of answer, from json_decode ($*->items)
+     * @param bool $withScore show form answer with score?
      * @return string the table items object ($*->items)
      */
-    public static function getMyAnswer($questions, $answers)
+    public static function getMyAnswer($questions, $answers, $withScore = false)
     {
         $html = '';
         $nl = '';
@@ -268,22 +269,43 @@ class FormController extends Controller
             {
                 case 'single_choice':
                     $text = $item->options[$value - 1]->text;
-                    $html .= '<div class="m-l-lg">'.$text.'</div>';
+                    $html .= '<div class="m-l-lg'.($withScore ? ($value == $item->answer ? ' text-success' : ' text-danger') : '').'">'.$text.'</div>';
                 break;
                 case 'yes_or_no':
-                    $html .= '<div class="m-l-lg">' . ($value == 'true' ? '正确' : '错误') . '</div>';
+                    $html .= '<div class="m-l-lg'.($withScore ? ($value == $item->answer ? ' text-success' : ' text-danger') : '').'">' . ($value == 'true' ? '正确' : '错误') . '</div>';
                 break;
                 case 'mult_choice':
-                case 'order':
+                    $corrected = array_diff($item->answer, $value);
                     foreach ($value as $val)
                     {
                         $text = $item->options[$val - 1]->text;
-                        $html .= '<div class="m-l-lg">'.$text.'</div>';
+                        $html .= '<div class="m-l-lg '.($withScore ? (in_array($val, $item->answer) ? ' text-success' : ' text-danger') : '').'">'.$text.'</div>';
+                    }
+                    if (!empty($corrected))
+                    {
+                        $html .= '<div class="m-l-lg text-primary">未选的项: ';
+                        $split = '';
+                        foreach ($corrected as $item1)
+                        {
+                            $html .= $split . $item->options[$item1 - 1]->text;
+                            $split = ', ';
+                        }
+                        $html .= '</div>';
+                    }
+                break;
+                case 'order':
+                    $n = 0;
+                    foreach ($value as $val)
+                    {
+                        $text = $item->options[$val - 1]->text;
+                        $html .= '<div class="m-l-lg'.($withScore ? ($val == $item->answer[$n++] ? ' text-success' : ' text-danger') : '').'">'.$text.'</div>';
                     }
                 break;
                 case 'fill_in':
                 case 'text_field':
-                    $html .= '<div class="m-l-lg">' . nl2br($value) . '</div>';
+                    $html .= '<div class="m-l-lg"'.(($withScore && !empty($item->answer) && (strcmp($value, $item->answer) == 0)) ? ' text-success' : '').'>' . nl2br($value) . '</div>';
+                    if ($withScore && !empty($item->answer))
+                        $html .= '<div class="m-l-lg text-primary">正确答案: ' .$item->answer. '</div>';
                 break;
             }
             $nl = '<br>';
@@ -330,7 +352,7 @@ class FormController extends Controller
             return view('dais.formHandinWindow', ['error' => '错误', 'errmsg' => '该提交对应的学术作业并非表单类型！']);
         $answer = json_decode($handin->content);
         $form = json_decode(Form::findOrFail($answer->form)->content);
-        $html = $this->getMyAnswer($form->items, $answer);
+        $html = $this->getMyAnswer($form->items, $answer, true);
         return view('dais.formHandinWindow', ['handin' => $handin, 'name' => $handin->reg->user->name, 'formContent' => $html]);
     }
 }

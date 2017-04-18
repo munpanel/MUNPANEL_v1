@@ -146,7 +146,7 @@ class InterviewController extends Controller
         //To-Do: permission check
         $reg = Reg::findOrFail($id);
         if ($reg->specific()->realStatus() != 'interview_unassigned')
-            return "Already assigned an interview!";
+            return view('error', ['msg' => '此代表已被分配面试，不能执行该操作！']);
         $interviewer = Interviewer::findOrFail($request->interviewer);
         $interview = new Interview;
         $interview->conference_id = Reg::currentConferenceID();
@@ -165,7 +165,7 @@ class InterviewController extends Controller
         //To-Do: permission check
         $reg = Reg::findOrFail($id);
         if ($reg->specific()->realStatus() != 'interview_unassigned')
-            return "Already assigned an interview!";
+            return view('error', ['msg' => '此代表已被分配面试，不能执行该操作！']);
         $interviewer = Interviewer::findOrFail($request->interviewer);
         $interview = new Interview;
         $interview->conference_id = Reg::currentConferenceID();

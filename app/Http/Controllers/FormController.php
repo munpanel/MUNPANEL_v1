@@ -262,7 +262,6 @@ class FormController extends Controller
             if (empty($value))
             {
                 $html .= '<div class="m-l-lg">未作答</div>';
-                $html .= '</div>';
                 continue;
             }
             switch ($item->type)
@@ -308,9 +307,34 @@ class FormController extends Controller
                         $html .= '<div class="m-l-lg text-primary">正确答案: ' .$item->answer. '</div>';
                 break;
             }
-            $nl = '<br>';
+            $nl = '</div>';
         }
         return $html;
+    }
+
+    /**
+     * Calculate score from handins
+     *
+     * @param array $questions the object of form, from json_decode ($*->items)
+     * @param object $answers the object of answer, from json_decode ($*->items)
+     * @return [correct, all]
+     */
+    public static function autoScore($questions, $answers)
+    {
+        $result = [];
+        $result['correct'] = 0;
+        $result['all'] = 0;
+        $arr_answers = (array)$answers;
+        foreach ($arr_answers as $key => $value)
+        {
+            if (in_array($key, ['_token', 'handin', 'form', 'language'])) continue;
+            $item = $questions[$key - 1];
+            if (!in_array($item->type, ['single_choice', 'mult_choice', 'yes_or_no', 'order'])) continue;
+            if (empty($item->answer)) continue;
+            if ($item->answer === $value) $result['correct']++;
+            $result['all']++;
+        }
+        return $result;
     }
 
     /**
@@ -328,7 +352,7 @@ class FormController extends Controller
         foreach ($arr_answers as $key => $value)
         {
             // 排除 _token 和 handin
-            if (in_array($key, ['_token', 'handin', 'form'])) continue;
+            if (in_array($key, ['_token', 'handin', 'form', 'language'])) continue;
             $item = $questions[$key - 1];
             array_push($result, $item);
         }
@@ -352,7 +376,8 @@ class FormController extends Controller
             return view('dais.formHandinWindow', ['error' => '错误', 'errmsg' => '该提交对应的学术作业并非表单类型！']);
         $answer = json_decode($handin->content);
         $form = json_decode(Form::findOrFail($answer->form)->content);
-        $html = $this->getMyAnswer($form->items, $answer, true);
-        return view('dais.formHandinWindow', ['handin' => $handin, 'name' => $handin->reg->user->name, 'formContent' => $html]);
+        $html = $this->getMyAnswer($form->items, $answer, ($handin->reg_id != Reg::currentID()));
+        $score = $this->autoScore($form->items, $answer);
+        return view('dais.formHandinWindow', ['handin' => $handin, 'name' => $handin->reg->user->name, 'formContent' => $html, 'score' => $score]);
     }
 }

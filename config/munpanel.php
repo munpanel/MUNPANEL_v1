@@ -18,5 +18,6 @@ return [
     'imap_host' => env('MP_IMAP_HOST', '{mail.yiad.am:143/novalidate-cert}INBOX'),
     'mailapi_host' => env('MP_MAILAPI_HOST', 'http://mail.yiad.am/'),
     'mailapi_key' => env('MP_MAILAPI_KEY', 'api@yiad.am'),
-    'mailapi_secret' => env('MP_MAILAPI_SECRET', '')
+    'mailapi_secret' => env('MP_MAILAPI_SECRET', ''),
+    'icp_license' => env('MP_ICPLICENSE', '')
 ];

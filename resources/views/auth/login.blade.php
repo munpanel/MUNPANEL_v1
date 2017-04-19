@@ -84,7 +84,11 @@
   <!-- footer -->
   <footer id="footer">
     <div class="text-center padder clearfix">
-      <p><small>&copy; {{config('munpanel.copyright_year')}} MUNPANEL. All rights reserved.</small></p>
+      <p><small>&copy; {{config('munpanel.copyright_year')}} MUNPANEL. All rights reserved.
+      @if(null !== config('munpanel.icp_license'))
+      <br/><a href="http://www.miibeian.gov.cn/" title="{{config('munpanel.icp_license')}}" rel="nofollow">{{config('munpanel.icp_license')}}</a>
+      @endif
+      </small></p>
     </div>
   </footer>
   <!-- / footer -->

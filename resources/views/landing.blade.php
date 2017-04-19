@@ -90,7 +90,10 @@
         </p-->
            
         Copyright © {{config('munpanel.copyright_year')}} MUNPANEL.<br/>A Product of Console iT, Developed by Adam Yi
-        
+        @if(null !== config('munpanel.icp_license'))
+        <br/><a href="http://www.miibeian.gov.cn/" title="{{config('munpanel.icp_license')}}" rel="nofollow">{{config('munpanel.icp_license')}}</a>
+        @endif
+
         <div class="clearfix"></div>
 
     </div>

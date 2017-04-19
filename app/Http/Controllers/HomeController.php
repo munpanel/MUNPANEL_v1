@@ -645,6 +645,7 @@ class HomeController extends Controller
             $form = $assignment->form->random();
             $formID = $form->id;
             $questions = FormController::getQuestions(json_decode($form->content));
+            $cansave = !empty(json_decode($form->content)->config->cansave);
             $handin = Handin::where('assignment_id', $id)->where('reg_id', Reg::currentID())->orderBy('id', 'desc')->first();
             if (is_null($handin))
             {
@@ -665,10 +666,11 @@ class HomeController extends Controller
                 if (!empty($content->_token)) return redirect(mp_url('/assignment/' . $id));
                 $form = json_decode(Form::findOrFail($content->form)->content);
                 $questions = FormController::restoreQuestions($form->items, $content);
+                $cansave = !empty($form->config->cansave);
                 $formID = $content->form;
             }
             $target = '/assignment/'.$assignment->id.'/formSubmit';
-            $html = FormController::formAssignment($assignment->id, $questions, $formID, $target, $handin);
+            $html = FormController::formAssignment($assignment->id, $questions, $formID, $target, $cansave, $handin);
             return view('assignmentForm', ['title' => $assignment->title, 'formContent' => $html, 'target' => $target]);
         }
     }

@@ -429,7 +429,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
                 }
                 else
                     $handin = Handin::where('assignment_id', $assignment->id)->where('reg_id', Reg::current()->id)->orderBy('id', 'desc')->first();
-                if (is_null($handin)) //TO-DO: ddl check
+                if (is_null($handin) || ($handin->handin_type == 'json' && !isset(json_decode($handin->content)->_token))) //TO-DO: ddl check
                     $title = $title."<b class=\"badge bg-danger pull-right\">未提交</b>";
             }
             else

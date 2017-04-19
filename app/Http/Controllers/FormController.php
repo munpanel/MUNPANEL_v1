@@ -111,14 +111,17 @@ class FormController extends Controller
      * @param int $handinID the ID of handin
      * @return string HTML clip of the table
      */
-    public static function formAssignment($assignmentID, $tableItems, $formID, $target, $handin = null)
+    public static function formAssignment($assignmentID, $tableItems, $formID, $target, $cansave, $handin = null)
     {
         if (!empty($handin)) $content = json_decode($handin->content);
         $html = '<form method="POST" id="assignmentForm" action="'.mp_url($target.'/true').'" class="m-t-lg m-b">'.csrf_field();
         if (!empty($handin)) $html .= '<input type="hidden" value="'.$handin->id.'" name="handin">';
         $html .= '<input type="hidden" value="'.$formID.'" name="form">';
         $html .= FormController::formAssignmentTableItems($tableItems, $content);
-        $html .= '<div class="form-group"><button type="submit" class="btn btn-success">提交作业</button></div></form>';
+        $html .= '<div class="form-group"><button type="submit" class="btn btn-success">提交作业</button>';
+        if ($cansave)
+            $html .= '<a href="'.mp_url('assignments').'" class="text-black lter m-l" style="vertical-align: text-top;">保存并离开</a>';
+        $html .= '</div></form>';
         return $html;
     }
 
@@ -375,16 +378,17 @@ class FormController extends Controller
     public function showFormWindow($id)
     {
         $handin = Handin::find($id);
-        if (Reg::current()->type != 'dais' && Reg::current()->type != 'interviewer' && Reg::current()->type != 'ot' && $handin->reg_id != Reg::currentID())
-            return view('dais.formHandinWindow', ['error' => '错误', 'errmsg' => '无查看权限！']);
         if (is_null($handin))
             return view('dais.formHandinWindow', ['error' => '错误', 'errmsg' => '该提交不存在！']);
+        if (Reg::current()->type != 'dais' && Reg::current()->type != 'interviewer' && Reg::current()->type != 'ot' && $handin->reg_id != Reg::currentID())
+            return view('dais.formHandinWindow', ['error' => '错误', 'errmsg' => '无查看权限！']);
         if ($handin->assignment->handin_type != 'form')
             return view('dais.formHandinWindow', ['error' => '错误', 'errmsg' => '该提交对应的学术作业并非表单类型！']);
         $answer = json_decode($handin->content);
         $form = json_decode(Form::findOrFail($answer->form)->content);
         $html = $this->getMyAnswer($form->items, $answer, ($handin->reg_id != Reg::currentID()));
-        $score = $this->autoScore($form->items, $answer);
-        return view('dais.formHandinWindow', ['handin' => $handin, 'name' => $handin->reg->user->name, 'formContent' => $html, 'score' => $score]);
+        $args = ['handin' => $handin, 'name' => $handin->reg->user->name, 'formContent' => $html];
+        if ($handin->reg_id != Reg::currentID()) $args['score'] = $this->autoScore($form->items, $answer);
+        return view('dais.formHandinWindow', $args);
     }
 }

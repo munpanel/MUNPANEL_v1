@@ -455,7 +455,7 @@ class UserController extends Controller
      */
     public function setDelGroup(Request $request)
     {
-        if (Reg::current()->type != 'ot' || (!Reg::current()->can('edit-regs')))
+        if (Reg::current()->type != 'ot')
             return "您无权执行该操作！";
         $reg = Reg::find($request->id);
         $specific = $reg->specific();

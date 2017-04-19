@@ -67,13 +67,15 @@ function nicetime($date, $concise = false)
 function validateRegDate($type)
 {
     $regDate = json_decode(Reg::currentConference()->option('reg_dates'));
+    $result = false;
     foreach ($regDate as $value)
     {
-        if ($value->use != $type) continue;
-        if (strtotime(date("y-m-d H:i:s")) < strtotime($value->config->start)) return false;
-        elseif ($value->config->end == 'ended') return false;
-        elseif (strtotime(date("y-m-d H:i:s")) > strtotime($value->config->end) && $value->config->end != 'manual') return false;
-        else return true;
+        if ($type != 'unregistered') $result = false;
+        if (strtotime(date("y-m-d H:i:s")) < strtotime($value->config->start)) $result |= false;
+        elseif ($value->config->end == 'ended') $result |= false;
+        elseif (strtotime(date("y-m-d H:i:s")) > strtotime($value->config->end) && $value->config->end != 'manual') $result |= false;
+        else $result |= true;
+        if ($value->use == $type) break;
     }
-    return false;
+    return $result;
 }

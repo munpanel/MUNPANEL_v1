@@ -651,7 +651,7 @@ class HomeController extends Controller
                 $handin = new Handin;
                 $handin->assignment_id = $assignment->id;
                 $handin->reg_id = Reg::currentID();
-                $handin->handin_type = "text";
+                $handin->handin_type = "json";
                 $content = [];
                 $content['form'] = $form->id;
                 foreach ($questions as $item)

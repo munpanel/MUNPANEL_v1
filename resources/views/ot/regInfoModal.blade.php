@@ -74,7 +74,7 @@ if (empty($active))
                 <tbody>
                   @foreach ($handins as $handin)
                   <tr>
-                    <td>{{$handin->assignment->title}}</td>
+                    <td>{{$isOtOrDais ? $handin->nameAndInfo() : $handin->assignment->title}}</td>
                     @if ($handin->assignment->handin_type == 'form')
                     <td><a href="JavaScript:newPopup('{{mp_url('/formHandinWindow/'.$handin->id)}}');" class="btn btn-xs btn-info"><i class="fa fa-search-plus"></i> 查看</a></td>
                     @elseif ($handin->assignment->handin_type == 'upload')

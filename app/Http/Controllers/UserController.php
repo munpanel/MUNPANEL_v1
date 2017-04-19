@@ -762,6 +762,12 @@ class UserController extends Controller
         $editSchool = Permission::find(8);
         $editNation = Permission::find(9);
 
+        $editReg = new Permission();
+        $editReg->name = 'edit-ot';
+        $editReg->display_name = '会议团队成员管理';
+        $editReg->description = "增删、编辑、管理会议组织团队和学术团队成员";
+        $editReg->save();
+
         /*$sysadmin = new Role();
         $sysadmin->name = 'sysadmin';
         $sysadmin->display_name = '系统管理员';
@@ -794,15 +800,11 @@ class UserController extends Controller
         $interviewadmin->save();
         $interviewadmin->attachPermissions(array($viewReg, $editReg, $approveReg, $editCom, $editNation, $editInterview, $assignRole));*/
 
-        $interviewer = Role::find(2);
+        $interviewer = Role::find(1);
                 
-        $editReg = new Permission();
-        $editReg->name = 'edit-ot';
-        $editReg->display_name = '会议团队成员管理';
-        $editReg->description = "增删、编辑、管理会议组织团队和学术团队成员";
-        $editReg->save();
+        $editReg = Permission::find(15);
 
-        $interviewer->attachPermissions($editReg);
+        $interviewer->attachPermission($editReg);
     }
 
     /**

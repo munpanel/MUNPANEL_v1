@@ -262,6 +262,7 @@ class FormController extends Controller
             if (empty($value))
             {
                 $html .= '<div class="m-l-lg">未作答</div>';
+                $nl = '</div>';
                 continue;
             }
             switch ($item->type)
@@ -269,9 +270,13 @@ class FormController extends Controller
                 case 'single_choice':
                     $text = $item->options[$value - 1]->text;
                     $html .= '<div class="m-l-lg'.($withScore ? ($value == $item->answer ? ' text-success' : ' text-danger') : '').'">'.$text.'</div>';
+                    if ($withScore && !empty($item->answer) && $value != $item->answer)
+                        $html .= '<div class="m-l-lg text-primary">正确答案: ' . $item->options[$item->answer - 1]->text . '</div>';
                 break;
                 case 'yes_or_no':
                     $html .= '<div class="m-l-lg'.($withScore ? ($value == $item->answer ? ' text-success' : ' text-danger') : '').'">' . ($value == 'true' ? '正确' : '错误') . '</div>';
+                    if ($withScore && !empty($item->answer) && $value != $item->answer)
+                        $html .= '<div class="m-l-lg text-primary">正确答案: ' . ($item->answer == 'true' ? '正确' : '错误') .  '</div>';
                 break;
                 case 'mult_choice':
                     $corrected = array_diff($item->answer, $value);
@@ -299,6 +304,8 @@ class FormController extends Controller
                         $text = $item->options[$val - 1]->text;
                         $html .= '<div class="m-l-lg'.($withScore ? ($val == $item->answer[$n++] ? ' text-success' : ' text-danger') : '').'">'.$text.'</div>';
                     }
+                    if ($withScore && !empty($item->answer))
+                        $html .= '<div class="m-l-lg text-primary">正确答案: ' .json_encode($item->answer). '</div>';
                 break;
                 case 'fill_in':
                 case 'text_field':

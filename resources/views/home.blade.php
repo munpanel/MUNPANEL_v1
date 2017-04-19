@@ -106,7 +106,7 @@ if (Reg::current()->type == 'delegate' && isset(Reg::current()->delegate))
                  <br>您的报名类型为<b> {{ Reg::current()->type == 'unregistered' ? '未注册' : (Reg::current()->type == 'delegate' ? '代表' : (Reg::current()->type == 'volunteer' ? '志愿者':'观察员')) }}</b>
                  @endif
                  @if (validateRegDate(Reg::current()->type))
-                 ，如需查看当前报名信息或修改信息，请点击下方的表单按钮。<br>请注意，如您已通过审核，重新编辑信息将导致您回到待审核状态。<br>
+                 {{Reg::current()->type == 'unregistered' ? '，请点击下方的报名按钮开始报名流程。' : '，如需查看当前报名信息或修改信息，请点击下方的表单按钮。<br>请注意，如您已通过审核，重新编辑信息将导致您回到待审核状态。'}}<br>
                  @else
                   。当前报名已截止，您无法编辑报名信息，如需查看当前报名信息，请点击下方的表单按钮。
                  @endif
@@ -121,6 +121,9 @@ if (Reg::current()->type == 'delegate' && isset(Reg::current()->delegate))
                 <div class="panel-body">
                   <div class="clear">
                     Proudly Powered by MUNPANEL.<br>Copyright {{config('munpanel.copyright_year')}} Console iT.
+                    @if(null !== config('munpanel.icp_license'))
+                    <br/><a href="http://www.miibeian.gov.cn/" title="{{config('munpanel.icp_license')}}" rel="nofollow">{{config('munpanel.icp_license')}}</a>
+                    @endif
                   </div>
                 </div>
               </section>

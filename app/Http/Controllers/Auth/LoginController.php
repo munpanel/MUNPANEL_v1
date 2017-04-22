@@ -64,6 +64,14 @@ class LoginController extends Controller
                 if (is_object($user))
                 {
                     Auth::login($user);
+                    $regs = DB::table('defaultregs')->where('email', $request->email)->get(['reg_id']);
+                    foreach ($regs as $reg0)
+                    {
+                        $reg = Reg::findOrFail($reg0->reg_id);
+                        $reg->user_id = $user->id;
+                        $reg->save();
+                    }
+                    DB::table('defaultregs')->where('email', $request->email)->delete();
                     return redirect('/home');
                 }
                 $email = explode('@', $request->email);

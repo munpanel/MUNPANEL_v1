@@ -463,16 +463,10 @@ class DatatablesController extends Controller //To-Do: Permission Check
             $committees = Committee::where('conference_id', Reg::currentConferenceID())->get(['id']);
             $arr_committee = [];
             foreach ($committees as $committee)
-                array_push($arr_committee, $committee->id);
-            $nations = Nation::whereIn('committee_id', $arr_committee);
+                $arr_committee[] = $committee->id;
+            $nations = Nation::whereIn('committee_id', $arr_committee)->get();
             foreach($nations as $nation)
             {
-                $groups = '';
-                foreach ($nation->nationgroups as $ngroup)
-                {
-                    $groups = $groups . ' '. $ngroup->display_name;
-                }
-
                 $result->push([
                     'details' => '<a href="ot/nationDetails.modal/'. $nation->id .'" data-toggle="ajaxModal" id="'. $nation->id .'" class="details-modal"><i class="fa fa-search-plus"></i></a>',
                     'id' => $nation->id,
@@ -480,7 +474,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
                     'name' => $nation->name,
                     'conpetence' => $nation->conpetence,
                     'veto_power' => $nation->veto_power ? '是' : '否',
-                    'nationgroup' => $groups,
+                    'nationgroup' => $nation->scopeNationGroup(true, 5),
                     'delegate' => $nation->scopeDelegate(),
 
                 ]);
@@ -502,7 +496,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
                     'name' => $nation->name,
                     //'conpetence' => $nation->conpetence,
                     //'veto_power' => $nation->veto_power ? '是' : '否',
-                    'nationgroup' => $nation->scopeNationGroup(),
+                    'nationgroup' => $nation->scopeNationGroup(true, 5),
                     'delegate' => $nation->scopeDelegate(true),
 
                 ]);

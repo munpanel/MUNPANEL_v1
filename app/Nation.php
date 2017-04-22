@@ -55,21 +55,27 @@ class Nation extends Model
         return '无';
     }
 
-    public function scopeNationGroup()
+    public function scopeNationGroup($useShortName = false, $maxDisplay = 0)
     {
         $prefix = '';
         $scope = '';
+        $i = 0;
+        $n = $this->nationgroups->count();
+        if ($n == 0) return '无';
         if (isset($this->nationgroups))
         {
             $nationgroups = $this->nationgroups;
             foreach($nationgroups as $nationgroup)
             {
-                $scope .= $prefix . $nationgroup->display_name;
+                if ($useShortName)
+                    $scope .= $prefix . $nationgroup->name;
+                else
+                    $scope .= $prefix . $nationgroup->display_name;
+                if ($maxDisplay > 0 && ++$i >= $maxDisplay) break;
                 $prefix = ', ';
             }
         }
-        if ($scope != '')
-            return $scope;
-        return '无';
+        if ($maxDisplay > 0 && $n > $maxDisplay) $scope .= "等 ".$n." 个";
+        return $scope;
     }
 }

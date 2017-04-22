@@ -24,10 +24,12 @@ class CreateNationgroupsTable extends Migration
     {
         Schema::create('nationgroups', function (Blueprint $table) {
 			$table->increments('id');
+            $table->integer('conference_id')->unsigned();
 			$table->string('name'); //内部名
 			$table->string('display_name'); //代表可见名
 			// TODO: 根据需要添加列，例如“标记颜色”等
             $table->timestamps();
+            $table->foreign('conference_id')->references('id')->on('conferences')->onDelete('cascade');
         });
     }
 

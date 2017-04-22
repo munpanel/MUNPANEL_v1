@@ -24,9 +24,11 @@ class CreateDelegategroupsTable extends Migration
     {
         Schema::create('delegategroups', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('conference_id')->unsigned();
             $table->string('name');
             $table->string('display_name');
             $table->timestamps();
+            $table->foreign('conference_id')->references('id')->on('conferences')->onDelete('cascade');
         }); 
     }
 

@@ -67,6 +67,32 @@ class EmailController extends Controller
     public function sendDaisResult()
     {
         if (($handle = fopen("/var/www/munpanel/app/test.csv", "r")) !== FALSE) {
+            $resp = "";
+            while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+                $user = Dais::find($data[0]);
+                if (!is_object($user))
+                    continue;
+                if ($user->status == 'success')
+                    continue;
+                $user = $user->user();
+                $resp = $resp. $user->name . "<br />\n";
+                $resp = $resp. $data[1] . "<br />\n";
+                $mail = new Email;
+                $mail->id = generateID();
+                $mail->conference_id = 3;
+                $mail->title = 'BJMUNSS 2017 学术团队申请结果';
+                $mail->setReceiver($user);
+                $mail->sender = 'BJMUN';
+                $mail->content = '首先感谢您对北京高中生模拟联合国协会的支持，以及您在学术团队招募工作中的积极参与。<br/><br/>在您的申请中，我们看到了您的参与热情以及过人的能力。我们为您的关注感到荣幸和感谢。然而，考虑到包括内场设置在内的众多方面因素，我们在这里很遗憾地通知您，您可能无法参加到BJMUNSS 2017学术团队中。这并不是对您学术能力的否定，只是我们由于各种条件限制做出的决定，希望您能够理解并配合我们的工作。<br/><br/>暂时的分离并不意味着永别，北京高中生模拟联合国协会永远欢迎您的参与，愿您在今后的模联道路一帆风顺，愿北京模联一直是我们共同的家。<br/><br/>北京市高中生模拟联合国协会';
+                $mail->send();
+                $mail->save();
+                sleep(5);
+            }
+            fclose($handle);
+            return $resp;
+        }
+        return "gou";
+        if (($handle = fopen("/var/www/munpanel/app/test.csv", "r")) !== FALSE) {
             while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
                 $user = Reg::find($data[0]);
                 if (!is_object($user))

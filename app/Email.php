@@ -21,6 +21,7 @@ class Email extends Model
     public $incrementing = false;
     protected $guarded = [];
     private $receiverArray;
+    private $plainContent;
 
     public function setReceiver($user)
     {
@@ -32,12 +33,14 @@ class Email extends Model
     {
         if (is_null($this->receiverArray['address']))
             $this->receiverArray = json_decode($this->receiver, true);
+        $this->plainContent = '您好，'.$this->receiverArray['name'].'：'.$this->content;
         $this->content = '<h1>您好，'.$this->receiverArray['name'].'</h1>'.$this->content;
         Mail::to($this->receiverArray['address'], $this->receiverArray['name'])->send(new GeneralMail($this));
     }
 
     public function queue()
     {
+        $this->plainContent = '您好，'.$this->receiverArray['name'].'：'.$this->content;
         $this->content = '<h1>您好，'.$this->receiverArray['name'].'</h1>'.$this->content;
         Mail::to($this->receiverArray['address'], $this->receiverArray['name'])->queue(new GeneralMail($this));
     }

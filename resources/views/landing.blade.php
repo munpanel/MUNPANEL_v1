@@ -27,7 +27,7 @@
                         <div id="menu">
                             <ul>  
                                 <li><a href="{{secure_url('/')}}">Home</a></li>  
-                                <li><a href="{{secure_url('/about')}}">About</a></li> 
+                                <li><a href="https://mp.weixin.qq.com/s/oqL2cA5dSa6PpwCj1RpSnQ">About</a></li> 
                                 <li><a href="https://console.center">Console iT</a></li> 
                             </ul> 
                         </div> 

@@ -42,10 +42,12 @@ class GeneralMail extends Mailable
     {
         return $this->subject($this->email->title)
                     ->view('emailTemplate')
+                    ->text('emailPlain')
                     ->with([
                         'id' => $this->email->id,
                         'title' => $this->email->title,
                         'content' => $this->email->content,
+                        'plainContent' => $this->email->plainContent,
                         'sender' => $this->email->sender,
                         'receiver' => json_decode($this->email->receiver),
                     ]);

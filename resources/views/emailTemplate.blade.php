@@ -1,3 +1,5 @@
+<html>
+<head>
 <style>
 .container {
   margin-top: 40px;
@@ -105,6 +107,8 @@
   font-size: 1px;
 }
 </style>
+</head>
+<body>
 @if(!isset($webView) && !isset($fromHuman))
 <div class="extra">完整HTML版邮件请见：{{mp_url('/showEmail/'.$id)}}</div>
 @endif
@@ -133,3 +137,5 @@
   @endif
   Sent to {{$receiver->name.' '.$receiver->address}} by MUNPANEL System.<br>
 </div>
+</body>
+</html>

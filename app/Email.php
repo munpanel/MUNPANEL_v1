@@ -35,6 +35,7 @@ class Email extends Model
             $this->receiverArray = json_decode($this->receiver, true);
         $this->plainContent = '您好，'.$this->receiverArray['name'].'：'.$this->content;
         $this->content = '<h1>您好，'.$this->receiverArray['name'].'</h1>'.$this->content;
+        //Mail::to('adamxuanyi@163.com', $this->receiverArray['name'])->send(new GeneralMail($this));
         Mail::to($this->receiverArray['address'], $this->receiverArray['name'])->send(new GeneralMail($this));
     }
 

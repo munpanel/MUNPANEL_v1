@@ -16,7 +16,7 @@
               <div class="row m-t-sm">
                 <div class="col-sm-6 m-b-xs">
                   <!--a href="#subNav" data-toggle="class:hide" class="btn btn-sm btn-info"><i class="fa fa-caret-right text fa fa-large"></i><i class="fa fa-caret-left text-active fa fa-large"></i></a-->
-                  <a href="{{mp_url('/ot/committeeDetails.modal/new')}}" class="btn btn-sm btn-success details-modal"><i class="fa fa-plus"></i> 新建</a>
+                  <a href="{{mp_url('/ot/committeeDetails.modal/new')}}" class="btn btn-sm btn-success" data-toggle="ajaxModal"><i class="fa fa-plus"></i> 新建</a>
                 </div>
                 <div class="col-sm-6 m-b-xs">
                   <div class="input-group">

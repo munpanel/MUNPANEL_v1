@@ -42,7 +42,8 @@ class GeneralMail extends Mailable
     {
         return $this->subject($this->email->title)
                     ->view('emailTemplate')
-                    ->text('emailPlain')
+                    //->text('emailPlain')
+                    //->attach('/var/www/munpanel/app/BJMUNSS2017academicteam.xlsx', ['as' => 'BJMUNSS 2017 学术团队名单.xlsx','mime' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',])
                     ->with([
                         'id' => $this->email->id,
                         'title' => $this->email->title,

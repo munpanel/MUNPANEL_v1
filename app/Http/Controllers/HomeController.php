@@ -463,6 +463,7 @@ class HomeController extends Controller
         {
             $committee = new Committee;
             $committee->name = 'New Committee';
+            $committee->conference_id = Reg::currentConferenceID();
             $committee->save();
         }
         else

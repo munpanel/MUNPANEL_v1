@@ -15,6 +15,7 @@ use App\Email;
 use App\User;
 use App\Reg;
 use App\Dais;
+use App\Committee;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\App;
@@ -65,6 +66,52 @@ class EmailController extends Controller
 
     public function sendDaisResult()
     {
+        if (($handle = fopen("/var/www/munpanel/app/test.csv", "r")) !== FALSE) {
+            while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+                $user = Reg::find($data[0]);
+                if (!is_object($user))
+                    continue;
+                $user = $user->dais;
+                $msg = "恭喜！我们很荣幸的通知您，您已经通过面试并正式被北京市高中生模拟联合国协会录取为 2017 年北京市高中生模拟联合国暑期研讨会（BJMUNSS 2017）".$user->committee->display_name." 主席团成员。<br/><br/>这意味着，在未来的 3-4 个月里，您将与其他 35 位学术团队成员和 13 位组织团队成员共同工作，筹备在不久之后召开的会议。<br/><br/>在此请允许我为您介绍一些有关您未来工作的基本情况：<br/>1. 本次会议共设置 5 个委员会，三中两英，中文每个委员会配置 6 位主席团成员以及 2 位主席团负责人、英文每个委员会配置 5 位主席团成员以及 1 位主席团负责人，共 36 人；学术总监中英委员会各 2 位，共 4 人。<br/><br/>2. 我们已经为您设立了Console Mail - BJMUN工作邮箱，通过该邮箱您可以与其他BJMUN工作人员联系，相关信息如下：<br/><br/>登陆地址： http://mail.bjmun.org<br/>邮箱地址：".$data[2]."<br/>初始密码：".$data[1]."<br/>如果您需要以BJMUM委员会或BJMUN学术团队成员的身份联系外界，请务必使用工作邮箱而不是您的个人邮箱。<br/>如果您无法登陆您的邮箱或忘记邮箱密码，请微信联系：adamyi<br/><br/>3. 请确保您的 MUNPANEL 账号（为您之前申请学术团队时所使用的账号）可以正常登陆，之后的席位分配、学术文件下发、学术作业收集等功能均将在 MUNPANEL 系统上进行。如您忘记密码或无法登陆，请首先尝试系统登录页中的找回密码功能，如该功能仍然无法帮助您重新登录您的账号，请微信联系 adamyi。所有的主席信息均以您之前申请学术团队时所使用的账号，尽管您可以使用您的邮箱用户名和邮箱密码以 Console Mail 方式登录 MUNPANEL 系统，但这样登陆将会新建一个您的工作邮箱的无任何权限的 MUNPANEL 账号。因此，目前请不要尝试以 Console Mail 方式登录 MUNPANEL 系统。日后我们可能会将您的 Console Mail 工作邮箱绑定至您的 MUNPANEL 账号，届时将可以以 Console Mail 方式登录 MUNPANEL 系统，会有另行通知。目前，请仅以 MUNPANEL 账号方式登录 MUNPANEL 系统。<br/><br/>4. 请扫描下方二维码加入 BJMUNSS 2017 学术团队 微信群，加群后请修改群名片为您的真实姓名。（二维码若过期过期请微信联系：ZQH1060787929）。<br/><img src='https://dev.yiad.am/bjss17atWXQR.jpg' width='100%'/></img><br/>5. 本次学术团队通讯录已经提供在本封邮件附件中，供您下载使用。<br/>6. 您若在以后单独建立了委员会主席小群（通常为主席团负责人拉群），请邀请秘书长与相应会议语言的两位学术总监加入群聊。<br/><br/>最后，再次欢迎您加入北京模联这个大家庭，如果您对于学术团队工作还有任何问题，请随时与official@bjmun.org联系。<br/><br/>北京市高中生模拟联合国协会";
+                $mail = new Email;
+                $mail->id = generateID();
+                $mail->conference_id = 3;
+                $mail->title = 'BJMUNSS 2017 学术团队录取信';
+                $mail->setReceiver($user->user());
+                $mail->sender = 'BJMUN';
+                $mail->content = $msg;
+                $mail->send();
+                $mail->save();
+                $user->user()->sendSMS('恭喜！我们很荣幸的通知您，您已经通过面试并正式被录取为BJMUNSS 2017 '.$user->committee->display_name.' 主席团成员。具体请见邮件通知，或访问'.mp_url('/showEmail/'.$mail->id).' ，感谢。');
+                sleep(5);
+            }
+            fclose($handle);
+            return $resp;
+        }
+        return "aaa";
+        $regs = Dais::where('conference_id', 3)->where('status', 'oVerified')->get();
+        foreach ($regs as $reg)
+        {
+            $reg->user()->sendSMS('感谢您申请成为BJMUNSS 2017学术团队一员。在您的申请中，我们看到了您的参与热情以及过人的能力。然而，考虑到包括会场设计在内的多方面因素，我们很遗憾地通知您，您可能无法参加到BJMUNSS 2017学术团队中。暂时的分离并不意味着永别，北京高中生模拟联合国协会永远欢迎您的参与，愿您在今后的模联道路一帆风顺，愿北京模联一直是我们共同的家。我们永远在一起。');
+            $reg->status = 'fail';
+            $reg->save();
+        }
+        return "bbb";
+        if (($handle = fopen("/var/www/munpanel/app/test.csv", "r")) !== FALSE) {
+            $resp = "";
+            while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+                $user = Reg::find($data[0]);
+                if (!is_object($user))
+                    continue;
+                $user=$user->dais;
+                $user->status='success';
+                $user->committee_id = Committee::where('name', $data[1])->first()->id;
+                $user->save();
+            }
+            fclose($handle);
+            return $resp;
+        }
+        return "aaa";
         $resp = "";
         $regs = Dais::where('conference_id', 3)->where('status', 'fail')->get();
         foreach ($regs as $reg)

@@ -1,6 +1,6 @@
 <html>
 <head>
-<style>
+<style type="text/css">
 .container {
   margin-top: 40px;
   margin-bottom: 40px;
@@ -114,7 +114,7 @@
 @endif
 <div class="container">
   <div class="header">
-    <img src="{{cdn_url('/email/munpanel.png')}}">
+    <img src="{{mp_url('/emailLogo.png?'.$id)}}">
   </div>
   <div class="body">
     <p>{!!$content!!}</p>

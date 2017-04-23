@@ -58,6 +58,12 @@ class EmailController extends Controller
 
     }
 
+    public function emailLogo(Request $request)
+    {
+        //dd($request->getQueryString()); //TO-DO: mark email as read
+        return redirect(cdn_url('/email/munpanel.png'));
+    }
+
     public function resend($id)
     {
         $email = Email::findOrFail($id);

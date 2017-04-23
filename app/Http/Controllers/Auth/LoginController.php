@@ -12,10 +12,12 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\User;
+use App\Reg;
 use Config;
 
 class LoginController extends Controller
@@ -141,6 +143,14 @@ class LoginController extends Controller
                 //'type' => 'unregistered'
                 ]);
                 Auth::login($user);
+                $regs = DB::table('defaultregs')->where('email', $request->email)->get(['reg_id']);
+                foreach ($regs as $reg0)
+                {
+                    $reg = Reg::findOrFail($reg0->reg_id);
+                    $reg->user_id = $user->id;
+                    $reg->save();
+                }
+                DB::table('defaultregs')->where('email', $request->email)->delete();
                 return redirect('/verifyTel');
             }
             else

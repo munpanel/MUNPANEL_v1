@@ -23,6 +23,8 @@ class Handler extends ExceptionHandler
         \Illuminate\Validation\ValidationException::class,
     ];
 
+    private $sentryID;
+
     /**
      * Report or log an exception.
      *
@@ -33,6 +35,9 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $exception)
     {
+        if (app()->environment() == 'production' && $this->shouldReport($exception)) { //Sentry for production
+            $this->sentryID = app('sentry')->captureException($exception);
+        }
         parent::report($exception);
     }
 
@@ -48,7 +53,31 @@ class Handler extends ExceptionHandler
         if ($exception instanceof TokenMismatchException){
             return redirect()->back()->withInput()->with('notice_msg', 'Your session has expired');
         }
-        return parent::render($request, $exception);
+        if ($exception instanceof ModelNotFoundException){
+            return redirect()->back()->withInput()->with('notice_msg', '404 Not Found');
+        }
+        $e = $this->prepareException($exception);
+
+        if ($e instanceof HttpResponseException) {
+            return $e->getResponse();
+        } elseif ($e instanceof AuthenticationException) {
+            return $this->unauthenticated($request, $e);
+        } elseif ($e instanceof ValidationException) {
+            return $this->convertValidationExceptionToResponse($e, $request);
+        }
+
+        //return $this->prepareResponse($request, $e);
+        if (app()->environment() == 'production')
+        {
+            return response()->view('errors.500', [
+                'sentryID' => $this->sentryID,
+            ], 500);
+        } else {
+            //dd($exception);
+            return $this->toIlluminateResponse($this->convertExceptionToResponse($e), $e);
+        }
+
+        //return parent::render($request, $exception);
     }
 
     /**

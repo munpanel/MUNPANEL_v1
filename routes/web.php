@@ -35,6 +35,12 @@ Route::group(['domain' => 'static.munpanel.com'], function () {
         return redirect(secure_url('home'));
     });
 
+    Route::get('500', function()
+    {
+        //return trim(exec('git --git-dir ' . base_path('.git') . ' log --pretty="%h" -n1 HEAD'));
+        return 0/0;
+    });
+
     Route::get('/keepalive', 'SessionController@keepalive');
 
     Route::get('/signin', function () {

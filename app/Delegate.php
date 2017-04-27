@@ -99,25 +99,26 @@ class Delegate extends Model
             }
         }
         if($retest)
-            return 'retest_' . $status;
+            return 'interview_retest_' . $status;
         return 'interview_' . $status;
     }
 
     public function interviewText($retest = false) {
-        $count = $this->interviews()->where('retest', $retest)->where('status', 'failed')->count();
+        $count = $this->interviews()->where('retest', $retest)->whereIn('status', ['passed', 'failed'])->count();
         switch($count)
         {
-            case 0: $time = ''; break;
-            case 1: $time = '二次'; break;
-            case 2: $time = '三次'; break;
-            case 3: $time = '四次'; break;
-            case 4: $time = '五次'; break;
-            case 5: $time = '六次'; break;
-            case 6: $time = '七次'; break;
-            case 7: $time = '八次'; break;
-            case 8: $time = '九次'; break;
-            case 9: $time = '十次'; break;
-            default: $time = $count;
+            case 0:
+            case 1: $time = ''; break;
+            case 2: $time = '二次'; break;
+            case 3: $time = '三次'; break;
+            case 4: $time = '四次'; break;
+            case 5: $time = '五次'; break;
+            case 6: $time = '六次'; break;
+            case 7: $time = '七次'; break;
+            case 8: $time = '八次'; break;
+            case 9: $time = '九次'; break;
+            case 10: $time = '十次'; break;
+            default: $time = $count . ' 次';
         }
         if ($retest)
             return $time . '高阶面试';
@@ -126,7 +127,7 @@ class Delegate extends Model
 
     public function realStatus() {
         switch($this->status) { //To-Do: configurable
-            case 'oVerified': return $this->interviewStatus();
+            case 'oVerified': return $this->interviewStatus($this->interviews()->where('retest', true)->count() > 0);
             default: return $this->status;
         }
     }

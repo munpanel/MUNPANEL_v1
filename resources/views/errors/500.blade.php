@@ -49,7 +49,9 @@
     <body>
         <div class="container">
             <div class="content">
+                @unless(empty($sentryID))
                 In case you contact customer support, please provide this error ID: <b>{{$sentryID}}</b><br/><br/>
+                @endunless
                 <div class="title">Something went wrong.</div>
                 @unless(empty($sentryID))
                     <!-- Sentry JS SDK 2.1.+ required -->
@@ -77,8 +79,11 @@
                     });
                     </script>
                 @endunless
-                <br/><br/>We are already notified and are already working on it.<br/>If you have any more concerns, feel free to reach us at <a href="support@munpanel.com">support@munpanel.com</a><br/>
+                <br/><br/>{!!isset($sentryID)?"We are already notified and are already working on it.<br/>":""!!}If you have any more concerns, feel free to reach us at <a href="mailto:support@munpanel.com">support@munpanel.com</a><br/>
                 Powered by MUNPANEL, a Product of Console iT. Developed by Adam Yi.
+              @if(null !== config('munpanel.icp_license'))
+              <br/><br/><a href="http://www.miibeian.gov.cn/" title="{{config('munpanel.icp_license')}}" rel="nofollow">{{config('munpanel.icp_license')}}</a>
+              @endif
             </div>
         </div>
     </body>

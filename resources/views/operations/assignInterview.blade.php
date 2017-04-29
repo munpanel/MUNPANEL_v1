@@ -4,9 +4,11 @@ $count = $reg->delegate->interviews()->whereIn('status', ['passed', 'failed'])->
                 <div id="interviewOpSelect" style="display: block;">
                     <h3 class="m-t-sm">安排面试</h3>
 
-                    <p>此代表已经通过审核，将需要为其安排面试。</p>
+                    <p>此代表目前的状态为{{$reg->delegate->statusText()}}，可以为其安排面试。</p>
                     <p>点击<strong>分配面试</strong>按钮后，将会出现可选择的面试官列表，您可以分配一位面试官面试此代表。</p>
+                    @if ($count > 1)
                     <p><span class="label label-warning">注意</span> 这将是这位代表的第 {{$count + 1}} 次面试分配。</p>
+                    @endif
                     @if ($count == 0)
                     <p>如果此代表具有规定的免试资格，可以以免试通过方式完成此代表的面试流程。点击<strong>免试通过</strong>按钮后，将会出现可选择的面试官列表，您需要分配一位面试官为此代表分配席位。</p>
                     @endif

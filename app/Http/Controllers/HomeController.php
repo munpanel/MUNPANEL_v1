@@ -388,7 +388,11 @@ class HomeController extends Controller
                 switch($status)
                 {
                     case 'interview_assigned':break;
+                    case 'interview_passed':
                     case 'interview_failed':
+                    case 'interview_retest_passed':
+                    case 'interview_retest_failed':
+                    case 'interview_retest_unassigned':
                     case 'interview_unassigned': if (Reg::current()->can('view-all-interviews')) $operations[] = 'assignInterview'; break;
                     case 'sVerified': if ($reg->enabled) $operations[] = 'oVerification'; break;
                 }

@@ -14,9 +14,9 @@ $count = $reg->delegate->interviews()->whereIn('status', ['passed', 'failed'])->
                     @endif
                     {{-- <p><span class="label label-warning">注意</span> 这位代表的面试安排曾被join("、", $rollback_data); 回退，请在笔记中了解回退原因。</p>--}}
 
-                    <button name="" type="button" class="btn btn-info" onclick="$('#doAssign').show(); $('#interviewOpSelect').hide();">分配面试</button>
+                    <button name="" type="button" class="btn btn-info" onclick="$('#doAssign').show(); $('#interviewOpSelect').hide(); assign_editor.reflow();">分配面试</button>
                     @if ($count == 0)
-                    <button name="" type="button" class="btn btn-info" onclick="$('#doExempt').show(); $('#interviewOpSelect').hide();">免试通过</button>
+                    <button name="" type="button" class="btn btn-info" onclick="$('#doExempt').show(); $('#interviewOpSelect').hide(); exempt_editor.reflow();">免试通过</button>
                     @endif
 
                 </div>
@@ -32,7 +32,9 @@ $count = $reg->delegate->interviews()->whereIn('status', ['passed', 'failed'])->
                     {{csrf_field()}}
                       <input type="hidden" name="id" value="{{$reg->id}}">
                           <div class="m-b">
-                            <select style="width:260px" class="interviewer-list" name="interviewer">
+                          <div class="form-group">
+                          <label class="col-sm-2 control-label">面试官</label>
+                            <select class="interviewer-list col-sm-10" name="interviewer">
                                 @foreach (\App\Interviewer::list() as $name => $group)
                                 <optgroup label="{{$name}}">
                                     @foreach ($group as $iid => $iname)
@@ -41,7 +43,15 @@ $count = $reg->delegate->interviews()->whereIn('status', ['passed', 'failed'])->
                                 </optgroup>
                                 @endforeach
                             </select>
+                            </div>
                           </div>
+
+                        <div class="form-group">
+                          <label class="col-sm-2 control-label">分配备注</label>
+                          <input type="hidden" id="assign_notes" name="notes" value="代表不可见... (支持Markdown)">
+                          <div id="assign_editor" class="col-lg-10">
+                          </div>
+                        </div>
 
                         <p>分配完成之后，MUNPANEL 将自动通知代表和面试官。</p>
                      @if ($count > 0)
@@ -67,7 +77,9 @@ $count = $reg->delegate->interviews()->whereIn('status', ['passed', 'failed'])->
                     {{csrf_field()}}
 
                           <div class="m-b">
-                            <select style="width:260px" class="interviewer-list" name="interviewer">
+                          <div class="form-group">
+                          <label class="col-sm-2 control-label">面试官</label>
+                            <select class="interviewer-list col-sm-10" name="interviewer">
                                 @foreach (\App\Interviewer::list() as $name => $group)
                                 <optgroup label="{{$name}}">
                                     @foreach ($group as $iid => $iname)
@@ -76,7 +88,15 @@ $count = $reg->delegate->interviews()->whereIn('status', ['passed', 'failed'])->
                                 </optgroup>
                                 @endforeach
                             </select>
+                            </div>
                           </div>
+
+                        <div class="form-group">
+                          <label class="col-sm-2 control-label">免试备注</label>
+                          <input type="hidden" id="exempt_notes" name="notes" value="代表不可见... (支持Markdown)">
+                          <div id="exempt_editor" class="col-lg-10">
+                          </div>
+                        </div>
 
                         <p>分配完成之后，MUNPANEL 将自动通知代表和面试官。</p>
 
@@ -96,5 +116,45 @@ $('#exemptInterviewForm').submit(function(e){
     e.preventDefault();
     $.post('{{mp_url('/ot/exemptInterview/'.$reg->id)}}', $('#exemptInterviewForm').serialize())
     $("#ajaxModal").load("{{mp_url('/ot/regInfo.modal/'.$reg->id.'?active=interview')}}");
+});
+var assign_editor;
+var exempt_editor;
+$.getScript( "{{cdn_url('js/markdown/epiceditor.js')}}", function( data, textStatus, jqxhr  ) {
+var assign_opts = {
+  container: 'assign_editor',
+  basePath: '',
+  textarea: 'assign_notes',
+  clientSideStorage: false,
+  button: {fullscreen: false},
+  theme: {
+    base: 'js/markdown/epiceditor.css',
+    preview: 'js/markdown/bartik.css',
+    editor: 'js/markdown/epic-light.css'
+  },
+  file: {
+      name: '',
+      autoSave: false
+  }
+};
+var exempt_opts = {
+  container: 'exempt_editor',
+  basePath: '',
+  textarea: 'exempt_notes',
+  clientSideStorage: false,
+  button: {fullscreen: false},
+  theme: {
+    base: 'js/markdown/epiceditor.css',
+    preview: 'js/markdown/bartik.css',
+    editor: 'js/markdown/epic-light.css'
+  },
+  file: {
+      name: '',
+      autoSave: false
+  }
+};
+assign_editor = new EpicEditor(assign_opts).load();
+exempt_editor = new EpicEditor(exempt_opts).load();
+$('#assign_editor').height(80);
+$('#exempt_editor').height(80);
 });
 </script>

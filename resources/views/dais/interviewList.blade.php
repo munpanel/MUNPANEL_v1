@@ -9,6 +9,13 @@ $canInterview = Auth::user()->regs->where('conference_id', Reg::currentConferenc
 <script src="{{cdn_url('js/bootstrap-datetimepicker.min.js')}}"></script>
 <script src="{{cdn_url('js/markdown/epiceditor.js')}}"></script>  
 <script src="{{cdn_url('/js/select2/select2.min.js')}}"></script>
+<script src="{{cdn_url('js/readmore.min.js')}}"></script>
+<script>
+$('.readmore').readmore({
+  collapsedHeight: 16,
+  speed: 200
+});
+</script>
 @endpush
 @push('css')
 <link href="{{cdn_url('css/bootstrap-datetimepicker.min.css')}}" rel="stylesheet">

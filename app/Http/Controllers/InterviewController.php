@@ -161,6 +161,7 @@ class InterviewController extends Controller
         if (!empty($request->isRetest))
             $interview->retest = true;
         $interview->interviewer_id = $interviewer->reg_id;
+        $interview->arranging_notes = $request->notes;
         $interview->status = 'assigned';
         $interview->save();
         $interview->reg->addEvent('interview_assigned', '{"interviewer":"'.$interviewer->reg->user->name.'"}');
@@ -180,6 +181,7 @@ class InterviewController extends Controller
         $interview->conference_id = Reg::currentConferenceID();
         $interview->reg_id = $id;
         $interview->interviewer_id = $interviewer->reg_id;
+        $interview->arranging_notes = $request->notes;
         $interview->status = 'exempted';
         $interview->save();
         $interview->reg->addEvent('interview_exempted', '{"interviewadmin":"'.Auth::user()->name.'","interviewer":"'.$interviewer->reg->user->name.'"}');

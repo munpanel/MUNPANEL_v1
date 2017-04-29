@@ -14,17 +14,17 @@
       完成于: {{nicetime($interview->finished_at)}}<br>
       @endif
       状态: {{$interview->statusText()}}<br>
-      @if (in_array($interview->status, ['arranged', 'undecided', 'exempted', 'cancelled']))
-      面试备注: {{$interview->arranging_notes or '无'}}
+      @if (!empty($interview->arranging_notes))
+      面试备注: {{$interview->arranging_notes}}<br>
       @endif
       @if (in_array($interview->status, ['passed', 'failed']))
-      评分: {{$interview->score}}<br>
-      反馈: {{$interview->public_fb or '无'}}
-      @if (!empty($interview->internal_fb))
-        <br>内部反馈: {{$interview->internal_fb or '无'}}
-      @endif
-      @endif
+      评分: {!!$interview->scoreHTML()!!}<br>
     </p>
+      反馈: <div class="readmore">{{$interview->public_fb or '无'}}</div>
+      @if (!empty($interview->internal_fb))
+        <br>内部反馈: <div class="readmore">{{$interview->internal_fb or '无'}}</div>
+      @endif
+      @endif
     @if ($interview->interviewer_id == Reg::currentID())
         @if ($interview->status == 'assigned')
         <a href="{{mp_url('/interview/'.$interview->id.'/arrangeModal')}}" class="btn btn-xs btn-warning pull-right" data-toggle="ajaxModal">安排面试</a>

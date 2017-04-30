@@ -114,11 +114,11 @@ class FormController extends Controller
     public static function formAssignment($assignmentID, $tableItems, $formID, $target, $cansave, $handin = null)
     {
         if (!empty($handin)) $content = json_decode($handin->content);
-        $html = '<form method="POST" id="assignmentForm" action="'.mp_url($target.'/true').'" class="m-t-lg m-b">'.csrf_field();
+        $html = '<form method="POST" id="assignmentForm" class="m-t-lg m-b">'.csrf_field();
         if (!empty($handin)) $html .= '<input type="hidden" value="'.$handin->id.'" name="handin">';
         $html .= '<input type="hidden" value="'.$formID.'" name="form">';
         $html .= FormController::formAssignmentTableItems($tableItems, $content);
-        $html .= '<div class="form-group"><button type="submit" class="btn btn-success">提交作业</button>';
+        $html .= '<div class="form-group"><a href="'.mp_url($target.'/confirm').'" class="btn btn-success" data-toggle="ajaxModal">提交作业</button>';
         if ($cansave)
             $html .= '<a href="'.mp_url('assignments').'" class="text-black lter m-l" style="vertical-align: text-top;">保存并离开</a>';
         $html .= '</div></form>';

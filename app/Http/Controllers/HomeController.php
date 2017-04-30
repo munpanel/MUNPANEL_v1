@@ -388,13 +388,17 @@ class HomeController extends Controller
                 switch($status)
                 {
                     case 'interview_assigned':break;
+                    case 'interview_passed':
                     case 'interview_failed':
+                    case 'interview_retest_passed':
+                    case 'interview_retest_failed':
+                    case 'interview_retest_unassigned':
                     case 'interview_unassigned': if (Reg::current()->can('view-all-interviews')) $operations[] = 'assignInterview'; break;
                     case 'sVerified': if ($reg->enabled) $operations[] = 'oVerification'; break;
                 }
             }
             if (Reg::current()->type == 'ot' || Reg::current()->type == 'dais')
-                if ($reg->delegate->status != 'fail') array_push($operations, 'setDelgroup');
+                if ($reg->delegate->status != 'fail') $operations[] = 'setDelgroup';
         }
         return view('ot.regInfoModal', ['reg' => $reg, 'allRegs' => $allRegs, 'operations' => $operations]);
     }
@@ -1039,13 +1043,15 @@ class HomeController extends Controller
 
     public function formAssignmentSubmit(Request $request, $id, $submit = false)
     {
+        if ($submit == 'confirm')
+            return view('warningDialogModal', ['danger' => false, 'msg' => '您将要提交当前学术作业。<br>请注意表单类型的作业一旦提交将无法再修改或撤回！<br><br>您确实要继续吗？', 'onclick' => 'jQuery.post(\''.mp_url('/assignment/'.$id.'/formSubmit/true').'\', $(\'#assignmentForm\').serialize());window.location = \''.mp_url('/assignment/' . $id).'\';']);
         $handin = Handin::findOrFail($request->handin);
         $answer = $request->all();
-        if (!$submit)
+        if ($submit == 'false')
             unset($answer['_token']);
         $handin->content = json_encode($answer);
         $handin->save();
-        if ($submit)
+        if ($submit == 'true')
             return redirect(mp_url('/assignment/' . $id));
     }
 
@@ -1053,13 +1059,13 @@ class HomeController extends Controller
     {
         $dais = Dais::findOrFail(Reg::current()->id);
         $answer = $request->all();
-        if ($submit)
+        if ($submit == 'true')
             $dais->status = 'sVerified';
         else
             unset($answer['_token']);
         $dais->handin = json_encode($answer);
         $dais->save();
-        if ($submit)
+        if ($submit == 'true')
             return redirect(mp_url('/home'));
     }
 }

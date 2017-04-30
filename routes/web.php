@@ -93,7 +93,7 @@ Route::group(['domain' => 'static.munpanel.com'], function () {
     Route::get('/assignments', 'HomeController@assignmentsList');
     Route::get('/assignment/{id}/{action?}', 'HomeController@assignment');
     Route::post('/assignment/{id}/upload', 'HomeController@uploadAssignment');
-    Route::post('/assignment/{id}/formSubmit/{submit?}', 'HomeController@formAssignmentSubmit');
+    Route::any('/assignment/{id}/formSubmit/{submit?}', 'HomeController@formAssignmentSubmit');
     Route::get('/formHandinWindow/{id}', 'FormController@showFormWindow');
 
     // TODO: 判定 - 代表 or 学团 or 组委？
@@ -124,7 +124,7 @@ Route::group(['domain' => 'static.munpanel.com'], function () {
     Route::get('/reg2.modal/{regType}', 'HomeController@reg2Modal');
     Route::get('/daisreg.modal', 'HomeController@daisregModal');
     Route::get('/daisregForm', 'HomeController@daisregForm');
-    Route::post('/daisregForm/formSubmit/{submit?}', 'HomeController@daisregFormSubmit');
+    Route::any('/daisregForm/formSubmit/{submit?}', 'HomeController@daisregFormSubmit');
     Route::get('/reg.modal/{id?}', 'HomeController@regModal');
     Route::get('/ot/userDetails.modal/{id}', ['middleware' => ['permission:edit-users'], 'uses' => 'HomeController@userDetailsModal']);
     Route::get('/ot/schoolDetails.modal/{id}', ['middleware' => ['permission:edit-schools'], 'uses' => 'HomeController@schoolDetailsModal']);

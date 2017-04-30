@@ -1,4 +1,4 @@
-<div class="col-sm-8 pull-right">
+<div id="sparkl-stat" class="col-sm-6 pull-right">
   <div class="clearfix m-t-xs m-b-xs pull-right pull-none-xs">
     <div class="pull-left">
       <div class="pull-left m-r-xs">
@@ -26,3 +26,14 @@
     </div>
   </div>
 </div>
+<script>
+var hide = function(event) {
+console.log('event');
+  if ($(window).width() >= 520)
+    document.getElementById("sparkl-stat").style.display = "block";
+  else 
+    document.getElementById("sparkl-stat").style.display = "none";
+};
+window.addEventListener("load", hide);
+window.addEventListener("resize", hide);
+</script>

@@ -25,7 +25,7 @@
             <div class="row">
               <div class="col-xs-6">
                 <strong>付款人:</strong>
-                <h4>{{Auth::user()->name}}</h4>
+                <h4>{{Reg::current()->name()}}</h4>
                 <p>
                   {{Reg::current()->specific()->school->name}}<br>
                   Phone: {{Reg::current()->specific()->tel}}<br>

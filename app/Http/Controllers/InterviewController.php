@@ -63,8 +63,8 @@ class InterviewController extends Controller
                 $interview->arranging_notes = $request->notes;
                 $type = intval($request->typeInterview);
                 $interview->save();
-                $interview->reg->addEvent('interview_arranged', '{"interviewer":"'.Auth::user()->name.'","time":"'.$interview->arranged_at.'","method":"'.typeInterview($type).'"}');
-                $interview->reg->user->sendSMS('感谢您以代表身份报名'.Reg::currentConference()->name.'。面试官'.Auth::user()->name.'已为您安排一场于'.date(' n 月 j 日 H:i ', strtotime($interview->arranged_at)).'进行的'.typeInterview($type).'面试。请保持联系方式畅通，预祝面试愉快。');
+                $interview->reg->addEvent('interview_arranged', '{"interviewer":"'.Reg::current()->name().'","time":"'.$interview->arranged_at.'","method":"'.typeInterview($type).'"}');
+                $interview->reg->user->sendSMS('感谢您以代表身份报名'.Reg::currentConference()->name.'。面试官'.Reg::current()->name().'已为您安排一场于'.date(' n 月 j 日 H:i ', strtotime($interview->arranged_at)).'进行的'.typeInterview($type).'面试。请保持联系方式畅通，预祝面试愉快。');
                 break;
             case "exempt":
                 if ($interview->status != 'assigned')
@@ -73,8 +73,8 @@ class InterviewController extends Controller
                 $interview->finished_at = date('Y-m-d H:i:s');
                 $interview->arranging_notes = $request->notes;
                 $interview->save();
-                $interview->reg->addEvent('interview_exempted', '{"interviewadmin":"'.Auth::user()->name.'","interviewer":"并"}');
-                $interview->reg->user->sendSMS('感谢您参加'.Reg::currentConference()->name.'，面试官'.Auth::user()->name.'已免试通过了您的面试。请静候席位分配，感谢。');
+                $interview->reg->addEvent('interview_exempted', '{"interviewadmin":"'.Reg::current()->name().'","interviewer":"并"}');
+                $interview->reg->user->sendSMS('感谢您参加'.Reg::currentConference()->name.'，面试官'.Reg::current()->name().'已免试通过了您的面试。请静候席位分配，感谢。');
                 break;
             case "rollBack":
                 if ($interview->status != 'assigned')
@@ -83,7 +83,7 @@ class InterviewController extends Controller
                 $interview->finished_at = date('Y-m-d H:i:s');
                 $interview->arranging_notes = $request->notes;
                 $interview->save();
-                $interview->reg->addEvent('interview_cancelled', '{"interviewer":"'.Auth::user()->name.'"}');
+                $interview->reg->addEvent('interview_cancelled', '{"interviewer":"'.Reg::current()->name().'"}');
                 break;
             case "cancel":
                 if ($interview->status != 'arranged')
@@ -98,32 +98,39 @@ class InterviewController extends Controller
                 $newInterview->interviewer_id = Reg::currentID();
                 $newInterview->status = 'assigned';
                 $newInterview->save();
-                $interview->reg->addEvent('interview_cancelled', '{"interviewer":"'.Auth::user()->name.'"}');
+                $interview->reg->addEvent('interview_cancelled', '{"interviewer":"'.Reg::current()->name().'"}');
                 break;
             case "rate":
-                if ($interview->status != 'arranged')
+                if (!in_array($interview->status, ['arranged', 'assigned', 'undecided']))
                     return view('error', ['msg' => '状态错误！']);
-                $interview->status = $request->result . 'ed';
-                $interview->finished_at = date('Y-m-d H:i:s');
-                $scores = array();
-                $score = 0;
-                $scoresOptions = json_decode(Reg::currentConference()->option('interview_scores'));
-                foreach($scoresOptions->criteria as $key => $value)
+                if (!in_array($request->result, ['pass', 'fail', 'undecid']))
+                    return view('error', ['msg' => '参数错误！']);
+                if ($interview->status != 'undecided')
                 {
-                    $scores[$key] = $request->$key;
-                    $score += intval($request->$key) * $value->weight;
+                    $interview->finished_at = date('Y-m-d H:i:s');
+                    $scores = array();
+                    $score = 0;
+                    $scoresOptions = json_decode(Reg::currentConference()->option('interview_scores'));
+                    foreach($scoresOptions->criteria as $key => $value)
+                    {
+                        $scores[$key] = $request->$key;
+                        $score += intval($request->$key) * $value->weight;
+                    }
+                    $score *= $scoresOptions->total / 5;
+                    $interview->scores = json_encode($scores);
+                    $interview->score = round($score, 1);
+                    $interview->public_fb = $request->public_fb;
+                    $interview->internal_fb = $request->internal_fb;
                 }
-                $score *= $scoresOptions->total / 5;
-                $interview->scores = json_encode($scores);
-                $interview->score = round($score, 1);
-                $interview->public_fb = $request->public_fb;
-                $interview->internal_fb = $request->internal_fb;
+                $interview->status = $request->result . 'ed';
                 $interview->save();
-                $interview->reg->addEvent('interview_' . $interview->status, '{"interviewer":"'.Auth::user()->name.'"}');
+                $interview->reg->addEvent('interview_' . $interview->status, '{"interviewer":"'.Reg::current()->name().'"}');
                 if ($interview->status == 'passed')
-                    $interview->reg->user->sendSMS('感谢您参加'.Reg::currentConference()->name.'，面试官'.Auth::user()->name.'已通过了您的面试。请静候席位分配，感谢。');
+                    $interview->reg->user->sendSMS('感谢您参加'.Reg::currentConference()->name.'，面试官'.Reg::current()->name().'已通过了您的面试。请静候席位分配，感谢。');
+                else if ($interview->status == 'failed')
+                    $interview->reg->user->sendSMS('感谢您参加'.Reg::currentConference()->name.'，我们很遗憾地通知您，面试官'.Reg::current()->name().'并未通过您的面试。');
                 else
-                    $interview->reg->user->sendSMS('感谢您参加'.Reg::currentConference()->name.'，我们很遗憾地通知您，面试官'.Auth::user()->name.'并未通过您的面试。');
+                    $interview->reg->user->sendSMS('感谢您参加'.Reg::currentConference()->name.'，面试官'.Reg::current()->name().'已完成了您的面试，结果将尽快通知您。感谢您的理解与配合。');
                 break;
             case "arrangeModal":
                 return view('interviewer.arrangeModal', ['id' => $id]);
@@ -134,7 +141,7 @@ class InterviewController extends Controller
             case "cancelModal":
                 return view('interviewer.exemptModal', ['id' => $id, 'mode' => 'cancel']);
             case "rateModal":
-                return view('interviewer.rateModal', ['id' => $id, 'scoresOptions' => json_decode(Reg::currentConference()->option('interview_scores'))]);
+                return view('interviewer.rateModal', ['id' => $id, 'scoresOptions' => json_decode(Reg::currentConference()->option('interview_scores')), 'decideOnly' => ($interview->status == 'undecided')]);
             default:
                 return view('error', ['msg' => '指令无效！']);
         }
@@ -145,7 +152,7 @@ class InterviewController extends Controller
     {
         //To-Do: permission check
         $reg = Reg::findOrFail($id);
-        if (!in_array($reg->specific()->realStatus(), ['interview_unassigned', 'interview_passed', 'interview_failed']))
+        if (!in_array($reg->specific()->realStatus(), ['interview_unassigned', 'interview_passed', 'interview_failed', 'interview_retest_unassigned', 'interview_retest_passed', 'interview_retest_failed']))
             return view('error', ['msg' => '此代表已被分配面试，不能执行该操作！']);
         $interviewer = Interviewer::findOrFail($request->interviewer);
         if (!empty($request->moveCommittee) && $reg->delegate->committee_id != $interviewer->committee_id)
@@ -153,7 +160,7 @@ class InterviewController extends Controller
             $delegate = $reg->delegate;
             $delegate->committee_id = $interviewer->committee_id;
             $delegate->save();
-            $reg->addEvent('committee_moved', '{"name":"'.Auth::user()->name.'","committee":"'.$interviewer->committee->name.'"}');
+            $reg->addEvent('committee_moved', '{"name":"'.Reg::current()->name().'","committee":"'.$interviewer->committee->name.'"}');
         }
         $interview = new Interview;
         $interview->conference_id = Reg::currentConferenceID();
@@ -161,11 +168,12 @@ class InterviewController extends Controller
         if (!empty($request->isRetest))
             $interview->retest = true;
         $interview->interviewer_id = $interviewer->reg_id;
+        $interview->arranging_notes = $request->notes;
         $interview->status = 'assigned';
         $interview->save();
         $interview->reg->addEvent('interview_assigned', '{"interviewer":"'.$interviewer->reg->user->name.'"}');
         $interview->reg->user->sendSMS('感谢您以代表身份报名'.Reg::currentConference()->name.'。现已为您分配面试官'.$interviewer->reg->name().'，登录系统查看详情。请保持联系方式畅通，预祝面试愉快。');
-        $interviewer->reg->user->sendSMS(Auth::user()->name.'已将'.Reg::findOrFail($id)->user->name.'分配给您进行面试，请及时登陆系统联系代表并安排面试时间，感谢您使用 MUNPANEL 系统。');
+        $interviewer->reg->user->sendSMS(Reg::current()->name().'已将'.Reg::findOrFail($id)->user->name.'分配给您进行面试，请及时登陆系统联系代表并安排面试时间，感谢您使用 MUNPANEL 系统。');
         return redirect('/regManage?initialReg='.$id);
     }
 
@@ -180,10 +188,11 @@ class InterviewController extends Controller
         $interview->conference_id = Reg::currentConferenceID();
         $interview->reg_id = $id;
         $interview->interviewer_id = $interviewer->reg_id;
+        $interview->arranging_notes = $request->notes;
         $interview->status = 'exempted';
         $interview->save();
-        $interview->reg->addEvent('interview_exempted', '{"interviewadmin":"'.Auth::user()->name.'","interviewer":"'.$interviewer->reg->user->name.'"}');
-        $interview->reg->user->sendSMS('感谢您参加'.Reg::currentConference()->name.'，面试官'.Auth::user()->name.'已免试通过了您的面试。请静候席位分配，感谢。');
+        $interview->reg->addEvent('interview_exempted', '{"interviewadmin":"'.Reg::current()->name().'","interviewer":"'.$interviewer->reg->user->name.'"}');
+        $interview->reg->user->sendSMS('感谢您参加'.Reg::currentConference()->name.'，面试官'.Reg::current()->name().'已免试通过了您的面试。请静候席位分配，感谢。');
         return redirect('/regManage?initialReg='.$id);
     }
 

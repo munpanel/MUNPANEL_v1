@@ -70,7 +70,7 @@ class ChatController extends Controller
         $surfix .= ')';
         $message = [
             'text' => e($request->input('chat_text')),
-            'username' => Auth::user()->name . $surfix,
+            'username' => Reg::current()->name() . $surfix,
             'avatar' =>  'https://www.gravatar.com/avatar/' . md5( strtolower( trim( Auth::user()->email ) ) ) . '?d=https://www.munpanel.com/images/avatar.jpg&s=320',
             'timestamp' => (time()*1000)
         ];

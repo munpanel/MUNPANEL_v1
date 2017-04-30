@@ -114,17 +114,21 @@ class Reg extends Model
 
     static public function current()
     {
-        return Reg::findOrFail(Reg::currentID());
+        return Reg::find(Reg::currentID());
     }
 
     static public function currentID()
     {
-        return session('regIdforConference'.Reg::currentConferenceID());
+        $sessionName = 'regIdforConference'.Reg::currentConferenceID();
+        $sudo = session($sessionName.'sudo');
+        if (isset($sudo))
+            return $sudo;
+        return session($sessionName);
     }
 
     static public function currentConference()
     {
-        return Conference::findOrFail(config('munpanel.conference_id'));
+        return Conference::find(config('munpanel.conference_id'));
     }
 
     static public function currentConferenceID()
@@ -142,6 +146,13 @@ class Reg extends Model
         $sessionName = 'regIdforConference'.Reg::currentConferenceID();
         session([$sessionName => $this->id]);
         session([$sessionName.'confirm' => $confirm]);
+        session()->forget($sessionName.'sudo');
+    }
+
+    public function sudo()
+    {
+        $sessionName = 'regIdforConference'.Reg::currentConferenceID().'sudo';
+        session([$sessionName => $this->id]);
     }
 
     public function addEvent($type, $content)

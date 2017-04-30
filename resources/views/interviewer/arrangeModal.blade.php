@@ -28,7 +28,7 @@
                 </div>
                 <div class="form-group">
                   <label class="col-sm-2 control-label">安排备注</label>
-                  <input type="hidden" id="notes" name="notes" value="面试方式、面试时要特殊留意的内容等... (支持Markdown)">
+                  <input type="hidden" id="notes" name="notes" value="面试方式、面试时要特殊留意的内容等... (代表不可见，支持Markdown)">
                   <div id="epiceditor" class="col-lg-10">
                   </div>
                 </div>

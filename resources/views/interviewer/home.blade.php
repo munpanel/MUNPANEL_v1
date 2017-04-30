@@ -12,7 +12,7 @@
 @section('content')
 <section class="vbox">
   <header class="header bg-white b-b">
-    <p>欢迎面试官 {{Auth::user()->name}}</p>
+    <p>欢迎面试官 {{Reg::current()->name()}}</p>
     @if (Reg::current()->type == 'ot')
       @include('components.otHomeSparklineStat')
     @endif

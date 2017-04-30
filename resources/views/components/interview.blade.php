@@ -8,27 +8,28 @@
       委员会: {{isset($interview->interviewer->committee) ? $interview->interviewer->committee->name : $interview->reg->specific()->committee->name}}<br>
       面试官: {{$interview->interviewer->nicename()}}<br>
       @if (in_array($interview->status, ['arranged', 'undecided', 'passed', 'failed']))
-      面试时间: {{nicetime($interview->arranged_at)}}<br>
+      面试时间: {{isset($interview->arranged_at)?nicetime($interview->arranged_at):'未经系统安排'}}<br>
       @endif
       @if (in_array($interview->status, ['undecided', 'passed', 'failed']))
       完成于: {{nicetime($interview->finished_at)}}<br>
       @endif
       状态: {{$interview->statusText()}}<br>
-      @if (in_array($interview->status, ['arranged', 'undecided', 'exempted', 'cancelled']))
-      面试备注: {{$interview->arranging_notes or '无'}}
+      @if (!empty($interview->arranging_notes))
+      面试备注: {{$interview->arranging_notes}}<br>
       @endif
       @if (in_array($interview->status, ['passed', 'failed']))
-      评分: {{$interview->score}}<br>
-      反馈: {{$interview->public_fb or '无'}}
-      @if (!empty($interview->internal_fb))
-        <br>内部反馈: {{$interview->internal_fb or '无'}}
-      @endif
-      @endif
+      评分: {!!$interview->scoreHTML()!!}<br>
     </p>
+      反馈: <div class="readmore">{{$interview->public_fb or '无'}}</div>
+      @if (!empty($interview->internal_fb))
+        <br>内部反馈: <div class="readmore">{{$interview->internal_fb or '无'}}</div>
+      @endif
+      @endif
     @if ($interview->interviewer_id == Reg::currentID())
         @if ($interview->status == 'assigned')
         <a href="{{mp_url('/interview/'.$interview->id.'/arrangeModal')}}" class="btn btn-xs btn-warning pull-right" data-toggle="ajaxModal">安排面试</a>
-        <a href="{{mp_url('/interview/'.$interview->id.'/exemptModal')}}" class="btn btn-xs btn-info pull-right m-r-xs" data-toggle="ajaxModal">免试通过</a>
+        <a href="{{mp_url('/interview/'.$interview->id.'/exemptModal')}}" class="btn btn-xs btn-success pull-right m-r-xs" data-toggle="ajaxModal">免试通过</a>
+        <a href="{{mp_url('/interview/'.$interview->id.'/rateModal')}}" class="btn btn-xs btn-info pull-right m-r-xs" data-toggle="ajaxModal">直接评分</a>
         <a href="{{mp_url('/interview/'.$interview->id.'/rollBackModal')}}" class="btn btn-xs btn-white pull-right m-r-xs" data-toggle="ajaxModal"><span class='text-danger'>退回面试</span></a>
         @elseif ($interview->status == 'arranged')
 {{--      @if (strtotime(date('Y-m-d H:i:s')) < strtotime($interview->arranged_at) - 1800)
@@ -40,6 +41,8 @@
           @endif--}}
           <a href="{{mp_url('/interview/'.$interview->id.'/rateModal')}}" class="btn btn-xs btn-info pull-right" data-toggle="ajaxModal">评分</a>
           <a href="{{mp_url('/interview/'.$interview->id.'/cancelModal')}}" class="btn btn-xs btn-danger pull-right m-r-xs" data-toggle="ajaxModal">取消面试</a>
+        @elseif ($interview->status == 'undecided')
+          <a href="{{mp_url('/interview/'.$interview->id.'/rateModal')}}" class="btn btn-xs btn-info pull-right" data-toggle="ajaxModal">决定结果</a>
         @elseif (in_array($interview->status, ['passed', 'exempted']))
         <a href="" class="btn btn-xs btn-success pull-right" data-toggle="ajaxModal">分配席位</a>
         @endif

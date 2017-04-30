@@ -9,6 +9,13 @@ $canInterview = Auth::user()->regs->where('conference_id', Reg::currentConferenc
 <script src="{{cdn_url('js/bootstrap-datetimepicker.min.js')}}"></script>
 <script src="{{cdn_url('js/markdown/epiceditor.js')}}"></script>  
 <script src="{{cdn_url('/js/select2/select2.min.js')}}"></script>
+<script src="{{cdn_url('js/readmore.min.js')}}"></script>
+<script>
+$('.readmore').readmore({
+  collapsedHeight: 16,
+  speed: 200
+});
+</script>
 @endpush
 @push('css')
 <link href="{{cdn_url('css/bootstrap-datetimepicker.min.css')}}" rel="stylesheet">
@@ -97,7 +104,10 @@ $canInterview = Auth::user()->regs->where('conference_id', Reg::currentConferenc
           </header>
           <div class="panel-body clearfix">
             @if ($interviews->whereIn('status', ['arranged', 'undecided'])->count() > 0)
-              @foreach ($interviews->whereIn('status', ['arranged', 'undecided'])->sortByDesc('updated_at') as $interview)
+              @foreach ($interviews->where('status', 'arranged')->sortByDesc('updated_at') as $interview)
+                @include('components.interview')
+              @endforeach
+              @foreach ($interviews->where('status', 'undecided')->sortByDesc('updated_at') as $interview)
                 @include('components.interview')
               @endforeach
             @else

@@ -43,8 +43,8 @@ class NoteController extends Controller
             $mail->conference_id = Reg::currentConferenceID();
             $mail->title = Reg::currentConference()->name.' 新的笔记提及';
             $mail->setReceiver($user);
-            $mail->sender = Auth::user()->name;
-            $mail->content = '在'.Reg::currentConference()->name.'中，'.Auth::user()->name.'在'.$reg->name().'的面试笔记中提到了您。该笔记内容如下：<br/><pre>'.$note->content.'</pre><br>点此查看详情：<a href='.$url.'>'.$url.'</a>';
+            $mail->sender = Reg::current()->name();
+            $mail->content = '在'.Reg::currentConference()->name.'中，'.Reg::current()->name().'在'.$reg->name().'的面试笔记中提到了您。该笔记内容如下：<br/><pre>'.$note->content.'</pre><br>点此查看详情：<a href='.$url.'>'.$url.'</a>';
             $mail->send();
             $mail->save();
         }

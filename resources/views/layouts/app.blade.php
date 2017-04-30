@@ -98,7 +98,7 @@
                 </li>
               </ul>
               <div class="visible-xs m-t m-b">
-                <a href="#" class="h3">{{ Auth::user()->name }}</a>
+                <a href="#" class="h3">{{ Reg::current()->name() }}</a>
               </div>
             </div>
             <!--div class="nav-msg">

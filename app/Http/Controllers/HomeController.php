@@ -383,6 +383,8 @@ class HomeController extends Controller
         $operations = array();
         if ($reg->type == 'delegate')
         {
+            if (Reg::current()->can('sudo'))
+                $operations[] = 'sudo';
             $status = $reg->delegate->realStatus();
             if (Reg::current()->can('view-regs')) {
                 switch($status)
@@ -840,12 +842,14 @@ class HomeController extends Controller
      */
     public function documentDetailsModal($id)
     {
+        //To-Do: permission check
         if ($id == 'new')
         {
             $document = new Document;
             $document->title = 'New document';
             $document->description = '请在此输入对该学术文件的描述';
             $document->path = 'default/no-docs.pdf';
+            $document->conference_id = Reg::currentConferenceID();
             $document->save();
         }
         else

@@ -390,7 +390,7 @@ class UserController extends Controller
             return "无法为此报名者执行该操作！";
         $specific->status = $specific->nextStatus();
         $specific->save();
-        $reg->addEvent('ot_verification_passed', '{"name":"'.Auth::user()->name.'"}');
+        $reg->addEvent('ot_verification_passed', '{"name":"'.Reg::current()->name().'"}');
         return 'success';
         return redirect('/regManage?initialReg='.$id);
     }
@@ -411,7 +411,7 @@ class UserController extends Controller
             return "无法为此报名者执行该操作！";
         $specific->status = 'fail';
         $specific->save();
-        $reg->addEvent('ot_verification_rejected', '{"name":"'.Auth::user()->name.'"}');
+        $reg->addEvent('ot_verification_rejected', '{"name":"'.Reg::current()->name().'"}');
         return 'success';
         //return redirect('/regManage?initialReg='.$id);
     }
@@ -1244,8 +1244,19 @@ return view('blank',['testContent' => $js, 'convert' => false]);
         }
         $reg = Reg::findOrFail($request->reg);
         if ($reg->user_id != Auth::user()->id)
-            return 'error';
-        $reg->login(true);
+        {
+            if (is_object(Reg::current()))
+            {
+                if (Reg::current()->conference_id == $reg->conference_id && Reg::current()->can('sudo'))
+                {
+                    $reg->sudo();
+                }
+                else
+                    return 'error';
+            } else
+                return 'error';
+        } else
+            $reg->login(true);
         return redirect(isset($request->target) ? $request->target : '/home');
     }
 

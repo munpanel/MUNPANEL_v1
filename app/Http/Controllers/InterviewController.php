@@ -101,7 +101,7 @@ class InterviewController extends Controller
                 $interview->reg->addEvent('interview_cancelled', '{"interviewer":"'.Auth::user()->name.'"}');
                 break;
             case "rate":
-                if ($interview->status != 'arranged')
+                if ($interview->status != 'arranged' && $interview->status != 'assigned')
                     return view('error', ['msg' => '状态错误！']);
                 $interview->status = $request->result . 'ed';
                 $interview->finished_at = date('Y-m-d H:i:s');

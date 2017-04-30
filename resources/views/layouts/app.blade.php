@@ -8,7 +8,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{Reg::currentConference()->name}} | MUNPANEL</title>
+    <title>{{Reg::currentConference()->name}} {{Reg::current()->user->id != Auth::id() ? '(sudo mode)' : ''}} | MUNPANEL</title>
 
     <link rel="icon" href="{{cdn_url('/images/favicon.ico')}}" type="image/x-icon" />
     <link rel="shortcut icon" href="{{cdn_url('/images/favicon.ico')}}" type="image/x-icon" />
@@ -52,13 +52,17 @@
 <body>
   <section class="hbox stretch">
     <!-- .aside -->
-    <aside class="bg-info aside-sm @yield('hide_aside')" id="nav">
+    <aside class="{{Reg::current()->user->id == Auth::id() ? 'bg-info' : 'bg-danger'}} aside-sm @yield('hide_aside')" id="nav">
       <section class="vbox">
         <header class="dker nav-bar nav-bar-fixed-top">
           <a class="btn btn-link visible-xs" data-toggle="class:nav-off-screen" data-target="#nav">
             <i class="fa fa-bars"></i>
           </a>
+          @if (Reg::current()->user->id == Auth::id())
           <a href="#" class="nav-brand" data-toggle="fullscreen">{{Reg::currentConference()->shortname}}</a>
+          @else
+          <a href="#" class="nav-brand" data-toggle="fullscreen">IN SUDO</a>
+          @endif
           <a class="btn btn-link visible-xs" data-toggle="class:show" data-target=".nav-user">
             <i class="fa fa-comment-o"></i>
           </a>
@@ -66,7 +70,7 @@
         <section class="scrollable">
           <div class="slim-scroll" data-height="auto" data-disable-fade-out="true" data-distance="0" data-size="5px">
           <!-- user -->
-          <div class="bg-success nav-user hidden-xs pos-rlt">
+          <div class="{{Reg::current()->user->id == Auth::id() ? 'bg-success' : 'bg-warning'}} nav-user hidden-xs pos-rlt">
             <div class="nav-avatar pos-rlt">
               <a href="#" class="thumb-sm avatar animated rollIn" data-toggle="dropdown">
                 <img src="{{ 'https://www.gravatar.com/avatar/' . md5( strtolower( trim( Auth::user()->email ) ) ) . '?d='.mp_url('images/avatar.png').'&s=320' }}" alt="" class="">

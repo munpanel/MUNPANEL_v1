@@ -15,12 +15,20 @@
                         <input type="radio" name="result" value="pass"> <i class="fa fa-check text-active"></i> 通过
                     </label>
                     <label class="btn btn-sm btn-danger">
-                        <input type="radio" name="result" value="fail" data-required="true"> <i class="fa fa-check text-active"></i> 不通过
+                        <input type="radio" name="result" value="fail"> <i class="fa fa-check text-active"></i> 不通过
                     </label>
+                    @unless($decideOnly)
+                    <label class="btn btn-sm btn-info">
+                        <input type="radio" name="result" value="undecid" data-required="true"> <i class="fa fa-check text-active"></i> 待定
+                    </label>
+                    @endunless
                   </div>
+                  @unless($decideOnly)
                   <label class="col-sm-2 control-label">综合评分</label>
                   <div class="col-sm-2 text-info" id="finalScore"><h4 class="control-inline-h"><strong>未打分</strong></h4></div>
+                  @endunless
                 </div>
+                @unless($decideOnly)
                 <div class="form-group">
 <label class="col-sm-2 control-label">评分</label>
                   <div class="col-lg-10">
@@ -63,6 +71,7 @@
                   <div id="public_editor" class="col-lg-10">
                   </div>
                 </div>
+                @endunless
              <p class="checkbox m-t-lg">
                <a onclick="$('#ajaxModal').modal('hide');$('#ajaxModal').remove();" class="btn btn-sm btn-danger text-uc m-t-n-xs pull-right"><i class="fa fa-times"></i> 取消</a>
                <a onclick="if ($('#rateForm').parsley('validate')){$('#rateForm').submit();}" class="btn btn-sm btn-success text-uc m-t-n-xs m-r-xs pull-right"><i class="fa fa-check"></i> 确定</a>

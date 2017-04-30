@@ -104,7 +104,10 @@ $('.readmore').readmore({
           </header>
           <div class="panel-body clearfix">
             @if ($interviews->whereIn('status', ['arranged', 'undecided'])->count() > 0)
-              @foreach ($interviews->whereIn('status', ['arranged', 'undecided'])->sortByDesc('updated_at') as $interview)
+              @foreach ($interviews->where('status', 'arranged')->sortByDesc('updated_at') as $interview)
+                @include('components.interview')
+              @endforeach
+              @foreach ($interviews->where('status', 'undecided')->sortByDesc('updated_at') as $interview)
                 @include('components.interview')
               @endforeach
             @else

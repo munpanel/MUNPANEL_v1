@@ -39,7 +39,7 @@ class Interview extends Model
             case 'passed': return '已完成 (通过)';
             case 'failed': return '已完成 (未通过)';
             case 'exempted': return '已免试通过';
-            case 'undecided': return '已完成 (等待评分)';
+            case 'undecided': return '已完成 (结果待定)';
             default: return '未知状态';
         }
     }

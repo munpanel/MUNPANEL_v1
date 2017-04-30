@@ -101,29 +101,36 @@ class InterviewController extends Controller
                 $interview->reg->addEvent('interview_cancelled', '{"interviewer":"'.Reg::current()->name().'"}');
                 break;
             case "rate":
-                if ($interview->status != 'arranged' && $interview->status != 'assigned')
+                if (!in_array($interview->status, ['arranged', 'assigned', 'undecided']))
                     return view('error', ['msg' => '状态错误！']);
-                $interview->status = $request->result . 'ed';
-                $interview->finished_at = date('Y-m-d H:i:s');
-                $scores = array();
-                $score = 0;
-                $scoresOptions = json_decode(Reg::currentConference()->option('interview_scores'));
-                foreach($scoresOptions->criteria as $key => $value)
+                if (!in_array($request->result, ['pass', 'fail', 'undecid']))
+                    return view('error', ['msg' => '参数错误！']);
+                if ($interview->status != 'undecided')
                 {
-                    $scores[$key] = $request->$key;
-                    $score += intval($request->$key) * $value->weight;
+                    $interview->finished_at = date('Y-m-d H:i:s');
+                    $scores = array();
+                    $score = 0;
+                    $scoresOptions = json_decode(Reg::currentConference()->option('interview_scores'));
+                    foreach($scoresOptions->criteria as $key => $value)
+                    {
+                        $scores[$key] = $request->$key;
+                        $score += intval($request->$key) * $value->weight;
+                    }
+                    $score *= $scoresOptions->total / 5;
+                    $interview->scores = json_encode($scores);
+                    $interview->score = round($score, 1);
+                    $interview->public_fb = $request->public_fb;
+                    $interview->internal_fb = $request->internal_fb;
                 }
-                $score *= $scoresOptions->total / 5;
-                $interview->scores = json_encode($scores);
-                $interview->score = round($score, 1);
-                $interview->public_fb = $request->public_fb;
-                $interview->internal_fb = $request->internal_fb;
+                $interview->status = $request->result . 'ed';
                 $interview->save();
                 $interview->reg->addEvent('interview_' . $interview->status, '{"interviewer":"'.Reg::current()->name().'"}');
                 if ($interview->status == 'passed')
                     $interview->reg->user->sendSMS('感谢您参加'.Reg::currentConference()->name.'，面试官'.Reg::current()->name().'已通过了您的面试。请静候席位分配，感谢。');
-                else
+                else if ($interview->status == 'failed')
                     $interview->reg->user->sendSMS('感谢您参加'.Reg::currentConference()->name.'，我们很遗憾地通知您，面试官'.Reg::current()->name().'并未通过您的面试。');
+                else
+                    $interview->reg->user->sendSMS('感谢您参加'.Reg::currentConference()->name.'，面试官'.Reg::current()->name().'已完成了您的面试，结果将尽快通知您。感谢您的理解与配合。');
                 break;
             case "arrangeModal":
                 return view('interviewer.arrangeModal', ['id' => $id]);
@@ -134,7 +141,7 @@ class InterviewController extends Controller
             case "cancelModal":
                 return view('interviewer.exemptModal', ['id' => $id, 'mode' => 'cancel']);
             case "rateModal":
-                return view('interviewer.rateModal', ['id' => $id, 'scoresOptions' => json_decode(Reg::currentConference()->option('interview_scores'))]);
+                return view('interviewer.rateModal', ['id' => $id, 'scoresOptions' => json_decode(Reg::currentConference()->option('interview_scores')), 'decideOnly' => ($interview->status == 'undecided')]);
             default:
                 return view('error', ['msg' => '指令无效！']);
         }

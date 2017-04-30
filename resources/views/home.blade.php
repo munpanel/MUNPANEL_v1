@@ -91,7 +91,7 @@ if (Reg::current()->type == 'delegate' && isset(Reg::current()->delegate))
             <div class="col-lg-4">
                <section class="panel bg-danger lter no-borders">
                 <div class="panel-body">
-                  <span class="h4">{{ Auth::user()->name }}</span>
+                  <span class="h4">{{ Reg::current()->name() }}</span>
                   <div class="text-center padder m-t">
                     <i class="fa fa-heart fa fa-4x"></i>
                   </div>

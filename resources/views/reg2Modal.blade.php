@@ -30,7 +30,7 @@ $isExperience = isset($customTable->experience) && in_array($regType, $customTab
               <label>姓名 *</label>
               @if (Auth::check())
               <input type="hidden" name="user_id" value="{{ Auth::id() }}">
-              <input name="name" disabled="" class="form-control" type="text" value="{{ Auth::user()->name }}" data-required="true" data-trigger="change">
+              <input name="name" disabled="" class="form-control" type="text" value="{{ Reg::current()->name() }}" data-required="true" data-trigger="change">
               <span class="help-block m-b-none">如需编辑请退出登录或联系客服</span>
               @else
               <input name="name" class="form-control" type="text" data-required="true" data-trigger="change">

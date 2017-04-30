@@ -27,7 +27,7 @@
             <div class="row">
               <div class="col-xs-6">
                 <strong>付款人:</strong>
-                <h4>{{Auth::user()->name}}</h4>
+                <h4>{{Reg::current()->name()}}</h4>
                 <p>
                   @if (is_object(Reg::current()->specific()) && is_object(Reg::current()->specific()->school))
                   {{Reg::current()->specific()->school->name}}<br>

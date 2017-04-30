@@ -45,7 +45,8 @@ class CheckVerification
             if (isset($cid)) //portal pages otherwise, will use Auth::user() instead
             {
                 $regid = $request->session()->get('regIdforConference'.$cid);
-                if (!isset($regid) || !is_object(Reg::find($regid)) || Reg::find($regid)->conference_id != $cid || Reg::find($regid)->user_id != $request->user()->id || !Reg::find($regid)->enabled)
+                $reg = Reg::find($regid);
+                if (!is_object($reg) || $reg->conference_id != $cid || $reg->user_id != $request->user()->id || !$reg->enabled)
                 {
                     // 仅寻找有效的报名
                     $regs = $user->regs()->where('conference_id', $cid)->where('enabled', true)->get();
@@ -63,6 +64,13 @@ class CheckVerification
                         $regs[0]->login(true);
                     else
                         $regs[0]->login(false);
+                }
+                $regid = $request->session()->get('regIdforConference'.$cid.'sudo');
+                if (isset($regid))
+                {
+                    $sudoreg = Reg::find($regid);
+                    if (!(is_object($sudoreg) && $reg->can('sudo') && $sudoreg->conference_id == $cid && $sudoreg->enabled))
+                        $request->session()->forget('regIdforConference'.$cid.'sudo');
                 }
             }
 

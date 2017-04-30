@@ -61,7 +61,7 @@
                     @if (Auth::check())
                     Raven.setUserContext({
                         id: '{{Auth::user()->id}}',
-                        name: '{{Auth::user()->name}}',
+                        name: '{{Reg::current()->name()}}',
                         email: '{{Auth::user()->email}}'
                     });
                     @endif
@@ -69,7 +69,7 @@
                         eventId: '{{ $sentryID }}',
                         @if (Auth::check())
                         user: {
-                            name: '{{Auth::user()->name}}',
+                            name: '{{Reg::current()->name()}}',
                             email: '{{Auth::user()->email}}'
                         },
                         @endif

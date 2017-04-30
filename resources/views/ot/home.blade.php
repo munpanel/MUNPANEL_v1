@@ -18,7 +18,7 @@ foreach(Auth::user()->regs->where('conference_id', Reg::currentConferenceID())->
 @section('content')
 <section class="vbox">
   <header class="header bg-white b-b">
-    <p>欢迎{{is_null(Reg::current()->ot->position)?'组织团队成员':Reg::current()->ot->position}} {{Auth::user()->name}}</p>
+    <p>欢迎{{is_null(Reg::current()->ot->position)?'组织团队成员':Reg::current()->ot->position}} {{Reg::current()->name()}}</p>
     @if (Reg::current()->type == 'ot')
       @include('components.otHomeSparklineStat')
     @endif

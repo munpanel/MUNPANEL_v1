@@ -215,7 +215,7 @@ if (empty($active))
                       <form method="post" action="{{mp_url('/newNote')}}" id="add_notes_form">
                         <div class="timeline-heading">
                           <button class="btn btn-sm btn-success pull-right m-b-xs m-t-n-xs" type="submit">添加笔记</button>
-                          <h4 class="timeline-title">{{Auth::user()->name}}&nbsp;<small class="text-muted">{!!Auth::user()->identityHTML()!!}</small></h4>
+                          <h4 class="timeline-title">{{Reg::current()->name()}}&nbsp;<small class="text-muted">{!!Auth::user()->identityHTML()!!}</small></h4>
                         </div>
                         <div class="timeline-body">
                           {{csrf_field()}}

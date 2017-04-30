@@ -2,7 +2,7 @@
   <div class="modal-center animated flipInX" style="width:350px;margin:-30px 0 0 -175px;">
     <div class="pull-left thumb m-r"><img src="{{ 'https://www.gravatar.com/avatar/' . md5( strtolower( trim( Auth::user()->email ) ) ) . '?d='.mp_url('images/avatar.png').'&s=320' }}" class="img-thumbnail"></div>
     <div class="clear">
-      <p class="text-white">{{Reg::current()->name()}} - 请选择您希望登录的身份或注销</p>
+      <p class="text-white">{{Auth::user()->name}} - 请选择您希望登录的身份或注销</p>
       <form action={{mp_url('/doSwitchIdentity')}} method="post">
        {{csrf_field()}}
        <div class="input-group input-m">

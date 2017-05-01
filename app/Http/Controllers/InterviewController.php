@@ -60,7 +60,10 @@ class InterviewController extends Controller
                     return view('error', ['msg' => '状态错误！']);
                 $interview->status = 'arranged';
                 $interview->arranged_at = $request->arrangeTime;
-                $interview->arranging_notes = $request->notes;
+                if ($request->notes == '面试方式、面试时要特殊留意的内容等... (代表不可见，支持Markdown)')
+                    $interview->arranging_notes = '';
+                else
+                    $interview->arranging_notes = $request->notes;
                 $type = intval($request->typeInterview);
                 $interview->save();
                 $interview->reg->addEvent('interview_arranged', '{"interviewer":"'.Reg::current()->name().'","time":"'.$interview->arranged_at.'","method":"'.typeInterview($type).'"}');
@@ -71,7 +74,10 @@ class InterviewController extends Controller
                     return view('error', ['msg' => '状态错误！']);
                 $interview->status = 'exempted';
                 $interview->finished_at = date('Y-m-d H:i:s');
-                $interview->arranging_notes = $request->notes;
+                if ($request->notes == '任何说明... (代表不可见，支持Markdown)')
+                    $interview->arranging_notes = '';
+                else
+                    $interview->arranging_notes = $request->notes;
                 $interview->save();
                 $interview->reg->addEvent('interview_exempted', '{"interviewadmin":"'.Reg::current()->name().'","interviewer":"并"}');
                 $interview->reg->user->sendSMS('感谢您参加'.Reg::currentConference()->name.'，面试官'.Reg::current()->name().'已免试通过了您的面试。请静候席位分配，感谢。');
@@ -81,7 +87,10 @@ class InterviewController extends Controller
                     return view('error', ['msg' => '状态错误！']);
                 $interview->status = 'cancelled';
                 $interview->finished_at = date('Y-m-d H:i:s');
-                $interview->arranging_notes = $request->notes;
+                if ($request->notes == '任何说明... (代表不可见，支持Markdown)')
+                    $interview->arranging_notes = '';
+                else
+                    $interview->arranging_notes = $request->notes;
                 $interview->save();
                 $interview->reg->addEvent('interview_cancelled', '{"interviewer":"'.Reg::current()->name().'"}');
                 break;
@@ -90,7 +99,10 @@ class InterviewController extends Controller
                     return view('error', ['msg' => '状态错误！']);
                 $interview->status = 'cancelled';
                 $interview->finished_at = date('Y-m-d H:i:s');
-                $interview->arranging_notes = $request->notes;
+                if ($request->notes == '任何说明... (代表不可见，支持Markdown)')
+                    $interview->arranging_notes = '';
+                else
+                    $interview->arranging_notes = $request->notes;
                 $interview->save();
                 $newInterview = new Interview;
                 $newInterview->conference_id = Reg::currentConferenceID();
@@ -168,7 +180,10 @@ class InterviewController extends Controller
         if (!empty($request->isRetest))
             $interview->retest = true;
         $interview->interviewer_id = $interviewer->reg_id;
-        $interview->arranging_notes = $request->notes;
+        if ($request->notes == '代表不可见... (支持Markdown)')
+            $interview->arranging_notes = '';
+        else 
+            $interview->arranging_notes = $request->notes;
         $interview->status = 'assigned';
         $interview->save();
         $interview->reg->addEvent('interview_assigned', '{"interviewer":"'.$interviewer->reg->user->name.'"}');
@@ -188,7 +203,10 @@ class InterviewController extends Controller
         $interview->conference_id = Reg::currentConferenceID();
         $interview->reg_id = $id;
         $interview->interviewer_id = $interviewer->reg_id;
-        $interview->arranging_notes = $request->notes;
+        if ($request->notes == '代表不可见... (支持Markdown)')
+            $interview->arranging_notes = '';
+        else 
+            $interview->arranging_notes = $request->notes;
         $interview->status = 'exempted';
         $interview->save();
         $interview->reg->addEvent('interview_exempted', '{"interviewadmin":"'.Reg::current()->name().'","interviewer":"'.$interviewer->reg->user->name.'"}');

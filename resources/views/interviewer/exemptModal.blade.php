@@ -25,7 +25,7 @@
             {{csrf_field()}}
                 <div class="form-group">
                   <label class="col-sm-2 control-label">安排备注</label>
-                  <input type="hidden" id="notes" name="notes" value="任何说明... (支持Markdown)">
+                  <input type="hidden" id="notes" name="notes" value="任何说明... (代表不可见，支持Markdown)">
                   <div id="epiceditor" class="col-lg-10">
                   </div>
                 </div>

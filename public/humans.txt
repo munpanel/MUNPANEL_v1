@@ -8,7 +8,7 @@
         From: Amsterdam, Netherlands
 
         Front-End Developer: Xiaoyi Liu
-        From:Beijing, China
+        From: Beijing, China
 
 /* THANKS */
         Founder of Console iT: Jiazhao Xu

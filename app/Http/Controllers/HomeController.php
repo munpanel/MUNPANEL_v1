@@ -1051,7 +1051,7 @@ class HomeController extends Controller
             return view('warningDialogModal', ['danger' => false, 'msg' => '您将要提交当前学术作业。<br>请注意表单类型的作业一旦提交将无法再修改或撤回！<br><br>您确实要继续吗？', 'onclick' => 'jQuery.post(\''.mp_url('/assignment/'.$id.'/formSubmit/true').'\', $(\'#assignmentForm\').serialize());window.location = \''.mp_url('/assignment/' . $id).'\';']);
         $handin = Handin::findOrFail($request->handin);
         $answer = $request->all();
-        if ($submit == 'false')
+        if ($submit != 'true')
             unset($answer['_token']);
         $handin->content = json_encode($answer);
         $handin->save();

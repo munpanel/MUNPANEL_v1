@@ -99,6 +99,7 @@
         @if(null !== config('munpanel.icp_license'))
         <br/><a href="http://www.miibeian.gov.cn/" title="{{config('munpanel.icp_license')}}" rel="nofollow">{{config('munpanel.icp_license')}}</a>
         @endif
+        <br/><a href="{{mp_url('humans.txt')}}"><img src="{{cdn_url('images/humanstxt-isolated-blank.gif')}}" alt="Humans.txt" width="88" height="31"></a>
 
         <div class="clearfix"></div>
 

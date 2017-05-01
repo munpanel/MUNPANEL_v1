@@ -95,8 +95,12 @@
                   <a href="help.html">Help</a>
                 </li-->
                 <li>
+                  @if (Reg::current()->user->id == Auth::id())
                   <a href="{{ mp_url('/changePwd.modal') }}" data-toggle="ajaxModal">修改密码</a>
                   <a href="{{mp_url('/selectIdentityModal')}}" data-toggle="ajaxModal">切换身份</a>
+                  @else
+                  <a href="{{mp_url('/selectIdentityModal')}}" data-toggle="ajaxModal">切换身份(退出SUDO)</a>
+                  @endif
                   <a href="{{ mp_url('/help.html') }}">帮助</a>
                   <a href="{{ mp_url('/logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">注销</a>
                 </li>
@@ -159,7 +163,7 @@
           </nav>
           <!-- / nav -->
           <!-- note -->
-          <div class="bg-primary wrapper hidden-vertical animated fadeInUp text-sm">
+          <div class="{{Reg::current()->user->id == Auth::id() ? 'bg-primary' : 'bg-warning'}} wrapper hidden-vertical animated fadeInUp text-sm">
               <!--a href="#" data-dismiss="alert" class="pull-right m-r-n-sm m-t-n-sm"><i class="fa fa-times"></i></a-->
               Proudly Powered and Copyrighted by {{config('munpanel.copyright_year')}} MUNPANEL. A Product of Console iT.
               @if(null !== config('munpanel.icp_license'))

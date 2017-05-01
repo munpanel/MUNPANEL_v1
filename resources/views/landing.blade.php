@@ -3,7 +3,13 @@
         <meta charset="utf-8">
         <title>MUNPANEL</title>
         <link rel="shortcut icon" href="{{cdn_url('images/favicon.ico')}}" type="image/x-icon">
+        <link rel="author" href="humans.txt" />
         <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">  
+        <meta name="keywords" content="MUNPANEL,MUN,Model UN,Model United Nations,United Nations,UN,PANEL,模联,模拟联合国">
+        <meta name="description" content="MUNPANEL is not merely a Model UN system - it is a platform that connects people, clubs, and conferences.">
+        <meta name="copyright" content="Proudly Powered and Copyrighted by {{config('munpanel.copyright_year')}} MUNPANEL. A Product of Console iT.">
+        <meta name="generator" content="MUNPANEL System">
+        <meta name="author" content="Adam Yi">
         <link href="{{cdn_url('css/style.css')}}" rel="stylesheet">  
         <link href="{{cdn_url('css/colors/style-color-01.css')}}" rel="stylesheet">    
         <link rel="stylesheet" href="css/simple-line-icons.css">

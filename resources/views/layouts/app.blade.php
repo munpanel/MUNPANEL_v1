@@ -9,9 +9,15 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{Reg::currentConference()->name}} {{Reg::current()->user->id != Auth::id() ? '(sudo mode)' : ''}} | MUNPANEL</title>
+    <meta name="keywords" content="MUNPANEL,MUN,Model UN,Model United Nations,United Nations,UN,PANEL,模联,模拟联合国">
+    <meta name="copyright" content="Proudly Powered and Copyrighted by {{config('munpanel.copyright_year')}} MUNPANEL. A Product of Console iT.">
+    <meta name="generator" content="MUNPANEL System">
+    <meta name="author" content="Adam Yi">
+
 
     <link rel="icon" href="{{cdn_url('/images/favicon.ico')}}" type="image/x-icon" />
     <link rel="shortcut icon" href="{{cdn_url('/images/favicon.ico')}}" type="image/x-icon" />
+    <link rel="author" href="humans.txt" />
 
     <!-- Styles -->
     <link rel="stylesheet" href="{{cdn_url('/css/bootstrap.css')}}" type="text/css" />

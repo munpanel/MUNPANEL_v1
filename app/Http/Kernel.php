@@ -43,6 +43,7 @@ class Kernel extends HttpKernel
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \App\Http\Middleware\DomainRouting::class,
             \App\Http\Middleware\CheckVerification::class,
+            \App\Http\Middleware\SentryContext::class,
         ],
 
         'api' => [

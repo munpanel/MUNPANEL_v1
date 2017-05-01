@@ -58,24 +58,17 @@
                     <script src="https://cdn.ravenjs.com/3.3.0/raven.min.js"></script>
 
                     <script>
-                    @if (Auth::check())
-                    Raven.setUserContext({
-                        id: '{{Auth::user()->id}}',
-                        name: '{{Reg::current()->name()}}',
-                        email: '{{Auth::user()->email}}'
-                    });
-                    @endif
                     Raven.showReportDialog({
                         eventId: '{{ $sentryID }}',
                         @if (Auth::check())
                         user: {
-                            name: '{{Reg::current()->name()}}',
+                            name: '{{Auth::user()->name()}}',
                             email: '{{Auth::user()->email}}'
                         },
                         @endif
 
                         // use the public DSN (dont include your secret!)
-                        dsn: 'https://3026b841fd7e4a5c9a4422c8aab5f270@sentry.io/162702'
+                        dsn: '{{config('sentry.dsn_public')}}'
                     });
                     </script>
                 @endunless

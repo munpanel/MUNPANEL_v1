@@ -859,6 +859,50 @@ class UserController extends Controller
      */
     public function test(Request $request)
     {
+        return 'gou';
+        $dels = Delegate::where('conference_id', 2)->with('reg')->get();
+        $ret = '';
+        foreach($dels as $del)
+        {
+            $info = json_decode($del->reg->reginfo);
+            $ret .= $del->reg_id;
+            $ret .= ',';
+            $ret .= $del->reg->name();
+            $ret .= ',';
+            $ret .= $info->personinfo->school;
+            $ret .= ','.$del->reg->user->tel;
+            $com = null;
+            $ret .= ',';
+            if (isset($info->conference->branch1)) {
+                $com =Committee::find($info->conference->branch1);
+                if (is_object($com))
+                    $ret .= $com->name;
+            }
+            $com = null;
+            $ret .= ',';
+            if (isset($info->conference->branch2)) {
+                $com =Committee::find($info->conference->branch2);
+                if (is_object($com))
+                    $ret .= $com->name;
+            }
+            $com = null;
+            $ret .= ',';
+            if (isset($info->conference->branch3)) {
+                $com =Committee::find($info->conference->branch3);
+                if (is_object($com))
+                    $ret .= $com->name;
+            }
+            $com = null;
+            $ret .= ',';
+            if (isset($info->conference->branch4)) {
+                $com =Committee::find($info->conference->branch4);
+                if (is_object($com))
+                    $ret .= $com->name;
+            }
+            $ret .= ','. $del->statusText();
+            $ret .= "<br>";
+        }
+        return $ret;
         dd(extract_mention($request->text));
         dd(geoip(\Request::ip()));
         $ints = Interviewer::all();

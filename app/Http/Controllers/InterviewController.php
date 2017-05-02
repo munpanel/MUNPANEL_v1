@@ -138,11 +138,11 @@ class InterviewController extends Controller
                 $interview->save();
                 $interview->reg->addEvent('interview_' . $interview->status, '{"interviewer":"'.Reg::current()->name().'"}');
                 if ($interview->status == 'passed')
-                    $interview->reg->user->sendSMS('感谢您参加'.Reg::currentConference()->name.'，面试官'.Reg::current()->name().'已通过了您的面试。请静候席位分配，感谢。');
+                    $interview->reg->user->sendSMS('感谢您参加'.Reg::currentConference()->name.'，面试官'.Reg::current()->name().'已经完成了您的面试评价并给出了面试结果，请您登录 MUNPANEL 查看面试详情，如有任何疑问请尽快联系您的面试官。');
                 else if ($interview->status == 'failed')
-                    $interview->reg->user->sendSMS('感谢您参加'.Reg::currentConference()->name.'，我们很遗憾地通知您，面试官'.Reg::current()->name().'并未通过您的面试。');
+                    $interview->reg->user->sendSMS('感谢您参加'.Reg::currentConference()->name.'，面试官'.Reg::current()->name().'已经完成了您的面试评价并给出了面试结果，请您登录 MUNPANEL 查看面试详情，如有任何疑问请尽快联系您的面试官。');
                 else
-                    $interview->reg->user->sendSMS('感谢您参加'.Reg::currentConference()->name.'，面试官'.Reg::current()->name().'已完成了您的面试，结果将尽快通知您。感谢您的理解与配合。');
+                    $interview->reg->user->sendSMS('感谢您参加'.Reg::currentConference()->name.'，面试官'.Reg::current()->name().'已经完成了您的面试评价，请您登录 MUNPANEL 查看详情，面试官将会尽快给出您的面试结果，请您耐心等待。');
                 break;
             case "arrangeModal":
                 return view('interviewer.arrangeModal', ['id' => $id]);

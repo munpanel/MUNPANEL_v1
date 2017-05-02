@@ -62,7 +62,7 @@
                         eventId: '{{ $sentryID }}',
                         @if (Auth::check())
                         user: {
-                            name: '{{Auth::user()->name()}}',
+                            name: '{{Auth::user()->name}}',
                             email: '{{Auth::user()->email}}'
                         },
                         @endif

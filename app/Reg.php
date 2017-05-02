@@ -593,5 +593,4 @@ class Reg extends Model
             $this->detachRole($role);
         }
     }
-
 }

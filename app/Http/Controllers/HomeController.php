@@ -747,6 +747,7 @@ class HomeController extends Controller
             //else
             $handin->user_id = Reg::currentID();
             $handin->content = $request->file->store('assignmentHandins');
+            $handin->confirm = true;
             $handin->assignment_id = $id;
             $handin->handin_type = 'upload';
             $handin->remark = $request->remark;
@@ -1053,6 +1054,8 @@ class HomeController extends Controller
         $answer = $request->all();
         if ($submit != 'true')
             unset($answer['_token']);
+        else
+            $handin->confirm = true;
         $handin->content = json_encode($answer);
         $handin->save();
         if ($submit == 'true')

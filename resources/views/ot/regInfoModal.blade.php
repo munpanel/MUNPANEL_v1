@@ -2,7 +2,7 @@
 $i = 0;
 $regInfo = json_decode($reg->reginfo);
 $isOtOrDais = in_array(Reg::current()->type, ['ot', 'dais', 'interviewer']);
-$handins = $reg->handins;
+$handins = $reg->handins->where('confirm', true);
 $events = $reg->events()->orderBy('created_at', 'dsc')->get();
 $notes = $reg->notes()->orderBy('created_at', 'dsc')->get();
 $interviewers = $reg->interviews()->orderBy('created_at', 'dsc')->get();
@@ -60,10 +60,10 @@ if (empty($active))
           <div class="modal-body">
             <div class="row">
               <div class="col-sm-12 b-r">
-              @if ($handins->count() == 0)
+              @if (count($handins) == 0)
               <p>{{$isOtOrDais ? '该用户' : '您'}}还没有提交任何学术作业。</p>
               @else
-              <p>{{$isOtOrDais ? '该用户' : '您'}}提交了以下 {{$reg->handins->count()}} 项学术作业。</p>
+              <p>{{$isOtOrDais ? '该用户' : '您'}}提交了以下 {{count($handins)}} 项学术作业。</p>
               <table class="table table-striped m-b-none">
                 <thead>
                   <tr>

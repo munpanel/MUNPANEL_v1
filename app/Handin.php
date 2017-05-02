@@ -45,6 +45,11 @@ class Handin extends Model
         $texts .= ' (';
         if ($this->handin_type == 'json')
         {
+            if (!is_object(json_decode($this->content)))
+            {
+                $texts .= 'JSON 错误)';
+                return $texts;
+            }
             $content = (array)json_decode($this->content);
             unset($content['_token']);
             unset($content['handin']);

@@ -119,8 +119,8 @@ class FormController extends Controller
         $html .= '<input type="hidden" value="'.$formID.'" name="form">';
         $html .= FormController::formAssignmentTableItems($tableItems, $content);
         $html .= '<div class="form-group"><a href="'.mp_url($target.'/confirm').'" class="btn btn-success" data-toggle="ajaxModal">提交作业</button>';
-        if ($cansave)
-            $html .= '<a href="'.mp_url('assignments').'" class="text-black lter m-l" style="vertical-align: text-top;">保存并离开</a>';
+        //if ()
+            $html .= '<a href="'.($cansave ? mp_url('assignments') : '').'" class="text-black lter m-l" style="vertical-align: text-top;'.($cansave ? '' : 'display: none').'">保存并离开</a>';
         $html .= '</div></form>';
         return $html;
     }

@@ -28,6 +28,7 @@ class CreateHandinsTable extends Migration
             $table->integer('nation_id')->nullable()->unsigned(); //对非国家单位的学测可留空
             $table->integer('assignment_id')->unsigned();
             $table->enum('handin_type', ['upload', 'text', 'json']); //If upload, assignment_content = file location
+            $table->boolean('confirm');
             $table->mediumtext('content');
             $table->string('remark')->nullable();
             $table->timestamps();

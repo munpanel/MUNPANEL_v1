@@ -1,7 +1,8 @@
 @php
 $i = 0;
 $regInfo = json_decode($reg->reginfo);
-$isOtOrDais = Reg::current()->type == 'ot';
+$isOtOrDais = Reg::current()->type == 'ot' && Reg::current()->specific()->status == 'success';
+$isot = Reg::current()->type == 'ot';
 @endphp
 <div class="modal-dialog">
       <div class="modal-content">
@@ -30,12 +31,12 @@ $isOtOrDais = Reg::current()->type == 'ot';
                   @endforeach
                 </ul>
                 @else
-                <p>{{$reg->user->name}}已提交本次会议学术团队申请。</p>
+                <p>{{$reg->user->name}}已提交本次会议{{$isot ? '会务' : '学术'}}团队申请。</p>
                 <p>报名 ID: {{$reg->id}}
                 <br>状态: {{$reg->enabled ? $reg->specific()->statusText() : '已禁用'}}</p>
                 @endif
               @else
-                <p>{{$reg->user->name}}，您已成功提交{{Reg::currentConference()->fullname}}学术团队申请。</p>
+                <p>{{$reg->user->name}}，您已成功提交{{Reg::currentConference()->fullname}}{{$isot ? '会务' : '学术'}}团队申请。</p>
               @endif
               @if (isset($regInfo))
                 @include('components.regInfoShow')

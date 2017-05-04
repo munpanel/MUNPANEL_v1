@@ -431,10 +431,12 @@ class HomeController extends Controller
     public function daisregInfoModal($id)
     {
         $reg = Reg::findOrFail($id);
+        if (!in_array($reg->type, ['ot', 'dais']))
+            return 'error';
         $allRegs = Reg::where('user_id', $reg->user_id)->where('conference_id', $reg->conference_id)->get(['id', 'type']);
         $operations = array();
-        $status = $reg->dais->status;
-        $answer = json_decode($reg->dais->handin);
+        $status = $reg->specific()->status;
+        $answer = json_decode($reg->specific()->handin);
         $html = $formName = '';
         if (isset($answer->_token))
         {

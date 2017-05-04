@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-xs-6">
       <div class="wrapper">
-        <p>申请成为学术团队成员</p>
+        <p>申请加入会议团队</p>
         <p class="h4 font-bold">{{ $status }}</p>
         <div class="progress progress-xs progress-striped active m-b-sm">
           <div class="progress-bar progress-bar-warning" data-toggle="tooltip" data-original-title="{{ $percent }}%" style="width: {{ $percent }}%"></div>

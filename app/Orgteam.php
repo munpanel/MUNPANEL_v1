@@ -55,4 +55,23 @@ class Orgteam extends Model
         }
         return $scope;
     }
+
+    public function nextStatus() {
+        switch ($this->status) { //To-Do: configurable
+            case null: return 'sVerified';
+            case 'sVerified': return 'oVerified';
+            case 'oVerified': return 'success';
+        }
+    }
+
+    public function statusText() {
+        switch($this->status)
+        {
+            case 'reg': return '等待完成申请测试';
+            case 'sVerified': return '等待组织团队审核';
+            case 'oVerified':  return '申请测试审核已通过';
+            case 'success': return '报名成功';
+            default: return '未知状态';
+        }
+    }
 }

@@ -27,7 +27,12 @@ foreach(Auth::user()->regs->where('conference_id', Reg::currentConferenceID())->
     <div class="row">
       @if (Reg::currentConference()->status == 'daisreg')
       <div class="col-md-8 col-md-offset-2">
-        @include('components.otTodoStatDaisreg')
+        @if (validateRegAvaliable('ot'))
+          @include('components.otTodoStatOtreg')
+        @endif
+        @if (validateRegAvaliable('dais'))
+          @include('components.otTodoStatDaisreg')
+        @endif
       </div>
       @elseif (in_array(Reg::currentConference()->status, ['reg', 'regstop']))
         @if (Reg::current()->can('view-regs') && Reg::current()->type == 'ot')

@@ -18,7 +18,7 @@
               @endpermission
               @endif
               @endforeach
-              <li class="@yield('roles_active')">
+              <li class="@yield('roleAlloc_active')">
                 <a href="{{ mp_url('/roleAlloc') }}">
                   <i class="fa fa-wheelchair"></i>
                   <span>Role Allocation</span>

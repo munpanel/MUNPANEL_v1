@@ -100,8 +100,8 @@ if (Reg::current()->type == 'delegate' && isset(Reg::current()->delegate))
                   <!--center><b>Welcome to {{Reg::currentConference()->name}}!</b></center><br>Please check the following information. If any of them is wrong, please send a feedback so that we can correct it.<br><b>Name:</b> Adam Yi<br><b>Gender:</b> Male<br><b>Telephone:</b> 18610713116<br><b>Email:</b> yixuan@procxn.org<br><b>Country:</b> NOT ASSIGNED YET<-->
                  <!--center><b>Welcome to {{Reg::currentConference()->name}}!</b></center><br>您的报名信息如下，如有任何问题，请重新进入报名表单修改。如有任何其他问题，请联系official@bjmun.org<br><br><b>报姓名：</b>易轩<br><b>性别：</b>男<br><b>委员会：</b>ICAO<br><b>搭档：</b>Yassi<br><b>室友：</b>不住宿<br><b>身份证：</b>123456789012345678<br><b>电话：</b>18610713116<!-->
                  <center><b>Welcome to {{Reg::currentConference()->name}}!</b></center>
-                 @if (Reg::current()->type == 'dais')
-                 <br>您已成功提交学术团队申请
+                 @if (in_array(Reg::current()->type, ['dais', 'ot']))
+                 <br>您已成功提交{{Reg::current()->type == 'dais' ? '学术' : '会务'}}团队申请
                  @else
                  <br>您的报名类型为<b> {{ Reg::current()->type == 'unregistered' ? '未注册' : (Reg::current()->type == 'delegate' ? '代表' : (Reg::current()->type == 'volunteer' ? '志愿者':'观察员')) }}</b>
                  @endif

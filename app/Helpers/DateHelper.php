@@ -79,3 +79,24 @@ function validateRegDate($type)
     }
     return $result;
 }
+
+/**
+ * Validate if the reg type is avaliable for registeration
+ *
+ * @param string $type in ['delegate', 'observer', 'volunteer']
+ * @return bool the type of registration is valid at time on request
+ */
+function validateRegAvaliable($type)
+{
+    $regDate = json_decode(Reg::currentConference()->option('reg_dates'));
+    $result = false;
+    foreach ($regDate as $value)
+    {
+        if ($value->use == $type) 
+        {
+            $result = true;
+            break;
+        }
+    }
+    return $result;
+}

@@ -211,7 +211,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
             $result = new Collection;
             // 过滤结果: 只保留 delegate, observer 和 volunteer
             if (Reg::currentConference()->status == 'daisreg')
-                $regs = Reg::where('conference_id', Reg::currentConferenceID())->where('type', 'dais')->with(['user' => function($q) {$q->select('name', 'id');}])->get(['id', 'user_id', 'type']);
+                $regs = Reg::where('conference_id', Reg::currentConferenceID())->whereIn('type', ['dais', 'ot'])->with(['user' => function($q) {$q->select('name', 'id');}])->get(['id', 'user_id', 'type']);
             else
                 $regs = Reg::where('conference_id', Reg::currentConferenceID())->whereIn('type', ['delegate','volunteer','observer'])->with(['user' => function($q) {$q->select('name', 'id');}])->get(['id', 'user_id', 'type']);
             foreach ($regs as $reg)
@@ -226,6 +226,8 @@ class DatatablesController extends Controller //To-Do: Permission Check
                     $type = '观察员';
                 else if ($reg->type == 'dais')
                     $type = '学术团队';
+                else if ($reg->type == 'ot')
+                    $type = '组织团队';
                 else
                     $type = '未知';
             if (null !== $reg->specific())
@@ -254,7 +256,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
                     $status = '报名学测未完成';
                  else if ($reg->specific()->status == 'fail')
                     $status = '审核未通过';
-                 if (in_array($reg->type, ['delegate', 'dais']))
+                 if (in_array($reg->type, ['delegate', 'dais', 'ot']))
                      $status = $reg->specific()->statusText();
             }
             else $status = '';
@@ -678,7 +680,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
             $result->push([
                 'select' => $select,
                 'name' => $nation->name,
-                'nationgroup' => isset($nation->nationgroups) ? $nation->scopeNationGroup() : '无',
+                'nationgroup' => isset($nation->nationgroups) ? $nation->scopeNationGroup(true, 3) : '无',
                 'delegate' => $delnames,
                 'command' => $command
             ]);
@@ -708,22 +710,21 @@ class DatatablesController extends Controller //To-Do: Permission Check
         })->orWhere(function($query) {
             $query->where('committee_id', Reg::current()->dais->committee->id)
             ->where('status', 'oVerified');
-        })->get(['user_id', 'school_id', 'nation_id', 'status']);
+        })->get(['reg_id', 'school_id', 'nation_id', 'status']);
         foreach($delegates as $delegate)
         {
-            $name = $delegate->user->name;
-            $surfix = $delegate->scopeDelegateGroup();
-            if ($surfix != '')
-                $name .= ' (' . $surfix . ')';
+            $name = $delegate->reg->user->name;
+            $surfix = $delegate->delegategroups->count();
+            if ($surfix != 0)
+                $name .= ' (' . $surfix . ' 个代表组)';
             if ($delegate->status != 'paid')
                 $name .= '（未缴费）';
             $result->push([
-                'uid' => $delegate->user_id,
+                'uid' => $delegate->reg_id,
                 'name' => $name,
-                'school' => $delegate->school->name,
                 'nation' => isset($delegate->nation) ? $delegate->nation->name : '待分配',
-                'command' => isset($delegate->nation) ? '<a href="'.mp_url('/dais/removeSeat/'.$delegate->user->id).'" class="btn btn-xs btn-white" type="button">移出席位</a>'
-                                                      : '<button class="btn btn-xs btn-success addButton" del-id="' . $delegate->user->id . '"type="button">移入席位</button>'
+                'command' => isset($delegate->nation) ? '<a href="'.mp_url('/dais/removeSeat/'.$delegate->reg->id).'" class="btn btn-xs btn-white" type="button">移出席位</a>'
+                                                      : '<button class="btn btn-xs btn-success addButton" del-id="' . $delegate->reg->id . '"type="button">移入席位</button>'
             ]);
         }
         return Datatables::of($result)->make(true);

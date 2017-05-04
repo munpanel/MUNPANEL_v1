@@ -13,6 +13,7 @@ use App\Delegate;
 use App\Observer;
 use App\Volunteer;
 use App\Dais;
+use App\Orgteam;
 use App\Interview;
 
 /**
@@ -47,6 +48,21 @@ function daisregStat($cid)
     $daisSuccess = Dais::where('conference_id', $cid)->where('status', 'success')->count();
     $daisOVerify = Dais::where('conference_id', $cid)->whereIn('status', ['success', 'fail', 'oVerified'])->count();
     return ['oVerified' => $daisOVerify, 'oUnverified' => $daisUnOVerify, 'all' => $daisAll, 'success' => $daisSuccess];
+}
+
+/**
+ * provide stat data for otreg dashboard
+ *
+ * @param int $cid conference_id
+ * @return array statistics used on page
+ */
+function otregStat($cid)
+{
+    $otAll = Orgteam::where('conference_id', $cid)->count();
+    $otUnOVerify = Orgteam::where('conference_id', $cid)->where('status', 'sVerified')->count();
+    $otSuccess = Orgteam::where('conference_id', $cid)->where('status', 'success')->count();
+    $otOVerify = Orgteam::where('conference_id', $cid)->whereIn('status', ['success', 'fail', 'oVerified'])->count();
+    return ['oVerified' => $otOVerify, 'oUnverified' => $otUnOVerify, 'all' => $otAll, 'success' => $otSuccess];
 }
 
 /**

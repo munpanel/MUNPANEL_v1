@@ -232,6 +232,17 @@ class Reg extends Model
                 $dais->handin = '{"language":"'.json_decode($this->reginfo)->conference->language.'"}';
                 $dais->save();
                 break;
+            case 'ot':
+                $ot = Orgteam::find($this->id);
+                if (is_null($ot))
+                    $ot = new Orgteam();
+                $ot->reg_id = $this->id;
+                $ot->conference_id = $this->conference_id;
+                $ot->school_id = $this->school_id;
+                $ot->handin = '{"form":"'.json_decode(Reg::currentConference()->option('reg_tables'))->otregForm.'"}';
+                //$ot->status = $ot->nextStatus();
+                $ot->save();
+                break;
         }
     }
 

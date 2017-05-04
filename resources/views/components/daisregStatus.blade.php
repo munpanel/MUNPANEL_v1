@@ -12,7 +12,7 @@
           <a href="{{mp_url('/verifyEmail')}}" class="btn btn-danger">激活我的账号</a>
           @elseif (Reg::current()->type == 'unregistered')
           <div class="text-sm">点击下方按钮报名：</div>
-          <a href="{{ mp_url('/daisreg.modal') }}" data-toggle="ajaxModal" class="btn btn-danger">报名</a>
+          <a href="{{ mp_url('/reg2.modal/select') }}" data-toggle="ajaxModal" class="btn btn-danger">报名</a>
           @elseif (!Reg::current()->enabled)
           <div class="text-sm">点击下方按钮重置报名状态：</div>
           <a href="{{ mp_url('/resetReg/true') }}" class="btn btn-danger">重置我的报名</a>

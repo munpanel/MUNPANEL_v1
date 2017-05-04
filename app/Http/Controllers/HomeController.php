@@ -64,7 +64,7 @@ class HomeController extends Controller
                 $hasChildComm = true;
                 break;
             }
-        if ($type == 'ot')
+        if ($type == 'ot' && $reg->specific()->status == 'success')
         {
             return view('ot.home', [
                 'committees' => Reg::currentConference()->committees,
@@ -122,7 +122,7 @@ class HomeController extends Controller
             {
                 $percent = 25;
                 $status = '等待学校审核';
-                if ($type == 'dais')
+                if (in_array($type, ['dais', 'ot'])
                 {
                     return redirect(mp_url('/daisregForm'));
                 }
@@ -225,7 +225,7 @@ class HomeController extends Controller
     public function reg2Modal($regType)
     {
         $regDate = json_decode(Reg::currentConference()->option('reg_dates'));
-        $select = ['delegateUse' => false, 'observerUse' => false, 'volunteerUse' => false, 'delegateMsg' => '不可用', 'observerMsg' => '不可用', 'volunteerMsg' => '不可用'];
+        $select = ['delegateUse' => false, 'observerUse' => false, 'volunteerUse' => false, 'daisUse' => false, 'otUse' => false, 'delegateMsg' => '不可用', 'observerMsg' => '不可用', 'volunteerMsg' => '不可用', 'daisMsg' => '不可用', 'otMsg' => '不可用'];
         foreach ($regDate as $value)
         {
             if (strtotime(date("y-m-d h:i:s")) < strtotime($value->config->start)) $select[$value->use.'Msg'] = '暂未开启';
@@ -238,7 +238,11 @@ class HomeController extends Controller
             }
         }
         if ($regType == 'select')
+        {
+            if (Reg::currentConference()->status == 'daisreg')
+                return view('daisregSelectModal', $select);
             return view('regSelectModal', $select);
+        }
         $customTable = json_decode(Reg::currentConference()->option('reg_tables'))->regTable; //todo: table id
         $confForm = FormController::render($customTable->conference->items, $regType, 'uses');
         return view('reg2Modal', ['regType' => $regType, 'customTable' => $customTable, 'confForm' => $confForm]);
@@ -255,6 +259,19 @@ class HomeController extends Controller
         $customTable = json_decode(Reg::currentConference()->option('reg_tables'))->daisregTable; //todo: table id
         $confForm = FormController::render($customTable->conference->items, 'dais');
         return view('reg2Modal', ['regType' => 'dais', 'customTable' => $customTable, 'confForm' => $confForm]);
+    }
+
+    /**
+     * Show the dais registration form modal.
+     * Dynamic form, used in BJMUNSS 2017.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function otregModal()
+    {
+        $customTable = json_decode(Reg::currentConference()->option('reg_tables'))->regTable; //todo: table id
+        $confForm = FormController::render($customTable->conference->items, 'ot');
+        return view('reg2Modal', ['regType' => 'ot', 'customTable' => $customTable, 'confForm' => $confForm]);
     }
 
     /**
@@ -684,7 +701,9 @@ class HomeController extends Controller
 
     public function daisregForm()
     {
-        $handin = json_decode(Reg::current()->dais->handin);
+        if (!in_array(Reg::current()->type, ['dais', 'ot']))
+            return view('error', ['msg' => '您不是学术团队或会务团队申请者，无权访问该页面！']);
+        $handin = json_decode(Reg::current()->specific()->handin);
         $formID = 0;
         if (isset($handin->form))
             $formID = $handin->form;

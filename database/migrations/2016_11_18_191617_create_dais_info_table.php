@@ -29,6 +29,7 @@ class CreateDaisInfoTable extends Migration
             $table->integer('committee_id')->unsigned();
             $table->enum('status', ['reg', 'oVerified', 'success', 'fail'])->default('reg');
             $table->string('position');
+            $table->text('handin')->nullable();
             $table->timestamps();
             $table->primary('reg_id');
             $table->foreign('reg_id')->references('id')->on('regs')->onDelete('cascade');

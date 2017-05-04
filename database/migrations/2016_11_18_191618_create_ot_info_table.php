@@ -26,7 +26,9 @@ class CreateOtInfoTable extends Migration
             $table->integer('reg_id')->unsigned();
             $table->integer('conference_id')->unsigned()->nullable();
             $table->integer('school_id')->unsigned()->nullable();
+            $table->enum('status', ['reg', 'oVerified', 'success', 'fail'])->default('reg');
             $table->string('position');
+            $table->text('handin')->nullable();
             $table->timestamps();
             $table->primary('reg_id');
             $table->foreign('reg_id')->references('id')->on('regs')->onDelete('cascade');

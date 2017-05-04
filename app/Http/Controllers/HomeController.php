@@ -122,7 +122,7 @@ class HomeController extends Controller
             {
                 $percent = 25;
                 $status = '等待学校审核';
-                if (in_array($type, ['dais', 'ot'])
+                if (in_array($type, ['dais', 'ot']))
                 {
                     return redirect(mp_url('/daisregForm'));
                 }
@@ -1083,7 +1083,7 @@ class HomeController extends Controller
 
     public function daisregFormSubmit(Request $request, $submit = false)
     {
-        $dais = Dais::findOrFail(Reg::current()->id);
+        $dais = Reg::current()->specific();
         $answer = $request->all();
         if ($submit == 'true')
             $dais->status = 'sVerified';

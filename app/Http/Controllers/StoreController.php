@@ -89,6 +89,7 @@ class StoreController extends Controller
      * @param int $id the ID of the order
      * @param boolean $confirm whether to cancel or to show a prompt
      * @return Illuminate\Http\Response
+     */
     public function deleteOrder($id, $confirm = false)
     {
         if ($confirm) 

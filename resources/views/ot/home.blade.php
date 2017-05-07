@@ -11,6 +11,9 @@ foreach(Auth::user()->regs->where('conference_id', Reg::currentConferenceID())->
   <script src="{{cdn_url('js/nestable/demo.js')}}"></script>
   <script src="{{cdn_url('js/charts/sparkline/jquery.sparkline.min.js')}}"></script>
   <script src="{{cdn_url('js/charts/easypiechart/jquery.easy-pie-chart.js')}}"></script>
+  @if ((!Auth::user()->verified()) || (Reg::currentConference()->status == 'reg' && Reg::current()->type == 'unregistered') || (!Reg::selectConfirmed()) || (!Reg::current()->enabled) || (null!==(Reg::current()->specific()) && Reg::current()->specific()->status == 'fail') || (Reg::current()->type != 'unregistered' && is_null(Reg::current()->specific())))
+  <script src="{{cdn_url('/js/reg.firsttime.js')}}"></script>
+  @endif
 @endpush
 @push('css')
   <link href="{{cdn_url('js/nestable/nestable.css')}}" rel="stylesheet" type="text/css" cache="false">

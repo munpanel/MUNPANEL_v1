@@ -4,7 +4,11 @@
             <div class="row">
               <div class="col-sm-4 b-r">
               <center>
-              <a href="{{ mp_url('/reg2.modal/dais') }}" data-toggle="ajaxModal" class="btn btn-link"{{!$daisUse ? ' disabled=""' : ''}}>
+              @if ($daisUse)
+              <a href="{{ mp_url('/reg2.modal/dais') }}" data-toggle="ajaxModal" class="btn btn-link">
+              @else
+              <a href="#" class="btn btn-link disabled">
+              @endif
               <i class="fa fa-graduation-cap" aria-hidden="true" style="font-size:7em"></i><br/>
               学术团队申请
               <br><small><i>{{$daisMsg or '点击开始'}}</i></small>
@@ -13,7 +17,11 @@
               </div>
               <div class="col-sm-4 b-r">
               <center>
-              <a href="{{ mp_url('/reg2.modal/ot') }}" data-toggle="ajaxModal" class="btn btn-link"{{!$otUse ? ' disabled=""' : ''}}>
+              @if ($otUse)
+              <a href="{{ mp_url('/reg2.modal/ot') }}" data-toggle="ajaxModal" class="btn btn-link">
+              @else
+              <a href="#" class="btn btn-link disabled">
+              @endif
               <i class="fa fa-flag" aria-hidden="true" style="font-size:7em"></i><br/>
               会务团队申请
               <br><small><i>{{$otMsg or '点击开始'}}</i></small>

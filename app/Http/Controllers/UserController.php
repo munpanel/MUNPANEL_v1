@@ -846,11 +846,11 @@ class UserController extends Controller
     public function resetReg($force = false)
     {
         $reg = Reg::current();
+        if ($force)
+            $reg->specific()->delete();
         $reg->type = 'unregistered';
         $reg->enabled = true;
         $reg->save();
-        if ($force)
-            $reg->specific()->delete();
         return redirect('/home');
     }
 

@@ -6,7 +6,6 @@ $(document).ready(function() {
         columns: [
             {data: 'uid', name: 'uid', orderable: false},
             {data: 'name', name: 'name', orderable: false},
-            {data: 'school', name: 'school', orderable: false},
             {data: 'nation', name: 'nation', orderable: false},
             {data: 'command', name: 'command', orderable: false}
             ],

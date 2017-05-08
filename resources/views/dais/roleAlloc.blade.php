@@ -73,9 +73,8 @@
                         <tr>
                           <th>UID</th>
                           <th>姓名</th>
-                          <th>学校</th>
                           <th>席位</th>
-                          <th width="70">操作</th>
+                          <th style="min-width:70px">操作</th>
                         </tr>
                       </thead>
                     </table>
@@ -146,7 +145,7 @@
                           <th>席位</th>
                           <th>国家组</th>
                           <th>代表</th> 
-                          <th width="150">操作</th>
+                          <th style="min-width:140px">操作</th>
                         </tr>
                       </thead></table>
               </form>

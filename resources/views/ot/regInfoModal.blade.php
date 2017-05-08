@@ -220,7 +220,7 @@ if (empty($active))
                         <div class="timeline-body">
                           {{csrf_field()}}
                           <input type="hidden" name="reg_id" value="{{$reg->id}}">
-                          <input name="text" id="add_notes" class="form-control" type="text" data-required="true" data-trigger="change" style="width:100%" placeholder="添加对{{$reg->user->name}}的笔记..." autocomplete="off">
+                          <textarea name="text" id="add_notes" class="form-control" type="text" data-required="true" data-trigger="change" style="width:100%" placeholder="添加对{{$reg->user->name}}的笔记..." autocomplete="off">
                         </div>
                       </form>
                     </div>

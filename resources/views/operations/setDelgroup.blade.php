@@ -23,7 +23,7 @@ foreach ($regDelgroups as $group)
         </tbody>
       </table>
     </div>
-    <button type="submit" class="btn btn-success" href>保存更改</a>
+    <button type="submit" class="btn btn-success">保存更改</button>
     <button name="" type="button" class="btn btn-danger m-l-xs" onclick="">重置</button>
   </form>
 </div>

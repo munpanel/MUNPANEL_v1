@@ -395,6 +395,9 @@ class HomeController extends Controller
      */
     public function regInfoModal($id)
     {
+        //WTF!!! WHY DON'T WE HAVE THIS VERIFICATION BEFORE???
+        if ($id != Reg::currentID() && !in_array(Reg::current()->type, ['ot', 'dais', 'interviewer']))
+            return 'error';
         $reg = Reg::findOrFail($id);
         $allRegs = Reg::where('user_id', $reg->user_id)->where('conference_id', $reg->conference_id)->get(['id', 'type']);
         $operations = array();

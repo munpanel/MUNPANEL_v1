@@ -462,7 +462,7 @@ class UserController extends Controller
         if ($reg->type != 'delegate' || $specific->status == 'fail')
             return "无法为此报名者执行该操作！";
         $specific->delegategroups()->sync($request->delgroup);
-        return redirect('/regManage?initialReg='.$request->id);
+        //return redirect('/regManage?initialReg='.$request->id);
     }
 
     /**
@@ -801,7 +801,7 @@ class UserController extends Controller
         $interviewadmin->attachPermissions(array($viewReg, $editReg, $approveReg, $editCom, $editNation, $editInterview, $assignRole));*/
 
         $interviewer = Role::find(1);
-                
+
         $editReg = Permission::find(15);
 
         $interviewer->attachPermission($editReg);

@@ -19,7 +19,9 @@ if (empty($active))
             <li id="handinsTab"><a href="#handins" data-toggle="tab" aria-expanded="false">作业</a></li>
             <li id="eventsTab"><a href="#events" data-toggle="tab" aria-expanded="false">事件</a></li>
             <li id="interviewTab"><a href="#interview" data-toggle="tab" aria-expanded="false">面试</a></li>
+            @if ($reg->type == 'delegate')
             <li id="seatsTab"><a href="#seats" data-toggle="tab" aria-expanded="false">席位</a></li>
+            @endif
             @if ($isOtOrDais)
             <li id="operationsTab"><a href="#operations" data-toggle="tab" aria-expanded="false">操作</a></li>
             <li id="notesTab"><a href="#notes" data-toggle="tab" aria-expanded="false">笔记</a></li>
@@ -176,15 +178,59 @@ if (empty($active))
             </div>
           </div>
         </section>
+        @if ($reg->type == 'delegate')
         <section class="tab-pane" id="seats">
           <div class="modal-body">
             <div class="row">
               <div class="col-sm-12 b-r">
-              Developing...
+              @if (isset($reg->delegate->nation_id))
+              <h3>当前席位</h3>
+              已{{$reg->delegate->seat_locked ? '锁定':'选择'}}席位：{{$reg->delegate->nation->name}}<br/>
+              @endif
+              @if ($reg->delegate->assignedNations->count() > 0)
+              <h3>可供选择席位列表</h3>
+              <form method="post" id="updateSeatForm">
+              <input type="hidden" name="id" value="{{$reg->id}}">
+              <table class="table table-bordered table-striped table-hover">
+              <tbody>
+              <tr>
+              <td style="width:30px">ID</td>
+              <td>席位名称</td>
+              @if ($isOtOrDais)
+              <td>席位组</td>
+              <td width="45px">保留</td>
+              @endif
+              @if (!$reg->delegate->seat_locked && Reg::currentID() == $reg->id)
+              <td width="45px">选择</td>
+              @endif
+              </tr>
+              @php
+              $nations = $reg->delegate->assignedNations;
+              $i = 0;
+              @endphp
+              @foreach($nations as $nation)
+              <tr>
+              <td><center>{{++$i}}</center></td>
+              <td>{{$nation->name}}</td>
+              @if ($isOtOrDais)
+              <td>{{isset($nation->nationgroups) ? $nation->scopeNationGroup(true, 2) : '无'}}</td>
+              <td><center><input type="checkbox" name="seats[]" value="{{$nation->id}}" checked></center></td>
+              @endif
+              @if (!$reg->delegate->seat_locked && Reg::currentID() == $reg->id)
+              <td><center><input type="radio" name="seatSelect" value="{{$nation->id}}" {{$reg->delegate->nation_id == $nation->id ? 'checked':''}}></center></td>
+              @endif
+              </tr>
+              @endforeach
+              </tbody>
+              </table>
+              <button type="submit" class="btn btn-success">保存更改</button>
+              </form>
+              @endif
               </div>
             </div>
           </div>
         </section>
+        @endif
         @if ($isOtOrDais)
         <section class="tab-pane" id="operations">
           <div class="modal-body">
@@ -252,10 +298,10 @@ function newPopup(url) {
   popupWindow = window.open(
     url,'popUpWindow','height=750,width=600,left=10,top=10,resizable=no,scrollbars=yes,toolbar=no,menubar=no,location=no,directories=no,status=yes')
 }
-$('#add_notes_form').submit(function(e){
+$('#updateSeatForm').submit(function(e){
     e.preventDefault();
-    $.post('{{mp_url('/newNote')}}', $('#add_notes_form').serialize())
-    $("#ajaxModal").load("{{mp_url('/ot/regInfo.modal/'.$reg->id.'?active=notes')}}");
+    $.post('{{mp_url('/ot/updateSeat')}}', $('#updateSeatForm').serialize())
+    $("#ajaxModal").load("{{mp_url('/ot/regInfo.modal/'.$reg->id.'?active=seats')}}");
 });
 </script>
 @if ($isOtOrDais)
@@ -274,6 +320,11 @@ $(document).ready(function(){
             });
         });
     });
+});
+$('#add_notes_form').submit(function(e){
+    e.preventDefault();
+    $.post('{{mp_url('/newNote')}}', $('#add_notes_form').serialize())
+    $("#ajaxModal").load("{{mp_url('/ot/regInfo.modal/'.$reg->id.'?active=notes')}}");
 });
 </script>
 @endif

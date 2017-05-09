@@ -739,7 +739,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
                 default:
                     $command = '';
                     if ($delegate->assignedNations->count() < $delegate->committee->maxAssignList || $delegate->committee->maxAssignList == -1)
-                        $command = '<button class="btn btn-xs btn-success addButton" del-id="' . $delegate->reg->id . '"type="button">移入席位</button>';
+                        $command = '<button class="btn btn-xs btn-success addButton" del-id="' . $delegate->reg->id . '"type="button">添加席位</button>';
                     $command .= '<a href="'.mp_url('/ot/regInfo.modal/'.$delegate->reg_id.'?active=seats').'" data-toggle="ajaxModal" class="btn btn-xs btn-white details-modal">编辑列表</a>';
                     $command .= '<a href="'.mp_url('/dais/seatSMS.modal/'.$delegate->reg_id).'" data-toggle="ajaxModal" class="btn btn-xs btn-info details-modal">短信通知</a>';
             }

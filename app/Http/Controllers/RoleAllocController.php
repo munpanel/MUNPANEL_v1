@@ -58,7 +58,7 @@ class RoleAllocController extends Controller
                 $query->where('interviewer_id', '=', $reg->id)->where('status', '=', 'passed');
             })->get();
         }
-        return array();
+        return collect();
     }
 
     public static function nations()
@@ -76,7 +76,7 @@ class RoleAllocController extends Controller
                 });
             })->get();
         }
-        return array();
+        return collect();
     }
 
     /**
@@ -125,6 +125,8 @@ class RoleAllocController extends Controller
     public static function addAssign($delegate, $nation, $partner = true)
     {
         //$delegate->nation_id = $nation->id;
+        if (!$delegate->canAssignSeats())
+            return false;
         $max = $nation->committee->maxAssignList;
         if ($delegate->assignedNations->count() >= $max && $max != -1)
             return false;
@@ -133,7 +135,7 @@ class RoleAllocController extends Controller
             $delegate->nation_id = $nation->id;
             $delegate->save();
         }
-        else
+        else if (!$delegate->assignedNations->contains($nation))
             $delegate->assignedNations()->attach($nation->id);
         if ($partner && isset($delegate->partner_user_id))
         {
@@ -161,10 +163,13 @@ class RoleAllocController extends Controller
         }
         foreach($delegates as $delegate)
         {
-            $delegate->nation_id = null;
-            $delegate->save();
+            if ($delegate->canAssignSeats())
+            {
+                $delegate->nation_id = null;
+                $delegate->save();
+                $nation->assignedDelegates()->detach($delegate->reg_id);
+            }
         }
-        $nation->assignedDelegates()->detach();
         return redirect(mp_url('/roleAlloc'));
     }
 
@@ -282,5 +287,43 @@ class RoleAllocController extends Controller
     {
         $del = Delegate::findOrFail($id);
         return view('delegateBizCard', ['delegate' => $del]);
+    }
+
+    public function updateSeat(Request $request)
+    {
+        $delegate = Delegate::findOrFail($request->id);
+        if ($delegate->reg_id == Reg::currentID())
+        {
+            if (!$delegate->seat_locked && isset($request->seatSelect) && $delegate->assignedNations->contains($request->seatSelect))
+            {
+                $delegate->nation_id = $request->seatSelect;
+                $delegate->save();
+            }
+        }
+        else if ($delegate->canAssignSeats() && (!$delegate->seat_locked))
+        {
+            $delegate->assignedNations()->sync($request->seats);
+            if (!$delegate->assignedNations->contains($delegate->nation_id))
+            {
+                $delegate->nation_id = null;
+                $delegate->save();
+                //TODO: SMS
+            }
+        }
+    }
+
+    public function sendSMS($id, $confirm = false)
+    {
+        $delegate = Delegate::findOrFail($id);
+        if (!$delegate->canAssignSeats())
+            return 'error';
+        if ($confirm)
+        {
+            $delegate->reg->user->sendSMS('感谢您报名'.Reg::currentConference()->name.'，我们现已更新了您的可选席位列表，烦请登陆 MUNPANEL 系统查看详情并选择自己的意向席位。');
+        }
+        else
+        {
+            return view('warningDialogModal', ['danger' => false, 'msg' => "系统将发送一条短信通知".$delegate->reg->name()."可选席位列表更新。确实要继续吗？", 'target' => mp_url("/dais/seatSMS.modal/".$id."/true"), 'ajax' => true]);
+        }
     }
 }

@@ -173,12 +173,14 @@ Route::group(['domain' => 'static.munpanel.com'], function () {
     Route::get('/dais/delete/nation/{id}/{confirm?}', 'RoleAllocController@deleteNation');
     Route::get('/dais/linkPartner/{id1}/{id2}', 'RoleAllocController@linkPartner');
     Route::get('/dais/linkPartner.modal', 'RoleAllocController@linkPartnerModal');
+    Route::get('/dais/seatSMS.modal/{id}/{confirm?}', 'RoleAllocController@sendSMS');
     Route::get('/delBizCard.modal/{id}', 'RoleAllocController@getDelegateBizcard');
     Route::get('/ot/regInfo.modal/{id}', 'HomeController@regInfoModal');
     Route::get('/ot/daisregInfo.modal/{id}', 'HomeController@daisregInfoModal');
     Route::get('/ot/oVerify/{id}', 'UserController@oVerify');
     Route::get('/ot/oNoVerify/{id}', 'UserController@oNoVerify');
     Route::post('/ot/setDelgroup', 'UserController@setDelgroup');
+    Route::post('/ot/updateSeat', 'RoleAllocController@updateSeat');
 
     Route::get('/interviews/{id?}', 'InterviewController@interviews');
     Route::any('/interview/{id}/{action}', 'InterviewController@interview');

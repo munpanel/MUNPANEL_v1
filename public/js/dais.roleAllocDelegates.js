@@ -14,7 +14,9 @@ $(document).ready(function() {
                 $(document).on('click', '.addButton', function(){
                     $.post("dais/addSeat/" + $(this).attr('del-id'), $('#seatform').serialize(), function(receivedData){
                         //if (receivedData == "success")
-                        location.reload();
+                        //location.reload();
+                        $('#delegate-table').dataTable().fnReloadAjax(undefined, undefined, true);
+                        $('#nation-table').dataTable().fnReloadAjax(undefined, undefined, true);
                         //useTheResponseData(receivedData);
                         });
                 });

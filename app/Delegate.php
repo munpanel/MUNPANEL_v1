@@ -172,7 +172,7 @@ class Delegate extends Model
             case 'interview_retest_failed':
             case 'interview_retest_unassigned':
             case 'interview_retest_undecided':
-                return true;
+                return Http\Controllers\RoleAllocController::delegates()->contains($this);
             default:
                 return false;
         }

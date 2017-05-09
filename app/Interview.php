@@ -51,8 +51,12 @@ class Interview extends Model
         $result = "";
         foreach($scoresOptions->criteria as $key => $value)
         {
-            $result.= $value->name . $scores->$key . "&nbsp;";
-            $score += $scores->$key * $value->weight;
+            if (isset($scores->key))
+            {
+                $result.= $value->name . $scores->$key . "&nbsp;";
+                $score += $scores->$key * $value->weight;
+            } else
+                $result .= $value->name . '未评&nbsp;';
         }
         $score *= $scoresOptions->total / 5;
         $result =  "<a style='cursor: pointer;' class='details-popover' data-html='1' data-placement='right' data-trigger='click' data-original-title='详细评分 - ".number_format($score, 1, '.', '')."' data-toggle='popover' data-content='".$result."'>";

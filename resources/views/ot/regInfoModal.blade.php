@@ -196,6 +196,22 @@ if (empty($active))
             <div class="row">
               <div class="col-sm-12 b-r">
                 <ul class="timeline timeline-small">
+                  <li>
+                    <div class="timeline-badge"><i class="fa fa-user fa-fw"></i></div>{{--TODO: 插入笔记者 gravatar 头像--}}
+                    <div class="timeline-panel">
+                      <form method="post" action="{{mp_url('/newNote')}}" id="add_notes_form">
+                        <div class="timeline-heading">
+                          <button class="btn btn-sm btn-success pull-right m-b-xs m-t-n-xs" type="submit">添加笔记</button>
+                          <h4 class="timeline-title">{{Reg::current()->name()}}&nbsp;<small class="text-muted">{!!Auth::user()->identityHTML()!!}</small></h4>
+                        </div>
+                        <div class="timeline-body">
+                          {{csrf_field()}}
+                          <input type="hidden" name="reg_id" value="{{$reg->id}}">
+                          <textarea name="text" id="add_notes" class="form-control" type="text" data-required="true" data-trigger="change" style="width:100%" placeholder="添加对{{$reg->user->name}}的笔记..." autocomplete="off"></textarea>
+                        </div>
+                      </form>
+                    </div>
+                  </li>
                   @foreach($notes as $note)
                   <li>
                     <div class="timeline-badge"><i class="fa fa-user fa-fw"></i></div>{{--TODO: 插入笔记者 gravatar 头像--}}
@@ -209,22 +225,6 @@ if (empty($active))
                     </div>
                   </li>
                   @endforeach
-                  <li>
-                    <div class="timeline-badge"><i class="fa fa-user fa-fw"></i></div>{{--TODO: 插入笔记者 gravatar 头像--}}
-                    <div class="timeline-panel">
-                      <form method="post" action="{{mp_url('/newNote')}}" id="add_notes_form">
-                        <div class="timeline-heading">
-                          <button class="btn btn-sm btn-success pull-right m-b-xs m-t-n-xs" type="submit">添加笔记</button>
-                          <h4 class="timeline-title">{{Reg::current()->name()}}&nbsp;<small class="text-muted">{!!Auth::user()->identityHTML()!!}</small></h4>
-                        </div>
-                        <div class="timeline-body">
-                          {{csrf_field()}}
-                          <input type="hidden" name="reg_id" value="{{$reg->id}}">
-                          <textarea name="text" id="add_notes" class="form-control" type="text" data-required="true" data-trigger="change" style="width:100%" placeholder="添加对{{$reg->user->name}}的笔记..." autocomplete="off">
-                        </div>
-                      </form>
-                    </div>
-                  </li>
                 </ul>
               </div>
             </div>

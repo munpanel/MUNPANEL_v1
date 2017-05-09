@@ -650,22 +650,26 @@ class DatatablesController extends Controller //To-Do: Permission Check
                               <button class="btn btn-xs btn-warning disabled" type="button">编辑</button>
                               <button class="btn btn-xs btn-danger disabled" type="button">删除</button>'
             ]);
-        $mycommittee = Reg::current()->dais->committee;
-        $nations = Nation::where('committee_id', $mycommittee->id)->get();
+        //$mycommittee = Reg::current()->dais->committee;
+        //$nations = Nation::where('committee_id', $mycommittee->id)->get();
+        $nations = RoleAllocController::nations();
         $autosel = false;
         foreach($nations as $nation)
         {
             $select = '<input name="nation" type="radio" value="' . $nation->id . '"';
             $delnames = '无';
             $command = '<a href="' . mp_url('/dais/freeNation/' . $nation->id) . '" class="btn btn-xs btn-white';
-            if (!$nation->delegates->isEmpty())
+            if (!$nation->delegates->where('nation_locked', '=', true)->isEmpty())
             {
                 $select .= ' disabled="disabled"';
                 $delnames = $nation->scopeDelegate();
             }
             else
             {
-                $command .= ' disabled';
+                if ($nation->assignedDelegates->isEmpty())
+                    $command .= ' disabled';
+                else
+                    $delnames = $nation->scopeAssignedDelegate();
                 if (!$autosel)
                 {
                     $select .= ' checked="true"';
@@ -673,7 +677,11 @@ class DatatablesController extends Controller //To-Do: Permission Check
                 }
             }
             $select .= '>';
-            $command .= '">移出代表</a>
+            if ($nation->committee->maxAssignList == 1)
+                $buttonText = '移出代表';
+            else
+                $buttonText = '清空队列';
+            $command .= '">'.$buttonText.'</a>
                         <a href="dais/nationDetails.modal/'. $nation->id .'" class="btn btn-xs btn-warning details-modal">编辑</a>
                         <a href="dais/delete/nation/'. $nation->id .'" class="btn btn-xs btn-danger details-modal">删除</a>';
                         // To-Do: make all those HTTP requests of the buttons JS-based
@@ -704,27 +712,44 @@ class DatatablesController extends Controller //To-Do: Permission Check
                 'command' => '<button class="btn btn-xs btn-success addButton" del-id="' . $delegate->user->id . '"type="button">移入席位</button>'
             ]);
         $mycommittee = Reg::current()->dais->committee;
-        $delegates = Delegate::where(function($query) {
+        /*$delegates = Delegate::where(function($query) {
             $query->where('committee_id', Reg::current()->dais->committee->id)
             ->where('status', 'paid');
         })->orWhere(function($query) {
             $query->where('committee_id', Reg::current()->dais->committee->id)
             ->where('status', 'oVerified');
-        })->get(['reg_id', 'school_id', 'nation_id', 'status']);
+        })->get(['reg_id', 'school_id', 'nation_id', 'committee_id', 'status']);*/
+        $delegates = RoleAllocController::delegates();
         foreach($delegates as $delegate)
         {
+            if (!$delegate->canAssignSeats())
+                continue;
             $name = $delegate->reg->user->name;
             $surfix = $delegate->delegategroups->count();
             if ($surfix != 0)
-                $name .= ' (' . $surfix . ' 个代表组)';
-            if ($delegate->status != 'paid')
-                $name .= '（未缴费）';
+                $name .= '('.$delegate->scopeDelegateGroup(true, 0, true).')'; //$name .= ' (' . $surfix . ' 个代表组)';
+            $name .= '（'.$delegate->statusText().'）';
+            switch ($delegate->committee->maxAssignList)
+            {
+                case 0:
+                    $command = '该委员会未开启席位分配';
+                    break;
+                case 1:
+                    $command = isset($delegate->nation) ? '<a href="'.mp_url('/dais/removeSeat/'.$delegate->reg->id).'" class="btn btn-xs btn-white" type="button">移出席位</a>'
+                                                        : '<button class="btn btn-xs btn-success addButton" del-id="' . $delegate->reg->id . '"type="button">移入席位</button>';
+                    break;
+                default:
+                    $command = '';
+                    if ($delegate->assignedNations->count() < $delegate->committee->maxAssignList || $delegate->committee->maxAssignList == -1)
+                        $command = '<button class="btn btn-xs btn-success addButton" del-id="' . $delegate->reg->id . '"type="button">移入席位</button>';
+                    $command .= '<a href="'.mp_url('/ot/regInfo.modal/'.$reg->id.'?active=seat').'" data-toggle="ajaxModal" class="btn btn-xs btn-white details-modal">编辑列表</a>';
+                    $command .= '<a href="'.mp_url('/dais/seatSMS.modal/'.$reg->id).'" data-toggle="ajaxModal" class="btn btn-xs btn-info details-modal">短信通知</a>';
+            }
             $result->push([
                 'uid' => $delegate->reg_id,
                 'name' => $name,
-                'nation' => isset($delegate->nation) ? $delegate->nation->name : '待分配',
-                'command' => isset($delegate->nation) ? '<a href="'.mp_url('/dais/removeSeat/'.$delegate->reg->id).'" class="btn btn-xs btn-white" type="button">移出席位</a>'
-                                                      : '<button class="btn btn-xs btn-success addButton" del-id="' . $delegate->reg->id . '"type="button">移入席位</button>'
+                'nation' => $delegate->nationName(true),//isset($delegate->nation) ? $delegate->nation->name : '待分配',
+                'command' => $command
             ]);
         }
         return Datatables::of($result)->make(true);

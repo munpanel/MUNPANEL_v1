@@ -906,13 +906,18 @@ class HomeController extends Controller
             else
                 return redirect(mp_url('/roleList'));
         }
+        /*
         else if (Reg::current()->type == 'ot')
             return redirect(mp_url('/nationManage'));
         else if (Reg::current()->type != 'dais')
             return view('error', ['msg' => '您不是该会议学术团队成员，无权进行席位分配！']);
         if (Reg::current()->specific()->committee->is_allocated)
             return redirect(mp_url('/roleList'));
+            */
         $mycommittee = Reg::current()->dais->committee;
+
+        if (!in_array(Reg::current()->type, ['ot', 'dais', 'interviewer']))
+            return view('error', ['msg' => '您没有权限分配席位！']);
         return view('dais.roleAlloc', [
             'committee' => $mycommittee,
             'mustAlloc' => $mycommittee->delegates->where('status', 'paid')->where('nation_id', null)->count(),

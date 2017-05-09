@@ -32,10 +32,14 @@ class Delegate extends Model
         return $this->belongsTo('App\Nation');
     }
 
+    public function assignedNations() {
+        return $this->belongstoMany('App\Nation', 'delegate_nation', 'delegate_id', 'nation_id');
+    }
+
     public function user() {
         return $this->reg->user;
     }
-    
+
     public function reg() {
         return $this->belongsTo('App\Reg');
     }
@@ -157,6 +161,23 @@ class Delegate extends Model
         }
     }
 
+    public function canAssignSeats() {
+        switch($this->realStatus())
+        {
+            case 'oVerified':
+            case 'interview_passed':
+            case 'interview_retest_assigned':
+            case 'interview_retest_arranged':
+            case 'interview_retest_passed':
+            case 'interview_retest_failed':
+            case 'interview_retest_unassigned':
+            case 'interview_retest_undecided':
+                return true;
+            default:
+                return false;
+        }
+    }
+
     public function assignments() {
         $result = new Collection;
         if (isset($this->nation))
@@ -192,8 +213,8 @@ class Delegate extends Model
         }
         return $result->unique()->sortBy('id');
     }
-    
-    public function assignPartnerByName() 
+
+    public function assignPartnerByName()
     {
         // TODO: 如果委员会为单带，return
         // TODO: 重写所有的 partnername
@@ -206,7 +227,7 @@ class Delegate extends Model
             // TODO: 重写以下 1 行
             $partners = User::where('name', $partner_name);
             $count = $partners->count();
-            if ($count == 0) 
+            if ($count == 0)
             {
                 $notes = "{'reason':'未找到搭档$partner_name" . "的报名记录'}";
                 $this->reg->addEvent('partner_auto_fail', $notes);
@@ -227,14 +248,14 @@ class Delegate extends Model
             if ($partner->id == $this->user->id)                                 // 排除自我配对
             {
                 $notes = "{'reason':'$myname" . "申报的搭档与报名者本人重合'}";
-                $this->reg->addEvent('partner_auto_fail', $notes); 
+                $this->reg->addEvent('partner_auto_fail', $notes);
                 return $myname  ."&#09;".$partner->id . "&#09;自我配对";
             }
             if ($partner->type != 'delegate') //continue;                        // 排除非代表搭档
             {
                 $notes = "{'reason':'$partner_name" . "并未以代表身份报名'}";
                 $this->reg->addEvent('partner_auto_fail', $notes);
-                return $myname  ."&#09;".$partner->id . "&#09;搭档姓名$partner_name&#09;不是代表";                
+                return $myname  ."&#09;".$partner->id . "&#09;搭档姓名$partner_name&#09;不是代表";
             }
             $delpartner = $partner->delegate;
             if ($delpartner->status != 'paid' && $delpartner->status != 'oVerified')   // 排除未通过审核搭档
@@ -255,7 +276,7 @@ class Delegate extends Model
             {
                 $notes = "{'reason':'$partner_name" . "申报的搭档并非$myname" . "本人'}";
                 $this->reg->addEvent('partner_auto_fail', $notes);
-                return $myname  ."&#09;".$partner->id . "&#09;搭档姓名$partner_name&#09;多角搭档";                
+                return $myname  ."&#09;".$partner->id . "&#09;搭档姓名$partner_name&#09;多角搭档";
             }
             $this->partner_user_id = $partner->id;
             $this->save();
@@ -266,7 +287,7 @@ class Delegate extends Model
         }
 //        return $this->user->name . "&#09;未填写搭档姓名";
     }
-    
+
     public function documents() {
         $result = new Collection;
         if (isset($this->nation))
@@ -303,28 +324,91 @@ class Delegate extends Model
         return $result->unique()->sortBy('id');
     }
 
-    public function scopeDelegateGroup($useShortName = false, $maxDisplay = 0)
+    public function scopeDelegateGroup($useShortName = false, $maxDisplay = 0, $html = false)
     {
         $prefix = '';
         $scope = '';
         $i = 0;
         $n = $this->delegategroups->count();
         if ($n == 0) return '无';
+        $delegategroups = $this->delegategroups;
+        $htmlContent = '';
+        $addScope = true;
         if (isset($this->delegategroups))
         {
-            $delegategroups = $this->delegategroups;
             foreach($delegategroups as $delegategroup)
             {
                 if ($useShortName)
-                    $scope .= $prefix . $delegategroup->name;
+                    $addStr = $prefix . $delegategroup->name;
                 else
-                    $scope .= $prefix . $delegategroup->display_name;
-                if ($maxDisplay > 0 && ++$i >= $maxDisplay) break;
+                    $addStr = $prefix . $delegategroup->display_name;
+                if ($addScope)
+                    $scope .= $addStr;
+                if ($html)
+                    $htmlContent .= $addStr;
+                if ($maxDisplay > 0 && ++$i >= $maxDisplay)
+                {
+                    if ($html)
+                        $addScope = false;
+                    else
+                        break;
+                }
                 $prefix = ', ';
             }
         }
         if ($maxDisplay > 0 && $n > $maxDisplay) $scope .= "等 ".$n." 个";
+        else if ($maxDisplay == 0) $scope = $n.'个代表组';
+        if ($html)
+            return  "<a style='cursor: pointer;' class='details-popover' data-html='1' data-placement='right' data-trigger='click' data-original-title='代表组 - ".$this->reg->name()."' data-toggle='popover' data-content='".$htmlContent."'>".$scope."</a>";
         return $scope;
+    }
+
+    public function nationName($html = false)
+    {
+        $explain = false;
+        $nations = $this->assignedNations;
+        if (is_object($this->nation))
+        {
+            if ($this->nation_locked)
+            {
+                if ($html)
+                    $result = "<i class='fa fa-unlock-alt' aria-hidden='true'></i>";
+                else
+                    $result = '(未锁定)';
+            }
+            else
+                $result = '';
+            $result .= $this->nation->name;
+            if ($nations->count() > 1)
+                $explain = true;
+        }
+        else
+        {
+            if ($nations->count() > 0)
+            {
+                $result = '待选';
+                $explain = true;
+            }
+            else
+                $result = '待分配';
+        }
+        if ($explain)
+        {
+            $explain = '(从'.$nations->count().'个席位中选择)';
+            if ($html)
+            {
+                $htmlContent = '';
+                $prefix = '';
+                foreach ($nations as $nation)
+                {
+                    $htmlContent .= $prefix . $nation->name;
+                    $prefix = '，';
+                }
+                $explain =   "<a style='cursor: pointer;' class='details-popover' data-html='1' data-placement='right' data-trigger='click' data-original-title='可选席位 - ".$this->reg->name()."' data-toggle='popover' data-content='".$htmlContent."'>".$explain."</a>";
+            }
+            $result .= $explain;
+        }
+        return $result;
     }
 
     public function hasRegAssignment()

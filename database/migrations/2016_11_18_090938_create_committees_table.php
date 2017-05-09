@@ -36,6 +36,7 @@ class CreateCommitteesTable extends Migration
             $table->integer('father_committee_id')->unsigned()->nullable();
             $table->integer('delegategroup_id')->unsigned()->nullable();
             $table->integer('option_limit')->unsigned()->default(99);
+            $table->integer('maxAssignList')->default(1);
 			//时间节点默认取会议起止日
 			$table->date('timeframe_start');
 			$table->date('timeframe_end');

@@ -30,6 +30,7 @@ class CreateDelegateInfoTable extends Migration
             $table->integer('committee_id')->unsigned()->nullable();
             $table->integer('nation_id')->nullable()->unsigned();
             $table->integer('partner_reg_id')->nullable()->unsigned();
+            $table->boolean('nation_locked')->default(false);
             $table->timestamps();
             $table->primary('reg_id');
             $table->foreign('reg_id')->references('id')->on('regs')->onDelete('cascade');

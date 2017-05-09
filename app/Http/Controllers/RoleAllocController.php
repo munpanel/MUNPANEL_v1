@@ -15,6 +15,7 @@ use App\Nation;
 use App\School;
 use App\Delegate;
 use App\User;
+use App\Reg;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -44,6 +45,40 @@ class RoleAllocController extends Controller
         }
     }
 
+    public static function delegates()
+    {
+        $reg = Reg::current();
+        if ($reg->type == 'ot' && $reg->can('assign_seats'))
+            return Delegate::all();
+        if ($reg->type == 'dais')
+            return $reg->dais->committee->delegates;
+        if ($reg->type == 'interviewer')
+        {
+            return Delegate::whereHas('interviews', function($query) {
+                $query->where('interviewer_id', '=', $reg->id)->where('status', '=', 'passed');
+            })->get();
+        }
+        return array();
+    }
+
+    public static function nations()
+    {
+        $reg = Reg::current();
+        if ($reg->type == 'ot' && $reg->can('assign_seats'))
+            return Nation::all();
+        if ($reg->type == 'dais')
+            return $reg->dais->committee->nations;
+        if ($reg->type == 'interviewer')
+        {
+            return Nation::whereHas('committees', function($query) {
+                $query->whereHaswhereHas('interviews', function($query) {
+                    $query->where('interviewer_id', '=', $reg->id)->where('status', '=', 'passed');
+                });
+            })->get();
+        }
+        return array();
+    }
+
     /**
      * Remove a delegate from its original seat
      *
@@ -66,7 +101,7 @@ class RoleAllocController extends Controller
     }
 
     /**
-     * Assign a delegate to a new seat
+     * Handle the HTTP request to ssign a delegate to a new seat
      *
      * @param Request $request
      * @param int $id the id of the delegate
@@ -74,19 +109,38 @@ class RoleAllocController extends Controller
      */
     public function addDelegate(Request $request, $id)
     {
-        $user = User::findOrFail($id);
-        $nation = Nation::findOrFail($request->nation);
-        $delegate = $user->delegate;
-        $delegate->nation_id = $nation->id;
-        $delegate->save();
-        if (isset($delegate->partner_user_id))
-        {
-            $partner = $delegate->partner->delegate;
-            $partner->nation_id = $nation->id;
-            $partner->save();
-        }
-        return 'success';
+        if (RoleAllocController::addAssign(Delegate::findOrFail($id), Nation::findOrFail($request->nation)))
+            return 'success';
+        return 'error';
         //return redirect(mp_url('/roleAlloc'));
+    }
+
+    /**
+     * Assign a delegate to a new seat
+     *
+     * @param Request $request
+     * @param int $id the id of the delegate
+     * @return \Illuminate\Http\Response
+     */
+    public static function addAssign($delegate, $nation, $partner = true)
+    {
+        //$delegate->nation_id = $nation->id;
+        $max = $nation->committee->maxAssignList;
+        if ($delegate->assignedNations->count() >= $max && $max != -1)
+            return false;
+        if ($max == 1)
+        {
+            $delegate->nation_id = $nation->id;
+            $delegate->save();
+        }
+        else
+            $delegate->assignedNations()->attach($nation->id);
+        if ($partner && isset($delegate->partner_user_id))
+        {
+            $partner = $delegate->partner;
+            return RoleAllocController::addAssign($partner, $nation, false);
+        }
+        return true;
     }
 
     /**
@@ -102,9 +156,15 @@ class RoleAllocController extends Controller
         $delegates = $nation->delegates;
         foreach($delegates as $delegate)
         {
+            if ($delegate->nation_locked)
+                return 'LOCKED';
+        }
+        foreach($delegates as $delegate)
+        {
             $delegate->nation_id = null;
             $delegate->save();
         }
+        $nation->assignedDelegates()->detach();
         return redirect(mp_url('/roleAlloc'));
     }
 
@@ -152,7 +212,7 @@ class RoleAllocController extends Controller
 
     /**
      * Delete a nation from database
-     * 
+     *
      * @param Request $request
      * @param int $id the id of the nation to be removed
      * @param boolean $confirm whether to remove the nation or to show a prompt
@@ -217,6 +277,7 @@ class RoleAllocController extends Controller
      *
      * @param int $id the id of the delegate
      * @return \Illuminate\Http\Response
+     */
     public function getDelegateBizcard($id)
     {
         $del = Delegate::findOrFail($id);

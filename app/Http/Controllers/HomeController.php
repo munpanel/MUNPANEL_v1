@@ -927,7 +927,7 @@ class HomeController extends Controller
             'emptyNations' => $mycommittee->emptyNations()->count(),
             'verified' => Delegate::where(function($query) {$query->where('committee_id', Reg::current()->dais->committee->id)->where('status', 'paid');})->orWhere(function($query) {$query->where('committee_id', Reg::current()->dais->committee->id)->where('status', 'oVerified');})->count(),
             'isDouble' => true
-        ]);
+        ]); // we don't use those variables anymore
     }
 
     /**

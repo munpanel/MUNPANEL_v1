@@ -659,7 +659,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
             $select = '<input name="nation" type="radio" value="' . $nation->id . '"';
             $delnames = '无';
             $command = '<a href="' . mp_url('/dais/freeNation/' . $nation->id) . '" class="btn btn-xs btn-white';
-            if (!$nation->delegates->where('nation_locked', '=', true)->isEmpty())
+            if ($nation->locked)
             {
                 $select .= ' disabled="disabled"';
                 $delnames = $nation->scopeDelegate();
@@ -677,7 +677,9 @@ class DatatablesController extends Controller //To-Do: Permission Check
                 }
             }
             $select .= '>';
-            if ($nation->committee->maxAssignList == 1)
+            if ($nation->locked)
+                $buttonText = '已经锁定';
+            else if ($nation->committee->maxAssignList == 1)
                 $buttonText = '移出代表';
             else
                 $buttonText = '清空队列';
@@ -685,6 +687,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
                         <a href="dais/nationDetails.modal/'. $nation->id .'" class="btn btn-xs btn-warning details-modal" data-toggle="ajaxModal">编辑</a>
                         <a href="dais/delete/nation/'. $nation->id .'" class="btn btn-xs btn-danger details-modal" data-toggle="ajaxModal">删除</a>';
                         // To-Do: make all those HTTP requests of the buttons JS-based
+            $delnames = ($nation->locked?"<i class='fa fa-lock' aria-hidden='true'></i>":"<i class='fa fa-unlock' aria-hidden='true'></i>").$delnames;
             $result->push([
                 'select' => $select,
                 'name' => $nation->name,

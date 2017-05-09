@@ -29,6 +29,7 @@ class CreateNationsTable extends Migration
 			$table->integer('conpetence')->unsigned()->default(1);
 			$table->boolean('veto_power')->default(false);
 			$table->boolean('attendance')->nullable();
+			$table->boolean('locked')->default(false);
             $table->timestamps();
             $table->unique(['committee_id', 'name']);
             $table->foreign('committee_id')->references('id')->on('committees')->onDelete('cascade');

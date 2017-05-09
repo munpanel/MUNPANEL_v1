@@ -372,7 +372,7 @@ class Delegate extends Model
             if (!$this->nation_locked)
             {
                 if ($html)
-                    $result = "<i class='fa fa-unlock-alt' aria-hidden='true'></i>";
+                    $result = "<i class='fa fa-unlock' aria-hidden='true'></i>";
                 else
                     $result = '(未锁定)';
             }

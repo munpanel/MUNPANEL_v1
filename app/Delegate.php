@@ -369,7 +369,7 @@ class Delegate extends Model
         $nations = $this->assignedNations;
         if (is_object($this->nation))
         {
-            if ($this->nation_locked)
+            if (!$this->nation_locked)
             {
                 if ($html)
                     $result = "<i class='fa fa-unlock-alt' aria-hidden='true'></i>";

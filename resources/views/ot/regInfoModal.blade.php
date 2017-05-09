@@ -19,6 +19,7 @@ if (empty($active))
             <li id="handinsTab"><a href="#handins" data-toggle="tab" aria-expanded="false">作业</a></li>
             <li id="eventsTab"><a href="#events" data-toggle="tab" aria-expanded="false">事件</a></li>
             <li id="interviewTab"><a href="#interview" data-toggle="tab" aria-expanded="false">面试</a></li>
+            <li id="seatsTab"><a href="#seats" data-toggle="tab" aria-expanded="false">席位</a></li>
             @if ($isOtOrDais)
             <li id="operationsTab"><a href="#operations" data-toggle="tab" aria-expanded="false">操作</a></li>
             <li id="notesTab"><a href="#notes" data-toggle="tab" aria-expanded="false">笔记</a></li>
@@ -171,6 +172,15 @@ if (empty($active))
               </table>
               @endforeach
               @endif
+              </div>
+            </div>
+          </div>
+        </section>
+        <section class="tab-pane" id="seats">
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-sm-12 b-r">
+              Developing...
               </div>
             </div>
           </div>

@@ -678,13 +678,17 @@ class DatatablesController extends Controller //To-Do: Permission Check
                     $autosel = true;
                 }
             }
-            $select .= '>';
             if ($nation->locked)
+            {
+                $select .= ' disabled="disabled"';
+                $command .= ' disabled';
                 $buttonText = '已经锁定';
+            }
             else if ($nation->committee->maxAssignList == 1)
                 $buttonText = '移出代表';
             else
                 $buttonText = '清空分配';
+            $select .= '>';
             $command .= '">'.$buttonText.'</a>
                         <a href="dais/nationDetails.modal/'. $nation->id .'" class="btn btn-xs btn-warning details-modal" data-toggle="ajaxModal">编辑</a>
                         <a href="dais/delete/nation/'. $nation->id .'" class="btn btn-xs btn-danger details-modal" data-toggle="ajaxModal">删除</a>';
@@ -734,21 +738,25 @@ class DatatablesController extends Controller //To-Do: Permission Check
                 continue;
             $name = $delegate->reg->user->name;
             $name .= '（'.($delegate->delegategroups->count() > 0 ? $delegate->scopeDelegateGroup(true, 0, true) . '，' : '').$delegate->statusText().'）';
-            switch ($delegate->committee->maxAssignList)
-            {
-                case 0:
-                    $command = '该委员会未开启席位分配';
-                    break;
-                case 1:
-                    $command = isset($delegate->nation) ? '<a href="'.mp_url('/dais/removeSeat/'.$delegate->reg->id).'" class="btn btn-xs btn-white" type="button">移出席位</a>'
-                                                        : '<button class="btn btn-xs btn-success addButton" del-id="' . $delegate->reg->id . '"type="button">移入席位</button>';
-                    break;
-                default:
-                    $command = '';
-                    if ($delegate->assignedNations->count() < $delegate->committee->maxAssignList || $delegate->committee->maxAssignList == -1)
-                        $command = '<button class="btn btn-xs btn-success addButton" del-id="' . $delegate->reg->id . '"type="button">添加席位</button>';
-                    $command .= '<a href="'.mp_url('/ot/regInfo.modal/'.$delegate->reg_id.'?active=seats').'" data-toggle="ajaxModal" class="btn btn-xs btn-white details-modal">编辑列表</a>';
-                    $command .= '<a href="'.mp_url('/dais/seatSMS.modal/'.$delegate->reg_id).'" data-toggle="ajaxModal" class="btn btn-xs btn-info details-modal">短信通知</a>';
+            if ($delegate->seat_locked)
+                $command = '已锁定';
+            else {
+                switch ($delegate->committee->maxAssignList)
+                {
+                    case 0:
+                        $command = '该委员会未开启席位分配';
+                        break;
+                    case 1:
+                        $command = isset($delegate->nation) ? '<a href="'.mp_url('/dais/removeSeat/'.$delegate->reg->id).'" class="btn btn-xs btn-white" type="button">移出席位</a>'
+                                                            : '<button class="btn btn-xs btn-success addButton" del-id="' . $delegate->reg->id . '"type="button">移入席位</button>';
+                        break;
+                    default:
+                        $command = '';
+                        if ($delegate->assignedNations->count() < $delegate->committee->maxAssignList || $delegate->committee->maxAssignList == -1)
+                            $command = '<button class="btn btn-xs btn-success addButton" del-id="' . $delegate->reg->id . '"type="button">添加席位</button>';
+                        $command .= '<a href="'.mp_url('/ot/regInfo.modal/'.$delegate->reg_id.'?active=seats').'" data-toggle="ajaxModal" class="btn btn-xs btn-white details-modal">编辑列表</a>';
+                        $command .= '<a href="'.mp_url('/dais/seatSMS.modal/'.$delegate->reg_id).'" data-toggle="ajaxModal" class="btn btn-xs btn-info details-modal">短信通知</a>';
+                }
             }
             $result->push([
                 'uid' => '<a href="'.mp_url('ot/regInfo.modal/'. $delegate->reg_id) .'" data-toggle="ajaxModal">'.$delegate->reg_id.'</a>',

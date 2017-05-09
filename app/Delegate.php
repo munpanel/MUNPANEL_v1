@@ -18,7 +18,7 @@ class Delegate extends Model
 {
     protected $table='delegate_info';
     protected $primaryKey = 'reg_id';
-    protected $fillable = ['reg_id','conference_id','school_id','status','committee_id','partner_user_id'];
+    protected $fillable = ['reg_id','conference_id','school_id','status','committee_id','partner_user_id', 'seat_locked'];
 
     public function conference() {
         return $this->belongsTo('App\Conference');
@@ -69,7 +69,7 @@ class Delegate extends Model
     }
 
     public function partner() {
-        return $this->belongsTo('App\Reg', 'partner_reg_id');
+        return $this->belongsTo('App\Delegate', 'partner_reg_id');
     }
 
     public function regText() {
@@ -369,18 +369,18 @@ class Delegate extends Model
         $nations = $this->assignedNations;
         if (is_object($this->nation))
         {
-            if (!$this->nation_locked)
+            if (!$this->seat_locked)
             {
                 if ($html)
                     $result = "<i class='fa fa-unlock' aria-hidden='true'></i>";
                 else
                     $result = '(未锁定)';
+                if ($nations->count() > 1)
+                    $explain = true;
             }
             else
                 $result = '';
             $result .= $this->nation->name;
-            if ($nations->count() > 1)
-                $explain = true;
         }
         else
         {

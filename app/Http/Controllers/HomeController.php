@@ -403,6 +403,8 @@ class HomeController extends Controller
         $operations = array();
         if ($reg->type == 'delegate')
         {
+            if ($reg->delegate->canAssignSeats())
+                $operations[] = 'lockSeat';
             if (Reg::current()->can('sudo'))
                 $operations[] = 'sudo';
             $status = $reg->delegate->realStatus();

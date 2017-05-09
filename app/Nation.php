@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\Model;
 class Nation extends Model
 {
     protected $table='nations';
-    protected $fillable = ['committee_id', 'name', 'conpetence', 'veto_power', 'attendance'];
+    protected $fillable = ['committee_id', 'name', 'conpetence', 'veto_power', 'attendance', 'locked'];
 
     public function committee()
     {
@@ -104,5 +104,45 @@ class Nation extends Model
         }
         if ($maxDisplay > 0 && $n > $maxDisplay) $scope .= "等 ".$n." 个";
         return $scope;
+    }
+
+    public function setLock($lock = true)
+    {
+        if ($lock)//Set lock of delegates first before calling this function. This design helps avoiding bugs.
+        {
+            $this->locked = true;
+            $this->save();
+            $delegates = $this->assignedDelegates;
+            foreach ($delegates as $delegate)
+            {
+                if (!$delegate->seat_locked)
+                {
+                    $this->assignedDelegates()->detach($delegate);
+                    $sms = '感谢您报名'.Reg::currentConference()->name.'，由于其他代表的席位锁定，系统自动更新了您的可选席位列表，敬请留意。';
+                    if ($delegate->nation_id == $this->id)
+                    {
+                        $delegate->nation_id = null;
+                        $delegate->save();
+                        $sms = '感谢您参加'.Reg::currentConference()->name.'，很遗憾您之前选择的席位已被他人锁定。请您重新登录系统选择席位，感谢您的理解与支持。';
+                    }
+                    $delegate->reg->user->sendSMS($sms);
+                }
+            }
+        }
+        else
+        {
+            $this->locked = false;
+            $this->save();
+            $delegates = $this->assignedDelegates;
+            foreach ($delegates as $delegate)
+            {
+                if ($delegate->seat_locked)
+                {
+                    $delegate->seat_locked = false;
+                    $delegate->save();
+                    $delegate->reg->user->sendSMS('感谢您报名'.Reg::currentConference()->name.'，您的席位锁定状态已被取消。您现可登录系统修改您的席位选择，感谢。');
+                }
+            }
+        }
     }
 }

@@ -181,6 +181,7 @@ Route::group(['domain' => 'static.munpanel.com'], function () {
     Route::get('/ot/oNoVerify/{id}', 'UserController@oNoVerify');
     Route::post('/ot/setDelgroup', 'UserController@setDelgroup');
     Route::post('/ot/updateSeat', 'RoleAllocController@updateSeat');
+    Route::get('/ot/seatLock/{id}', 'RoleAllocController@lockSeat');
 
     Route::get('/interviews/{id?}', 'InterviewController@interviews');
     Route::any('/interview/{id}/{action}', 'InterviewController@interview');

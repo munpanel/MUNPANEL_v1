@@ -168,7 +168,7 @@ class RoleAllocController extends Controller
         $delegates = $nation->delegates;
         foreach($delegates as $delegate)
         {
-            if ($delegate->nation_locked)
+            if ($delegate->seat_locked)
                 return 'LOCKED';
         }
         foreach($delegates as $delegate)
@@ -308,18 +308,44 @@ class RoleAllocController extends Controller
             {
                 $delegate->nation_id = $request->seatSelect;
                 $delegate->save();
+                if (is_object($delegate->partner))
+                {
+                    $delegate->partner->nation_id = $request->seatSelect;
+                    $delegate->partner->save();
+                }
             }
         }
         else if ($delegate->canAssignSeats() && (!$delegate->seat_locked))
         {
             $delegate->assignedNations()->sync($request->seats);
+            if (is_object($delegate->partner))
+                $delegate->partner->assignedNations()->sync($request->seats);
             if (!$delegate->assignedNations->contains($delegate->nation_id))
             {
                 $delegate->nation_id = null;
                 $delegate->save();
-                //TODO: SMS
+                if (is_object($delegate->partner))
+                {
+                    $delegate->partner->nation_id = null;
+                    $delegate->partner->save();
+                }
             }
         }
+    }
+
+    public function lockSeat($id)
+    {
+        $delegate = Delegate::findOrFail($id);
+        if (!$delegate->canAssignSeats())
+            return 'error';
+        $delegate->seat_locked = true;
+        $delegate->save();
+        if (is_object($delegate->partner))
+        {
+            $delegate->partner->seat_locked = true;
+            $delegate->partner->save();
+        }
+        $delegate->nation->setLock();
     }
 
     public function sendSMS($id, $confirm = false)
@@ -330,6 +356,8 @@ class RoleAllocController extends Controller
         if ($confirm)
         {
             $delegate->reg->user->sendSMS('感谢您报名'.Reg::currentConference()->name.'，我们现已更新了您的可选席位列表，烦请登陆 MUNPANEL 系统查看详情并选择自己的意向席位。');
+            if (is_object($delegate->partner))
+                $delegate->partner->reg->user->sendSMS('感谢您报名'.Reg::currentConference()->name.'，我们现已更新了您的可选席位列表，烦请登陆 MUNPANEL 系统查看详情并选择自己的意向席位。');
         }
         else
         {

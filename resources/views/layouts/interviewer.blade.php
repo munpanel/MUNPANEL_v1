@@ -10,6 +10,12 @@
                   <span>Interviews</span>
                 </a>
               </li>
+              <li class="@yield('roleAlloc_active')">
+                <a href="{{ mp_url('/roleAlloc') }}">
+                  <i class="fa fa-wheelchair"></i>
+                  <span>Role Allocation</span>
+                </a>
+              </li>
               @foreach(Auth::user()->regs->where('conference_id', Reg::currentConferenceID())->where('enabled', true) as $reg)
               @if ($reg->type == 'ot' || $reg->type == 'dais')
               <li>

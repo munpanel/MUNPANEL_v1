@@ -640,6 +640,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
     public function roleAllocNations()
     {
         $result = new Collection;
+        /*
         if (Reg::current()->type != 'dais')
             $result->push([
                 'select' => '*',
@@ -650,6 +651,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
                               <button class="btn btn-xs btn-warning disabled" type="button">编辑</button>
                               <button class="btn btn-xs btn-danger disabled" type="button">删除</button>'
             ]);
+            */
         //$mycommittee = Reg::current()->dais->committee;
         //$nations = Nation::where('committee_id', $mycommittee->id)->get();
         $nations = RoleAllocController::nations();
@@ -682,7 +684,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
             else if ($nation->committee->maxAssignList == 1)
                 $buttonText = '移出代表';
             else
-                $buttonText = '清空队列';
+                $buttonText = '清空分配';
             $command .= '">'.$buttonText.'</a>
                         <a href="dais/nationDetails.modal/'. $nation->id .'" class="btn btn-xs btn-warning details-modal" data-toggle="ajaxModal">编辑</a>
                         <a href="dais/delete/nation/'. $nation->id .'" class="btn btn-xs btn-danger details-modal" data-toggle="ajaxModal">删除</a>';
@@ -708,6 +710,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
     public function roleAllocDelegates()
     {
         $result = new Collection;
+        /*
         if (Reg::current()->type != 'dais')
             $result->push([
                 'name' => '错误',
@@ -715,7 +718,8 @@ class DatatablesController extends Controller //To-Do: Permission Check
                 'nation' => '进行该操作！',
                 'command' => '<button class="btn btn-xs btn-success addButton" del-id="' . $delegate->user->id . '"type="button">移入席位</button>'
             ]);
-        $mycommittee = Reg::current()->dais->committee;
+            */
+        //$mycommittee = Reg::current()->dais->committee;
         /*$delegates = Delegate::where(function($query) {
             $query->where('committee_id', Reg::current()->dais->committee->id)
             ->where('status', 'paid');

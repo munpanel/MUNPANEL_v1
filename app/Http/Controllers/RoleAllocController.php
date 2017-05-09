@@ -48,14 +48,20 @@ class RoleAllocController extends Controller
     public static function delegates()
     {
         $reg = Reg::current();
-        if ($reg->type == 'ot' && $reg->can('assign_seats'))
+        if ($reg->type == 'ot' && $reg->can('assign-roles'))
             return Delegate::all();
         if ($reg->type == 'dais')
             return $reg->dais->committee->delegates;
         if ($reg->type == 'interviewer')
         {
-            return Delegate::whereHas('interviews', function($query) {
-                $query->where('interviewer_id', '=', $reg->id)->where('status', '=', 'passed');
+            return Delegate::where(function($query) {
+                $query->whereHas('interviews', function($query) {
+                    $query->where('interviewer_id', '=', Reg::currentID())->where('status', '=', 'passed');
+                });
+            })->orWhere(function($query) {
+                $query->whereHas('interviews', function($query) {
+                    $query->where('interviewer_id', '=', Reg::currentID())->where('status', '=', 'exempted');
+                });
             })->get();
         }
         return collect();
@@ -64,15 +70,17 @@ class RoleAllocController extends Controller
     public static function nations()
     {
         $reg = Reg::current();
-        if ($reg->type == 'ot' && $reg->can('assign_seats'))
+        if ($reg->type == 'ot' && $reg->can('assign-roles'))
             return Nation::all();
         if ($reg->type == 'dais')
             return $reg->dais->committee->nations;
         if ($reg->type == 'interviewer')
         {
-            return Nation::whereHas('committees', function($query) {
-                $query->whereHaswhereHas('interviews', function($query) {
-                    $query->where('interviewer_id', '=', $reg->id)->where('status', '=', 'passed');
+            return Nation::whereHas('committee', function($query) {
+                $query->whereHas('delegates.interviews', function($query) {
+                    $query->where('interviewer_id', '=', Reg::currentID())->where('status', '=', 'passed');
+                })->orWhereHas('delegates.interviews', function($query) {
+                    $query->where('interviewer_id', '=', Reg::currentID())->where('status', '=', 'exempted');
                 });
             })->get();
         }
@@ -126,6 +134,8 @@ class RoleAllocController extends Controller
     {
         //$delegate->nation_id = $nation->id;
         if (!$delegate->canAssignSeats())
+            return false;
+        if ($delegate->committee_id != $nation->committee_id)
             return false;
         $max = $nation->committee->maxAssignList;
         if ($delegate->assignedNations->count() >= $max && $max != -1)

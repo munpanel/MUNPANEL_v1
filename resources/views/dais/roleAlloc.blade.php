@@ -17,7 +17,9 @@
 
       <section class="vbox">
             <header class="header bg-white b-b clearfix">
+              {{--
               <!--a href="{{mp_url('dais/lockAlloc')}}" class="btn btn-sm btn-success {{$mustAlloc > 0 ? 'disabled ': ''}}pull-right details-modal" id="ra-confirm"><i class="fa fa-check"></i> 完成并锁定</a-->
+              --}}
               <p>{{Reg::currentConference()->name}} {{--$committee->display_name--}} 席位分配</p>
             </header><section class="scrollable wrapper">
           <div class="tab-content">
@@ -26,9 +28,9 @@
                 <div class="col-sm-6">
                   <section class="panel">
                     <header class="panel-heading">
-                      @if ($mustAlloc > 0)
+                      {{--@if ($mustAlloc > 0)
                         <span class="badge bg-danger pull-right">剩余 {{$mustAlloc}} 人必须分配</span>
-                      @endif
+                      @endif--}}
                       所有代表</header>
                     <div class="row text-sm wrapper">
                   <div class="col-sm-12 m-b-xs">{{--本委员会有 {{$committee->delegates->count()}} 人报名，其中 {{$verified}} 人已通过组织团队审核，{{$committee->delegates->where('status', 'paid')->count()}} 人已缴费。--}}

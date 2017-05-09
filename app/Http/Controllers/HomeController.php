@@ -917,16 +917,16 @@ class HomeController extends Controller
         if (Reg::current()->specific()->committee->is_allocated)
             return redirect(mp_url('/roleList'));
             */
-        $mycommittee = Reg::current()->dais->committee;
+        //$mycommittee = Reg::current()->dais->committee;
 
         if (!in_array(Reg::current()->type, ['ot', 'dais', 'interviewer']))
             return view('error', ['msg' => '您没有权限分配席位！']);
         return view('dais.roleAlloc', [
-            'committee' => $mycommittee,
+            /*'committee' => $mycommittee,
             'mustAlloc' => $mycommittee->delegates->where('status', 'paid')->where('nation_id', null)->count(),
             'emptyNations' => $mycommittee->emptyNations()->count(),
             'verified' => Delegate::where(function($query) {$query->where('committee_id', Reg::current()->dais->committee->id)->where('status', 'paid');})->orWhere(function($query) {$query->where('committee_id', Reg::current()->dais->committee->id)->where('status', 'oVerified');})->count(),
-            'isDouble' => true
+            'isDouble' => true*/
         ]); // we don't use those variables anymore
     }
 

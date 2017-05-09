@@ -48,6 +48,14 @@ class RoleAllocController extends Controller
     public static function delegates()
     {
         $reg = Reg::current();
+        $assignCommittees = $reg->assignCommittees;
+        if (in_array($reg->type, ['ot', 'dais', 'interviewer']) && $assignCommittees->isNotEmpty())
+        {
+            $result = collect();
+            foreach ($assignCommittees as $committee)
+                $result = $result->merge($committee->delegates);
+            return $result;
+        }
         if ($reg->type == 'ot' && $reg->can('assign-roles'))
             return Delegate::all();
         if ($reg->type == 'dais')
@@ -70,6 +78,14 @@ class RoleAllocController extends Controller
     public static function nations()
     {
         $reg = Reg::current();
+        $assignCommittees = $reg->assignCommittees;
+        if (in_array($reg->type, ['ot', 'dais', 'interviewer']) && $assignCommittees->isNotEmpty())
+        {
+            $result = collect();
+            foreach ($assignCommittees as $committee)
+                $result = $result->merge($committee->nations);
+            return $result;
+        }
         if ($reg->type == 'ot' && $reg->can('assign-roles'))
             return Nation::all();
         if ($reg->type == 'dais')

@@ -102,6 +102,11 @@ class Reg extends Model
         return $this->user->name;
     }
 
+    public function assignCommittees()
+    {
+        return $this->belongstoMany('App\Committee', 'seatassigners', 'reg_id', 'committee_id');
+    }
+
     public function regText() {
         if (is_object($this->specific()))
             return $this->specific()->regText();

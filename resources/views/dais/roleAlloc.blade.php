@@ -75,8 +75,9 @@
                 </div><table class="table table-striped m-b-none text-sm" id="delegate-table">
                       <thead>
                         <tr>
-                          <th>UID</th>
+                          <th>ID</th>
                           <th>姓名</th>
+                          <th>委员会</th>
                           <th>席位</th>
                           <th style="min-width:70px">操作</th>
                         </tr>
@@ -152,6 +153,7 @@
                         <tr>
                           <th width="20"><i class="fa fa-check-circle-o"></i></th>
                           <th>席位</th>
+                          <th>委员会</th>
                           <th>国家组</th>
                           <th>代表</th>
                           <th style="min-width:140px">操作</th>

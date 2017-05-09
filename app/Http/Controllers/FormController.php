@@ -32,7 +32,7 @@ class FormController extends Controller
         {
             // 使用 $useParam 比对 $item->{$useCompare} 的值确定下一项是否对用户有效
             // 例：在 regTable 中，检查 $item->uses 是否存在 $regType 的值
-            // TODO: 基于委员会的判断时，对父委员会的判断 
+            // TODO: 基于委员会的判断时，对父委员会的判断
             if (!empty($useCompare) && !in_array($useParam, $item->{$useCompare})) continue;
             switch ($item->type)
             {
@@ -43,7 +43,7 @@ class FormController extends Controller
                   <select id="" name="committee" class="form-control" data-required="true">
                     <option value="" selected="">请选择</option>';
                 foreach (Reg::currentConference()->committees as $committee)
-                    $html .= '<option value="'.$committee->id.'">'.$committee->name.'</option>';
+                    $html .= '<option value="'.$committee->id.'">'.$committee->display_name.'</option>';
                 $html .= '</select></div>';
                 break;
                 case 'prePartnerName': $html .='
@@ -83,7 +83,7 @@ class FormController extends Controller
         }
         return $html;
     }
-    
+
     /**
      * filter form assignments by committee
      *
@@ -101,7 +101,7 @@ class FormController extends Controller
         }
         return $result;
     }
-    
+
     /**
      * Render the assignment form to html
      *
@@ -348,7 +348,7 @@ class FormController extends Controller
     }
 
     /**
-     * Find questions from handin 
+     * Find questions from handin
      *
      * @param array $questions the object of form, from json_decode ($*->items)
      * @param object $answers the object of answer, from json_decode ($*->items)

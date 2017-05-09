@@ -682,12 +682,13 @@ class DatatablesController extends Controller //To-Do: Permission Check
             else
                 $buttonText = '清空队列';
             $command .= '">'.$buttonText.'</a>
-                        <a href="dais/nationDetails.modal/'. $nation->id .'" class="btn btn-xs btn-warning details-modal">编辑</a>
-                        <a href="dais/delete/nation/'. $nation->id .'" class="btn btn-xs btn-danger details-modal">删除</a>';
+                        <a href="dais/nationDetails.modal/'. $nation->id .'" class="btn btn-xs btn-warning details-modal" data-toggle="ajaxModal">编辑</a>
+                        <a href="dais/delete/nation/'. $nation->id .'" class="btn btn-xs btn-danger details-modal" data-toggle="ajaxModal">删除</a>';
                         // To-Do: make all those HTTP requests of the buttons JS-based
             $result->push([
                 'select' => $select,
                 'name' => $nation->name,
+                'committee' => $nation->committee->name,
                 'nationgroup' => isset($nation->nationgroups) ? $nation->scopeNationGroup(true, 3) : '无',
                 'delegate' => $delnames,
                 'command' => $command
@@ -725,10 +726,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
             if (!$delegate->canAssignSeats())
                 continue;
             $name = $delegate->reg->user->name;
-            $surfix = $delegate->delegategroups->count();
-            if ($surfix != 0)
-                $name .= '('.$delegate->scopeDelegateGroup(true, 0, true).')'; //$name .= ' (' . $surfix . ' 个代表组)';
-            $name .= '（'.$delegate->statusText().'）';
+            $name .= '（'.($delegate->delegategroups->count() > 0 ? $delegate->scopeDelegateGroup(true, 0, true) . '，' : '').$delegate->statusText().'）';
             switch ($delegate->committee->maxAssignList)
             {
                 case 0:
@@ -746,8 +744,9 @@ class DatatablesController extends Controller //To-Do: Permission Check
                     $command .= '<a href="'.mp_url('/dais/seatSMS.modal/'.$delegate->reg_id).'" data-toggle="ajaxModal" class="btn btn-xs btn-info details-modal">短信通知</a>';
             }
             $result->push([
-                'uid' => $delegate->reg_id,
-                'name' => $name,
+                'uid' => '<a href="'.mp_url('ot/regInfo.modal/'. $delegate->reg_id) .'" data-toggle="ajaxModal">'.$delegate->reg_id.'</a>',
+                'name' => '<a href="'.mp_url('ot/regInfo.modal/'. $delegate->reg_id) .'" data-toggle="ajaxModal">'.$name.'</a>',
+                'committee' => $delegate->committee->name,
                 'nation' => $delegate->nationName(true),//isset($delegate->nation) ? $delegate->nation->name : '待分配',
                 'command' => $command
             ]);

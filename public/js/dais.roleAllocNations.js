@@ -6,6 +6,7 @@ $(document).ready(function() {
         columns: [
             {data: 'select', name: 'select', orderable: false},
             {data: 'name', name: 'name', orderable: false},
+            {data: 'committee', committee: 'committee', orderable: true},
             {data: 'nationgroup', name: 'nationgroup', orderable: false},
             {data: 'delegate', name: 'delegate', orderable: false},
             {data: 'command', name: 'command', orderable: false}
@@ -45,7 +46,7 @@ $(document).ready(function() {
     var nattable=$('#nation-table').DataTable();
     $("#nation-searchButton").click(function() {
        nattable.search($('#nation-searchBox').val()).draw();
-    });    
+    });
     $("#nation-length-select").change(function() {
         nattable.page.len($(this).val()).draw();
     });

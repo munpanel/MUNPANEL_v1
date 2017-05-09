@@ -73,7 +73,7 @@ class Delegate extends Model
     }
 
     public function regText() {
-        return '代表（'.$this->committee->name.'）';
+        return '代表（'.$this->committee->display_name.'）';
     }
 
     public function nextStatus() {

@@ -172,7 +172,7 @@ class InterviewController extends Controller
             $delegate = $reg->delegate;
             $delegate->committee_id = $interviewer->committee_id;
             $delegate->save();
-            $reg->addEvent('committee_moved', '{"name":"'.Reg::current()->name().'","committee":"'.$interviewer->committee->name.'"}');
+            $reg->addEvent('committee_moved', '{"name":"'.Reg::current()->name().'","committee":"'.$interviewer->committee->display_name.'"}');
         }
         $interview = new Interview;
         $interview->conference_id = Reg::currentConferenceID();
@@ -182,7 +182,7 @@ class InterviewController extends Controller
         $interview->interviewer_id = $interviewer->reg_id;
         if ($request->notes == '代表不可见... (支持Markdown)')
             $interview->arranging_notes = '';
-        else 
+        else
             $interview->arranging_notes = $request->notes;
         $interview->status = 'assigned';
         $interview->save();
@@ -205,7 +205,7 @@ class InterviewController extends Controller
         $interview->interviewer_id = $interviewer->reg_id;
         if ($request->notes == '代表不可见... (支持Markdown)')
             $interview->arranging_notes = '';
-        else 
+        else
             $interview->arranging_notes = $request->notes;
         $interview->status = 'exempted';
         $interview->save();

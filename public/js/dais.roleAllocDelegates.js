@@ -4,8 +4,9 @@ $(document).ready(function() {
         //serverSide: true,
         ajax: 'ajax/roleAllocDelegates',
         columns: [
-            {data: 'uid', name: 'uid', orderable: false},
+            {data: 'uid', name: 'uid', orderable: true},
             {data: 'name', name: 'name', orderable: false},
+            {data: 'committee', committee: 'committee', orderable: true},
             {data: 'nation', name: 'nation', orderable: false},
             {data: 'command', name: 'command', orderable: false}
             ],
@@ -52,7 +53,7 @@ $(document).ready(function() {
     var deltable=$('#delegate-table').DataTable();
     $("#delegate-searchButton").click(function() {
        deltable.search($('#delegate-searchBox').val()).draw();
-    });    
+    });
     $("#delegate-length-select").change(function() {
         deltable.page.len($(this).val()).draw();
     });

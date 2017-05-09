@@ -48,19 +48,25 @@ class RoleAllocController extends Controller
     public static function delegates()
     {
         $reg = Reg::current();
-        $assignCommittees = $reg->assignCommittees;
-        if (in_array($reg->type, ['ot', 'dais', 'interviewer']) && $assignCommittees->isNotEmpty())
+        $assignOptions = json_decode(Reg::currentConference()->option('seat_assigners'));
+        if (!is_object($assignOptions))
+            return collect();
+        if ($assignOptions->overrule)
         {
-            $result = collect();
-            foreach ($assignCommittees as $committee)
-                $result = $result->merge($committee->delegates);
-            return $result;
+            $assignCommittees = $reg->assignCommittees;
+            if (in_array($reg->type, ['ot', 'dais', 'interviewer']) && $assignCommittees->isNotEmpty())
+            {
+                $result = collect();
+                foreach ($assignCommittees as $committee)
+                    $result = $result->merge($committee->delegates);
+                return $result;
+            }
         }
-        if ($reg->type == 'ot' && $reg->can('assign-roles'))
+        if ($assignOptions->ot && $reg->type == 'ot' && $reg->can('assign-roles'))
             return Delegate::all();
-        if ($reg->type == 'dais')
+        if ($assignOptions->dais && $reg->type == 'dais')
             return $reg->dais->committee->delegates;
-        if ($reg->type == 'interviewer')
+        if ($assignOptions->interviewer && $reg->type == 'interviewer')
         {
             return Delegate::where(function($query) {
                 $query->whereHas('interviews', function($query) {
@@ -78,19 +84,25 @@ class RoleAllocController extends Controller
     public static function nations()
     {
         $reg = Reg::current();
-        $assignCommittees = $reg->assignCommittees;
-        if (in_array($reg->type, ['ot', 'dais', 'interviewer']) && $assignCommittees->isNotEmpty())
+        $assignOptions = json_decode(Reg::currentConference()->option('seat_assigners'));
+        if (!is_object($assignOptions))
+            return collect();
+        if ($assignOptions->overrule)
         {
-            $result = collect();
-            foreach ($assignCommittees as $committee)
-                $result = $result->merge($committee->nations);
-            return $result;
+            $assignCommittees = $reg->assignCommittees;
+            if (in_array($reg->type, ['ot', 'dais', 'interviewer']) && $assignCommittees->isNotEmpty())
+            {
+                $result = collect();
+                foreach ($assignCommittees as $committee)
+                    $result = $result->merge($committee->nations);
+                return $result;
+            }
         }
-        if ($reg->type == 'ot' && $reg->can('assign-roles'))
+        if ($assignOptions->ot && $reg->type == 'ot' && $reg->can('assign-roles'))
             return Nation::all();
-        if ($reg->type == 'dais')
+        if ($assignOptions->dais && $reg->type == 'dais')
             return $reg->dais->committee->nations;
-        if ($reg->type == 'interviewer')
+        if ($assignOptions->interviewer && $reg->type == 'interviewer')
         {
             return Nation::whereHas('committee', function($query) {
                 $query->whereHas('delegates.interviews', function($query) {

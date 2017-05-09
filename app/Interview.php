@@ -51,7 +51,7 @@ class Interview extends Model
         $result = "";
         foreach($scoresOptions->criteria as $key => $value)
         {
-            if (isset($scores->key))
+            if (isset($scores->$key))
             {
                 $result.= $value->name . $scores->$key . "&nbsp;";
                 $score += $scores->$key * $value->weight;

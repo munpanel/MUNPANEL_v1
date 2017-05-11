@@ -183,9 +183,11 @@ if (empty($active))
           <div class="modal-body">
             <div class="row">
               <div class="col-sm-12 b-r">
+              <h3 class="m-t-sm">当前席位</h3>
               @if (isset($reg->delegate->nation_id))
-              <h3>当前席位</h3>
-              已{{$reg->delegate->seat_locked ? '锁定':'选择'}}席位：{{$reg->delegate->nation->name}}<br/>
+              <p>{{$isOtOrDais ? '该用户' : '您'}}已{{$reg->delegate->seat_locked ? '锁定':'选择'}}席位<strong>{{$reg->delegate->nation->name}}</strong>。</p>
+              @else
+              <p>{{$isOtOrDais ? '该用户' : '您'}}还没有选择任何席位。</p>
               @endif
               @if ($reg->delegate->assignedNations->count() > 0)
               <h3>可供选择席位列表</h3>
@@ -196,13 +198,13 @@ if (empty($active))
               <tr>
               <td style="width:30px">ID</td>
               <td>席位名称</td>
-              @if ($isOtOrDais)
-              <td>席位组</td>
-              <td width="45px">保留</td>
-              @endif
-              @if (!$reg->delegate->seat_locked && Reg::currentID() == $reg->id)
-              <td width="45px">选择</td>
-              @endif
+                @if ($isOtOrDais)
+                <td>席位组</td>
+                <td width="45px">保留</td>
+                @endif
+                @if (!$reg->delegate->seat_locked && Reg::currentID() == $reg->id)
+                <td width="45px">选择</td>
+                @endif
               </tr>
               @php
               $nations = $reg->delegate->assignedNations;
@@ -212,13 +214,13 @@ if (empty($active))
               <tr>
               <td><center>{{++$i}}</center></td>
               <td>{{$nation->name}}</td>
-              @if ($isOtOrDais)
-              <td>{{isset($nation->nationgroups) ? $nation->scopeNationGroup(true, 2) : '无'}}</td>
-              <td><center><input type="checkbox" name="seats[]" value="{{$nation->id}}" checked></center></td>
-              @endif
-              @if (!$reg->delegate->seat_locked && Reg::currentID() == $reg->id)
-              <td><center><input type="radio" name="seatSelect" value="{{$nation->id}}" {{$reg->delegate->nation_id == $nation->id ? 'checked':''}}></center></td>
-              @endif
+                @if ($isOtOrDais)
+                <td>{{isset($nation->nationgroups) ? $nation->scopeNationGroup(true, 2) : '无'}}</td>
+                <td><center><input type="checkbox" name="seats[]" value="{{$nation->id}}" checked></center></td>
+                @endif
+                @if (!$reg->delegate->seat_locked && Reg::currentID() == $reg->id)
+                <td><center><input type="radio" name="seatSelect" value="{{$nation->id}}" {{$reg->delegate->nation_id == $nation->id ? 'checked':''}}></center></td>
+                @endif
               </tr>
               @endforeach
               </tbody>

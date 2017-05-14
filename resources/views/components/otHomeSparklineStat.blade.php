@@ -31,7 +31,7 @@ var hide = function(event) {
 console.log('event');
   if ($(window).width() >= 520)
     document.getElementById("sparkl-stat").style.display = "block";
-  else 
+  else
     document.getElementById("sparkl-stat").style.display = "none";
 };
 window.addEventListener("load", hide);

@@ -1080,7 +1080,7 @@ class HomeController extends Controller
     public function formAssignmentSubmit(Request $request, $id, $submit = false)
     {
         if ($submit == 'confirm')
-            return view('warningDialogModal', ['danger' => false, 'msg' => '您将要提交当前学术作业。<br>请注意表单类型的作业一旦提交将无法再修改或撤回！<br><br>您确实要继续吗？', 'onclick' => 'jQuery.post(\''.mp_url('/assignment/'.$id.'/formSubmit/true').'\', $(\'#assignmentForm\').serialize());window.location = \''.mp_url('/assignment/' . $id).'\';']);
+            return view('warningDialogModal', ['danger' => false, 'msg' => '您将要提交当前学术作业。<br>请注意表单类型的作业一旦提交将无法再修改或撤回！<br><br>您确实要继续吗？', 'ajax' => 'post', 'target' => mp_url('/assignment/'.$id.'/formSubmit/true'), 'source' => 'assignmentForm', 'returns' => mp_url('/assignment/' . $id)]);
         $handin = Handin::findOrFail($request->handin);
         $answer = $request->all();
         if ($submit != 'true')

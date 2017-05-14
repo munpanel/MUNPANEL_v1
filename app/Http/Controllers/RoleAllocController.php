@@ -389,7 +389,7 @@ class RoleAllocController extends Controller
         }
         else
         {
-            return view('warningDialogModal', ['danger' => false, 'msg' => "系统将发送一条短信通知".$delegate->reg->name()."可选席位列表更新。确实要继续吗？", 'target' => mp_url("/dais/seatSMS.modal/".$id."/true"), 'ajax' => true]);
+            return view('warningDialogModal', ['danger' => false, 'msg' => "系统将发送一条短信通知".$delegate->reg->name()."可选席位列表更新。确实要继续吗？", 'target' => mp_url("/dais/seatSMS.modal/".$id."/true"), 'ajax' => 'get']);
         }
     }
 }

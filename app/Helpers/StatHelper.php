@@ -31,7 +31,8 @@ function oVerifyStat($cid)
     $volUnOVerify = Volunteer::where('conference_id', $cid)->where('status', 'sVerified')->count();
     $volOVerify = Volunteer::where('conference_id', $cid)->count() - $volUnOVerify;
     $all = Reg::where('conference_id', $cid)->whereIn('type', ['delegate', 'observer', 'volunteer'])->count();
-    $interviews = Interview::where('conference_id', $cid)->whereNotIn('status', ['cancelled', 'failed'])->groupBy('reg_id')->get()->count();
+    $interviewQuery = DB::select('SELECT count(DISTINCT reg_id) as intv FROM `interviews` where `conference_id` = ? and `status` not in (\'cancelled\', \'failed\');', [$cid]);
+    $interviews = $interviewQuery[0]->intv;
     return ['oVerified' => $delOVerify + $obsOVerify + $volOVerify, 'oUnverified' => $delUnOVerify + $obsUnOVerify + $volUnOVerify, 'all' => $all, 'delOVerify' => $delOVerify, 'interviews' => $interviews];
 }
 

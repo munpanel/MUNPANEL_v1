@@ -159,7 +159,7 @@ if (empty($active))
               <td>面试评价</td>
               <td>{{$interview->public_fb ?? '无'}}</td>
               </tr>
-              @if (Reg::current()->can('view-all-interviews') || $interview->interviewer_id == Reg::currentID())
+              @if (Reg::current()->can('view-all-interviews') || Reg::current()->type == 'interviewer')
               <tr>
               <td>面试评分</td>
               <td>{!!$interview->scoreHTML()!!}</td>

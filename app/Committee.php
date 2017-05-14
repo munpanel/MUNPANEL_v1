@@ -24,6 +24,7 @@ class Committee extends Model
     
     public function allDelegates()
     {
+        //TODO: nested tree
         $coms = Committee::where('id', $this->id)->orWhere('father_committee_id', $this->id)->get(['id']);
         $e = [];
         foreach ($coms as $com) array_push($e, $com->id);
@@ -99,5 +100,14 @@ class Committee extends Model
         $delgroup->name = $this->name . '代表';
         $delgroup->display_name = $this->display_name . '报名代表';
         $delgroup->save();
+    }
+
+    public function belongs($fatherID)
+    {
+        if ($this->id == $fatherID)
+            return true;
+        if (isset($this->father_committee_id))
+            return $this->parentCommittee->isChild($fatherID);
+        return false;
     }
 }

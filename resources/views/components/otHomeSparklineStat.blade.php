@@ -3,7 +3,7 @@
     <div class="pull-left">
       <div class="pull-left m-r-xs">
         <span class="block text-sm">浏览 </span>
-        <span class="h4">{{Reg::where('conference_id', Reg::currentConferenceID())->whereNotIn('type', ['ot', 'dais'])->count()}}</span>
+        <span class="h4">{{Reg::where('conference_id', Reg::currentConferenceID())->whereNotIn('type', ['ot', 'dais', 'interviewer'])->count()}}</span>
         <i class="fa fa-level-up text-success"></i>
       </div>
       <div class="clear">

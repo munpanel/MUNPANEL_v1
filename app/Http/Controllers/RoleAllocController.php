@@ -63,7 +63,7 @@ class RoleAllocController extends Controller
             }
         }
         if ($assignOptions->ot && $reg->type == 'ot' && $reg->can('assign-roles'))
-            return Delegate::all();
+            return Delegate::where('conference_id', Reg::currentConferenceID())->get();
         if ($assignOptions->dais && $reg->type == 'dais')
             return $reg->dais->committee->delegates;
         if ($assignOptions->interviewer && $reg->type == 'interviewer')
@@ -193,7 +193,7 @@ class RoleAllocController extends Controller
     public function freeNation($id)
     {
         $nation = Nation::findOrFail($id);
-        $delegates = $nation->delegates;
+        $delegates = $nation->assignedDelegates;
         foreach($delegates as $delegate)
         {
             if ($delegate->seat_locked)

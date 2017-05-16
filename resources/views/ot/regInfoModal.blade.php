@@ -154,7 +154,7 @@ if (empty($active))
               <td>{{nicetime($interview->finished_at)}}</td>
               </tr>
               @endif
-              @if (in_array($interview->status, ['passed', 'failed']))
+              @if (in_array($interview->status, ['passed', 'failed', 'undecided']))
               <tr>
               <td>面试评价</td>
               <td>{{$interview->public_fb ?? '无'}}</td>

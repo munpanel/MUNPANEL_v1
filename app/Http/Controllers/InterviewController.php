@@ -49,6 +49,10 @@ class InterviewController extends Controller
     public function interview(Request $request, $id, $action)
     {
         $interview = Interview::findOrFail($id);
+        if ($action == 'editModal' && (Reg::current()->can('view-all-interviews') || $interview->interviewer_id == Reg::currentID))
+        {
+            return view('interviewer.editModal', ['interview' => $interview]);
+        }
         if ($interview->interviewer_id != Reg::currentID())
         {
             return view('error', ['msg' => '您没有权限进行该操作！']);
@@ -222,5 +226,36 @@ class InterviewController extends Controller
     public function gotoInterviewer(Request $request)
     {
         return redirect(mp_url('/interviews/'.$request->interviewer));
+    }
+
+    /**
+     * Update a property of an interview.
+     *
+     * @param Request $request
+     * @param int $id the id of the interview to be updated
+     * @return void
+     */
+    public function updateInterview(Request $request, $id)
+    {
+        $interview = Interview::find($id);
+        if (!is_object($interview))
+            return response("Can't find Interview!", 404);
+        if (Reg::current()->can('view-all-interviews') || $interview->interviewer_id == Reg::currentID)
+        {
+            $name = $request->get('name');
+            $value = $request->get('value');
+            if ($name == 'interviewer_id')
+            {
+                $interviewer = Interviewer::find($value);
+                if (!is_object($interviewer) || $interviewer->reg->conference_id != Reg::currentConferenceID())
+                    return response("Wrong Interviewer ID", 404);
+            }
+            if ($name == 'status' && !in_array($value, ['assigned','arranged','cancelled','passed','failed','exempted','undecided']))
+                return response("Wrong Status Value", 500);
+            $interview->$name = $value;
+            $interview->save();
+        }
+        else
+            return response('Access Denied!', 403);
     }
 }

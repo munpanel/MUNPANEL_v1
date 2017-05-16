@@ -25,6 +25,9 @@
         <br>内部反馈: <div class="readmore">{{$interview->internal_fb or '无'}}</div>
       @endif
       @endif
+    @if (Reg::current()->can('view-all-interviews') && Reg::current()->type == 'ot')
+        <a href="{{mp_url('/interview/'.$interview->id.'/editModal')}}" class="btn btn-xs btn-white pull-right m-r-xs" data-toggle="ajaxModal"><span class='text-danger'>编辑面试</span></a>
+    @endif
     @if ($interview->interviewer_id == Reg::currentID())
         @if ($interview->status == 'assigned')
         <a href="{{mp_url('/interview/'.$interview->id.'/arrangeModal')}}" class="btn btn-xs btn-warning pull-right" data-toggle="ajaxModal">安排面试</a>

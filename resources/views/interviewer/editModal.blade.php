@@ -3,7 +3,7 @@
         <div class="modal-body">
             <button id="enableEditable-{{$interview->id}}" class="btn btn-default pull-right">编辑模式</button><span class="pull-right">&nbsp;</span>
             <h4>面试ID {{$interview->id}}</h4>
-            <div class="alert alert-warning"><b>请慎用此功能，正常情况下请使用面试官账号操作。此编辑功能仅供面试官操作错误时修复原始数据库数据用；修改将不会发送任何短信通知。编辑成功后刷新面试列表即可查看编辑结果</b></div>
+            <div class="alert alert-warning"><b>请慎用此功能，正常情况下请使用面试官账号操作。此编辑功能仅供面试官操作错误时修复原始数据库数据用；修改将不会发送任何短信通知。如需编辑评分分数等内容，请修改面试状态并通过面试官账号重新打分。编辑成功后刷新面试列表即可查看编辑结果</b></div>
             <table id="interview-{{$interview->id}}" class="table table-bordered table-striped" style="clear: both">
                 <tbody>
                     <tr>

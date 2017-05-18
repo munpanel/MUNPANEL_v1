@@ -28,6 +28,11 @@ class GeetestLib {
      * @return int
      */
     public function pre_process($param, $new_captcha=1) {
+        if (!Config::get("geetest.enabled"))
+        {
+            $this->failback_process();
+            return 0;
+        }
         $data = array('gt'=>$this->captcha_id,
                      'new_captcha'=>$new_captcha
                 );

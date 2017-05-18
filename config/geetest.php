@@ -11,5 +11,6 @@
 
 return [
     'api_id' => env('GEETEST_ID'),
-    'api_key' => env('GEETEST_KEY')
+    'api_key' => env('GEETEST_KEY'),
+    'enabled' => env('GEETEST_ENABLED')
 ];

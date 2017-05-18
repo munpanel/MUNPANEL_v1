@@ -225,7 +225,7 @@ if (empty($active))
               @endforeach
               </tbody>
               </table>
-              <button type="submit" class="btn btn-success">保存更改</button>
+              <button type="submit" class="btn btn-success" onclick="loader(this)">保存更改</button>
               </form>
               @endif
               </div>
@@ -259,7 +259,7 @@ if (empty($active))
                     <div class="timeline-panel">
                       <form method="post" action="{{mp_url('/newNote')}}" id="add_notes_form">
                         <div class="timeline-heading">
-                          <button class="btn btn-sm btn-success pull-right m-b-xs m-t-n-xs" type="submit">添加笔记</button>
+                          <button class="btn btn-sm btn-success pull-right m-b-xs m-t-n-xs" type="submit" onclick="loader(this)">添加笔记</button>
                           <h4 class="timeline-title">{{Reg::current()->name()}}&nbsp;<small class="text-muted">{!!Auth::user()->identityHTML()!!}</small></h4>
                         </div>
                         <div class="timeline-body">
@@ -302,8 +302,9 @@ function newPopup(url) {
 }
 $('#updateSeatForm').submit(function(e){
     e.preventDefault();
-    $.post('{{mp_url('/ot/updateSeat')}}', $('#updateSeatForm').serialize())
-    $("#ajaxModal").load("{{mp_url('/ot/regInfo.modal/'.$reg->id.'?active=seats')}}");
+    $.post('{{mp_url('/ot/updateSeat')}}', $('#updateSeatForm').serialize()).done(function(data) {
+        $("#ajaxModal").load("{{mp_url('/ot/regInfo.modal/'.$reg->id.'?active=seats')}}");
+    });
 });
 </script>
 @if ($isOtOrDais)
@@ -325,8 +326,9 @@ $(document).ready(function(){
 });
 $('#add_notes_form').submit(function(e){
     e.preventDefault();
-    $.post('{{mp_url('/newNote')}}', $('#add_notes_form').serialize())
-    $("#ajaxModal").load("{{mp_url('/ot/regInfo.modal/'.$reg->id.'?active=notes')}}");
+    $.post('{{mp_url('/newNote')}}', $('#add_notes_form').serialize()).done(function(data) {
+        $("#ajaxModal").load("{{mp_url('/ot/regInfo.modal/'.$reg->id.'?active=notes')}}");
+    });
 });
 </script>
 @endif

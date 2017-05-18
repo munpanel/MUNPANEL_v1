@@ -15,8 +15,8 @@
                 <div class="alert alert-info"><b>请选择送货方式，我们支持会上自提（无需运费）和快递到家（需要运费）。</b></div>
               </div>
             </div>
-          </div>          
-        </section> 
+          </div>
+        </section>
         <section class="tab-pane" id="conf">
           <div class="modal-body">
             <div class="row">
@@ -25,11 +25,11 @@
                   <div class="alert alert-success"><b>推荐此种方式：</b>会议中途在指定时间凭代表牌领取所预定的纪念品。</div>
                   {{ csrf_field() }}
                   <input type="hidden" name="method" value="conference">
-                  <button type="submit" class="btn btn-success pull-right text-uc m-t-n-xs">提交并支付订单</button>
+                  <button type="submit" class="btn btn-success pull-right text-uc m-t-n-xs" onclick="loader(this)">提交并支付订单</button>
                 </form>
               </div>
             </div>
-          </div>          
+          </div>
         </section>
         <section class="tab-pane" id="mail">
           <div class="modal-body">
@@ -44,11 +44,11 @@
                     <input type="text" class="form-control"  name="address" data-required="true">
                     <span class="help-block m-b-none">请输入完整正确地址（含邮编）</span>
                   </div>
-                  <button type="submit" class="btn btn-success pull-right text-uc m-t-n-xs">提交并支付订单</button>
+                  <button type="submit" class="btn btn-success pull-right text-uc m-t-n-xs" onclick="loader(this)">提交并支付订单</button>
                 </form>
               </div>
             </div>
-          </div>          
+          </div>
         </section>
       </div><!-- /.modal-content -->
 </div>

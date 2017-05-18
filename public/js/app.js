@@ -249,6 +249,25 @@ $.ajaxSetup({
     }
 });
 
+
+function loader(item) {
+    var size = $(item).css('line-height');
+    var string = '<div class="loader" style="width: ' + size + ' !important; height: ' + size + ' !important;"><div class="circle"></div><div class="circle"></div><div class="circle"></div><div class="circle"></div><div class="circle"></div></div>';
+    var width = $(item).css('width');
+    var height = $(item).css('height');
+    var attributes = $(item).prop("attributes");
+    $(item).css('width', width, 'important');
+    $(item).css('height', height, 'important');
+    $(item).html(string);
+    var objs = $(item).find('div');
+    for (var i = 0, len = attributes.length; i < len; i++) {
+        if (-1 == $.inArray(attributes[i].name, ['class', 'onclick', 'style']))
+        {
+            $(objs).attr(attributes[i].name, attributes[i].value);
+        }
+    }
+}
+
 console.log('%cMUNPANEL', 'font-size:5em;color:green');
 console.log('%c加入我们，改变世界？请联系xuan@yiad.am', 'color:blue');
 console.log('%c让模联更美好！', 'color:grey');

@@ -61,7 +61,7 @@ $count = $reg->delegate->interviews()->whereIn('status', ['passed', 'failed'])->
                        <br><input name="moveCommittee" type="checkbox"> 将此代表转移至已选面试官所在委员会
                      </div>
                      @endif
-                   <button name="submit" type="submit" class="btn btn-info">分配面试官</button>
+                   <button name="submit" type="submit" class="btn btn-info" onclick="loader(this)">分配面试官</button>
                    <button name="cancel" type="button" class="btn btn-link" onclick="$('#doAssign').hide(); $('#interviewOpSelect').show();">取消</button>
 
                    </form>
@@ -100,7 +100,7 @@ $count = $reg->delegate->interviews()->whereIn('status', ['passed', 'failed'])->
 
                         <p>分配完成之后，MUNPANEL 将自动通知代表和面试官。</p>
 
-                   <button name="submit" type="submit" class="btn btn-info">面试通过</button>
+                   <button name="submit" type="submit" class="btn btn-info" onclick="loader(this)">面试通过</button>
                    <button name="cancel" type="button" class="btn btn-link" onclick="$('#doExempt').hide(); $('#interviewOpSelect').show();">取消</button>
 
                    </form>
@@ -109,13 +109,15 @@ $count = $reg->delegate->interviews()->whereIn('status', ['passed', 'failed'])->
 <script>
 $('#assignInterviewForm').submit(function(e){
     e.preventDefault();
-    $.post('{{mp_url('/ot/assignInterview/'.$reg->id)}}', $('#assignInterviewForm').serialize())
-    $("#ajaxModal").load("{{mp_url('/ot/regInfo.modal/'.$reg->id.'?active=interview')}}");
+    $.post('{{mp_url('/ot/assignInterview/'.$reg->id)}}', $('#assignInterviewForm').serialize()).done(function(data) {
+        $("#ajaxModal").load("{{mp_url('/ot/regInfo.modal/'.$reg->id.'?active=interview')}}");
+    });
 });
 $('#exemptInterviewForm').submit(function(e){
     e.preventDefault();
-    $.post('{{mp_url('/ot/exemptInterview/'.$reg->id)}}', $('#exemptInterviewForm').serialize())
-    $("#ajaxModal").load("{{mp_url('/ot/regInfo.modal/'.$reg->id.'?active=interview')}}");
+    $.post('{{mp_url('/ot/exemptInterview/'.$reg->id)}}', $('#exemptInterviewForm').serialize()).done(function(data) {
+        $("#ajaxModal").load("{{mp_url('/ot/regInfo.modal/'.$reg->id.'?active=interview')}}");
+    });
 });
 var assign_editor;
 var exempt_editor;

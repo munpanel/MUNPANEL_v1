@@ -18,8 +18,8 @@
                             <input type="password" class="form-control" data-required="true" data-equalto="#newPassword">
                         </div>
                         <div class="checkbox m-t-lg">
-                            <button type="submit" class="btn btn-sm btn-success pull-right text-uc m-t-n-xs"><strong>修改</strong></button>
-                        </div> 
+                            <button type="submit" class="btn btn-sm btn-success pull-right text-uc m-t-n-xs" onclick="loader(this)"><strong>修改</strong></button>
+                        </div>
                       </form>
                 </div>
             </div>

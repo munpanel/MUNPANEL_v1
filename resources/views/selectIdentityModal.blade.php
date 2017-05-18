@@ -13,7 +13,7 @@
         <option value="logout">注销用户</option>
         </select>
         <span class="input-group-btn">
-          <button class="btn btn-success" type="submit"><i class="fa fa-arrow-right"></i></button>
+          <button class="btn btn-success" type="submit" onclick="loader(this)"><i class="fa fa-arrow-right"></i></button>
           <!--button class="btn btn-danger" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="fa fa-times"></i></button-->
         </span>
        </div>

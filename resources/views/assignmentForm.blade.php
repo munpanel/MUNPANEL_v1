@@ -12,6 +12,7 @@
         jQuery.post('{{mp_url($target)}}', $('#assignmentForm').serialize());
     });
     $('#confirm').click(function() {
+        loader(this);
         jQuery.post('{{mp_url($target."/true")}}', $('#assignmentForm').serialize());
     });
     </script>

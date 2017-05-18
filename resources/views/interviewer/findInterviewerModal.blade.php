@@ -18,7 +18,7 @@
                 @endforeach
             </select>
           </div>
-        <button name="submit" type="submit" class="btn btn-info">查看面试官的队列</button>
+        <button name="submit" type="submit" class="btn btn-info" onclick="loader(this)">查看面试官的队列</button>
       </form>
     </div>
   </div>

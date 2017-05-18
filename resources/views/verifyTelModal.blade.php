@@ -9,10 +9,10 @@
                   <label>您收到的验证码</label>
                   <input type="text" class="form-control" id="code" name="code">
                 </div>
-                <button type="submit" class="btn btn-sm btn-success pull-right text-uc m-t-n-xs"><strong>验证</strong></button>
+                <button type="submit" class="btn btn-sm btn-success pull-right text-uc m-t-n-xs" onclick="loader(this)"><strong>验证</strong></button>
               </form>
               </div>
             </div>
-          </div>          
+          </div>
       </div><!-- /.modal-content -->
 </div>

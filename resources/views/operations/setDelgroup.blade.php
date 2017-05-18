@@ -30,7 +30,8 @@ foreach ($regDelgroups as $group)
 <script>
 $('#setDelgroupForm').submit(function(e){
     e.preventDefault();
-    $.post('{{mp_url('/ot/setDelgroup')}}', $('#setDelgroupForm').serialize())
-    $("#ajaxModal").load("{{mp_url('/ot/regInfo.modal/'.$reg->id.'?active=operations')}}");
+    $.post('{{mp_url('/ot/setDelgroup')}}', $('#setDelgroupForm').serialize()).done(function(data) {
+        $("#ajaxModal").load("{{mp_url('/ot/regInfo.modal/'.$reg->id.'?active=operations')}}");
+    });
 });
 </script>

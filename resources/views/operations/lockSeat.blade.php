@@ -10,7 +10,7 @@
 
                     <p>您确实要继续吗？</p>
 
-                   <a class="btn btn-danger" onclick="jQuery.get('{{mp_url('/ot/seatLock/'.$reg->id)}}', function(){$('#ajaxModal').load('{{mp_url('/ot/regInfo.modal/'.$reg->id.'?active=operations')}}');});">是</a>
+                   <a class="btn btn-danger" onclick="loader(this); jQuery.get('{{mp_url('/ot/seatLock/'.$reg->id)}}', function(){$('#ajaxModal').load('{{mp_url('/ot/regInfo.modal/'.$reg->id.'?active=operations')}}');});">是</a>
                    <button name="cancel" type="button" class="btn btn-white" onclick="$('#ot_seatlock_confirm').hide(); $('#ot_seatlock').show();">否</button>
 
 

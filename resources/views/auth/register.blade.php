@@ -84,7 +84,7 @@
             <div id="embed-captcha"></div>
             <p id="wait" class="show">正在加载验证码......</p>
             <p id="notice" class="hide">请先完成验证</p>
-            <button type="submit" class="btn btn-info" id="reg-submit">注册</button>
+            <button type="submit" class="btn btn-info" id="reg-submit" onclick="loader(this)">注册</button>
             <div class="line line-dashed"></div>
             <p class="text-muted text-center"><small>已有账号?</small></p>
             <a href="{{ mp_url('/login') }}" class="btn btn-white btn-block">登陆</a>

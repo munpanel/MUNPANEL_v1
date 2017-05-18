@@ -72,7 +72,7 @@
               </label>
             </div>
             <a href="{{ mp_url('/password/reset') }}" class="pull-right m-t-xs"><small>忘记密码?</small></a>
-            <button type="submit" class="btn btn-info" id="login-submit">登陆</button>
+            <button type="submit" class="btn btn-info" id="login-submit" onclick="loader(this)">登陆</button>
 <div class="line line-dashed"></div>
             <p class="text-muted text-center"><small>没有账号?</small></p>
             <a href="{{ mp_url('/register') }}" class="btn btn-white btn-block">新建帐号并报名会议</a>

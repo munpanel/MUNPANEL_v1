@@ -34,7 +34,7 @@
                 </div>
              <p class="checkbox m-t-lg">
                <a onclick="$('#ajaxModal').modal('hide');$('#ajaxModal').remove();" class="btn btn-sm btn-danger text-uc m-t-n-xs pull-right"><i class="fa fa-times"></i> 取消</a>
-               <a onclick="if ($('#assignForm').parsley('validate')){$('#assignForm').submit();}" class="btn btn-sm btn-success text-uc m-t-n-xs m-r-xs pull-right"><i class="fa fa-check"></i> 安排面试</a>
+               <a onclick="if ($('#assignForm').parsley('validate')){loader(this); $('#assignForm').submit();}" class="btn btn-sm btn-success text-uc m-t-n-xs m-r-xs pull-right"><i class="fa fa-check"></i> 安排面试</a>
              </p>
          </form>
        </div>

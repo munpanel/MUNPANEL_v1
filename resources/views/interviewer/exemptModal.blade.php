@@ -32,11 +32,11 @@
            <p class="checkbox m-t-lg">
              <a onclick="$('#ajaxModal').modal('hide');$('#ajaxModal').remove();" class="btn btn-sm btn-danger text-uc m-t-n-xs pull-right"><i class="fa fa-times"></i> 取消</a>
              @if ($mode == 'exempt')
-             <button type="submit" class="btn btn-sm btn-success text-uc m-t-n-xs m-r-xs pull-right"><i class="fa fa-check"></i> 面试通过</button>
+             <button type="submit" class="btn btn-sm btn-success text-uc m-t-n-xs m-r-xs pull-right" onclick="loader(this)"><i class="fa fa-check"></i> 面试通过</button>
              @elseif ($mode == 'rollBack')
-             <button type="submit" class="btn btn-sm btn-success text-uc m-t-n-xs m-r-xs pull-right"><i class="fa fa-check"></i> 退回面试</button>
+             <button type="submit" class="btn btn-sm btn-success text-uc m-t-n-xs m-r-xs pull-right" onclick="loader(this)"><i class="fa fa-check"></i> 退回面试</button>
              @elseif ($mode == 'cancel')
-             <button type="submit" class="btn btn-sm btn-success text-uc m-t-n-xs m-r-xs pull-right"><i class="fa fa-check"></i> 取消面试</button>
+             <button type="submit" class="btn btn-sm btn-success text-uc m-t-n-xs m-r-xs pull-right" onclick="loader(this)"><i class="fa fa-check"></i> 取消面试</button>
              @endif
            </p>
          </form>

@@ -193,6 +193,9 @@ class Reg extends Model
 
     public function make()
     {
+        $status = 'reg';
+        $group = json_decode($this->reginfo)->conference->groupOption;
+        if ($group == 'personal') $status = 'sVerified';
         switch ($this->type)
         {
             case 'delegate':
@@ -204,7 +207,7 @@ class Reg extends Model
                 $delegate->school_id = $this->school_id;
                 $delegate->committee_id = json_decode($this->reginfo)->conference->committee;
                 // TODO: 如果团队报名，则为 reg
-                $delegate->status = 'sVerified';
+                $delegate->status = $status;
                 $delegate->save();
                 break;
             case 'observer':
@@ -213,7 +216,7 @@ class Reg extends Model
                 $observer->school_id = $this->school_id;
                 $observer->committee_id = json_decode($this->reginfo)->conference->committee;
                 // TODO: 如果团队报名，则为 reg
-                $observer->status = 'sVerified';
+                $observer->status = $status;
                 $observer->save();
                 break;
             case 'volunteer':
@@ -224,7 +227,7 @@ class Reg extends Model
                 $volunteer->conference_id = $this->conference_id;
                 $volunteer->school_id = $this->school_id;
                 // TODO: 如果团队报名，则为 reg
-                $volunteer->status = 'sVerified';
+                $volunteer->status = $status;
                 $volunteer->save();
                 break;
             case 'dais':

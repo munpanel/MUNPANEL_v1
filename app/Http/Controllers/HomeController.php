@@ -422,7 +422,7 @@ class HomeController extends Controller
                 }
             }
             if (Reg::current()->type == 'ot' || Reg::current()->type == 'dais')
-                if ($reg->delegate->status != 'fail') $operations[] = 'setDelgroup';
+                if ($reg->delegate->status != 'fail' && Reg::currentConference()->delegategroups->count() > 0) $operations[] = 'setDelgroup';
         }
         return view('ot.regInfoModal', ['reg' => $reg, 'allRegs' => $allRegs, 'operations' => $operations]);
     }

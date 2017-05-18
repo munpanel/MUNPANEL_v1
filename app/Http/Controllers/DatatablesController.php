@@ -660,7 +660,8 @@ class DatatablesController extends Controller //To-Do: Permission Check
         {
             $select = '<input name="nation" type="radio" value="' . $nation->id . '"';
             $delnames = '无';
-            $command = '<a href="' . mp_url('/dais/freeNation/' . $nation->id) . '" class="btn btn-xs btn-white';
+            //$command = '<a href="' . mp_url('/dais/freeNation/' . $nation->id) . '" class="btn btn-xs btn-white';
+            $command = '<button class="btn btn-xs btn-success freeButton" nation-id="' . $nation->id . '"type="button"';
             if ($nation->locked)
             {
                 $select .= ' disabled="disabled"';
@@ -671,7 +672,10 @@ class DatatablesController extends Controller //To-Do: Permission Check
                 if ($nation->assignedDelegates->isEmpty())
                     $command .= ' disabled';
                 else
+                {
                     $delnames = $nation->scopeAssignedDelegate();
+                    $command .= ' onclick="loader(this)"';
+                }
                 if (!$autosel)
                 {
                     $select .= ' checked="true"';
@@ -689,7 +693,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
             else
                 $buttonText = '清空分配';
             $select .= '>';
-            $command .= '">'.$buttonText.'</a>
+            $command .= '>'.$buttonText.'</button>
                         <a href="dais/nationDetails.modal/'. $nation->id .'" class="btn btn-xs btn-warning details-modal" data-toggle="ajaxModal">编辑</a>
                         <a href="dais/delete/nation/'. $nation->id .'" class="btn btn-xs btn-danger details-modal" data-toggle="ajaxModal">删除</a>';
                         // To-Do: make all those HTTP requests of the buttons JS-based

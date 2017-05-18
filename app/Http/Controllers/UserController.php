@@ -859,6 +859,7 @@ class UserController extends Controller
      */
     public function test(Request $request)
     {
+        dd(Delegate::find(22)->canAssignSeats());
         return 'gou';
         $dels = Delegate::where('conference_id', 2)->with('reg')->get();
         $ret = '';

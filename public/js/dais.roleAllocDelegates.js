@@ -13,7 +13,8 @@ $(document).ready(function() {
             fnInitComplete: function(oSettings, json) {
                 $(document).on('click', '.addButton', function(){
                     $.post("dais/addSeat/" + $(this).attr('del-id'), $('#seatform').serialize(), function(receivedData){
-                        //if (receivedData == "success")
+                        if (receivedData != "success")
+                            alert(receivedData);
                         //location.reload();
                         $('#delegate-table').dataTable().fnReloadAjax(undefined, undefined, true);
                         $('#nation-table').dataTable().fnReloadAjax(undefined, undefined, true);

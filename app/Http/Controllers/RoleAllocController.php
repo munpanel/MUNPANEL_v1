@@ -196,19 +196,22 @@ class RoleAllocController extends Controller
         $delegates = $nation->assignedDelegates;
         foreach($delegates as $delegate)
         {
-            if ($delegate->seat_locked)
+            if ($delegate->seat_locked && $delegate->nation_id == $id)
                 return 'LOCKED';
         }
         foreach($delegates as $delegate)
         {
             if ($delegate->canAssignSeats())
             {
-                $delegate->nation_id = null;
-                $delegate->save();
+                if ($delegate->nation_id == $id) {
+                    $delegate->nation_id = null;
+                    $delegate->save();
+                }
                 $nation->assignedDelegates()->detach($delegate->reg_id);
             }
         }
-        return redirect(mp_url('/roleAlloc'));
+        return 'success';
+        //return redirect(mp_url('/roleAlloc'));
     }
 
     /**

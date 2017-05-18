@@ -12,6 +12,14 @@ $(document).ready(function() {
             {data: 'command', name: 'command', orderable: false}
         ],
         fnInitComplete: function(oSettings, json) {
+            $(document).on('click', '.freeButton', function(){
+                $.get('dais/freeNation/' + $(this).attr('nation-id'), function(data) {
+                    if (data != 'success')
+                        alert(data);
+                    $('#delegate-table').dataTable().fnReloadAjax(undefined, undefined, true);
+                    $('#nation-table').dataTable().fnReloadAjax(undefined, undefined, true);
+                });
+            });
             $(document).on('hidden.bs.modal', '#ajaxModal', function() {
                 $('#nation-table').dataTable().fnReloadAjax(undefined, undefined, true);
             });

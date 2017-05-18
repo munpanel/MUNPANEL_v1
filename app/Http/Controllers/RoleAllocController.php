@@ -370,10 +370,12 @@ class RoleAllocController extends Controller
         if (!$delegate->canAssignSeats())
             return 'error';
         $delegate->seat_locked = true;
+        $delegate->committee_id = $delegate->nation->committee_id;
         $delegate->save();
         if (is_object($delegate->partner))
         {
             $delegate->partner->seat_locked = true;
+            $delegate->partner->committee_id = $delegate->partner->nation->committee_id;
             $delegate->partner->save();
         }
         $delegate->nation->setLock();

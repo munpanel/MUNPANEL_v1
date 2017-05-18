@@ -156,8 +156,9 @@ class Reg extends Model
 
     public function sudo()
     {
-        $sessionName = 'regIdforConference'.Reg::currentConferenceID().'sudo';
-        session([$sessionName => $this->id]);
+        $sessionName = 'regIdforConference'.Reg::currentConferenceID();
+        session([$sessionName.'sudo' => $this->id]);
+        session([$sessionName.'confirm' => true]);
     }
 
     public function addEvent($type, $content)

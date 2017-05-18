@@ -161,13 +161,13 @@ class RoleAllocController extends Controller
     public static function addAssign($delegate, $nation, $partner = true)
     {
         //$delegate->nation_id = $nation->id;
-        if (!$delegate->canAssignSeats())
+        if (!$delegate->canAssignSeats($nation))
             return false;
-        if ($delegate->committee_id != $nation->committee_id)
+        /*if ($delegate->committee_id != $nation->committee_id)
             return false;
         $max = $nation->committee->maxAssignList;
         if ($delegate->assignedNations->count() >= $max && $max != -1)
-            return false;
+            return false;*/
         if ($max == 1)
         {
             $delegate->nation_id = $nation->id;

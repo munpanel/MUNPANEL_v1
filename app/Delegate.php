@@ -161,7 +161,7 @@ class Delegate extends Model
         }
     }
 
-    public function canAssignSeats() {
+    public function canAssignSeats($nation = null) {
         switch($this->realStatus())
         {
             case 'oVerified':
@@ -172,7 +172,22 @@ class Delegate extends Model
             case 'interview_retest_failed':
             case 'interview_retest_unassigned':
             case 'interview_retest_undecided':
-                return Http\Controllers\RoleAllocController::delegates()->contains('reg_id', $this->reg_id);
+                if (Http\Controllers\RoleAllocController::delegates()->contains('reg_id', $this->reg_id))
+                {
+                    if (is_object($nation))
+                    {
+                        if ($nation->conference_id != $this->conference_id)
+                            return false;
+                        if ($nation->locked)
+                            return false;
+                        $max = $nation->committee->maxAssignList;
+                        if ($this->assignedNations->count() >= $max && $max != -1)
+                            return false;
+                        if (Reg::current()->type == 'dais' && $nation->committee_id != $this->committee_id)
+                            return false;
+                    }
+                    return true;
+                }
             default:
                 return false;
         }

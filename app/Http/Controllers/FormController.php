@@ -66,8 +66,8 @@ class FormController extends Controller
                       我以个人身份报名<br>
                       <input name="groupOption" value="group" type="radio">
                       我跟随团队报名<br>
-                      <input name="groupOption" value="leader" type="radio">
-                      我是团队报名的领队<br>
+                      <!--input name="groupOption" value="leader" type="radio">
+                      我是团队报名的领队<br-->
                   </div>
                 </div>';
                 break;

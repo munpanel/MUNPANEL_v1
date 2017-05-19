@@ -213,13 +213,19 @@ if (empty($active))
               @foreach($nations as $nation)
               <tr>
               <td><center>{{++$i}}</center></td>
-              <td>{{$nation->displayName(true, 2)}}</td>
                 @if ($isOtOrDais)
+                <td>{{$nation->displayName(true, 1)}}</td>
                 <td>{{isset($nation->nationgroups) ? $nation->scopeNationGroup(true, 2) : '无'}}</td>
                 <td><center><input type="checkbox" name="seats[]" value="{{$nation->id}}" checked></center></td>
+                @else
+                <td>{{$nation->displayName(true, 2)}}</td>
                 @endif
                 @if (!$reg->delegate->seat_locked && Reg::currentID() == $reg->id)
+                @if ($nation->status == 'open')
                 <td><center><input type="radio" name="seatSelect" value="{{$nation->id}}" {{$reg->delegate->nation_id == $nation->id ? 'checked':''}}></center></td>
+                @else
+                <td><center><a style='cursor: pointer;' class='details-popover' data-placement='right' data-trigger='click' data-original-title='席位不可选' data-toggle='popover' data-content='该席位已被其他代表选择，因此您将无法选择该席位'><i class="fa fa-times-circle-o" aria-hidden="true"></i></a></center></td>
+                @endif
                 @endif
               </tr>
               @endforeach
@@ -303,6 +309,8 @@ function newPopup(url) {
 $('#updateSeatForm').submit(function(e){
     e.preventDefault();
     $.post('{{mp_url('/ot/updateSeat')}}', $('#updateSeatForm').serialize()).done(function(data) {
+        if (data != 'success')
+            alert(data);
         $("#ajaxModal").load("{{mp_url('/ot/regInfo.modal/'.$reg->id.'?active=seats')}}");
     });
 });

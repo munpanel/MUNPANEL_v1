@@ -88,6 +88,7 @@ Date.now = Date.now || function() { return +new Date; };
     var popOverSettings = {
         html: true,
         selector: '[data-toggle="popover"]',
+        container: 'body'
     }
 
     $(document).popover(popOverSettings);

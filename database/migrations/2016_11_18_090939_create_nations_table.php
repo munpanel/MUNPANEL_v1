@@ -32,6 +32,7 @@ class CreateNationsTable extends Migration
             $table->boolean('veto_power')->default(false);
             $table->boolean('attendance')->nullable();
             $table->boolean('locked')->default(false);
+            $table->enum('status', ['open', 'selected', 'locked'])->default('open');
             $table->timestamps();
             $table->unique(['committee_id', 'name']);
             $table->foreign('conference_id')->references('id')->on('conferences')->onDelete('cascade');

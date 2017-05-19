@@ -662,7 +662,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
             $delnames = '无';
             //$command = '<a href="' . mp_url('/dais/freeNation/' . $nation->id) . '" class="btn btn-xs btn-white';
             $command = '<button class="btn btn-xs btn-success freeButton" nation-id="' . $nation->id . '"type="button"';
-            if ($nation->locked)
+            if ($nation->status != 'open')
             {
                 $select .= ' disabled="disabled"';
                 $delnames = $nation->scopeDelegate();
@@ -697,7 +697,17 @@ class DatatablesController extends Controller //To-Do: Permission Check
                         <a href="dais/nationDetails.modal/'. $nation->id .'" class="btn btn-xs btn-warning details-modal" data-toggle="ajaxModal">编辑</a>
                         <a href="dais/delete/nation/'. $nation->id .'" class="btn btn-xs btn-danger details-modal" data-toggle="ajaxModal">删除</a>';
                         // To-Do: make all those HTTP requests of the buttons JS-based
-            $delnames = ($nation->locked?"<i class='fa fa-lock' aria-hidden='true'></i>":"<i class='fa fa-unlock' aria-hidden='true'></i>").$delnames;
+            switch($nation->status)
+            {
+                case 'selected':
+                    $delnames = "<i class='fa fa-unlock' aria-hidden='true'></i>".$delnames;
+                    break;
+                case 'locked':
+                    $delnames = "<i class='fa fa-lock' aria-hidden='true'></i>".$delnames;
+                    break;
+                case 'open':
+                    $delnames = "(未选) ".$delnames;
+            }
             $result->push([
                 'select' => $select,
                 'name' => $nation->displayName(),

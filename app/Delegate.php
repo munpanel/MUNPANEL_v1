@@ -178,7 +178,8 @@ class Delegate extends Model
                     {
                         if ($nation->conference_id != $this->conference_id)
                             return false;
-                        if ($nation->locked)
+                        //if ($nation->locked)
+                        if ($nation->status != 'open')
                             return false;
                         $max = $nation->committee->maxAssignList;
                         if ($this->assignedNations->count() >= $max && $max != -1)

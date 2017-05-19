@@ -359,6 +359,14 @@ class RoleAllocController extends Controller
         {
             if (!$delegate->seat_locked && isset($request->seatSelect) && $delegate->assignedNations->contains($request->seatSelect))
             {
+                $nation = Nation::findOrFail($request->seatSelect);
+                if ($nation->status != 'open')
+                    return 'error';
+                if (is_object($delegate->nation))
+                {
+                    $delegate->nation->status = 'open';
+                    $delegate->nation->save();
+                }
                 $delegate->nation_id = $request->seatSelect;
                 $delegate->save();
                 if (is_object($delegate->partner))
@@ -384,6 +392,7 @@ class RoleAllocController extends Controller
                 }
             }
         }
+        return 'success';
     }
 
     public function lockSeat($id)

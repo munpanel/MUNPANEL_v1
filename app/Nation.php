@@ -126,6 +126,7 @@ class Nation extends Model
         return $this->name;
     }
 
+    // deprecated due to change of logic.
     public function setLock($lock = true)
     {
         if ($lock)//Set lock of delegates first before calling this function. This design helps avoiding bugs.

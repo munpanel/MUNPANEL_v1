@@ -221,8 +221,10 @@ if (empty($active))
                 <td>{{$nation->displayName(true, 2)}}</td>
                 @endif
                 @if (!$reg->delegate->seat_locked && Reg::currentID() == $reg->id)
-                @if ($nation->status == 'open')
-                <td><center><input type="radio" name="seatSelect" value="{{$nation->id}}" {{$reg->delegate->nation_id == $nation->id ? 'checked':''}}></center></td>
+                @if ($reg->delegate->nation_id == $nation->id)
+                <td><center><input type="radio" name="seatSelect" value="{{$nation->id}}" checked></center></td>
+                @elseif ($nation->status == 'open')
+                <td><center><input type="radio" name="seatSelect" value="{{$nation->id}}"></center></td>
                 @else
                 <td><center><a style='cursor: pointer;' class='details-popover' data-placement='right' data-trigger='click' data-original-title='席位不可选' data-toggle='popover' data-content='该席位已被其他代表选择，因此您将无法选择该席位'><i class="fa fa-times-circle-o" aria-hidden="true"></i></a></center></td>
                 @endif

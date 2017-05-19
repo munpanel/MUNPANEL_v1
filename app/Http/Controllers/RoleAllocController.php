@@ -202,6 +202,7 @@ class RoleAllocController extends Controller
             $partner = $delegate->partner;
             return RoleAllocController::addAssign($partner, $nation, false);
         }
+        $delegate->reg->addEvent('role_added', '{"name":"'.Reg::current()->name().'", "role":"'.$nation->displayName(true, 2).'"}');
         return true;
     }
 
@@ -230,6 +231,7 @@ class RoleAllocController extends Controller
                     $delegate->save();
                 }
                 $nation->assignedDelegates()->detach($delegate->reg_id);
+                $delegate->reg->addEvent('role_altered', '{"name":"'.Reg::current()->name().'"}');
             }
         }
         return 'success';
@@ -369,10 +371,12 @@ class RoleAllocController extends Controller
                 }
                 $delegate->nation_id = $request->seatSelect;
                 $delegate->save();
+                $delegate->reg->addEvent('role_selected', '{"role":"'.$nation->displayName(true, 2).'"}');
                 if (is_object($delegate->partner))
                 {
                     $delegate->partner->nation_id = $request->seatSelect;
                     $delegate->partner->save();
+                    $delegate->partner->reg->addEvent('role_selected', '{"role":"'.$nation->displayName(true, 2).'"}');
                 }
                 $nation->status = 'selected';
                 $nation->save();
@@ -381,8 +385,10 @@ class RoleAllocController extends Controller
         else if ($delegate->canAssignSeats() && (!$delegate->seat_locked))
         {
             $delegate->assignedNations()->sync($request->seats);
+            $delegate->reg->addEvent('role_altered', '{"name":"'.Reg::current()->name().'"}');
             if (is_object($delegate->partner))
                 $delegate->partner->assignedNations()->sync($request->seats);
+                $delegate->partner->reg->addEvent('role_altered', '{"name":"'.Reg::current()->name().'"}');
             if (!$delegate->assignedNations->contains($delegate->nation_id))
             {
                 $delegate->nation_id = null;
@@ -405,11 +411,13 @@ class RoleAllocController extends Controller
         $delegate->seat_locked = true;
         $delegate->committee_id = $delegate->nation->committee_id;
         $delegate->save();
+        $delegate->reg->addEvent('role_locked', '{"name":"'.Reg::current()->name().'"}');
         if (is_object($delegate->partner))
         {
             $delegate->partner->seat_locked = true;
             $delegate->partner->committee_id = $delegate->partner->nation->committee_id;
             $delegate->partner->save();
+            $delegate->partner->reg->addEvent('role_locked', '{"name":"'.Reg::current()->name().'"}');
         }
         //$delegate->nation->setLock();
         $delegate->nation->status = 'locked';

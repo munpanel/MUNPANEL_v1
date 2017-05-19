@@ -191,6 +191,9 @@ if (empty($active))
               @endif
               @if ($reg->delegate->assignedNations->count() > 0)
               <h3>可供选择席位列表</h3>
+              @unless($isOtOrDais)
+              <div class="alert alert-info">您的席位分配仍有一定几率调整，我们仍有可能为您增加席位分配，如其他代表选择了您的可选席位并该席位选择得到锁定，您将无法选择该席位。在您选择席位后，您仍可修改您的选择，直到您的席位被锁定。</div>
+              @endunless
               <form method="post" id="updateSeatForm">
               <input type="hidden" name="id" value="{{$reg->id}}">
               <table class="table table-bordered table-striped table-hover">

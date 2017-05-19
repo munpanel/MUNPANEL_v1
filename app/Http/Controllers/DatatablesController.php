@@ -470,10 +470,10 @@ class DatatablesController extends Controller //To-Do: Permission Check
             foreach($nations as $nation)
             {
                 $result->push([
-                    'details' => '<a href="ot/nationDetails.modal/'. $nation->id .'" data-toggle="ajaxModal" id="'. $nation->id .'" class="details-modal"><i class="fa fa-search-plus"></i></a>',
+                    'details' => '<a href="dais/nationDetails.modal/'. $nation->id .'" data-toggle="ajaxModal" id="'. $nation->id .'" class="details-modal"><i class="fa fa-search-plus"></i></a>',
                     'id' => $nation->id,
                     'committee' => $nation->committee->name,
-                    'name' => $nation->name,
+                    'name' => $nation->displayName(true, 0),
                     'conpetence' => $nation->conpetence,
                     'veto_power' => $nation->veto_power ? '是' : '否',
                     'nationgroup' => $nation->scopeNationGroup(true, 5),

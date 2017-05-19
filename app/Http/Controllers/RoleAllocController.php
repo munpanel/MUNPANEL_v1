@@ -16,6 +16,7 @@ use App\School;
 use App\Delegate;
 use App\User;
 use App\Reg;
+use App\Committee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -246,8 +247,12 @@ class RoleAllocController extends Controller
      */
     public function nationDetailsModal($id)
     {
-        if (Reg::current()->type != 'dais')
+        if (Reg::current()->type == 'ot') {
+            if (!Reg::current()->can('edit-nations'))
+                return "Error";
+        } elseif (Reg::current()->type != 'dais') {
             return "Error";
+        }
         if ($id == 'new')
         {
             $nation = new Nation;
@@ -259,7 +264,16 @@ class RoleAllocController extends Controller
         }
         else
             $nation = Nation::findOrFail($id);
-        return view('dais.nationDetailsModal', ['nation' => $nation]);
+        $com = array();
+        $committees = Committee::where('conference_id', Reg::currentConferenceID())->get();
+        foreach ($committees as $committee)
+        {
+            $tmp = array();
+            $tmp['value'] = $committee->id;
+            $tmp['text'] = $committee->name;
+            $com[] = $tmp;
+        }
+        return view('dais.nationDetailsModal', ['nation' => $nation, 'committeesJSON' => json_encode($com)]);
     }
 
     /**

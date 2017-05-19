@@ -312,7 +312,6 @@ $('#updateSeatForm').submit(function(e){
 <script src="{{cdn_url('js/jquery.atwho.js')}}"></script-->
 <script>
 $(document).ready(function(){
-    $(".interviewer-list").select2();
     $.getScript( "{{cdn_url('js/jquery.caret.js')}}", function( data, textStatus, jqxhr  ) {
         $.getScript( "{{cdn_url('js/jquery.atwho.js')}}", function( data, textStatus, jqxhr  ) {
             $('#add_notes').atwho({

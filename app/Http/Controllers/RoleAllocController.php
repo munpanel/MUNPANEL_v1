@@ -99,11 +99,13 @@ class RoleAllocController extends Controller
             }
         }
         if ($assignOptions->ot && $reg->type == 'ot' && $reg->can('assign-roles'))
-            return Nation::all();
+            return Nation::where('conference_id', Reg::currentConferenceID())->get();
         if ($assignOptions->dais && $reg->type == 'dais')
             return $reg->dais->committee->nations;
         if ($assignOptions->interviewer && $reg->type == 'interviewer')
         {
+            return Nation::where('conference_id', Reg::currentConferenceID())->get();
+            // now interviewers can assign all nations
             return Nation::whereHas('committee', function($query) {
                 $query->whereHas('delegates.interviews', function($query) {
                     $query->where('interviewer_id', '=', Reg::currentID())->where('status', '=', 'passed');
@@ -143,11 +145,31 @@ class RoleAllocController extends Controller
      * @param int $id the id of the delegate
      * @return \Illuminate\Http\Response
      */
-    public function addDelegate(Request $request, $id)
+    public function addDelegate(Request $request, $id, $action = 'assign')
     {
-        if (RoleAllocController::addAssign(Delegate::findOrFail($id), Nation::findOrFail($request->nation)))
+        $delegate = Delegate::findOrFail($id);
+        $nation = Nation::find($request->nation);
+        switch ($action)
+        {
+            case 'assign':
+                if (!is_object($nation))
+                    return 'error';
+                if ($delegate->committee_id != $nation->committee_id)
+                    return 'prompt';
+            case 'doAssign':
+                if (!is_object($nation))
+                    return 'error';
+                if (RoleAllocController::addAssign($delegate, $nation))
+                    return 'success';
+                return 'error';
+            case 'modal':
+                return view('dais.roleAllocInconsistModal', ['delegate' => $delegate]);
+            default:
+                return 'error';
+        }
+        /*if (RoleAllocController::addAssign(Delegate::findOrFail($id), Nation::findOrFail($request->nation)))
             return 'success';
-        return 'error';
+        return 'error';*/
         //return redirect(mp_url('/roleAlloc'));
     }
 
@@ -165,9 +187,9 @@ class RoleAllocController extends Controller
             return false;
         /*if ($delegate->committee_id != $nation->committee_id)
             return false;
-        $max = $nation->committee->maxAssignList;
         if ($delegate->assignedNations->count() >= $max && $max != -1)
             return false;*/
+        $max = $nation->committee->maxAssignList;
         if ($max == 1)
         {
             $delegate->nation_id = $nation->id;

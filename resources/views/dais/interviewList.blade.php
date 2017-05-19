@@ -8,7 +8,6 @@ $canInterview = Auth::user()->regs->where('conference_id', Reg::currentConferenc
 <script src="{{cdn_url('js/moment.min.js')}}"></script>
 <script src="{{cdn_url('js/bootstrap-datetimepicker.min.js')}}"></script>
 <script src="{{cdn_url('js/markdown/epiceditor.js')}}"></script>
-<script src="{{cdn_url('/js/select2/select2.min.js')}}"></script>
 <script src="{{cdn_url('js/readmore.min.js')}}"></script>
 <script src="{{cdn_url('/js/editable/bootstrap-editable.js')}}"></script>
 <script>
@@ -20,7 +19,6 @@ $('.readmore').readmore({
 @endpush
 @push('css')
 <link href="{{cdn_url('css/bootstrap-datetimepicker.min.css')}}" rel="stylesheet">
-<link rel="stylesheet" href="{{cdn_url('js/select2/select2.css')}}" type="text/css" />
 <link rel="stylesheet" href="{{cdn_url('/css/bootstrap-editable.css')}}" type="text/css" />
 @endpush
 @section('content')

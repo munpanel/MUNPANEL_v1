@@ -25,6 +25,8 @@
 </div>
 <script type="text/javascript">
 $(document).ready(function() {
-      $(".interviewer-list").select2();
+    $.getScript( "{{cdn_url('js/select2/select2.min.js')}}", function( data, textStatus, jqxhr  ) {
+        $(".interviewer-list").select2();
+    });
 });
 </script>

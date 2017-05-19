@@ -46,8 +46,8 @@
           <a href="{{mp_url('/interview/'.$interview->id.'/cancelModal')}}" class="btn btn-xs btn-danger pull-right m-r-xs" data-toggle="ajaxModal">取消面试</a>
         @elseif ($interview->status == 'undecided')
           <a href="{{mp_url('/interview/'.$interview->id.'/rateModal')}}" class="btn btn-xs btn-info pull-right" data-toggle="ajaxModal">决定结果</a>
-        @elseif (in_array($interview->status, ['passed', 'exempted']))
-        <a href="" class="btn btn-xs btn-success pull-right" data-toggle="ajaxModal">分配席位</a>
+        {{--@elseif (in_array($interview->status, ['passed', 'exempted']))
+        <a href="" class="btn btn-xs btn-success pull-right" data-toggle="ajaxModal">分配席位</a>--}}
         @endif
     @endif
   </div>

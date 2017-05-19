@@ -1,4 +1,4 @@
-@php
+ephp
 $i = 0;
 $regInfo = json_decode($reg->reginfo);
 $isOtOrDais = Reg::current()->type == 'ot' && Reg::current()->specific()->status == 'success';
@@ -139,6 +139,6 @@ $isot = Reg::current()->type == 'ot';
 </div>
 <script type="text/javascript">
 $(document).ready(function() {
-      $(".interviewer-list").select2();
+//      $(".interviewer-list").select2();
 });
 </script>

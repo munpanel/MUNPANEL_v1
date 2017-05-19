@@ -23,15 +23,17 @@ class CreateNationsTable extends Migration
     public function up()
     {
         Schema::create('nations', function (Blueprint $table) {
-			$table->increments('id');
+            $table->increments('id');
+            $table->integer('conference_id')->unsigned();
             $table->integer('committee_id')->unsigned();
-			$table->string('name');
-			$table->integer('conpetence')->unsigned()->default(1);
-			$table->boolean('veto_power')->default(false);
-			$table->boolean('attendance')->nullable();
-			$table->boolean('locked')->default(false);
+            $table->string('name');
+            $table->integer('conpetence')->unsigned()->default(1);
+            $table->boolean('veto_power')->default(false);
+            $table->boolean('attendance')->nullable();
+            $table->boolean('locked')->default(false);
             $table->timestamps();
             $table->unique(['committee_id', 'name']);
+            $table->foreign('conference_id')->references('id')->on('conferences')->onDelete('cascade');
             $table->foreign('committee_id')->references('id')->on('committees')->onDelete('cascade');
         });
     }

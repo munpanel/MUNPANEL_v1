@@ -1,6 +1,7 @@
 @php
 $count = $reg->delegate->interviews()->whereIn('status', ['passed', 'failed'])->count();
 @endphp
+<link rel="stylesheet" href="{{cdn_url('js/select2/select2.css')}}" type="text/css" />
                 <div id="interviewOpSelect" style="display: block;">
                     <h3 class="m-t-sm">安排面试</h3>
 
@@ -34,7 +35,8 @@ $count = $reg->delegate->interviews()->whereIn('status', ['passed', 'failed'])->
                           <div class="m-b">
                           <div class="form-group">
                           <label class="col-sm-2 control-label">面试官</label>
-                            <select class="interviewer-list col-sm-10" name="interviewer">
+                          <div class="col-sm-10">
+                            <select class="interviewer-list" name="interviewer" style="width: 100%">
                                 @foreach (\App\Interviewer::list() as $name => $group)
                                 <optgroup label="{{$name}}">
                                     @foreach ($group as $iid => $iname)
@@ -43,6 +45,7 @@ $count = $reg->delegate->interviews()->whereIn('status', ['passed', 'failed'])->
                                 </optgroup>
                                 @endforeach
                             </select>
+                            </div>
                             </div>
                           </div>
 
@@ -79,7 +82,8 @@ $count = $reg->delegate->interviews()->whereIn('status', ['passed', 'failed'])->
                           <div class="m-b">
                           <div class="form-group">
                           <label class="col-sm-2 control-label">面试官</label>
-                            <select class="interviewer-list col-sm-10" name="interviewer">
+                          <div class="col-sm-10">
+                            <select class="interviewer-list" name="interviewer" style="width: 100%">
                                 @foreach (\App\Interviewer::list() as $name => $group)
                                 <optgroup label="{{$name}}">
                                     @foreach ($group as $iid => $iname)
@@ -88,6 +92,7 @@ $count = $reg->delegate->interviews()->whereIn('status', ['passed', 'failed'])->
                                 </optgroup>
                                 @endforeach
                             </select>
+                            </div>
                             </div>
                           </div>
 
@@ -118,6 +123,9 @@ $('#exemptInterviewForm').submit(function(e){
     $.post('{{mp_url('/ot/exemptInterview/'.$reg->id)}}', $('#exemptInterviewForm').serialize()).done(function(data) {
         $("#ajaxModal").load("{{mp_url('/ot/regInfo.modal/'.$reg->id.'?active=interview')}}");
     });
+});
+$.getScript( "{{cdn_url('js/select2/select2.min.js')}}", function( data, textStatus, jqxhr  ) {
+    $(".interviewer-list").select2();
 });
 var assign_editor;
 var exempt_editor;

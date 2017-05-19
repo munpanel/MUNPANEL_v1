@@ -30,6 +30,7 @@ use App\Dais;
 use App\Good;
 use App\Order;
 use App\Note;
+use App\Nation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -859,6 +860,13 @@ class UserController extends Controller
      */
     public function test(Request $request)
     {
+        $nations = Nation::with('committee')->get();
+        foreach($nations as $nation)
+        {
+            $nation->conference_id = $nation->committee->conference_id;
+            $nation->save();
+        }
+        return 'miao';
         dd(Delegate::find(22)->canAssignSeats());
         return 'gou';
         $dels = Delegate::where('conference_id', 2)->with('reg')->get();

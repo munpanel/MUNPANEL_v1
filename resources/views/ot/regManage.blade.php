@@ -3,7 +3,6 @@
 @push('scripts')
     <script src="{{cdn_url('/js/jquery.dataTables.min.js')}}"></script>
     <script src="{{cdn_url('/js/datatables/fnReloadAjax.js')}}"></script>
-    <script src="{{cdn_url('/js/select2/select2.min.js')}}"></script>
     @if (Auth::user()->can('approve-regs-pay'))
     <script src="{{cdn_url('/js/ot.regManage.withPay.js')}}"></script>
     @else
@@ -11,7 +10,6 @@
     @endif
 @endpush
 @push('css')
-    <link rel="stylesheet" href="{{cdn_url('js/select2/select2.css')}}" type="text/css" />
     <link rel="stylesheet" href="{{cdn_url('/css/jquery.dataTables.min.css')}}" type="text/css" />
 @endpush
 @section('content')

@@ -693,10 +693,12 @@ class DatatablesController extends Controller //To-Do: Permission Check
             else
                 $buttonText = '清空分配';
             $select .= '>';
-            $command .= '>'.$buttonText.'</button>
-                        <a href="dais/nationDetails.modal/'. $nation->id .'" class="btn btn-xs btn-warning details-modal" data-toggle="ajaxModal">编辑</a>
-                        <a href="dais/delete/nation/'. $nation->id .'" class="btn btn-xs btn-danger details-modal" data-toggle="ajaxModal">删除</a>';
-                        // To-Do: make all those HTTP requests of the buttons JS-based
+            $command .= '>'.$buttonText.'</button>';
+            if ((Reg::current()->type == 'ot' && Reg::current()->can('edit-nations')) || Reg::current()->type == 'dais')
+            {
+                $command .= '<a href="dais/nationDetails.modal/'. $nation->id .'" class="btn btn-xs btn-warning details-modal" data-toggle="ajaxModal">编辑</a>'.
+                            '<a href="dais/delete/nation/'. $nation->id .'" class="btn btn-xs btn-danger details-modal" data-toggle="ajaxModal">删除</a>';
+            }
             switch($nation->status)
             {
                 case 'selected':

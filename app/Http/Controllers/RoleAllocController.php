@@ -285,8 +285,12 @@ class RoleAllocController extends Controller
      */
     public function updateNation(Request $request, $id)
     {
-        if (Reg::current()->type != 'dais')
-            return 'Error';
+        if (Reg::current()->type == 'ot') {
+            if (!Reg::current()->can('edit-nations'))
+                return "Error";
+        } elseif (Reg::current()->type != 'dais') {
+            return "Error";
+        }
         $nation = Nation::findOrFail($id);
         $name = $request->get('name');
         $value = $request->get('value');
@@ -304,8 +308,15 @@ class RoleAllocController extends Controller
      */
     public function deleteNation(Request $request, $id, $confirm = false)
     {
-        if (Reg::current()->type != 'dais')
-            return 'Error';
+        if (Reg::current()->type == 'ot') {
+            if (!Reg::current()->can('edit-nations'))
+                return "Error";
+        } elseif (Reg::current()->type != 'dais') {
+            return "Error";
+        }
+        $nation = Nation::findOrFail($id);
+        if ($nation->status != 'open')
+            return "Error"; //TODO: change this
         if ($confirm)
         {
             Nation::destroy($id);
@@ -313,7 +324,7 @@ class RoleAllocController extends Controller
 	}
 	else
 	{
-            $name = Nation::findOrFail($id)->name;
+            $name = $nation->name;
             return view('warningDialogModal', ['danger' => false, 'msg' => "您将要删除国家$name 。确实要继续吗？", 'target' => mp_url("/dais/delete/nation/$id/true")]);
 	}
     }

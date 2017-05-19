@@ -106,6 +106,26 @@ class Nation extends Model
         return $scope;
     }
 
+    public function displayName($remark = true, $committee = 0)
+    {
+        $info = '';
+        if ($remark)
+            $info .= $this->remark;
+        if ($committee == 1) {
+            if ($info != '')
+                $info .= ', ';
+            $info .= $this->committee->name;
+        }
+        else if ($committee == 2) {
+            if ($info != '')
+                $info .= ', ';
+            $info .= $this->committee->display_name;
+        }
+        if ($info != '')
+            return $this->name . ' (' . $info . ')';
+        return $this->name;
+    }
+
     public function setLock($lock = true)
     {
         if ($lock)//Set lock of delegates first before calling this function. This design helps avoiding bugs.

@@ -700,7 +700,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
             $delnames = ($nation->locked?"<i class='fa fa-lock' aria-hidden='true'></i>":"<i class='fa fa-unlock' aria-hidden='true'></i>").$delnames;
             $result->push([
                 'select' => $select,
-                'name' => $nation->name,
+                'name' => $nation->displayName(),
                 'committee' => $nation->committee->name,
                 'nationgroup' => isset($nation->nationgroups) ? $nation->scopeNationGroup(true, 3) : '无',
                 'delegate' => $delnames,

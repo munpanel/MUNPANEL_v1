@@ -27,6 +27,7 @@ class CreateNationsTable extends Migration
             $table->integer('conference_id')->unsigned();
             $table->integer('committee_id')->unsigned();
             $table->string('name');
+            $table->string('remark')->nullable();
             $table->integer('conpetence')->unsigned()->default(1);
             $table->boolean('veto_power')->default(false);
             $table->boolean('attendance')->nullable();

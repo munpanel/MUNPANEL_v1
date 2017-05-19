@@ -185,7 +185,7 @@ if (empty($active))
               <div class="col-sm-12 b-r">
               <h3 class="m-t-sm">当前席位</h3>
               @if (isset($reg->delegate->nation_id))
-              <p>{{$isOtOrDais ? '该用户' : '您'}}已{{$reg->delegate->seat_locked ? '锁定':'选择'}}席位<strong>{{$reg->delegate->nation->name}}</strong>。</p>
+              <p>{{$isOtOrDais ? '该用户' : '您'}}已{{$reg->delegate->seat_locked ? '锁定':'选择'}}席位<strong>{{$reg->delegate->nation->displayName()}}</strong>。</p>
               @else
               <p>{{$isOtOrDais ? '该用户' : '您'}}还没有选择任何席位。</p>
               @endif
@@ -213,7 +213,7 @@ if (empty($active))
               @foreach($nations as $nation)
               <tr>
               <td><center>{{++$i}}</center></td>
-              <td>{{$nation->name}}</td>
+              <td>{{$nation->displayName(true, 2)}}</td>
                 @if ($isOtOrDais)
                 <td>{{isset($nation->nationgroups) ? $nation->scopeNationGroup(true, 2) : '无'}}</td>
                 <td><center><input type="checkbox" name="seats[]" value="{{$nation->id}}" checked></center></td>

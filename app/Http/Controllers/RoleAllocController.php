@@ -410,9 +410,9 @@ class RoleAllocController extends Controller
             return 'error';
         if ($confirm)
         {
-            $delegate->reg->user->sendSMS('感谢您报名'.Reg::currentConference()->name.'，我们现已更新了您的可选席位列表，烦请登陆 MUNPANEL 系统查看详情并选择自己的意向席位。');
+            $delegate->reg->user->sendSMS('感谢您报名'.Reg::currentConference()->name.'，我们现已更新了您的可选席位列表，您现共有'.$delegate->assignedNations->count().'个可选席位，烦请登陆 MUNPANEL 系统查看详情并选择自己的意向席位。');
             if (is_object($delegate->partner))
-                $delegate->partner->reg->user->sendSMS('感谢您报名'.Reg::currentConference()->name.'，我们现已更新了您的可选席位列表，烦请登陆 MUNPANEL 系统查看详情并选择自己的意向席位。');
+                $delegate->partner->reg->user->sendSMS('感谢您报名'.Reg::currentConference()->name.'，我们现已更新了您的可选席位列表，您现共有'.$delegate->partner->assignedNations->count().'个可选席位，烦请登陆 MUNPANEL 系统查看详情并选择自己的意向席位。');
         }
         else
         {

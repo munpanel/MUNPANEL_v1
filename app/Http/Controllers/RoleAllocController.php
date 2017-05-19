@@ -374,6 +374,8 @@ class RoleAllocController extends Controller
                     $delegate->partner->nation_id = $request->seatSelect;
                     $delegate->partner->save();
                 }
+                $nation->status = 'selected';
+                $nation->save();
             }
         }
         else if ($delegate->canAssignSeats() && (!$delegate->seat_locked))
@@ -409,7 +411,10 @@ class RoleAllocController extends Controller
             $delegate->partner->committee_id = $delegate->partner->nation->committee_id;
             $delegate->partner->save();
         }
-        $delegate->nation->setLock();
+        //$delegate->nation->setLock();
+        $delegate->nation->status = 'locked';
+        $delegate->nation->save();
+        return 'success';
     }
 
     public function sendSMS($id, $confirm = false)

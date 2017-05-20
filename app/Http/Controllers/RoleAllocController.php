@@ -203,7 +203,7 @@ class RoleAllocController extends Controller
             $partner = $delegate->partner;
             return RoleAllocController::addAssign($partner, $nation, false);
         }
-        $delegate->reg->addEvent('role_added', '{"name":"'.Reg::current()->name().'", "role":"'.$nation->displayName(true, 2).'"}');
+        $delegate->reg->addEvent('role_assigned', '{"name":"'.Reg::current()->name().'", "role":"'.$nation->displayName(true, 2).'"}');
         return true;
     }
 

@@ -12,7 +12,7 @@ $interviews = interviewStat(Reg::currentConferenceID(), -1);
       <small class="text-muted block">报名待审核</small>
       <h4>{{$regs['oUnverified']}}</h4>
       <div class="inline">
-        <div class="easypiechart easyPieChart" data-size="100" data-line-width="4" data-percent="{{$regs['all'] > 0 ? ($regs['oVerified'] * 100 / $regs['all']) : 0}}" data-loop="false">
+        <div class="easypiechart easyPieChart" data-size="100" data-line-width="4" data-percent="{{$regs['sVerified'] > 0 ? ($regs['oVerified'] * 100 / $regs['sVerified']) : 0}}" data-loop="false">
           <span class="h3">0</span>%
           <div class="easypie-text">已审核</div>
           <canvas></canvas>

@@ -25,15 +25,20 @@ use App\Interview;
 function oVerifyStat($cid)
 {
     $delUnOVerify = Delegate::where('conference_id', $cid)->where('status', 'sVerified')->count();
-    $delOVerify = Delegate::where('conference_id', $cid)->count() - $delUnOVerify;
+    $delOVerify = Delegate::where('conference_id', $cid)->where('status', '!=', 'reg')->count() - $delUnOVerify;
     $obsUnOVerify = Observer::where('conference_id', $cid)->where('status', 'sVerified')->count();
-    $obsOVerify = Observer::where('conference_id', $cid)->count() - $obsUnOVerify;
+    $obsOVerify = Observer::where('conference_id', $cid)->where('status', '!=', 'reg')->count() - $obsUnOVerify;
     $volUnOVerify = Volunteer::where('conference_id', $cid)->where('status', 'sVerified')->count();
-    $volOVerify = Volunteer::where('conference_id', $cid)->count() - $volUnOVerify;
+    $volOVerify = Volunteer::where('conference_id', $cid)->where('status', '!=', 'reg')->count() - $volUnOVerify;
     $all = Reg::where('conference_id', $cid)->whereIn('type', ['delegate', 'observer', 'volunteer'])->count();
     $interviewQuery = DB::select('SELECT count(DISTINCT reg_id) as intv FROM `interviews` where `conference_id` = ? and `status` not in (\'cancelled\', \'failed\');', [$cid]);
     $interviews = $interviewQuery[0]->intv;
-    return ['oVerified' => $delOVerify + $obsOVerify + $volOVerify, 'oUnverified' => $delUnOVerify + $obsUnOVerify + $volUnOVerify, 'all' => $all, 'delOVerify' => $delOVerify, 'interviews' => $interviews];
+    return ['oVerified' => $delOVerify + $obsOVerify + $volOVerify, 
+            'oUnverified' => $delUnOVerify + $obsUnOVerify + $volUnOVerify, 
+            'sVerified' => $delOVerify + $obsOVerify + $volOVerify + $delUnOVerify + $obsUnOVerify + $volUnOVerify, 
+            'all' => $all, 
+            'delOVerify' => $delOVerify, 
+            'interviews' => $interviews];
 }
 
 /**

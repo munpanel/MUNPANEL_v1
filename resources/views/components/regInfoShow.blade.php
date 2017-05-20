@@ -47,6 +47,7 @@
       @endif                
     @endif
     <label>会议信息</label>
+  @if (Reg::currentConferenceID() == 2)
     @if (isset($regInfo->conference->committee1))
     <p><i>委员会意向 1</i><br>&emsp;&emsp;{{App\Committee::find($regInfo->conference->committee1)->name}}
     @if (isset($regInfo->conference->branch1) || isset($regInfo->conference->branch2))
@@ -63,6 +64,17 @@
     @endif
     @if (isset($regInfo->conference->typeInterview))
     <p><i>面试联络方式</i><br>&emsp;&emsp;{{typeInterview($regInfo->conference->typeInterview)}}</p>
+    @endif
+  @else
+    @if (isset($regInfo->conference->committee))
+    <p><i>委员会</i><br>&emsp;&emsp;{{App\Committee::find($regInfo->conference->committee)->display_name}}</p>
+    @endif
+  @endif
+    @if (isset($regInfo->conference->partnername))
+    <p><i>搭档姓名</i><br>&emsp;&emsp;{{$regInfo->conference->partnername}}</p>
+    @endif
+    @if (isset($regInfo->conference->roommatename))
+    <p><i>室友姓名</i><br>&emsp;&emsp;{{$regInfo->conference->roommatename}}</p>
     @endif
     @if (isset($regInfo->conference->groupOption))
     <p><i>团队报名选项</i><br>&emsp;&emsp;{{groupOption($regInfo->conference->groupOption)}}</p>

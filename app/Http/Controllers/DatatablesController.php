@@ -19,6 +19,8 @@ use App\Reg;
 use App\Delegate;
 use App\Volunteer;
 use App\School;
+use App\Dais;
+use App\Orgteam;
 use App\Committee;
 use App\Assignment;
 use App\Handin;
@@ -203,7 +205,10 @@ class DatatablesController extends Controller //To-Do: Permission Check
     public function reg2Table()
     {
         $user = Reg::current();
-        $conf = 2;
+        $conf = Reg::currentConferenceID();
+        $type = ['delegate', 'volunteer', 'observer'];
+        if (Dais::where('conference_id', $conf)->whereIn('status', ['sVerified', 'oVerified'])->count() > 0) $type[] = 'dais';
+        if (Orgteam::where('conference_id', $conf)->whereIn('status', ['sVerified', 'oVerified'])->count() > 0) $type[] = 'ot';
         if (in_array($user->type, ['ot', 'dais', 'school']))
         {
             if (!Reg::current()->can('view-regs'))
@@ -213,7 +218,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
             if (Reg::currentConference()->status == 'daisreg')
                 $regs = Reg::where('conference_id', Reg::currentConferenceID())->whereIn('type', ['dais', 'ot'])->with(['user' => function($q) {$q->select('name', 'id');}])->get(['id', 'user_id', 'type']);
             else
-                $regs = Reg::where('conference_id', Reg::currentConferenceID())->whereIn('type', ['delegate','volunteer','observer'])->with(['user' => function($q) {$q->select('name', 'id');}])->get(['id', 'user_id', 'type']);
+                $regs = Reg::where('conference_id', Reg::currentConferenceID())->whereIn('type', $type)->with(['user' => function($q) {$q->select('name', 'id');}])->get(['id', 'user_id', 'type']);
             foreach ($regs as $reg)
             {
                 if ($reg->type == 'unregistered')
@@ -262,7 +267,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
             else $status = '';
             # if (!$reg->enabled) $status = '已禁用';
 
-            if (Reg::currentConference()->status == 'daisreg')
+            if (in_array($reg->type, ['ot', 'dais']))
                 $detail =  '<a href="ot/daisregInfo.modal/'. $reg->id .'" data-toggle="ajaxModal" id="'. $reg->id .'" class="details-modal"><i class="fa fa-search-plus"></i></a>';
             else
                 $detail =  '<a href="ot/regInfo.modal/'. $reg->id .'" data-toggle="ajaxModal" id="'. $reg->id .'" class="details-modal"><i class="fa fa-search-plus"></i></a>';

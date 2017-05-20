@@ -1,4 +1,4 @@
-ephp
+@php
 $i = 0;
 $regInfo = json_decode($reg->reginfo);
 $isOtOrDais = Reg::current()->type == 'ot' && Reg::current()->specific()->status == 'success';

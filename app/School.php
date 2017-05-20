@@ -18,9 +18,9 @@ class School extends Model
 {
     protected $fillable = array('name', 'payment_method');
 
-    public function user() {
+    /*public function user() {
         return $this->belongsTo('App\User'); //UID=1 <=> Non-Member School
-    }
+    }*/
 
     public function delegates() {
         return $this->hasMany('App\Delegate');
@@ -37,5 +37,9 @@ class School extends Model
     public function toPayAmount() {
         return Auth::user()->school->delegates->where('status', 'oVerified')->count() * 530 + Auth::user()->school->delegates->where('status','oVerified')->where('accomodate', 1)->count() * 510 + Auth::user()->school->volunteers->where('status','oVerified')->where('accomodate', 1)->count() * 510;
 
+    }
+
+    public function typeText() {
+        return '学校';// for some conferences, it might be '团队'
     }
 }

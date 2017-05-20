@@ -154,7 +154,7 @@
           <!-- nav -->
           <nav class="nav-primary hidden-xs">
             <ul class="nav">
-                @if (Reg::current()->type == 'school')
+                @if (Reg::current()->type == 'teamadmin')
                 @include('layouts.school')
                 @elseif (Reg::current()->type == 'ot')
                 @include('layouts.ot')

@@ -74,7 +74,7 @@ class FormController extends Controller
                 case 'preRemarks': $html .='
                 <div class="form-group">
                   <label>备注</label>
-                  <textarea name="others" class="form-control" placeholder="任何其他说明" type="text"></textarea>
+                  <textarea name="remarks" class="form-control" placeholder="任何其他说明" type="text"></textarea>
                 </div>';
                 break;
                 default:

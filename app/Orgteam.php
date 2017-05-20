@@ -71,6 +71,7 @@ class Orgteam extends Model
             case 'sVerified': return '等待组织团队审核';
             case 'oVerified':  return '申请测试审核已通过';
             case 'success': return '报名成功';
+            case 'fail': return '审核未通过';
             default: return '未知状态';
         }
     }

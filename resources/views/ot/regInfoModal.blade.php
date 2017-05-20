@@ -47,6 +47,9 @@ if (empty($active))
                   @if ($reg->type == 'delegate')
                   <br>委员会: {{$reg->specific()->committee->name}}<br>代表组: {{$reg->specific()->scopeDelegateGroup()}}
                   @endif
+                  @if (isset($regInfo) && isset($regInfo->reg_at))
+                  <br>报名于: {{nicetime($regInfo->reg_at)}}
+                  @endif
                 <br>状态: {{$reg->enabled ? $reg->specific()->statusText() : '已禁用'}}</p>
                 @endif
               @else

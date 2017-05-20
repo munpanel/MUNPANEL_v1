@@ -352,6 +352,7 @@ class UserController extends Controller
         if ($reg->type == 'dais' && is_null($conf_info->language))
             return view('error', ['msg' => '您提交的申请信息似乎有问题，请再试一次。']);
         $regInfo->conference = $conf_info;
+        $regInfo->reg_at = date('Y-m-d H:i:s');
         $reg->reginfo = json_encode($regInfo);
         $reg->save();
         $reg->make();

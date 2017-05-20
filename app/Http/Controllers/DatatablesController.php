@@ -267,7 +267,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
             else $status = '';
             # if (!$reg->enabled) $status = '已禁用';
 
-            if (Reg::currentConference()->status == 'daisreg')
+            if (in_array($reg->type, ['ot', 'dais']))
                 $detail =  '<a href="ot/daisregInfo.modal/'. $reg->id .'" data-toggle="ajaxModal" id="'. $reg->id .'" class="details-modal"><i class="fa fa-search-plus"></i></a>';
             else
                 $detail =  '<a href="ot/regInfo.modal/'. $reg->id .'" data-toggle="ajaxModal" id="'. $reg->id .'" class="details-modal"><i class="fa fa-search-plus"></i></a>';

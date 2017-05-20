@@ -76,7 +76,7 @@ class HomeController extends Controller
                 'initialModal' => $request->initmodal
             ]);
         }
-        else if ($type == 'school')
+        else if ($type == 'teamadmin')
         {
             $school = $reg->school;
             //return $del->count();
@@ -288,7 +288,7 @@ class HomeController extends Controller
                 return view('ot.regManage', ['delegates' => Delegate::all(), 'volunteers' => Volunteer::all(), 'observers' => Observer::all(), 'initialModal' => mp_url('/ot/regInfo.modal/'. $request->initialReg)]);
             return view('ot.regManage', ['delegates' => Delegate::all(), 'volunteers' => Volunteer::all(), 'observers' => Observer::all()]);
         }
-        else if ($type == 'school')
+        else if ($type == 'teamadmin')
         {
             $school = Reg::current()->school;
             //return response()->json($school);

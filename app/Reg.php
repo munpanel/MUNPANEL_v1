@@ -44,6 +44,10 @@ class Reg extends Model
         return $this->belongsTo('App\School');
     }
 
+    public function teamadmin() {
+        return $this->belongsTo('App\Teamadmin');
+    }
+
     public function cards() {
         return $this->hasMany('App\Card', 'reg_id');
     }

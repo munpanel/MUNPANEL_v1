@@ -43,7 +43,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
     }
 
     /**
-     * Show registration datatables json
+     * (Deprecated) Show registration datatables json
      *
      * @return string JSON of registrations
      */
@@ -209,7 +209,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
         $type = ['delegate', 'volunteer', 'observer'];
         if (Dais::where('conference_id', $conf)->whereIn('status', ['sVerified', 'oVerified'])->count() > 0) $type[] = 'dais';
         if (Orgteam::where('conference_id', $conf)->whereIn('status', ['sVerified', 'oVerified'])->count() > 0) $type[] = 'ot';
-        if (in_array($user->type, ['ot', 'dais', 'school']))
+        if (in_array($user->type, ['ot', 'dais', 'teamadmin']))
         {
             if (!Reg::current()->can('view-regs'))
                 return "ERROR";
@@ -300,15 +300,15 @@ class DatatablesController extends Controller //To-Do: Permission Check
                 return "ERROR";
             $result = new Collection;
             // 过滤结果: 只保留 delegate, observer 和 volunteer
-            $regs = Reg::where('conference_id', Reg::currentConferenceID())->whereIn('type', ['ot', 'dais', 'school', 'interviewer'])->with(['user' => function($q) {$q->select('name', 'id');}])->get(['id', 'user_id', 'type']);
+            $regs = Reg::where('conference_id', Reg::currentConferenceID())->whereIn('type', ['ot', 'dais', 'teamadmin', 'interviewer'])->with(['user' => function($q) {$q->select('name', 'id');}])->get(['id', 'user_id', 'type']);
             foreach ($regs as $reg)
             {
                 if ($reg->type == 'unregistered')
                     $type = '未报名';
                 else if ($reg->type == 'ot')
                     $type = '组织团队';
-                else if ($reg->type == 'school')
-                    $type = '学校理事';
+                else if ($reg->type == 'teamadmin')
+                    $type = $reg->teamadmin->school->typeText().'管理';
                 else if ($reg->type == 'dais')
                     $type = '学术团队';
                 else if ($reg->type == 'interviewer')

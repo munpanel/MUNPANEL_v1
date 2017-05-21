@@ -465,6 +465,7 @@ class UserController extends Controller
             return "无法为此报名者执行该操作！";
         $specific->delegategroups()->sync($request->delgroup);
         //return redirect('/regManage?initialReg='.$request->id);
+        return 'success';
     }
 
     /**

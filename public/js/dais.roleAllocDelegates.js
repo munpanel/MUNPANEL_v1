@@ -22,9 +22,10 @@ $(document).ready(function() {
                             $modal.modal();
                             $modal.load('dais/addSeat/' + $del_id + '/modal');
                         } else {
-                            if (receivedData != "success")
-                                alert(receivedData);
+                            //if (receivedData != "success")
+                            //    alert(receivedData);
                             //location.reload();
+                            $.snackbar({content: data});
                             $('#delegate-table').dataTable().fnReloadAjax(undefined, undefined, true);
                             $('#nation-table').dataTable().fnReloadAjax(undefined, undefined, true);
                         }

@@ -317,8 +317,7 @@ function newPopup(url) {
 $('#updateSeatForm').submit(function(e){
     e.preventDefault();
     $.post('{{mp_url('/ot/updateSeat')}}', $('#updateSeatForm').serialize()).done(function(data) {
-        if (data != 'success')
-            alert(data);
+        $.snackbar({content: data});
         $("#ajaxModal").load("{{mp_url('/ot/regInfo.modal/'.$reg->id.'?active=seats')}}");
     });
 });
@@ -342,6 +341,7 @@ $(document).ready(function(){
 $('#add_notes_form').submit(function(e){
     e.preventDefault();
     $.post('{{mp_url('/newNote')}}', $('#add_notes_form').serialize()).done(function(data) {
+        $.snackbar({content: data});
         $("#ajaxModal").load("{{mp_url('/ot/regInfo.modal/'.$reg->id.'?active=notes')}}");
     });
 });

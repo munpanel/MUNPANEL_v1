@@ -31,6 +31,7 @@ foreach ($regDelgroups as $group)
 $('#setDelgroupForm').submit(function(e){
     e.preventDefault();
     $.post('{{mp_url('/ot/setDelgroup')}}', $('#setDelgroupForm').serialize()).done(function(data) {
+        $.snackbar({content: data});
         $("#ajaxModal").load("{{mp_url('/ot/regInfo.modal/'.$reg->id.'?active=operations')}}");
     });
 });

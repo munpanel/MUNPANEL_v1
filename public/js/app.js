@@ -94,9 +94,35 @@ Date.now = Date.now || function() { return +new Date; };
     $(document).popover(popOverSettings);
 
     //$("[data-toggle=popover]").popover();
-    $(document).on('click', '.popover-title .close', function(e){
-    	var $target = $(e.target), $popover = $target.closest('.popover').prev();
-    	$popover && $popover.popover('hide');
+    /*$(document).on('shown.bs.popover', '[data-toggle="popover"]', function(e){
+        var $pop = $(this);
+        setTimeout(function () {
+            $pop.popover('hide');
+        }, 2000);
+        setTimeout(function () {
+            $pop.popover();
+        }, 2200);
+    });*/
+
+    $(document).on('click', function (e) {
+        $('[data-toggle="popover"],[data-original-title]').each(function () {
+            //the 'is' for buttons that trigger popups
+            //the 'has' for icons within a button that triggers a popup
+            if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {                
+                (($(this).popover('hide').data('bs.popover')||{}).inState||{}).click = false  // fix for BS 3.3.6
+            }
+
+        });
+    });
+
+    $('.pop').on('shown.bs.popover', function () {
+        var $pop = $(this);
+        setTimeout(function () {
+            $pop.popover('hide');
+        }, 2000);
+        setTimeout(function () {
+            $pop.popover();
+        }, 2200);
     });
 
     // ajax modal

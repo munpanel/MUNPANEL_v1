@@ -412,8 +412,10 @@ class RoleAllocController extends Controller
             $delegate->assignedNations()->sync($request->seats);
             $delegate->reg->addEvent('role_altered', '{"name":"'.Reg::current()->name().'"}');
             if (is_object($delegate->partner))
+            {
                 $delegate->partner->assignedNations()->sync($request->seats);
                 $delegate->partner->reg->addEvent('role_altered', '{"name":"'.Reg::current()->name().'"}');
+            }
             if (!$delegate->assignedNations->contains($delegate->nation_id))
             {
                 $delegate->nation_id = null;

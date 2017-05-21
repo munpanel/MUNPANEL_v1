@@ -48,6 +48,8 @@ class NoteController extends Controller
             $mail->send();
             $mail->save();
         }
+        return 'success';
+
         if (Reg::current()->type == 'ot')
             return redirect('/regManage?initialReg='.$request->reg_id);
         if (Reg::current()->type == 'interviewer')

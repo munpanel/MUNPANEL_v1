@@ -115,12 +115,14 @@ $count = $reg->delegate->interviews()->whereIn('status', ['passed', 'failed'])->
 $('#assignInterviewForm').submit(function(e){
     e.preventDefault();
     $.post('{{mp_url('/ot/assignInterview/'.$reg->id)}}', $('#assignInterviewForm').serialize()).done(function(data) {
+        $.snackbar({content: data});
         $("#ajaxModal").load("{{mp_url('/ot/regInfo.modal/'.$reg->id.'?active=interview')}}");
     });
 });
 $('#exemptInterviewForm').submit(function(e){
     e.preventDefault();
     $.post('{{mp_url('/ot/exemptInterview/'.$reg->id)}}', $('#exemptInterviewForm').serialize()).done(function(data) {
+        $.snackbar({content: data});
         $("#ajaxModal").load("{{mp_url('/ot/regInfo.modal/'.$reg->id.'?active=interview')}}");
     });
 });

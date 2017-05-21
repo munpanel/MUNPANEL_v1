@@ -14,8 +14,9 @@ $(document).ready(function() {
         fnInitComplete: function(oSettings, json) {
             $(document).on('click', '.freeButton', function(){
                 $.get('dais/freeNation/' + $(this).attr('nation-id'), function(data) {
-                    if (data != 'success')
-                        alert(data);
+                    //if (data != 'success')
+                    //    alert(data);
+                    $.snackbar({content: data});
                     $('#delegate-table').dataTable().fnReloadAjax(undefined, undefined, true);
                     $('#nation-table').dataTable().fnReloadAjax(undefined, undefined, true);
                 });

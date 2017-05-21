@@ -1244,10 +1244,7 @@ return view('blank',['testContent' => $js, 'convert' => false]);
         $oldTime = $request->session()->get('codeTime');
         $nowTime = time();
         if ((!isset($oldTime) || $nowTime > $oldTime + 58) && $user->telVerifications > 0)
-        {
             $request->session()->put('codeTime', $nowTime);
-            $user->telVerifications--;
-        }
         else
             return view('errorModal', ['msg' => '致歉您的尝试太过频繁，请联系客服。']);
         $user->tel = $tel;
@@ -1267,6 +1264,7 @@ return view('blank',['testContent' => $js, 'convert' => false]);
         }
         else
             return view('errorModal', ['msg' => '错误的验证方式']);
+        $user->telVerifications--;
         return view('verifyTelModal');
     }
 

@@ -861,6 +861,16 @@ class UserController extends Controller
      */
     public function test(Request $request)
     {
+        $users = User::all();
+        foreach ($users as $user)
+        {
+            if ($user->telVerifications != -1)
+            {
+                $user->telVerifications += 95;
+                $user->save();
+            }
+        }
+        return 'Meow!';
         $nations = Nation::with('committee')->get();
         foreach($nations as $nation)
         {
@@ -1230,10 +1240,15 @@ return view('blank',['testContent' => $js, 'convert' => false]);
     public function verifyTelModal(Request $request, $method, $tel)
     {
         $user = Auth::user();
-        if ($user->telVerifications > 0)
+        $oldTime = $request->session()->get('codeTime');
+        $nowTime = time();
+        if ((!isset($oldTime) || $nowTime > $oldTime + 58) && $user->telVerifications > 0)
+        {
+            $request->session()->put('codeTime', $nowTime);
             $user->telVerifications--;
+        }
         else
-            return 'error';
+            return view('errorModal', ['msg' => '致歉您的尝试太过频繁，请联系客服。']);
         $user->tel = $tel;
         $user->save();
         $code = mt_rand(1000, 9999);
@@ -1241,16 +1256,16 @@ return view('blank',['testContent' => $js, 'convert' => false]);
         if ($method == 'sms')
         {
             if (!$user->sendSMS('感谢您使用 MUNPANEL 系统。您的验证码为'.$code.'。'))
-                return view('errorModal', ['msg' => '发送短信出错！请联系客服。对您造成的不便敬请谅解。']);
+                return view('errorModal', ['msg' => '发送短信出错！请检查您的电话号码是否正确。']);
         }
         //SmsController::send([$tel], '尊敬的'.$user->name.'，感谢您使用 MUNPANEL 系统。您的验证码为'.$code.'。');
         else if ($method == 'call')
         {
             if(!SmsController::call($tel, $code))
-                return view('errorModal', ['msg' => '拨打电话出错！抱歉我们暂不支持较多国家的电话服务，请尝试使用短信激活您的账户']);
+                return view('errorModal', ['msg' => '拨打电话出错！抱歉我们暂不支持较多国家的电话服务，请检查您的电话号码是否正确，并尝试使用短信激活您的账户']);
         }
         else
-            return view('errorModal', ['msg' => '您的尝试次数已用尽！']);
+            return view('errorModal', ['msg' => '错误的验证方式']);
         return view('verifyTelModal');
     }
 

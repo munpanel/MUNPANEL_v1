@@ -40,16 +40,16 @@
           <header class="panel-heading text-center">
             请验证您的电话号码
           </header>
-            <div class="panel-body"><div class="alert alert-info">感谢您使用MUNPANEL！请在下方填写您的手机号，我们将给您发送一条短信或拨打一个电话并告知验证码以激活您的账户。未激活的账户将不能使用任何 MUNPANEL 服务，会议组织团队亦不可查看您的报名信息。<br>当前账户剩余 <b>{{Auth::user()->telVerifications}}</b> 次验证机会。如您无验证机会，请联系客服或重新注册新账户，感谢。</div></div>
+            <div class="panel-body"><div class="alert alert-info">感谢您使用MUNPANEL！请在下方填写您的手机号，我们将给您发送一条短信或拨打一个电话并告知验证码以激活您的账户。未激活的账户将不能使用任何 MUNPANEL 服务，会议组织团队亦不可查看您的报名信息。{{--<br>当前账户剩余 <b>{{Auth::user()->telVerifications}}</b> 次验证机会。如您无验证机会，请联系客服或重新注册新账户，感谢。--}}</div></div>
             @if (Auth::user()->telVerifications > 0)
           <form action="{{ mp_url('/login') }}" method="post" class="panel-body" data-validate="parsley">
             {{ csrf_field() }}
-            <div class="form-group">
+            <div class="form-group"><center>
               <label class="control-label">手机号</label>
               <!--input type="text" id="tel" name="tel" placeholder="eg. 18612345678" value="{{ Auth::user()->tel }}" autofocus-->
               <input type="tel" id="tel" autofocus>
-              &nbsp&nbsp<button id="getVerificationSMS" class="btn btn-warning">发短信</button>&nbsp&nbsp<button id="getVerificationCALL" class="btn btn-warning">打电话</button>
-            </div>
+              <br><br><br><button id="getVerificationSMS" class="btn btn-warning">发短信</button>&nbsp&nbsp<button id="getVerificationCALL" class="btn btn-warning">打电话</button>
+            </center></div>
             </form>
             @endif
         </section>
@@ -74,7 +74,28 @@
   <script src="{{cdn_url('js/parsley/parsley.min.js')}}"></script>
   <script src="{{cdn_url('js/parsley/parsley.extend.js')}}"></script>
   <script src="{{cdn_url('js/intlTelInput.js')}}"></script>
+  <script src="{{cdn_url('js/js.cookie.js')}}"></script>
   <script>
+  var btnSMS = $('#getVerificationSMS');
+  var btnCALL = $('#getVerificationCALL');
+  var count = 0;
+  if(Cookies.get("captcha")){
+      count = Cookies.get("captcha");
+      btnSMS.text(count+'秒后可重新获取').attr('disabled',true).css('cursor','not-allowed');
+      btnCALL.text(count+'秒后可重新获取').attr('disabled',true).css('cursor','not-allowed');
+      var resend = setInterval(function(){
+          count--;
+          if (count > 0){
+              btnSMS.text(count+'秒后可重新获取').attr('disabled',true).css('cursor','not-allowed');
+              btnCALL.text(count+'秒后可重新获取').attr('disabled',true).css('cursor','not-allowed');
+              Cookies.set("captcha", count, {path: '/', expires: (1/86400)*count});
+          }else {
+              clearInterval(resend);
+              btnSMS.text("发短信").removeClass('disabled').removeAttr('disabled style');
+              btnCALL.text("打电话").removeClass('disabled').removeAttr('disabled style');
+          }
+      }, 1000);
+  }
   $("#tel").intlTelInput({
       initialCountry:"cn",
       separateDialCode: true,
@@ -82,6 +103,21 @@
       utilsScript: "js/intl-utils.js"
   });
   $('#getVerificationSMS').click(function(e) {
+     count = 60;
+     var resend = setInterval(function(){
+         count--;
+         if (count > 0){
+             btnSMS.text(count+'秒后可重新获取').attr('disabled',true).css('cursor','not-allowed');
+             btnCALL.text(count+'秒后可重新获取').attr('disabled',true).css('cursor','not-allowed');
+             Cookies.set("captcha", count, {path: '/', expires: (1/86400)*count});
+         }else {
+             clearInterval(resend);
+             btnSMS.text("发短信").removeClass('disabled').removeAttr('disabled style');
+             btnCALL.text("打电话").removeClass('disabled').removeAttr('disabled style');
+         }
+      }, 1000);
+     btnSMS.attr('disabled',true).css('cursor','not-allowed');
+     btnCALL.attr('disabled',true).css('cursor','not-allowed');
      $('#ajaxModal').remove();
      e.preventDefault();
      var $remote = 'verifyTel.modal/sms/' + $('#tel').intlTelInput("getNumber")
@@ -91,6 +127,21 @@
      $modal.load($remote);
   });
   $('#getVerificationCALL').click(function(e) {
+     count = 60;
+     var resend = setInterval(function(){
+         count--;
+         if (count > 0){
+             btnSMS.text(count+'秒后可重新获取').attr('disabled',true).css('cursor','not-allowed');
+             btnCALL.text(count+'秒后可重新获取').attr('disabled',true).css('cursor','not-allowed');
+             Cookies.set("captcha", count, {path: '/', expires: (1/86400)*count});
+         }else {
+             clearInterval(resend);
+             btnSMS.text("发短信").removeClass('disabled').removeAttr('disabled style');
+             btnCALL.text("打电话").removeClass('disabled').removeAttr('disabled style');
+         }
+      }, 1000);
+     btnSMS.attr('disabled',true).css('cursor','not-allowed');
+     btnCALL.attr('disabled',true).css('cursor','not-allowed');
      $('#ajaxModal').remove();
      e.preventDefault();
      var $remote = 'verifyTel.modal/call/' + $('#tel').intlTelInput("getNumber")

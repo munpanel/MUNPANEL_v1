@@ -32,6 +32,8 @@ class SmsController extends Controller
             return false;
         else if (count($mobileList) == 1) { // single send
             $mobile = $mobileList[0];
+            if (strlen($mobile) < 6)
+                return false;
             if (substr($mobile, 0, 3) == '+86')
                 $mobile = substr($mobile, 3);
             if ($mobile[0] == '+')
@@ -63,6 +65,10 @@ class SmsController extends Controller
 
                 $res = curl_exec( $ch );
                 curl_close( $ch );
+                $result = json_decode($res);
+                if ($result->error == 0)
+                    return true;
+                return false;
             }
         } else { // batch send
             $ch = curl_init();
@@ -94,6 +100,8 @@ class SmsController extends Controller
      */
 
     static public function call($mobile, $code) {
+        if (strlen($mobile) < 6)
+            return false;
         if (substr($mobile, 0, 3) == '+86')
             $mobile = substr($mobile, 3);
         if ($mobile[0] == '+')
@@ -127,6 +135,10 @@ class SmsController extends Controller
 
             $res = curl_exec( $ch );
             curl_close( $ch );
+            $result = json_decode($res);
+            if ($result->error == 0)
+                return true;
+            return false;
         }
         return true;
     }

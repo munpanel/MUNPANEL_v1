@@ -1246,7 +1246,7 @@ return view('blank',['testContent' => $js, 'convert' => false]);
         if ((!isset($oldTime) || $nowTime > $oldTime + 58) && $user->telVerifications > 0)
             $request->session()->put('codeTime', $nowTime);
         else
-            return view('errorModal', ['msg' => '致歉您的尝试太过频繁，请联系客服。']);
+            return view('errorModal', ['msg' => '致歉您的尝试太过频繁，请明天重试。']);
         $user->tel = $tel;
         $user->save();
         $code = mt_rand(1000, 9999);

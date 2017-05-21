@@ -30,7 +30,7 @@ class CreateUsersTable extends Migration
             //$table->enum('type', ['unregistered', 'ot', 'dais', 'school', 'delegate', 'observer', 'volunteer']);
             $table->string('password');
             $table->string('emailVerificationToken');
-            $table->integer('telVerifications')->default(100);
+            $table->integer('telVerifications')->default(15);
             $table->string('google2fa_secret')->nullable();
             $table->boolean('google2fa_enabled')->default(false);
             $table->rememberToken();

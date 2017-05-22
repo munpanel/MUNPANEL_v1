@@ -66,6 +66,8 @@ class SmsController extends Controller
                 $res = curl_exec( $ch );
                 curl_close( $ch );
                 $result = json_decode($res);
+                if (is_null($result))
+                    return false;
                 if ($result->error == 0)
                     return true;
                 return false;
@@ -136,6 +138,8 @@ class SmsController extends Controller
             $res = curl_exec( $ch );
             curl_close( $ch );
             $result = json_decode($res);
+            if (is_null($result))
+                return false;
             if ($result->error == 0)
                 return true;
             return false;

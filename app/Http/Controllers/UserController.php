@@ -862,6 +862,10 @@ class UserController extends Controller
      */
     public function test(Request $request)
     {
+        $regs = Reg::where('conference_id', 3)->where('type', 'volunteer')->get();
+        foreach ($regs as $reg)
+                $reg->addEvent('registration_submitted', '');
+        dd($regs);
         $users = User::all();
         foreach ($users as $user)
         {

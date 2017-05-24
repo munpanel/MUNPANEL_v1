@@ -199,7 +199,7 @@ class Reg extends Model
     {
         $status = 'reg';
         $group = json_decode($this->reginfo)->conference->groupOption;
-        if ($group == 'personal') $status = 'sVerified';
+        if ($group == 'personal'||Reg::currentConferenceID() == 2) $status = 'sVerified'; // TODO: change conferenceID temporary patch
         switch ($this->type)
         {
             case 'delegate':

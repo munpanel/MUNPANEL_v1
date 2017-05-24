@@ -1341,7 +1341,7 @@ return view('blank',['testContent' => $js, 'convert' => false]);
                 $list->push($dais->reg->user);
         $interviewers = Interviewer::with('reg.user')->get();
         foreach ($interviewers as $interviewer)
-            if ($interviewer->conference_id == Reg::currentConferenceID() && !$list->contains($interviewer->reg->user))
+            if ($interviewer->reg->conference_id == Reg::currentConferenceID() && !$list->contains($interviewer->reg->user))
                 $list->push($interviewer->reg->user);
         $sorted = $list->sortBy('id');
         $result = array();

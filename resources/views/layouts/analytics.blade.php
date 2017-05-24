@@ -6,8 +6,9 @@
       })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
       ga('create', "{{Config::get('analytics.trackingID')}}", 'auto');
-      ga('set', 'userId', {{Auth::user()->id}});
+      @if (Auth::check())
+      ga('set', 'userId', {{Auth::id()}});
+      @endif
       ga('send', 'pageview');
-
     </script>
 @endif

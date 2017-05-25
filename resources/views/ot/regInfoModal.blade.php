@@ -56,7 +56,11 @@ if (empty($active))
                 <p>{{$reg->user->name}}，您已以<strong>{{ $reg->type == 'delegate' ? '代表' : ($reg->type == 'observer' ? '观察员' : '志愿者') }}</strong>身份报名参加{{Reg::currentConference()->fullname}}。</p>
               @endif
               @if (isset($regInfo))
-                @include('components.regInfoShow')
+                @if (Reg::current()->type == 'ot')
+                  @include('components.regInfoEdit')
+                @else
+                  @include('components.regInfoShow')
+                @endif
               @endif
               </div>
             </div>

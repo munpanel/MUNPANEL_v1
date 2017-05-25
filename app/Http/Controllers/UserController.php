@@ -862,6 +862,24 @@ class UserController extends Controller
      */
     public function test(Request $request)
     {
+    $results = [ 11 => "北京", "天津", "河北", "山西", "内蒙古",
+        21 => "辽宁", "吉林", "黑龙江",
+        31 => "上海", "江苏", "浙江", "安徽", "福建", "江西", "山东",
+        41 => "河南", "湖北", "湖南", "广东", "广西", "海南",
+        50 => "重庆", "四川", "贵州", "云南", "西藏",
+        61 => "陕西", "甘肃", "青海", "宁夏", "新疆",
+        71 => "台湾",
+        81 => "香港", "澳门",
+        99 => "海外" ];
+        $res = array();
+        foreach ($results as $key => $value)
+        {
+            $test = array();
+            $test['value'] = $key;
+            $test['text'] = $value;
+            $res[] = $test;
+        }
+        return json_encode($res);
         $regs = Reg::where('conference_id', 3)->where('type', 'volunteer')->get();
         foreach ($regs as $reg)
                 $reg->addEvent('registration_submitted', '');
@@ -1358,6 +1376,27 @@ return view('blank',['testContent' => $js, 'convert' => false]);
             );
         }
         return json_encode($result);
+    }
+
+    public function updateReg(Request $request, $id)
+    {
+        if (Reg::current()->type != 'ot')
+            return 'Error';
+        $reg = Reg::findOrFail($id);
+        $name = $request->get('name');
+        $value = $request->get('value');
+        if ($reg->conference_id != Reg::currentConferenceID())
+            return 'error';
+        $keys = explode('.', $name);
+        if ($keys[0] == 'reg')
+            $reg->{$keys[1]} = $value;
+        else
+        {
+            $regInfo = json_decode($reg->reginfo);
+            $regInfo->{$keys[0]}->{$keys[1]} = $value;
+            $reg->reginfo = json_decode($regInfo);
+        }
+        $reg->save();
     }
 
 }

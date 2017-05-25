@@ -243,7 +243,7 @@ class HomeController extends Controller
                 return view('daisregSelectModal', $select);
             return view('regSelectModal', $select);
         }
-        $customTable = json_decode(Reg::currentConference()->option('reg_tables'))->regTable; //todo: table id
+        $customTable = json_decode(Reg::currentConference()->option('reg_tables'))->regTable;
         $confForm = FormController::render($customTable->conference->items, $regType, 'uses');
         return view('reg2Modal', ['regType' => $regType, 'customTable' => $customTable, 'confForm' => $confForm]);
     }

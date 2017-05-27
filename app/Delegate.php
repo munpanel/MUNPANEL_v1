@@ -388,7 +388,7 @@ class Delegate extends Model
             if (!$this->seat_locked)
             {
                 if ($html)
-                    $result = "<i class='fa fa-unlock' aria-hidden='true'></i>";
+                    $result = "<i class='fa fa-unlock' aria-hidden='true'></i><div style='display:none'>未锁定</div>";
                 else
                     $result = '(未锁定)';
                 if ($nations->count() > 1)
@@ -410,7 +410,7 @@ class Delegate extends Model
         }
         if ($explain)
         {
-            $explain = '(从'.$nations->count().'个席位中选择)';
+            $explain = '(从'.$nations->count().'个席位中选择)<div style="display:none">已分配</div>';
             if ($html)
             {
                 $htmlContent = '';

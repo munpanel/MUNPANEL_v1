@@ -194,7 +194,7 @@ if (empty($active))
               @if (isset($reg->delegate->nation_id))
               <p>{{$isOtOrDais ? '该用户' : '您'}}已{{$reg->delegate->seat_locked ? '锁定':'选择'}}席位<strong>{{$reg->delegate->nation->displayName()}}</strong>。
                 @if (!$reg->delegate->seat_locked)
-                <br>选定席位将在{{$isOtOrDais ? '该用户' : '您'}}选定该席位 72 小时之后自动锁定。
+                <br>选定席位将在{{$isOtOrDais ? '该用户' : '您'}}选定该席位 72 小时左右自动锁定。
                 @endif
               </p>
               @else
@@ -203,7 +203,7 @@ if (empty($active))
               @if ($reg->delegate->assignedNations->count() > 0 && !$reg->delegate->seat_locked)
               <h3>可供选择席位列表</h3>
               @unless($isOtOrDais)
-              <div class="alert alert-info">您的席位分配仍有一定几率调整，我们仍有可能为您增加席位分配，如其他代表选择了您的可选席位并该席位选择得到锁定，您将无法选择该席位。在您选择席位后，您仍可修改您的选择，直到您的席位被锁定。</div>
+              <div class="alert alert-info">您的席位分配仍有一定几率调整，我们仍有可能为您增加席位分配，如其他代表选择了您的可选席位并该席位，您将无法选择该席位。在您选择席位后，您仍可修改您的选择，直到您的席位被锁定。您的席位将在您选定席位后 72 小时左右自动锁定或被提前手动锁定。</div>
               @endunless
               <form method="post" id="updateSeatForm">
               <input type="hidden" name="id" value="{{$reg->id}}">

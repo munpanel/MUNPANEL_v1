@@ -235,6 +235,14 @@ class RoleAllocController extends Controller
                 $delegate->reg->addEvent('role_altered', '{"name":"'.Reg::current()->name().'"}');
             }
         }
+        $delegates = $nation->delegates;
+        foreach ($delegates as $delegate)
+        {
+            $delegate->nation_id = null;
+            $delegate->save();
+        }
+        $nation->status = 'open';
+        $nation->save();
         return 'success';
         //return redirect(mp_url('/roleAlloc'));
     }
@@ -418,6 +426,8 @@ class RoleAllocController extends Controller
             }
             if (!$delegate->assignedNations->contains($delegate->nation_id))
             {
+                $delegate->nation->status = 'open';
+                $delegate->nation->save();
                 $delegate->nation_id = null;
                 $delegate->save();
                 if (is_object($delegate->partner))
@@ -427,6 +437,8 @@ class RoleAllocController extends Controller
                 }
             }
         }
+        else
+            return 'error';
         return 'success';
     }
 

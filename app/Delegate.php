@@ -144,6 +144,7 @@ class Delegate extends Model
             case 'oVerified': $result = $this->seatStatus(); //return $this->interviewStatus($this->interviews()->where('retest', true)->count() > 0);
             default: $result = $this->status;
         }
+        return $result;
     }
 
     public function statusText() {

@@ -243,7 +243,7 @@ class HomeController extends Controller
                 return view('daisregSelectModal', $select);
             return view('regSelectModal', $select);
         }
-        $customTable = json_decode(Reg::currentConference()->option('reg_tables'))->regTable; //todo: table id
+        $customTable = json_decode(Reg::currentConference()->option('reg_tables'))->regTable;
         $confForm = FormController::render($customTable->conference->items, $regType, 'uses');
         return view('reg2Modal', ['regType' => $regType, 'customTable' => $customTable, 'confForm' => $confForm]);
     }
@@ -404,7 +404,10 @@ class HomeController extends Controller
         if ($reg->type == 'delegate')
         {
             if ($reg->delegate->canAssignSeats() && isset($reg->delegate->nation_id))
-                $operations[] = 'lockSeat';
+                if (!$reg->delegate->seat_locked)
+                    $operations[] = 'lockSeat';
+                else
+                    $operations[] = 'unlockSeat';
             if (Reg::current()->can('sudo'))
                 $operations[] = 'sudo';
             $status = $reg->delegate->realStatus();

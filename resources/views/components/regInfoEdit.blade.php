@@ -1,7 +1,16 @@
 {{-- JSONIZE!!!! TODO!!!! --}}
-<section class="panel text-sm">
-  <div class="panel-body">
+@php
+$type = $reg->type;
+$customTable = json_decode(Reg::currentConference()->option('reg_tables'))->regTable; 
+@endphp
+<section class="text-sm">
+  <div>
     <table id="reg-{{$reg->id??''}}" class="table table-bordered table-striped" style="clear: both">
+        <thead>
+            <tr>
+                <td colspan="2"><strong>个人信息</strong></td>
+            </tr>
+        </thead>
         <tbody>
             <tr>
                 <td width="35%">姓名</td>
@@ -19,14 +28,18 @@
                 <td width="35%">性别</td>
                 <td width="65%"><a href="#" id="reg.gender" data-type="select" data-pk="{{$reg->id??''}}" data-url="{{mp_url('/ot/update/reg/'.$reg->id)??''}}" data-title="reg.gender" data-value='{{$reg->gender??''}}' data-source="[{'value':'male', 'text':'男'},{'value':'female', 'text':'女'}]" class="editable"></a></td>
             </tr>
+@if (isset($customTable->info->dateofbirth))
             <tr>
                 <td width="35%">出生日期</td>
                 <td width="65%"><a href="#" id="personinfo.dateofbirth" data-type="text" data-pk="{{$reg->id??''}}" data-url="{{mp_url('/ot/update/reg/'.$reg->id)??''}}" data-title="personinfo.dateofbirth" class="editable">{{$regInfo->personinfo->dateofbirth??''}}</a></td>
             </tr>
+@endif
+@if (isset($customTable->info->province))
             <tr>
                 <td width="35%">省份</td>
                 <td width="65%"><a href="#" id="personinfo.province" data-type="select" data-pk="{{$reg->id??''}}" data-url="{{mp_url('/ot/update/reg/'.$reg->id)??''}}" data-title="personinfo.province" data-value='{{$regInfo->personinfo->province??''}}' data-source='[{"value":11,"text":"\u5317\u4eac"},{"value":12,"text":"\u5929\u6d25"},{"value":13,"text":"\u6cb3\u5317"},{"value":14,"text":"\u5c71\u897f"},{"value":15,"text":"\u5185\u8499\u53e4"},{"value":21,"text":"\u8fbd\u5b81"},{"value":22,"text":"\u5409\u6797"},{"value":23,"text":"\u9ed1\u9f99\u6c5f"},{"value":31,"text":"\u4e0a\u6d77"},{"value":32,"text":"\u6c5f\u82cf"},{"value":33,"text":"\u6d59\u6c5f"},{"value":34,"text":"\u5b89\u5fbd"},{"value":35,"text":"\u798f\u5efa"},{"value":36,"text":"\u6c5f\u897f"},{"value":37,"text":"\u5c71\u4e1c"},{"value":41,"text":"\u6cb3\u5357"},{"value":42,"text":"\u6e56\u5317"},{"value":43,"text":"\u6e56\u5357"},{"value":44,"text":"\u5e7f\u4e1c"},{"value":45,"text":"\u5e7f\u897f"},{"value":46,"text":"\u6d77\u5357"},{"value":50,"text":"\u91cd\u5e86"},{"value":51,"text":"\u56db\u5ddd"},{"value":52,"text":"\u8d35\u5dde"},{"value":53,"text":"\u4e91\u5357"},{"value":54,"text":"\u897f\u85cf"},{"value":61,"text":"\u9655\u897f"},{"value":62,"text":"\u7518\u8083"},{"value":63,"text":"\u9752\u6d77"},{"value":64,"text":"\u5b81\u590f"},{"value":65,"text":"\u65b0\u7586"},{"value":71,"text":"\u53f0\u6e7e"},{"value":81,"text":"\u9999\u6e2f"},{"value":82,"text":"\u6fb3\u95e8"},{"value":99,"text":"\u6d77\u5916"}]' class="editable"></a></td>
             </tr>
+@endif
             <tr>
                 <td width="35%">学校</td>
                 <td width="65%"><a href="#" id="personinfo.school" data-type="text" data-pk="{{$reg->id??''}}" data-url="{{mp_url('/ot/update/reg/'.$reg->id)??''}}" data-title="personinfo.school" class="editable">{{$regInfo->personinfo->school??''}}</a></td>
@@ -43,22 +56,31 @@
             <td width="35%">证件号</td>
             <td width="65%"><a href="#" id="personinfo.sfz" data-type="text" data-pk="{{$reg->id??''}}" data-url="{{mp_url('/ot/update/reg/'.$reg->id)??''}}" data-title="personinfo.sfz" class="editable">{{$regInfo->personinfo->sfz??''}}</a></td>
             </tr>
+@if (isset($customTable->info->contact->alt_phone))
             <tr>
                 <td width="35%">备用电话</td>
                 <td width="65%"><a href="#" id="personinfo.alt_phone" data-type="text" data-pk="{{$reg->id??''}}" data-url="{{mp_url('/ot/update/reg/'.$reg->id)??''}}" data-title="personinfo.alt_phone" class="editable">{{$regInfo->personinfo->alt_phone??''}}</a></td>
             </tr>
+@endif
+@if (isset($customTable->info->contact->qq))
             <tr>
                 <td width="35%">QQ</td>
                 <td width="65%"><a href="#" id="personinfo.qq" data-type="text" data-pk="{{$reg->id??''}}" data-url="{{mp_url('/ot/update/reg/'.$reg->id)??''}}" data-title="personinfo.qq" class="editable">{{$regInfo->personinfo->qq??''}}</a></td>
             </tr>
-            <tr>
-                <td width="35%">微信</td>
-                <td width="65%"><a href="#" id="personinfo.wechat" data-type="text" data-pk="{{$reg->id??''}}" data-url="{{mp_url('/ot/update/reg/'.$reg->id)??''}}" data-title="personinfo.wechat" class="editable">{{$regInfo->personinfo->wechat??''}}</a></td>
-            </tr>
+@endif
+@if (isset($customTable->info->contact->skype))
             <tr>
                 <td width="35%">Skype</td>
                 <td width="65%"><a href="#" id="personinfo.skype" data-type="text" data-pk="{{$reg->id??''}}" data-url="{{mp_url('/ot/update/reg/'.$reg->id)??''}}" data-title="personinfo.skype" class="editable">{{$regInfo->personinfo->skype??''}}</a></td>
             </tr>
+            @endif
+            @if (isset($customTable->info->contact->wechat))
+            <tr>
+                <td width="35%">微信</td>
+                <td width="65%"><a href="#" id="personinfo.wechat" data-type="text" data-pk="{{$reg->id??''}}" data-url="{{mp_url('/ot/update/reg/'.$reg->id)??''}}" data-title="personinfo.wechat" class="editable">{{$regInfo->personinfo->wechat??''}}</a></td>
+            </tr>
+            @endif
+            @if (isset($customTable->info->emergency))
             <tr>
                 <td width="35%">紧急联系人姓名</td>
                 <td width="65%"><a href="#" id="personinfo.parentname" data-type="text" data-pk="{{$reg->id??''}}" data-url="{{mp_url('/ot/update/reg/'.$reg->id)??''}}" data-title="personinfo.parentname" class="editable">{{$regInfo->personinfo->parentname??''}}</a></td>
@@ -71,7 +93,15 @@
                 <td width="35%">紧急联系人电话</td>
                 <td width="65%"><a href="#" id="personinfo.parenttel" data-type="text" data-pk="{{$reg->id??''}}" data-url="{{mp_url('/ot/update/reg/'.$reg->id)??''}}" data-title="personinfo.parenttel" class="editable">{{$regInfo->personinfo->parenttel??''}}</a></td>
             </tr>
+@endif
             @if (isset($regInfo->experience))
+        </tbody>
+        <thead>
+            <tr>
+                <td colspan="2"><strong>参会经历</strong></td>
+            </tr>
+        </thead>
+        <tbody>
             <tr>
                 <td width="35%">首次参加模拟联合国活动的年份</td>
                 <td width="65%"><a href="#" id="experience.startYear" data-type="text" data-pk="{{$reg->id??''}}" data-url="{{mp_url('/ot/update/reg/'.$reg->id)??''}}" data-title="experience.startYear" class="editable">{{$regInfo->experience->startYear??''}}</a></td>
@@ -90,6 +120,19 @@
             <!--committee-->
             @endif
             @endif
+        </tbody>
+        <thead>
+            <tr>
+                <td colspan="2"><strong>会议信息</strong></td>
+            </tr>
+        </thead>
+        <tbody>
+@if ($type == 'delegate')
+            <tr>
+                <td width="35%">委员会</td>
+                <td width="65%">{{$reg->committee->display_name ?? ''}}</td>
+            </tr>
+@endif
             <tr>
                 <td width="35%">搭档姓名</td>
                 <td width="65%"><a href="#" id="conference.partnername" data-type="text" data-pk="{{$reg->id??''}}" data-url="{{mp_url('/ot/update/reg/'.$reg->id)??''}}" data-title="conference.partnername" class="editable">{{$regInfo->conference->partnername??''}}</a></td>

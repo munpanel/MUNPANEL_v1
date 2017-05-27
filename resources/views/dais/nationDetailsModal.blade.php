@@ -16,15 +16,15 @@
                         <td width="65%"><a href="#" id="name" data-type="text" data-pk="{{$nation->id}}" data-url="{{mp_url('/dais/update/nation/'.$nation->id)}}" data-title="name" class="editable">{{$nation->name}}</a></td>
                     </tr>
                     <tr>
-                        <td width="35%">备注(职位等)</td>
+                        <td width="35%">备注 (职位等)</td>
                         <td width="65%"><a href="#" id="remark" data-type="text" data-pk="{{$nation->id}}" data-url="{{mp_url('/dais/update/nation/'.$nation->id)}}" data-title="remark" class="editable">{{$nation->remark}}</a></td>
                     </tr>
                     <tr>
-                        <td width="35%">投票权重</td>
+                        <td width="35%">投票权重 (C)</td>
                         <td width="65%"><a href="#" id="conpetence" data-type="text" data-pk="{{$nation->id}}" data-url="{{mp_url('/dais/update/nation/'.$nation->id)}}" data-title="conpetence" class="editable">{{$nation->conpetence}}</a></td>
                     </tr>
                     <tr>
-                        <td width="35%">一票否决权</td>
+                        <td width="35%">一票否决权 (VP)</td>
                         <td width="65%"><a href="#" id="veto_power" data-type="select" data-pk="{{$nation->id}}" data-url="{{mp_url('/dais/update/nation/'.$nation->id)}}" data-title="veto_power" data-value='{{$nation->veto_power}}' data-source="[{'value':0, 'text':'否'},{'value':1, 'text':'是'}]" class="editable"></a></td>
                     </tr>
                   </tbody>

@@ -37,8 +37,17 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')
         //          ->hourly();
         $schedule->call(function() {
-            User::where('telVerifications', '>', -1)->update(['telVerifications' => 15]);;
+            User::where('telVerifications', '>', -1)->update(['telVerifications' => 15]);
         })->daily();
+        $schedule->call(function() {
+            $date = date_sub(date_create(), new \DateInterval('P3D'));
+            $deelegates = Delegate::whereNotNull('nation_id')->where('seat_locked', false)->where('updated_at', '<', date('Y-m-d H:i:s'))->get()->pluck('reg_id');
+            Delegate::whereIn('reg_id', $deelegates)->update(['seat_locked' => true]);
+            // TODO: ADD EVENT
+            $regs = Reg::whereIn('id', $deelegates)->get();
+            foreach($regs as $reg) 
+                $reg->addEvent('role_locked', '{"name":" MUNPANEL 自动"}');
+        })->hourly();
     }
 
     /**

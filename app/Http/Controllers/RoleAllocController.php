@@ -452,6 +452,28 @@ class RoleAllocController extends Controller
         return 'success';
     }
 
+    public function unlockSeat($id)
+    {
+        $delegate = Delegate::findOrFail($id);
+        if (!$delegate->canAssignSeats())
+            return 'error';
+        $delegate->seat_locked = false;
+        $delegate->committee_id = $delegate->nation->committee_id;
+        $delegate->save();
+        $delegate->reg->addEvent('role_unlocked', '{"name":"'.Reg::current()->name().'"}');
+        if (is_object($delegate->partner))
+        {
+            $delegate->partner->seat_locked = false;
+            $delegate->partner->committee_id = $delegate->partner->nation->committee_id;
+            $delegate->partner->save();
+            $delegate->partner->reg->addEvent('role_unlocked', '{"name":"'.Reg::current()->name().'"}');
+        }
+        //$delegate->nation->setLock();
+        $delegate->nation->status = 'selected';
+        $delegate->nation->save();
+        return 'success';
+    }
+
     public function sendSMS($id, $confirm = false)
     {
         $delegate = Delegate::findOrFail($id);

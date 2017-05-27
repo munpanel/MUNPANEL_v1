@@ -707,13 +707,13 @@ class DatatablesController extends Controller //To-Do: Permission Check
             switch($nation->status)
             {
                 case 'selected':
-                    $delnames = "<i class='fa fa-unlock' aria-hidden='true'></i>".$delnames;
+                    $delnames = "<i class='fa fa-unlock-alt' aria-hidden='true'></i> ".$delnames;
                     break;
                 case 'locked':
-                    $delnames = "<i class='fa fa-lock' aria-hidden='true'></i>".$delnames;
+                    $delnames = "<i class='fa fa-lock' aria-hidden='true'></i> ".$delnames;
                     break;
                 case 'open':
-                    $delnames = "(未选) ".$delnames;
+                    $delnames = "<i class='fa fa-unlock' aria-hidden='true'></i> ".$delnames;
             }
             $result->push([
                 'select' => $select,

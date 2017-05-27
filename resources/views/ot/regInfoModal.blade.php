@@ -192,11 +192,15 @@ if (empty($active))
               <div class="col-sm-12 b-r">
               <h3 class="m-t-sm">当前席位</h3>
               @if (isset($reg->delegate->nation_id))
-              <p>{{$isOtOrDais ? '该用户' : '您'}}已{{$reg->delegate->seat_locked ? '锁定':'选择'}}席位<strong>{{$reg->delegate->nation->displayName()}}</strong>。</p>
+              <p>{{$isOtOrDais ? '该用户' : '您'}}已{{$reg->delegate->seat_locked ? '锁定':'选择'}}席位<strong>{{$reg->delegate->nation->displayName()}}</strong>。
+                @if (!$reg->delegate->seat_locked)
+                <br>选定席位将在{{$isOtOrDais ? '该用户' : '您'}}选定该席位 72 小时之后自动锁定。
+                @endif
+              </p>
               @else
               <p>{{$isOtOrDais ? '该用户' : '您'}}还没有选择任何席位。</p>
               @endif
-              @if ($reg->delegate->assignedNations->count() > 0)
+              @if ($reg->delegate->assignedNations->count() > 0 && !$reg->delegate->seat_locked)
               <h3>可供选择席位列表</h3>
               @unless($isOtOrDais)
               <div class="alert alert-info">您的席位分配仍有一定几率调整，我们仍有可能为您增加席位分配，如其他代表选择了您的可选席位并该席位选择得到锁定，您将无法选择该席位。在您选择席位后，您仍可修改您的选择，直到您的席位被锁定。</div>
@@ -206,7 +210,7 @@ if (empty($active))
               <table class="table table-bordered table-striped table-hover">
               <tbody>
               <tr>
-              <td style="width:30px">ID</td>
+              <td style="width:30px">#</td>
               <td>席位名称</td>
                 @if ($isOtOrDais)
                 <td>席位组</td>

@@ -19,9 +19,9 @@
           @elseif (is_null(Reg::current()->specific()))
           <div class="text-sm">点击下方按钮重置报名状态：</div>
           <a href="{{ mp_url('/resetReg') }}" class="btn btn-danger">重置我的报名</a>
-          @elseif ($hasRegAssignment)
+          {{--@elseif ($hasRegAssignment)
           <div class="text-sm">点击下方按钮查看学术测试题：</div>
-          <a href="{{ mp_url('/assignments') }}" class="btn btn-danger">查看学术作业</a>
+          <a href="{{ mp_url('/assignments') }}" class="btn btn-danger">查看学术作业</a>--}}
           @else
           <div class="text-sm">点击下方按钮查看我的报名：</div>
           <a href="{{ mp_url('/ot/regInfo.modal/'.Reg::currentID()) }}" data-toggle="ajaxModal" class="btn btn-danger">查看我的报名</a>

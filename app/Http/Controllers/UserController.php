@@ -862,6 +862,22 @@ class UserController extends Controller
      */
     public function test(Request $request)
     {
+        return 'meow';
+        if (($handle = fopen("/var/www/munpanel/test.csv", "r")) !== FALSE) {
+            $resp = "test";
+            while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+                $reg = Reg::find($data[0]);
+                if ($reg->conference_id == 2)
+                {
+                        $reg->enabled = false;
+                        $reg->save();
+                }
+                else
+                    $resp .= $data[0].'<br>';
+            }
+            fclose($handle);
+            return $resp;
+        }
 
             $date = date_sub(date_create(), new \DateInterval('P3D'));
             $deelegates = Delegate::whereNotNull('nation_id')->where('seat_locked', false)->where('updated_at', '<', date('Y-m-d H:i:s'))->get()->pluck('reg_id');

@@ -31,6 +31,7 @@ $(document).ready(function() {
            $('#nation-table').removeClass('no-footer');
         },
         "fnDrawCallback": function( oSettings ) {
+            $.snackbar({content: 'Seats refreshed'});
             $('#nation-pagnination').empty();
             $('.paginate_button').each(function (i) {
                 if ($(this).attr('aria-controls') == 'nation-table')

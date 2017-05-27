@@ -42,6 +42,7 @@ $(document).ready(function() {
             $('#delegate-table').removeClass('no-footer');
             },
         "fnDrawCallback": function( oSettings ) {
+            $.snackbar({content: 'Delegates refreshed'});
             $('#delegate-pagnination').empty();
             $('.paginate_button').each(function (i) {
                 if ($(this).attr('aria-controls') == 'delegate-table')

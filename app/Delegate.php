@@ -141,7 +141,7 @@ class Delegate extends Model
 
     public function realStatus() {
         switch($this->status) { //To-Do: configurable
-            case 'oVerified': $result = $this->seatStatus(); //return $this->interviewStatus($this->interviews()->where('retest', true)->count() > 0);
+            case 'oVerified': $result = $this->seatStatus();break; //return $this->interviewStatus($this->interviews()->where('retest', true)->count() > 0);
             default: $result = $this->status;
         }
         return $result;

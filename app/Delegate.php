@@ -107,6 +107,16 @@ class Delegate extends Model
         return 'interview_' . $status;
     }
 
+    public function seatStatus() {
+        if (is_object($this->nation))
+            return $this->seat_locked?'seat_locked':'seat_selected';
+        else
+        {
+            $nations = $this->assignedNations;
+            return $nations->count() > 0 ? 'seat_assigned':$this->interviewStatus($this->interviews()->where('retest', true)->count() > 0);
+        }
+    }
+
     public function interviewText($retest = false) {
         $count = $this->interviews()->where('retest', $retest)->whereIn('status', ['passed', 'failed'])->count();
         switch($count)
@@ -131,8 +141,8 @@ class Delegate extends Model
 
     public function realStatus() {
         switch($this->status) { //To-Do: configurable
-            case 'oVerified': return $this->interviewStatus($this->interviews()->where('retest', true)->count() > 0);
-            default: return $this->status;
+            case 'oVerified': $result = $this->seatStatus(); //return $this->interviewStatus($this->interviews()->where('retest', true)->count() > 0);
+            default: $result = $this->status;
         }
     }
 
@@ -157,12 +167,16 @@ class Delegate extends Model
             case 'interview_retest_failed': return $this->interviewText() . '通过（' . $this->interviewText(true) . '未通过）';
             case 'interview_retest_unassigned': return $this->interviewText() . '通过（' . $this->interviewText(true) . '待分配）';
             case 'interview_retest_undecided': return $this->interviewText() . '通过（' . $this->interviewText(true) . '结果待定）';
+            case 'seat_assigned': return '席位已分配';
+            case 'seat_selected': return '席位已选择';
+            case 'seat_locked': return '席位已锁定';
             default: return '未知状态';
         }
+        //Cache::put('realStatusforReg'.$this->reg_id, $result, 1440);
     }
 
     public function canAssignSeats($nation = null) {
-        switch($this->realStatus())
+        switch($this->interviewStatus())
         {
             case 'oVerified':
             case 'interview_passed':
@@ -179,7 +193,7 @@ class Delegate extends Model
                         if ($nation->conference_id != $this->conference_id)
                             return false;
                         //if ($nation->locked)
-                        if ($nation->status != 'open')
+                        if ($nation->status == 'locked')
                             return false;
                         $max = $nation->committee->maxAssignList;
                         if ($this->assignedNations->count() >= $max && $max != -1)

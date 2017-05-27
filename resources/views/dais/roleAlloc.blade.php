@@ -65,7 +65,6 @@
                       </label>
                     </div>
                   --}}
-                  <div class="alert alert-info">试试搜索待分配、待选、未锁定、已锁定吧～</div>
                   </div>
                   <div class="col-sm-3">
                     <div class="input-group">

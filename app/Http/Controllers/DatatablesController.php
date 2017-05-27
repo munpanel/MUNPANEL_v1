@@ -667,7 +667,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
             $delnames = '无';
             //$command = '<a href="' . mp_url('/dais/freeNation/' . $nation->id) . '" class="btn btn-xs btn-white';
             $command = '<button class="btn btn-xs btn-success freeButton" nation-id="' . $nation->id . '"type="button"';
-            if ($nation->status != 'open')
+            if ($nation->status != 'locked')
             {
                 $select .= ' disabled="disabled"';
                 $delnames = $nation->scopeDelegate();

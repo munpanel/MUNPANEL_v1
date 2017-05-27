@@ -42,6 +42,8 @@ Route::group(['domain' => 'static.munpanel.com'], function () {
     });
 
     Route::get('/keepalive', 'SessionController@keepalive');
+    Route::get('/disabled', 'UserController@disabledhome');
+    Route::get('/logout.reg', 'Auth\LoginController@logoutReg')->name('logoutReg');
 
     Route::get('/signin', function () {
         return view('signin');

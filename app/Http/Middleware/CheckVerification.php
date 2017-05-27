@@ -53,11 +53,11 @@ class CheckVerification
                     if ($regs->count() == 0)
                     {
                         // 如果某参会者审核未通过，enabled 将设为 0，此人登录时应寻找审核未通过的 Reg （登进去之后会弹窗）
-                        //$regs1 = $user->regs()->where('conference_id', $cid)->get();
-                        //if ($regs->count() == 0)
-                        $reg = Reg::create(['conference_id' => $cid, 'user_id' => $user->id, 'type' => 'unregistered', 'enabled' => true]);
-                        //else
-                        //    $reg = $regs1[0];
+                        $regs1 = $user->regs()->where('conference_id', $cid)->get();
+                        if ($regs1->count() == 0)
+                            $reg = Reg::create(['conference_id' => $cid, 'user_id' => $user->id, 'type' => 'unregistered', 'enabled' => true]);
+                        else
+                            $reg = $regs1[0];
                         $reg->login(true);
                     }
                     else if ($regs->count() == 1)
@@ -71,6 +71,12 @@ class CheckVerification
                     $sudoreg = Reg::find($regid);
                     if (!(is_object($sudoreg) && $reg->can('sudo') && $sudoreg->conference_id == $cid && $sudoreg->enabled))
                         $request->session()->forget('regIdforConference'.$cid.'sudo');
+                }
+                $reg = Reg::current();
+                if (!$reg->enabled)
+                {
+                    if (substr($route, 0, 8) != 'disabled' && substr($route, 0, 6) != 'logout')
+                        return redirect(mp_url('/disabled'));
                 }
             }
 

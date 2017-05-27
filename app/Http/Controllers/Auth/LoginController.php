@@ -49,7 +49,14 @@ class LoginController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest', ['except' => 'logout']);
+        $this->middleware('guest', ['except' => ['logout', 'logoutReg']]);
+    }
+
+    public function logoutReg()
+    {
+        session()->forget('regIdforConference'.Reg::currentConferenceID());
+        session()->forget('regIdforConference'.Reg::currentConferenceID().'sudo');
+        return redirect('/home');
     }
 
     public function loginConsoleMail()

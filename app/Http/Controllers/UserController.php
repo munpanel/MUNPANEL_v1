@@ -1399,4 +1399,10 @@ return view('blank',['testContent' => $js, 'convert' => false]);
         $reg->save();
     }
 
+    public function disabledHome()
+    {
+        if (Reg::current()->enabled)
+            return redirect('home');
+        return view('disabledHome');
+    }
 }

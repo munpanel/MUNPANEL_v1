@@ -112,8 +112,14 @@ class Delegate extends Model
             return $this->seat_locked?'seat_locked':'seat_selected';
         else
         {
-            $nations = $this->assignedNations;
-            return $nations->count() > 0 ? 'seat_assigned':$this->interviewStatus($this->interviews()->where('retest', true)->count() > 0);
+            $nations = $this->assignedNations();
+            if ( $nations->count() > 0 )
+            {
+                if ( $nations->where('status', '=', 'open')->count() > 0 )
+                    return 'seat_assigned';
+                return 'seat_unavailable';
+            }
+            return $this->interviewStatus($this->interviews()->where('retest', true)->count() > 0);
         }
     }
 
@@ -171,6 +177,7 @@ class Delegate extends Model
             case 'seat_assigned': return '席位已分配';
             case 'seat_selected': return '席位已选择';
             case 'seat_locked': return '席位已锁定';
+            case 'seat_unavailable': return '席位无可选';
             default: return '未知状态';
         }
         //Cache::put('realStatusforReg'.$this->reg_id, $result, 1440);
@@ -417,7 +424,10 @@ class Delegate extends Model
         {
             if ($nations->count() > 0)
             {
-                $result = '待选';
+                if ($this->assignedNations->where('status', 'open')->count() > 0)
+                    $result = '待选';
+                else
+                    $result = '无可选';
                 $explain = true;
             }
             else

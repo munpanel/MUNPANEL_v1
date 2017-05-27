@@ -862,6 +862,15 @@ class UserController extends Controller
      */
     public function test(Request $request)
     {
+
+            $date = date_sub(date_create(), new \DateInterval('P3D'));
+            $deelegates = Delegate::whereNotNull('nation_id')->where('seat_locked', false)->where('updated_at', '<', date('Y-m-d H:i:s'))->get()->pluck('reg_id');
+            Delegate::whereIn('reg_id', $deelegates)->update(['seat_locked' => true]);
+            // TODO: ADD EVENT
+            $regs = Reg::whereIn('id', $deelegates)->get();
+            foreach($regs as $reg) 
+                $reg->addEvent('role_locked', '{"name":" MUNPANEL 自动"}');
+       return $deelegates->count();
     $results = [ 11 => "北京", "天津", "河北", "山西", "内蒙古",
         21 => "辽宁", "吉林", "黑龙江",
         31 => "上海", "江苏", "浙江", "安徽", "福建", "江西", "山东",

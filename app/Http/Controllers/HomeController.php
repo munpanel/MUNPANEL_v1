@@ -404,7 +404,10 @@ class HomeController extends Controller
         if ($reg->type == 'delegate')
         {
             if ($reg->delegate->canAssignSeats() && isset($reg->delegate->nation_id))
-                $operations[] = 'lockSeat';
+                if (!$reg->delegate->seat_locked)
+                    $operations[] = 'lockSeat';
+                else
+                    $operations[] = 'unlockSeat';
             if (Reg::current()->can('sudo'))
                 $operations[] = 'sudo';
             $status = $reg->delegate->realStatus();

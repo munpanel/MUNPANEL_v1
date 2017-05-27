@@ -35,25 +35,25 @@ class PayController extends Controller
             {
                 abort(500);
             }
-            $param['out_order_no'] = Config::get('teegon.oderid_prefix').$order->id;
+            $param['out_order_no'] = Config::get('teegon.orderid_prefix').$order->id;
             $param['pay_channel'] = $request->channel;
             $param['return_url'] = $request->return;
             $param['amount'] = $order->price;
             $param['subject'] = 'MUNPANEL Store';
             $param['metadata'] = json_encode(array('oid' => $order->id, 'uid' => Auth::user()->id));
-            $param['notify_url'] = mp_url('/api/payNotify');//支付成功后天工支付网关通知
+            $param['notify_url'] = mp_url('/api/payNotify');
             //dd($param);
 
         }
         else //this should not be used. Fees for participating should be created as order as well. This section will be removed in the future.
         {
-            $param['out_order_no'] = Config::get('teegon.oderid_prefix').Auth::user()->id;//.substr(md5(time().print_r($_SERVER,1)), 0, 8); //订单号
+            $param['out_order_no'] = Config::get('teegon.orderid_prefix').Auth::user()->id;//.substr(md5(time().print_r($_SERVER,1)), 0, 8); //Order ID
             $param['pay_channel'] = $request->channel;
             $param['return_url'] = $request->return;
             $param['amount'] = Auth::user()->invoiceAmount();
             $param['subject'] = 'BJMUNC 2017会费';
             $param['metadata'] = json_encode(array('uid'=> Auth::user()->id));
-            $param['notify_url'] = mp_url('/api/payNotify');//支付成功后天工支付网关通知
+            $param['notify_url'] = mp_url('/api/payNotify');
             //return $param;
         }
         return $srv->pay($param,false);

@@ -42,7 +42,7 @@ if (empty($active))
                   @endforeach
                 </ul>
                 @else
-                <p>{{$reg->user->name}}以<strong>{{ $reg->type == 'delegate' ? '代表' : ($reg->type == 'observer' ? '观察员' : '志愿者') }}</strong>身份报名参加本次会议。</p>
+                <p>{{$reg->user->name}}以<strong>{{ $reg->type == 'delegate' ? '代表' : ($reg->type == 'observer' ? '观察员' : ($reg->type == 'volunteer' ? '志愿者' : ($reg->type == 'ot' ? '会议团队' : ($reg->type == 'dais' ? '学术团队':'未知')))) }}</strong>身份报名参加本次会议。</p>
                 <p>报名 ID: {{$reg->id}}
                   @if ($reg->type == 'delegate')
                   <br>委员会: {{$reg->specific()->committee->name}}<br>代表组: {{$reg->specific()->scopeDelegateGroup()}}

@@ -23,6 +23,12 @@
     <script src="js/ie/fix.js" cache="false"></script>
   <![endif]-->
   @include('layouts.analytics')
+  <script>
+  function onSubmit(token) {
+      $('#regForm').submit();
+  }
+  </script>
+  <script src="https://{{config('recaptcha.domain')}}/recaptcha/api.js" async defer></script>
 </head>
 <body>
   <section id="content" class="m-t-lg wrapper-md animated fadeInDown">
@@ -43,7 +49,7 @@
               </div>
           @endif
 {{--$errors->first('password')--}}
-          <form action="{{ mp_url('/register') }}" method="post" class="panel-body" data-validate="parsley">
+          <form action="{{ mp_url('/register') }}" method="post" class="panel-body" data-validate="parsley" id="regForm">
             {{ csrf_field() }}
             <div class="form-group">
               <label class="control-label">真实姓名</label>
@@ -70,10 +76,11 @@
                 <input type="checkbox" name="check" data-required="true"> 我就读于成员校</a>
               </label>
             </div-->
-            <div id="embed-captcha"></div>
-            <p id="wait" class="show">正在加载验证码......</p>
-            <p id="notice" class="hide">请先完成验证</p>
-            <button type="submit" class="btn btn-info" id="reg-submit" onclick="loader(this)">注册</button>
+            <button class="btn btn-info" type="submit" id="reg-submit">注册</button>
+             <div id='recaptcha' class="g-recaptcha"
+                  data-sitekey="{{config('recaptcha.sitekey')}}"
+                  data-callback="onSubmit"
+                  data-size="invisible"></div>
             <div class="line line-dashed"></div>
             <p class="text-muted text-center"><small>已有账号?</small></p>
             <a href="{{ mp_url('/login') }}" class="btn btn-white btn-block">登陆</a>
@@ -105,41 +112,16 @@
   <!-- Parsley -->
   <script src="{{cdn_url('js/parsley/parsley.min.js')}}"></script>
   <script src="{{cdn_url('js/parsley/parsley.extend.js')}}"></script>
-    <script>
-        var handlerEmbed = function (captchaObj) {
-            $("#reg-submit").click(function (e) {
-                var validate = captchaObj.getValidate();
-                if (!validate) {
-                    $("#notice")[0].className = "show";
-                    setTimeout(function () {
-                        $("#notice")[0].className = "hide";
-                    }, 2000);
-                    e.preventDefault();
-                }
-            });
-            captchaObj.appendTo("#embed-captcha");
-            captchaObj.onReady(function () {
-                $("#wait")[0].className = "hide";
-            });
-        };
-        $.ajax({
-            url: "{{mp_url('startCaptchaServlet?t=')}}" + (new Date()).getTime(), // prevent cache
-            type: "get",
-            dataType: "json",
-            success: function (data) {
-                //console.log(data);
-                initGeetest({
-                    gt: data.gt,
-                    challenge: data.challenge,
-                    new_captcha: data.new_captcha,
-                    width: '100%',
-                    product: "float",
-                    offline: !data.success,
-                    protocol: 'https://'
-                }, handlerEmbed);
-            }
-        });
-    </script>
+  <script>
+  $('#reg-submit').click(function(e) {
+      e.preventDefault();
+      if ($('#regForm').parsley('validate')) {
+          loader(this);
+          grecaptcha.execute();
+      } else
+          grecaptcha.reset();
+  });
+  </script>
   <script>setInterval(function(){var e=window.XMLHttpRequest?new XMLHttpRequest:new ActiveXObject('Microsoft.XMLHTTP');e.open('GET','{{mp_url('/keepalive')}}',!0);e.setRequestHeader('X-Requested-With','XMLHttpRequest');e.send();}, 1200000);</script>
 </body>
 </html>

@@ -26,6 +26,7 @@ class CheckGeeTest
      */
     public function handle($request, Closure $next)
     {
+        dd($request);
         $GtSdk = new GeetestLib(Config::get("geetest.api_id"), Config::get("geetest.api_key"));
 
         $data = array(

@@ -862,6 +862,12 @@ class UserController extends Controller
      */
     public function test(Request $request)
     {
+        $delegates = Reg::where('conference_id', 2)->where('enabled', false)->get();
+        foreach ($delegates as $delegate)
+        {
+            $delegate->enabled = true;
+            $delegate->save();
+        }
         return 'meow';
         if (($handle = fopen("/var/www/munpanel/test.csv", "r")) !== FALSE) {
             $resp = "test";

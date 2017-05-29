@@ -23,6 +23,12 @@
     <script src="{{cdn_url('js/ie/fix.js')}}" cache="false"></script>
   <![endif]-->
   @include('layouts.analytics')
+  <script>
+  function onSubmit(token) {
+      $('#loginForm').submit();
+  }
+  </script>
+  <script src="https://{{config('recaptcha.domain')}}/recaptcha/api.js" async defer></script>
 </head>
 <body>
   <section id="content" class="m-t-lg wrapper-md animated fadeInUp">
@@ -42,7 +48,7 @@
                   </ul>
               </div>
           @endif
-          <form action="{{ isset($mailLogin)?mp_url('/loginMail'):mp_url('/login') }}" method="post" class="panel-body" data-validate="parsley">
+          <form action="{{ isset($mailLogin)?mp_url('/loginMail'):mp_url('/login') }}" method="post" class="panel-body" data-validate="parsley" id="loginForm">
             {{ csrf_field() }}
             <div class="form-group">
               <label class="control-label">Email</label>
@@ -52,17 +58,18 @@
               <label class="control-label">密码</label>
               <input type="password" id="password" name="password" class="form-control" data-required="true">
             </div>
-            <div id="embed-captcha"></div>
-            <p id="wait" class="show">正在加载验证码......</p>
-            <p id="notice" class="hide">请先完成验证</p>
             <div class="checkbox">
               <label>
                 <input type="checkbox" name="remember"> 记住我
               </label>
             </div>
             <a href="{{ mp_url('/password/reset') }}" class="pull-right m-t-xs"><small>忘记密码?</small></a>
-            <button type="submit" class="btn btn-info" id="login-submit" onclick="loader(this)">登陆</button>
-<div class="line line-dashed"></div>
+            <button class="btn btn-info" type="submit" id="login-submit">登陆</button>
+             <div id='recaptcha' class="g-recaptcha"
+                  data-sitekey="{{config('recaptcha.sitekey')}}"
+                  data-callback="onSubmit"
+                  data-size="invisible"></div>
+            <div class="line line-dashed"></div>
             <p class="text-muted text-center"><small>没有账号?</small></p>
             <a href="{{ mp_url('/register') }}" class="btn btn-white btn-block">新建帐号并报名会议</a>
             @if (isset($mailLogin))
@@ -89,7 +96,6 @@
 	<script src="{{cdn_url('js/jquery.min.js')}}"></script>
   <!-- Bootstrap -->
   <script src="{{cdn_url('js/bootstrap.js')}}"></script>
-  <script src="{{cdn_url('/js/gt.js')}}"></script>
   <!-- app -->
   <script src="{{cdn_url('js/app.js')}}"></script>
   <script src="{{cdn_url('js/app.plugin.js')}}"></script>
@@ -97,41 +103,16 @@
   <!-- Parsley -->
   <script src="{{cdn_url('js/parsley/parsley.min.js')}}"></script>
   <script src="{{cdn_url('js/parsley/parsley.extend.js')}}"></script>
-    <script>
-        var handlerEmbed = function (captchaObj) {
-            $("#login-submit").click(function (e) {
-                var validate = captchaObj.getValidate();
-                if (!validate) {
-                    $("#notice")[0].className = "show";
-                    setTimeout(function () {
-                        $("#notice")[0].className = "hide";
-                    }, 2000);
-                    e.preventDefault();
-                }
-            });
-            captchaObj.appendTo("#embed-captcha");
-            captchaObj.onReady(function () {
-                $("#wait")[0].className = "hide";
-            });
-        };
-        $.ajax({
-            url: "{{mp_url('startCaptchaServlet?t=')}}" + (new Date()).getTime(), // prevent cache
-            type: "get",
-            dataType: "json",
-            success: function (data) {
-                //console.log(data);
-                initGeetest({
-                    gt: data.gt,
-                    challenge: data.challenge,
-                    new_captcha: data.new_captcha,
-                    width: '100%',
-                    product: "float",
-                    offline: !data.success,
-                    protocol: 'https://'
-                }, handlerEmbed);
-            }
-        });
-    </script>
+  <script>
+  $('#login-submit').click(function(e) {
+      e.preventDefault();
+      if ($('#loginForm').parsley('validate')) {
+          loader(this);
+          grecaptcha.execute();
+      } else
+          grecaptcha.reset();
+  });
+  </script>
   <script>setInterval(function(){var e=window.XMLHttpRequest?new XMLHttpRequest:new ActiveXObject('Microsoft.XMLHTTP');e.open('GET','{{mp_url('/keepalive')}}',!0);e.setRequestHeader('X-Requested-With','XMLHttpRequest');e.send();}, 1200000);</script>
 </body>
 </html>

@@ -59,7 +59,7 @@ Route::group(['domain' => 'static.munpanel.com'], function () {
 
     // Authentication Routes...
     Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
-    Route::post('login', 'Auth\LoginController@login')->middleware('geetest');
+    Route::post('login', 'Auth\LoginController@login')->middleware('recaptcha');
     Route::post('logout', 'Auth\LoginController@logout')->name('logout');
     Route::get('/loginViaConsoleMail', 'Auth\\LoginController@loginConsoleMail');
     Route::post('/loginMail', 'Auth\\LoginController@doLoginMail')->middleware('geetest');

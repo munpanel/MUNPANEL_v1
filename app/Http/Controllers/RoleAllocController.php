@@ -448,6 +448,8 @@ class RoleAllocController extends Controller
         if (!$delegate->canAssignSeats())
             return 'error';
         $delegate->seat_locked = true;
+        if ($delegate->committee_id != $delegate->nation->committee_id)
+            $delegate->reg->addEvent('committee_moved', '{"name":" MUNPANEL 自动","committee":"'.$delegate->nation->committee->display_name.'"}');
         $delegate->committee_id = $delegate->nation->committee_id;
         $delegate->save();
         $delegate->reg->addEvent('role_locked', '{"name":"'.Reg::current()->name().'"}');

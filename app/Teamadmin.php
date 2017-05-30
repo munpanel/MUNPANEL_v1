@@ -32,7 +32,7 @@ class Teamadmin extends Model
     }
 
     public function regText() {
-        return $this->school->typeText().'管理' . '('. $this->school->name .')';
+        return $this->school->typeText().'管理 ('. $this->school->name .')';
         return '面试官'. (empty($this->committee_id)?'':'（'.$this->committee->name.'）');
     }
 }

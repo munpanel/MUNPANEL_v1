@@ -1,19 +1,9 @@
-@php
-$hasRegAssignment = false;
-if (Reg::current()->type == 'delegate' && isset(Reg::current()->delegate))
-{
-    if (Reg::current()->delegate->hasRegAssignment() > 0) $hasRegAssignment = true;
-}
-@endphp
 @extends('layouts.app')
 @section('home_active', 'active')
 @push('scripts')
     <script src="{{cdn_url('js/charts/easypiechart/jquery.easy-pie-chart.js')}}"></script>
     <script src="{{cdn_url('/js/fuelux/fuelux.js')}}"></script>
     <script src="{{cdn_url('/js/datepicker/bootstrap-datepicker.js')}}"></script>
-    @if ((!Auth::user()->verified()) || (Reg::currentConference()->status == 'reg' && Reg::current()->type == 'unregistered') || (!Reg::selectConfirmed()) || (!Reg::current()->enabled) || (null!==(Reg::current()->specific()) && Reg::current()->specific()->status == 'fail') || ($hasRegAssignment) || (Reg::current()->type != 'unregistered' && is_null(Reg::current()->specific())))
-    <script src="{{cdn_url('/js/reg.firsttime.js')}}"></script>
-    @endif
 @endpush
 @push('css')
     <link href="{{cdn_url('/js/fuelux/fuelux.css')}}" rel="stylesheet">
@@ -99,14 +89,14 @@ if (Reg::current()->type == 'delegate' && isset(Reg::current()->delegate))
                 <footer class="panel-footer lt">
                   <!--center><b>Welcome to {{Reg::currentConference()->name}}!</b></center><br>Please check the following information. If any of them is wrong, please send a feedback so that we can correct it.<br><b>Name:</b> Adam Yi<br><b>Gender:</b> Male<br><b>Telephone:</b> 18610713116<br><b>Email:</b> yixuan@procxn.org<br><b>Country:</b> NOT ASSIGNED YET<-->
                  <!--center><b>Welcome to {{Reg::currentConference()->name}}!</b></center><br>您的报名信息如下，如有任何问题，请重新进入报名表单修改。如有任何其他问题，请联系official@bjmun.org<br><br><b>报姓名：</b>易轩<br><b>性别：</b>男<br><b>委员会：</b>ICAO<br><b>搭档：</b>Yassi<br><b>室友：</b>不住宿<br><b>身份证：</b>123456789012345678<br><b>电话：</b>18610713116<!-->
-                 <center><b>Welcome to BJMUNC2017!</b></center><br>尊敬的{{Reg::current()->school->name}}，感谢您选择{{Reg::currentConference()->name()}}。
+                 <center><b>Welcome to {{Reg::currentConference()->name}}!</b></center><br>尊敬的{{Reg::current()->school->name}}，感谢您选择{{Reg::currentConference()->name}}。
                 </footer>
               </section>
               <section class="panel bg-warning no-borders">
             <div class="pos-rlt">
               <span class="arrow left hidden-xs"></span>
               <div class="panel-body">
-                      <h4>报名情况</h4><div class="col-xs-4"><br>代表：<h2>{{ $del }}</h2></div><div class="col-xs-4"><br>志愿者：<h2>{{ $vol }}</h2></div><div class="col-xs-4"><br>观察员：<h2>无</h2></div>
+                      <h4>报名情况</h4><div class="col-xs-4"><br>代表：<h2>{{ $del }}</h2></div><div class="col-xs-4"><br>志愿者：<h2>{{ $vol }}</h2></div><div class="col-xs-4 disabled"><br>观察员：<h2>{{$obs}}</h2></div>
                 </div></span></div>
               </section>
               <section class="panel clearfix">

@@ -104,6 +104,14 @@ class HomeController extends Controller
                 'initialModal' => $request->initmodal,
             ]);
         }
+        else if ($type == 'school')
+        {
+            return view('school.home',[
+                'vol' => Reg::currentConference()->volunteers->count(),
+                'obs' => Reg::currentConference()->observers->count(),
+                'del' => Reg::currentConference()->delegates->count(),
+                ]);
+        }
         else
         {
             $specific = $reg->specific();

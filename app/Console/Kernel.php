@@ -45,9 +45,8 @@ class Kernel extends ConsoleKernel
         $schedule->call(function() {
             $date = date_sub(date_create(), new \DateInterval('P3D'));
             $deelegates = Delegate::whereNotNull('nation_id')->where('seat_locked', false)->where('updated_at', '<', date('Y-m-d H:i:s', $date->getTimestamp()))->get()->pluck('reg_id');
-            Delegate::whereIn('reg_id', $deelegates)->update(['seat_locked' => true]);
-            // TODO: ADD EVENT
             $nations = Delegate::whereNotNull('nation_id')->where('seat_locked', false)->where('updated_at', '<', date('Y-m-d H:i:s', $date->getTimestamp()))->get()->pluck('nation_id');
+            Delegate::whereIn('reg_id', $deelegates)->update(['seat_locked' => true]);
             Nation::whereIn('id', $nations)->update(['status' => 'locked']);
             $regs = Reg::whereIn('id', $deelegates)->get();
             foreach($regs as $reg) 

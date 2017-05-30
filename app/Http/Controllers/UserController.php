@@ -862,11 +862,12 @@ class UserController extends Controller
      */
     public function test(Request $request)
     {
-            $date = date_sub(date_create('2017-05-31 10:00:00'), new \DateInterval('P3D'));
+        return (is_object(Reg::current()->specific())) ? 'true' : 'false';
+            $date = date_sub(date_create('2017-05-31 10:30:00'), new \DateInterval('P3D'));
             $deelegates = Delegate::whereNotNull('nation_id')->where('seat_locked', false)->where('updated_at', '<', date('Y-m-d H:i:s', $date->getTimestamp()))->get()->pluck('reg_id');
+            $nations = Delegate::whereNotNull('nation_id')->where('seat_locked', false)->where('updated_at', '<', date('Y-m-d H:i:s', $date->getTimestamp()))->get()->pluck('nation_id');
             Delegate::whereIn('reg_id', $deelegates)->update(['seat_locked' => true]);
             // TODO: ADD EVENT
-            $nations = Delegate::whereNotNull('nation_id')->where('seat_locked', false)->where('updated_at', '<', date('Y-m-d H:i:s', $date->getTimestamp()))->get()->pluck('nation_id');
             Nation::whereIn('id', $nations)->update(['status' => 'locked']);
             $regs = Reg::whereIn('id', $deelegates)->get();
             foreach($regs as $reg) 
@@ -878,6 +879,7 @@ class UserController extends Controller
                 $delegate->save();
                 $reg->addEvent('role_locked', '{"name":" MUNPANEL 自动"}');
             }
+            return json_encode(Nation::whereIn('id', $nations)->get());
             return $deelegates->count();
         $delegates = Reg::where('conference_id', 2)->where('enabled', false)->get();
         foreach ($delegates as $delegate)

@@ -150,6 +150,8 @@
                 @include('layouts.dais')
                 @elseif (Reg::current()->type == 'interviewer')
                 @include('layouts.interviewer')
+                @elseif (Reg::current()->type == 'school')
+                @include('layouts.school')
                 @else
                 @include('layouts.delegate')
                 @endif

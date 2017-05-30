@@ -33,12 +33,15 @@ function oVerifyStat($cid)
     $all = Reg::where('conference_id', $cid)->whereIn('type', ['delegate', 'observer', 'volunteer'])->count();
     $interviewQuery = DB::select('SELECT count(DISTINCT reg_id) as intv FROM `interviews` where `conference_id` = ? and `status` not in (\'cancelled\', \'failed\');', [$cid]);
     $interviews = $interviewQuery[0]->intv;
+    $roleSelQuery = DB::select('SELECT count(*) as qty FROM `delegate_info` WHERE `conference_id` = ? AND `nation_id` IS NOT NULL', [$cid]);
+    $roleSel = $roleSelQuery[0]->qty;
     return ['oVerified' => $delOVerify + $obsOVerify + $volOVerify, 
             'oUnverified' => $delUnOVerify + $obsUnOVerify + $volUnOVerify, 
             'sVerified' => $delOVerify + $obsOVerify + $volOVerify + $delUnOVerify + $obsUnOVerify + $volUnOVerify, 
             'all' => $all, 
             'delOVerify' => $delOVerify, 
-            'interviews' => $interviews];
+            'interviews' => $interviews,
+            'roleSel' => $roleSel];
 }
 
 /**

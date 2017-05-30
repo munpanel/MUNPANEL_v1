@@ -62,12 +62,12 @@ Route::group(['domain' => 'static.munpanel.com'], function () {
     Route::post('login', 'Auth\LoginController@login')->middleware('recaptcha');
     Route::post('logout', 'Auth\LoginController@logout')->name('logout');
     Route::get('/loginViaConsoleMail', 'Auth\\LoginController@loginConsoleMail');
-    Route::post('/loginMail', 'Auth\\LoginController@doLoginMail')->middleware('geetest');
+    Route::post('/loginMail', 'Auth\\LoginController@doLoginMail')->middleware('recaptcha');
 
 
     // Registration Routes...
     Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('register');
-    Route::post('register', 'Auth\RegisterController@register')->middleware('geetest');
+    Route::post('register', 'Auth\RegisterController@register')->middleware('recaptcha');
 
     // Password Reset Routes...
     Route::get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('password.request');

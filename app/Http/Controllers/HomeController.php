@@ -80,7 +80,7 @@ class HomeController extends Controller
         {
             $school = $reg->school;
             //return $del->count();
-            return view('school.home', ['del' => $school->delegates->count(), 'vol' => $school->volunteers->count()]);
+            return view('school.home', ['del' => $school->delegates->count(), 'vol' => $school->volunteers->count(), 'obs' => $school->observers->count()]);
         }
         else if ($type == 'dais' && $reg->specific()->status == 'success')
         {
@@ -103,14 +103,6 @@ class HomeController extends Controller
                 'hasChildComm' => $hasChildComm,
                 'initialModal' => $request->initmodal,
             ]);
-        }
-        else if ($type == 'school')
-        {
-            return view('school.home',[
-                'vol' => Reg::currentConference()->volunteers->count(),
-                'obs' => Reg::currentConference()->observers->count(),
-                'del' => Reg::currentConference()->delegates->count(),
-                ]);
         }
         else
         {

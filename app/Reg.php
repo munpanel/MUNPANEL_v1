@@ -85,8 +85,6 @@ class Reg extends Model
     }
 
     public function specific() {
-        if ($this->type == 'school')
-            return $this->teamadmin;
         return $this->{$this->type};
     }
 

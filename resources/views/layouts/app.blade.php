@@ -8,7 +8,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{Reg::currentConference()->name}} {{Reg::current()->user->id != Auth::id() ? '(sudo mode)' : ''}} | MUNPANEL</title>
+    <title>{{Reg::currentConference()->name}} {{Reg::current()->user->id != Auth::id() ? '(sudo mode)' : ''}} | MUNPANEL{{config('app.debug')?' CONFIDENTIAL':''}}</title>
     <meta name="keywords" content="MUNPANEL,MUN,Model UN,Model United Nations,United Nations,UN,PANEL,模联,模拟联合国">
     <meta name="copyright" content="Proudly Powered and Copyrighted by {{config('munpanel.copyright_year')}} MUNPANEL. A Product of Console iT.">
     <meta name="generator" content="MUNPANEL System">
@@ -46,17 +46,13 @@
 <body>
   <section class="hbox stretch">
     <!-- .aside -->
-    <aside class="{{Reg::current()->user->id == Auth::id() ? 'bg-info' : 'bg-danger'}} aside-sm @yield('hide_aside')" id="nav">
+    <aside class="bg-info aside-sm @yield('hide_aside')" id="nav">
       <section class="vbox">
         <header class="dker nav-bar nav-bar-fixed-top">
           <a class="btn btn-link visible-xs" data-toggle="class:nav-off-screen" data-target="#nav">
             <i class="fa fa-bars"></i>
           </a>
-          @if (Reg::current()->user->id == Auth::id())
           <a href="#" class="nav-brand" data-toggle="fullscreen">{{Reg::currentConference()->shortname}}</a>
-          @else
-          <a href="#" class="nav-brand" data-toggle="fullscreen">IN SUDO</a>
-          @endif
           <a class="btn btn-link visible-xs" data-toggle="class:show" data-target=".nav-user">
             <i class="fa fa-comment-o"></i>
           </a>
@@ -64,11 +60,14 @@
         <section class="scrollable">
           <div class="slim-scroll" data-height="auto" data-disable-fade-out="true" data-distance="0" data-size="5px">
           <!-- user -->
-          <div class="{{Reg::current()->user->id == Auth::id() ? 'bg-success' : 'bg-warning'}} nav-user hidden-xs pos-rlt">
+          <div class="bg-success nav-user hidden-xs pos-rlt">
             <div class="nav-avatar pos-rlt">
               <a href="#" class="thumb-sm avatar animated rollIn" data-toggle="dropdown">
                 <img src="{{ 'https://www.gravatar.com/avatar/' . md5( strtolower( trim( Auth::user()->email ) ) ) . '?d='.mp_url('images/avatar.png').'&s=320' }}" alt="" class="">
                 <span class="caret caret-white"></span>
+                @if (config('app.debug'))
+                CONFIDENTIAL
+                @endif
               </a>
               <ul class="dropdown-menu m-t-sm animated fadeInLeft">
               	<span class="arrow top"></span>
@@ -142,6 +141,22 @@
           <!-- nav -->
           <nav class="nav-primary hidden-xs">
             <ul class="nav">
+            @if (config('app.debug'))
+              <li class="bg-danger @yield('debug_active')">
+                <a href="{{ mp_url('/aboutDebug') }}">
+                  <i class="fa fa-bug"></i>
+                  <span>Dev Mode</span>
+                </a>
+              </li>
+              @endif
+              @if (Reg::current()->user->id != Auth::id())
+              <li class="bg-warning @yield('sudo_active')">
+                <a href="{{ mp_url('/aboutSudo') }}">
+                  <i class="fa fa-address-card"></i>
+                  <span>SUDOing</span>
+                </a>
+              </li>
+              @endif
                 @if (Reg::current()->type == 'teamadmin')
                 @include('layouts.school')
                 @elseif (Reg::current()->type == 'ot')
@@ -159,7 +174,7 @@
           </nav>
           <!-- / nav -->
           <!-- note -->
-          <div class="{{Reg::current()->user->id == Auth::id() ? 'bg-primary' : 'bg-warning'}} wrapper hidden-vertical animated fadeInUp text-sm">
+          <div class="bg-primary wrapper hidden-vertical animated fadeInUp text-sm">
               <!--a href="#" data-dismiss="alert" class="pull-right m-r-n-sm m-t-n-sm"><i class="fa fa-times"></i></a-->
               Proudly Powered and Copyrighted by {{config('munpanel.copyright_year')}} MUNPANEL. A Product of Console iT.
               @if(null !== config('munpanel.icp_license'))

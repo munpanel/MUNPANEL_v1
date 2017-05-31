@@ -1374,6 +1374,7 @@ return view('blank',['testContent' => $js, 'convert' => false]);
             return redirect('/login');
         }
         $reg = Reg::findOrFail($request->reg);
+        $target = '/home';
         if ($reg->user_id != Auth::user()->id)
         {
             if (is_object(Reg::current()))
@@ -1381,6 +1382,7 @@ return view('blank',['testContent' => $js, 'convert' => false]);
                 if (Reg::current()->conference_id == $reg->conference_id && Reg::current()->can('sudo'))
                 {
                     $reg->sudo();
+                    $target = '/aboutSudo';
                 }
                 else
                     return 'error';
@@ -1388,7 +1390,7 @@ return view('blank',['testContent' => $js, 'convert' => false]);
                 return 'error';
         } else
             $reg->login(true);
-        return redirect(isset($request->target) ? $request->target : '/home');
+        return redirect(isset($request->target) ? $request->target : $target);
     }
 
     public function atwhoList()

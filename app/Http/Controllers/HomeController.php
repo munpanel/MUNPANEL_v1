@@ -1117,4 +1117,18 @@ class HomeController extends Controller
         if ($submit == 'true')
             return redirect(mp_url('/home'));
     }
+
+    public function aboutDebug()
+    {
+        if (config('app.debug'))
+            return view('aboutDebug');
+        return redirect('/home');
+    }
+
+    public function aboutSUDO()
+    {
+        if (Reg::current()->user_id != Auth::id())
+            return view('aboutSUDO');
+        return redirect('/home');
+    }
 }

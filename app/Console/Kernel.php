@@ -42,6 +42,8 @@ class Kernel extends ConsoleKernel
         $schedule->call(function() {
             User::where('telVerifications', '>', -1)->update(['telVerifications' => 15]);
         })->daily();
+        $schedule->command('debugbar:clear')->daily();
+        $schedule->command('geoip:update')->monthly();
         $schedule->call(function() {
             $date = date_sub(date_create(), new \DateInterval('P3D'));
             $deelegates = Delegate::whereNotNull('nation_id')->where('seat_locked', false)->where('updated_at', '<', date('Y-m-d H:i:s', $date->getTimestamp()))->get()->pluck('reg_id');

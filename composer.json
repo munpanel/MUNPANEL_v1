@@ -24,7 +24,8 @@
         "fideloper/proxy": "^3.3",
         "torann/geoip": "^1.0",
         "geoip2/geoip2": "^2.4",
-        "sentry/sentry-laravel": "^0.7.0"
+        "sentry/sentry-laravel": "^0.7.0",
+        "barryvdh/laravel-debugbar": "^2.3"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

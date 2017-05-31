@@ -182,6 +182,8 @@ return [
         /*
          * Application Service Providers...
          */
+        App\Providers\DebugServiceProvider::class,
+
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
@@ -189,6 +191,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\HelperServiceProvider::class,
         App\Artisan\AppArtisanServiceProvider::class,
+        Barryvdh\Debugbar\ServiceProvider::class,
         //ChumPer\Zipper\ZipperServiceProvider::class,
         Gloudemans\Shoppingcart\ShoppingcartServiceProvider::class,
         Chumper\Zipper\ZipperServiceProvider::class,
@@ -229,6 +232,7 @@ return [
         'Cookie' => Illuminate\Support\Facades\Cookie::class,
         'Crypt' => Illuminate\Support\Facades\Crypt::class,
         'DB' => Illuminate\Support\Facades\DB::class,
+        'Debugbar' => Barryvdh\Debugbar\Facade::class,
         'Eloquent' => Illuminate\Database\Eloquent\Model::class,
         'Entrust' => App\EntrustFacade::class,
         'Event' => Illuminate\Support\Facades\Event::class,

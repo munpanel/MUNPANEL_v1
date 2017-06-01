@@ -137,12 +137,12 @@ class Reg extends Model
 
     static public function currentConference()
     {
-        return Conference::find(config('munpanel.conference_id'));
+        return Conference::find(Reg::currentConferenceID());
     }
 
     static public function currentConferenceID()
     {
-        return config('munpanel.conference_id');
+        return config('munpanel.conference_id') ?? 0;
     }
 
     static public function selectConfirmed()

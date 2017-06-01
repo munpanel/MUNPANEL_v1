@@ -35,6 +35,10 @@ class DomainRouting
                     config(['munpanel.conference_id' => 3]);
                 if ($_SERVER['HTTP_HOST'] == 'ffmun.munpanel.com')
                     config(['munpanel.conference_id' => 4]);
+                if ($_SERVER['HTTP_HOST'] == 'romun.dev.yiad.am')
+                    config(['munpanel.conference_id' => 2]);
+                if ($_SERVER['HTTP_HOST'] == 'bjmun.dev.yiad.am')
+                    config(['munpanel.conference_id' => 3]);
             }
         }
         return $next($request);

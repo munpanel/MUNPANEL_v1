@@ -8,7 +8,11 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+    @if (Reg::currentConferenceID() != 0)
     <title>{{Reg::currentConference()->name}} {{Reg::current()->user->id != Auth::id() ? '(sudo mode)' : ''}} | MUNPANEL{{config('app.debug')?' CONFIDENTIAL':''}}</title>
+    @else
+    <title>MUNPANEL{{config('app.debug')?' CONFIDENTIAL':''}}</title>
+    @endif
     <meta name="keywords" content="MUNPANEL,MUN,Model UN,Model United Nations,United Nations,UN,PANEL,模联,模拟联合国">
     <meta name="copyright" content="Proudly Powered and Copyrighted by {{config('munpanel.copyright_year')}} MUNPANEL. A Product of Console iT.">
     <meta name="generator" content="MUNPANEL System">
@@ -88,7 +92,9 @@
                   <a href="help.html">Help</a>
                 </li-->
                 <li>
-                  @if (Reg::current()->user->id == Auth::id())
+                  @if (Reg::currentConferenceID() == 0)
+                  <a href="{{ mp_url('/changePwd.modal') }}" data-toggle="ajaxModal">修改密码</a>
+                  @elseif (Reg::current()->user_id == Auth::id())
                   <a href="{{ mp_url('/changePwd.modal') }}" data-toggle="ajaxModal">修改密码</a>
                   <a href="{{mp_url('/selectIdentityModal')}}" data-toggle="ajaxModal">切换身份</a>
                   @else
@@ -99,7 +105,7 @@
                 </li>
               </ul>
               <div class="visible-xs m-t m-b">
-                <a href="#" class="h3">{{ Reg::current()->name() }}</a>
+                <a href="#" class="h3">{{ is_object(Reg::current())?Reg::current()->name():Auth::user()->name }}</a>
               </div>
             </div>
             <!--div class="nav-msg">
@@ -149,7 +155,7 @@
                 </a>
               </li>
               @endif
-              @if (Reg::current()->user->id != Auth::id())
+              @if (is_object(Reg::current()) && Reg::current()->user_id != Auth::id())
               <li class="bg-warning @yield('sudo_active')">
                 <a href="{{ mp_url('/aboutSudo') }}">
                   <i class="fa fa-address-card"></i>
@@ -157,7 +163,9 @@
                 </a>
               </li>
               @endif
-                @if (Reg::current()->type == 'teamadmin')
+                @if (Reg::currentConferenceID() == 0)
+                @include('layouts.portal')
+                @elseif (Reg::current()->type == 'teamadmin')
                 @include('layouts.school')
                 @elseif (Reg::current()->type == 'ot')
                 @include('layouts.ot')

@@ -17,10 +17,13 @@ Route::group(['domain' => 'www.munpanel.com'], function () {
     });
 });
 
-Route::group(['domain' => 'portal.munpanel.com'], function () {
+Route::group(['domain' => 'portal.dev.yiad.am'], function () {
     Route::get('/', function () {
-        return "Portal under development";
+        return redirect(secure_url('home'));
     });
+
+    Route::get('/home', 'PortalController@index');
+    Route::get('/teams', 'PortalController@teams');
 });
 
 Route::group(['domain' => 'static.munpanel.com'], function () {

@@ -27,6 +27,7 @@ class CreateSchoolsTable extends Migration
             $table->string('name')->unique();
             //$table->integer('reg_id')->unsigned();
             $table->enum('payment_method', ['individual', 'group']);
+            $table->string('joinCode')->nullable();
             $table->timestamps();
             //$table->foreign('reg_id')->references('id')->on('regs')->onDelete('cascade');
         });

@@ -40,6 +40,11 @@ class School extends Model
     }
 
     public function typeText() {
-        return '学校';// for some conferences, it might be '团队'
+        switch($this->type)
+        {
+            case 'school': return '中学';
+            case 'university': return '高等学校';
+            default: return '团队';
+        }
     }
 }

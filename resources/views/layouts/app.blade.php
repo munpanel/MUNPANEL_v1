@@ -210,7 +210,7 @@
     <!-- /.vbox -->
   </section>
   <form id="logout-form" action="{{ mp_url('/logout') }}" method="POST" style="display: none;"> {{ csrf_field() }} </form>
-	<script src="{{cdn_url('/js/jquery.min.js')}}"></script>
+  <script src="{{cdn_url('/js/jquery.min.js')}}"></script>
   <!-- Bootstrap -->
   <script src="{{cdn_url('/js/bootstrap.min.js')}}"></script>
   <!-- App -->

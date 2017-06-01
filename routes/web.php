@@ -253,6 +253,7 @@ Route::group(['domain' => 'static.munpanel.com'], function () {
     Route::get('/ajax/roleListByNation', 'DatatablesController@roleListByNation');
     Route::get('/ajax/roleListByDelegate', 'DatatablesController@roleListByDelegate');
     Route::get('/ajax/atwhoList', 'UserController@atwhoList');
+    Route::get('/ajax/teams', 'PortalController@teamsTable');
 
     Route::get('/chat', 'ChatController@getIndex');
     Route::post('/chat/message', 'ChatController@postMessage');

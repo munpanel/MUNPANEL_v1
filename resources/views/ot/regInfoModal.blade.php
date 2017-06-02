@@ -251,7 +251,7 @@ if (empty($active))
               <button type="submit" class="btn btn-success" onclick="loader(this)">保存更改</button>
               </form>
               @else
-              <h3>可供选择席位列表</h3>
+              <h3>曾供选择席位列表</h3>
               <div class="alert alert-info">席位锁定中，不可选择席位，不可编辑列表。</div>
               <table class="table table-bordered table-striped table-hover">
               <tbody>

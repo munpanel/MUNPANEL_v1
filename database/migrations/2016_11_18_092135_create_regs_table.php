@@ -25,7 +25,7 @@ class CreateRegsTable extends Migration
         Schema::create('regs', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->unsigned();
-            $table->integer('conference_id')->unsigned();
+            $table->integer('conference_id')->unsigned()->nullable(); // null -> global things
             $table->integer('school_id')->unsigned()->nullable();
             $table->enum('type', ['unregistered', 'ot', 'dais', 'teamadmin', 'delegate', 'observer', 'volunteer', 'interviewer']);
             $table->enum('gender', ['male', 'female'])->nullable();

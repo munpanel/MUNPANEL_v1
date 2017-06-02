@@ -22,8 +22,13 @@ Route::group(['domain' => 'portal.dev.yiad.am'], function () {
         return redirect(secure_url('home'));
     });
 
-    Route::get('/home', 'PortalController@index');
+    Route::get('/home', 'PortalController@index')->name('portal');
     Route::get('/teams', 'PortalController@teams');
+    Route::get('/teams/newteam.modal', 'PortalController@newTeamModal');
+    Route::get('/teams/jointeam.modal', 'PortalController@joinTeamModal');
+    Route::post('/teams/doCreateTeam', 'PortalController@createTeam');
+    Route::post('/teams/doJoinTeam', 'PortalController@joinTeam');
+    Route::get('/ajax/teams', 'PortalController@teamsTable');
 });
 
 Route::group(['domain' => 'static.munpanel.com'], function () {
@@ -253,7 +258,6 @@ Route::group(['domain' => 'static.munpanel.com'], function () {
     Route::get('/ajax/roleListByNation', 'DatatablesController@roleListByNation');
     Route::get('/ajax/roleListByDelegate', 'DatatablesController@roleListByDelegate');
     Route::get('/ajax/atwhoList', 'UserController@atwhoList');
-    Route::get('/ajax/teams', 'PortalController@teamsTable');
 
     Route::get('/chat', 'ChatController@getIndex');
     Route::post('/chat/message', 'ChatController@postMessage');

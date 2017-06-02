@@ -176,6 +176,14 @@
                 @else
                 @include('layouts.delegate')
                 @endif
+              @if (Reg::currentConferenceID() != 0)
+              <li>
+                <a href="{{ route('portal') }}">
+                  <i class="fa fa-university"></i>
+                  <span>Back to Portal</span>
+                </a>
+              </li>
+              @endif
             </ul>
           </nav>
           <!-- / nav -->

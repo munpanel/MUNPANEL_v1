@@ -34,6 +34,10 @@ class School extends Model
         return $this->hasMany('App\Observer');
     }
 
+    public function teamadmins() {
+        return $this->hasMany('App\Teamadmin');
+    }
+
     public function toPayAmount() {
         return Auth::user()->school->delegates->where('status', 'oVerified')->count() * 530 + Auth::user()->school->delegates->where('status','oVerified')->where('accomodate', 1)->count() * 510 + Auth::user()->school->volunteers->where('status','oVerified')->where('accomodate', 1)->count() * 510;
 

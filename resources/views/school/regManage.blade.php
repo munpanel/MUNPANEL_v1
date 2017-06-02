@@ -28,6 +28,7 @@
               </div>
             </header>
             <section class="scrollable wrapper w-f">
+            <div class="alert alert-info">点击“等待学校审核”和“等待组织团队审核”的状态文字可以修改学校审核状态</div>
               <section class="panel">
                 <div class="table-responsive">
                   <table class="table table-striped m-b-none" id="registration-table">

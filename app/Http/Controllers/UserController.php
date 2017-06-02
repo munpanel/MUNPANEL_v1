@@ -419,6 +419,29 @@ class UserController extends Controller
         return 'success';
         //return redirect('/regManage?initialReg='.$id);
     }
+
+    /**
+     * make a registration ot not verified.
+     *
+     * @param int $id the id of the registration
+     * @return void
+     */
+    public function oReVerify($id)
+    {
+        if (Reg::current()->type != 'ot' || (!Reg::current()->can('approve-regs')))
+            return "您无权执行该操作！";
+        $reg = Reg::findOrFail($id);
+        $specific = $reg->specific();
+        if ($specific->status != 'fail')
+            return "无法为此报名者执行该操作！";
+        $specific->status = 'sVerified';
+        $specific->save();
+        //$reg->addEvent('ot_verification_rejected', '{"name":"'.Reg::current()->name().'"}');
+        //TODO: event
+        return 'success';
+        //return redirect('/regManage?initialReg='.$id);
+    }
+
     /**
      * make a registration school verified.
      *
@@ -427,10 +450,10 @@ class UserController extends Controller
      */
     public function schoolVerify($id)
     {
-        $school = Reg::current()->school;
-        $specific =  User::find($id)->specific();
-        if ($specific->school->id != $school->id)
+        $reg = Reg::findOrFail($id);
+        if ($reg->school_id != Reg::current()->school_id)
             return "error";
+        $specific = $reg->specific();
         $specific->status = 'sVerified';
         $specific->save();
     }
@@ -443,10 +466,10 @@ class UserController extends Controller
      */
     public function schoolUnverify($id)
     {
-        $school = Reg::current()->school;
-        $specific =  User::find($id)->specific();
-        if ($specific->school->id != $school->id)
+        $reg = Reg::findOrFail($id);
+        if ($reg->school_id != Reg::current()->school_id)
             return "error";
+        $specific = $reg->specific();
         $specific->status = 'reg';
         $specific->save();
     }

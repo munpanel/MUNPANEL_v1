@@ -283,6 +283,10 @@ class DatatablesController extends Controller //To-Do: Permission Check
                 else
                     $detail =  '<a href="ot/regInfo.modal/'. $reg->id .'" data-toggle="ajaxModal" id="'. $reg->id .'" class="details-modal"><i class="fa fa-search-plus"></i></a>';
                 if ($user->type == 'teamadmin') {
+                    if ($status == '等待学校审核')
+                        $status = '<a href="#" class="approval-status" data-id="'. $reg->id .'"><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i> 等待学校审核</a>';
+                    elseif ($status == '等待组委审核' || $status == '等待组织团队审核')
+                        $status = '<a href="#" class="approval-status active" data-id="'. $reg->id .'"><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i> 等待组织团队审核</a> ';
                     $result->push([
                         'details' => $detail,
                         'id' => $reg->id,

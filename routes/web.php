@@ -196,12 +196,17 @@ Route::group(['domain' => 'static.munpanel.com'], function () {
     Route::get('/delBizCard.modal/{id}', 'RoleAllocController@getDelegateBizcard');
     Route::get('/ot/regInfo.modal/{id}', 'HomeController@regInfoModal');
     Route::get('/ot/daisregInfo.modal/{id}', 'HomeController@daisregInfoModal');
-    Route::get('/ot/oVerify/{id}', 'UserController@oVerify');
-    Route::get('/ot/oNoVerify/{id}', 'UserController@oNoVerify');
     Route::post('/ot/setDelgroup', 'UserController@setDelgroup');
     Route::post('/ot/updateSeat', 'RoleAllocController@updateSeat');
     Route::get('/ot/seatLock/{id}', 'RoleAllocController@lockSeat');
     Route::get('/ot/seatUnLock/{id}', 'RoleAllocController@unlockSeat');
+
+    Route::get('/ot/oVerify/{id}', 'UserController@oVerify');
+    Route::get('/ot/oNoVerify/{id}', 'UserController@oNoVerify');
+    Route::get('/ot/oReVerify/{id}', 'UserController@oReVerify');
+    Route::get('/school/sVerify/{id}', 'UserController@sVerify');
+    Route::get('/school/sNoVerify/{id}', 'UserController@sNoVerify');
+    Route::get('/school/sReVerify/{id}', 'UserController@sReVerify');
 
     Route::get('/interviews/{id?}', 'InterviewController@interviews');
     Route::any('/interview/{id}/{action}', 'InterviewController@interview');

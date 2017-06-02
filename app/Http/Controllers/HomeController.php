@@ -395,38 +395,48 @@ class HomeController extends Controller
      */
     public function regInfoModal($id)
     {
-        //WTF!!! WHY DON'T WE HAVE THIS VERIFICATION BEFORE???
-        if ($id != Reg::currentID() && !in_array(Reg::current()->type, ['ot', 'dais', 'interviewer']))
-            return 'error';
         $reg = Reg::findOrFail($id);
+        //WTF!!! WHY DON'T WE HAVE THIS VERIFICATION BEFORE???
+        if ($id != Reg::currentID() && !in_array(Reg::current()->type, ['ot', 'dais', 'interviewer', 'teamadmin']))
+            return 'error';
+        if (Reg::current()->type == 'teamadmin' && $reg->school_id != Reg::current()->school_id)
+            return 'error';
         $allRegs = Reg::where('user_id', $reg->user_id)->where('conference_id', $reg->conference_id)->get(['id', 'type']);
         $operations = array();
-        if ($reg->type == 'delegate')
-        {
-            if ($reg->delegate->canAssignSeats() && isset($reg->delegate->nation_id))
-                if (!$reg->delegate->seat_locked)
-                    $operations[] = 'lockSeat';
-                else
-                    $operations[] = 'unlockSeat';
-            if (Reg::current()->can('sudo'))
-                $operations[] = 'sudo';
-            $status = $reg->delegate->realStatus();
-            if (Reg::current()->can('view-regs')) {
-                switch($status)
-                {
-                    case 'interview_assigned':break;
-                    case 'interview_passed':
-                    case 'interview_failed':
-                    case 'interview_retest_passed':
-                    case 'interview_retest_failed':
-                    case 'interview_retest_unassigned':
-                    case 'interview_unassigned': if (Reg::current()->can('view-all-interviews')) $operations[] = 'assignInterview'; break;
-                    case 'sVerified': if ($reg->enabled) $operations[] = 'oVerification'; break;
+        if (in_array(Reg::current()->type, ['ot', 'dais', 'interviewer'])) {
+            if ($reg->type == 'delegate')
+            {
+                if ($reg->delegate->canAssignSeats() && isset($reg->delegate->nation_id))
+                    if (!$reg->delegate->seat_locked)
+                        $operations[] = 'lockSeat';
+                    else
+                        $operations[] = 'unlockSeat';
+                if (Reg::current()->can('sudo'))
+                    $operations[] = 'sudo';
+                $status = $reg->delegate->realStatus();
+                if (Reg::current()->can('view-regs')) {
+                    switch($status)
+                    {
+                        case 'interview_assigned':break;
+                        case 'interview_passed':
+                        case 'interview_failed':
+                        case 'interview_retest_passed':
+                        case 'interview_retest_failed':
+                        case 'interview_retest_unassigned':
+                        case 'interview_unassigned': if (Reg::current()->can('view-all-interviews')) $operations[] = 'assignInterview'; break;
+                        case 'sVerified': if ($reg->enabled) $operations[] = 'oVerification'; break;
+                        case 'fail': if ($reg->enabled) $operations[] = 'oReverification'; break;
+                    }
                 }
-            }
-            if (Reg::current()->type == 'ot' || Reg::current()->type == 'dais')
-                if ($reg->delegate->status != 'fail' && Reg::currentConference()->delegategroups->count() > 0) $operations[] = 'setDelgroup';
+                if (Reg::current()->type == 'ot' || Reg::current()->type == 'dais')
+                    if ($reg->delegate->status != 'fail' && Reg::currentConference()->delegategroups->count() > 0) $operations[] = 'setDelgroup';
+            } else if ($reg->specific()->status == 'sVerified')
+                $operations[] = 'oVerification';
         }
+        /*else if (Reg::current()->type == 'teamadmin') {
+            if ($reg->specific()->status == 'sVerified')
+                $operations[] = 'sVerification';
+        }*/
         return view('ot.regInfoModal', ['reg' => $reg, 'allRegs' => $allRegs, 'operations' => $operations]);
     }
 

@@ -17,7 +17,8 @@ $(document).ready(function() {
                 var id = $this.attr('data-id');
 
                 var cb = function() {
-                    $this.toggleClass('active');
+                    //$this.toggleClass('active');
+                    $('#registration-table').dataTable().fnReloadAjax(undefined, undefined, true);
                 };
 
                 if($this.hasClass('active'))

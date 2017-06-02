@@ -13,7 +13,7 @@
                 <div id="ot_noverify_confirm" style="display: none;">
                     <h3 class="m-t-sm">危险！</h3>
 
-                    <p>如果您不通过此参会者的{{in_array($reg->type, ['dais', 'ot']) ? '申请' : '报名'}}，其所有报名信息都将被删除！</p>
+                    <p>您将不通过此参会者的{{in_array($reg->type, ['dais', 'ot']) ? '申请' : '报名'}}</p>
                     <p>您确实要继续吗？</p>
 
                    <a class="btn btn-danger" onclick="loader(this); jQuery.get('{{mp_url('/ot/oNoVerify/'.$reg->id)}}', function(){$('#ajaxModal').load('{{mp_url('/ot/regInfo.modal/'.$reg->id.'?active=operations')}}');});">是</a>

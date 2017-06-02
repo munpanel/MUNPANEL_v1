@@ -112,12 +112,27 @@ class PortalController extends Controller
     {
         $code = $request->code;
         $team = School::where('joinCode', $code)->first();
+        if (isset($request->reg_id))
+        {
+            $reg = Reg::find($request->reg_id);
+            if ($reg->user_id == Auth::id() && is_null($reg->school_id))
+            {
+                $reg->school_id = $team->id;
+                $reg->save();
+                if ($reg->specific()->status == 'sVerified')
+                {
+                    $specific = $reg->specific();
+                    $specific->status = 'reg';
+                    $specific->save();
+                }
+            }
+        }
         if (DB::table('school_user')
             ->whereUserId(Auth::id())
             ->whereSchoolId($team->id)
             ->count() > 0)
-            $a=1;//return 'Already Member!';
-        //$team->users()->attach(Auth::id());
+            return 'Already Member!';
+        $team->users()->attach(Auth::id());
         return back(); 
     }
 

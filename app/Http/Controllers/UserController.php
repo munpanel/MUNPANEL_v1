@@ -34,6 +34,7 @@ use App\Nation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Collection;
 
 class UserController extends Controller
@@ -1447,5 +1448,27 @@ return view('blank',['testContent' => $js, 'convert' => false]);
         if (Reg::current()->enabled)
             return redirect('home');
         return view('disabledHome');
+    }
+
+    public function doSelectTeam(Request $request)
+    {
+        $reg = Reg::current();
+        $team = School::findOrFail($request->team);
+        if (is_object($reg->school))
+            return 'error';
+        if (DB::table('school_user')
+            ->whereUserId(Reg::current()->user_id)
+            ->whereSchoolId($team->id)
+            ->count() == 0)
+            return 'Not a Member! Join first.';
+        $reg->school_id = $team->id;
+        $reg->save();
+        $specific = $reg->specific();
+        if ($specific->status == 'sVerified')
+        {
+            $specific->status = 'reg';
+            $specific->save();
+        }
+        return back();
     }
 }

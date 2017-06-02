@@ -100,6 +100,7 @@ Route::group(['domain' => 'static.munpanel.com'], function () {
     Route::get('/regAssignment.modal', 'HomeController@regAssignmentModal');
     Route::post('/doSwitchIdentity', 'UserController@doSwitchIdentity');
     Route::get('/doSwitchIdentity/{reg}', 'UserController@doSwitchIdentity');
+    Route::post('/doSelectTeam', 'UserController@doSelectTeam');
 
     Route::get('/home', 'HomeController@index');
     Route::get('/changePwd.modal', 'HomeController@changePwd');

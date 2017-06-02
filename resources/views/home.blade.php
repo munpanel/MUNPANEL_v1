@@ -67,42 +67,89 @@ if (Reg::current()->type == 'delegate' && isset(Reg::current()->delegate))
                   </div>
                 </aside>
               </section>
+              @endif
               <section class="panel no-borders hbox">
+                <aside>
+                  <div class="pos-rlt">
+                    <span class="arrow right hidden-xs"></span>
+                    <div class="panel-body wrapper text-center">
+                      <span>距离会议开始天数</span><p class="h1">{{date_create(date('Y-m-d'))->diff(date_create(Reg::currentConference()->date_start))->format('%a')}}</p>
+                    </div>
+                  </div>
+                </aside>
                 <aside class="bg-success r-l text-center v-middle">
                   <div class="wrapper">
                     <i class="fa fa-clock-o fa-4x"></i>                      
                     <p class="text-muted"><em>倒计时</em></p>
                   </div>
                 </aside>
+              </section>
+              <!--div class="text-center m-b">
+                <i class="fa fa-spinner fa fa-spin"></i>
+              </div-->
+              @if (is_object(Reg::current()->school))
+              <section class="panel no-borders hbox">
+                <aside class="bg-primary lter r-l text-center v-middle">
+                  <div class="wrapper">
+                    <i class="fa fa-users fa fa-4x"></i>
+                    <p class="text-muted"><em>您作为 {{Reg::current()->school->name}} 成员参会</em></p>
+                  </div>
+                </aside>
                 <aside>
                   <div class="pos-rlt">
                     <span class="arrow left hidden-xs"></span>
-                    <div class="panel-body wrapper text-center">
-                      <span>距离会议开始天数</span><p class="h1">{{date_create(date('Y-m-d'))->diff(date_create(Reg::currentConference()->date_start))->format('%a')}}</p>
+                    <div class="panel-body">
+                      <p>
+                        {{Reg::current()->school->description}}
+                      </p>
                     </div>
+                    <!--footer class="panel-footer">
+                      <p>This is a Slogan.</p>
+                    </footer-->
                   </div>
                 </aside>
               </section>
               @endif
-              <!--div class="text-center m-b">
-                <i class="fa fa-spinner fa fa-spin"></i>
-              </div-->
             </div>
             <div class="col-lg-4">
+              @unless (is_object(Reg::current()->school))
+              @if (Auth::user()->schools->count() == 0)
               <section class="panel text-center bg-success dker">
                   <div class="panel-body">
                     <h4 class="text-uc">加入团队</h4>
-                    <p>使用您的团队邀请码</p>
-                        <form id="joinForm" class="m-t-lg m-l m-r m-b-sm" data-validate="parsley" action="{{route('doJoinTeam')}}" method="post">
+                    <p>个人报名可无视</p>
+                        <form id="joinTeamForm" class="m-t-lg m-l m-r m-b-sm" data-validate="parsley" action="{{route('doJoinTeam')}}" method="post">
                             {{csrf_field()}}
+                            <input type="hidden" name="reg_id" value="{{Reg::currentID()}}">
                                 <div class="input-group input-group-lg">
-                                    <span class="input-group-addon lt no-border">code</span>
-                                    <input type="text" name="code" class="form-control input-lg no-border" placeholder="由您的团队管理员提供">
+                                    <span class="input-group-addon lt no-border" style="color:white"><i class="fa fa-key" aria-hidden="true"></i></span>
+                                    <input type="text" name="code" class="form-control input-lg no-border" placeholder="由您的团队管理员提供" autocomplete='off'>
                                 </div>
-                               <a onclick="if ($('#joinForm').parsley('validate')){loader(this); $('#joinForm').submit();}" class="btn btn-danger m-t-lg">加入</a>
+                               <a onclick="if ($('#joinTeamForm').parsley('validate')){loader(this); $('#joinTeamForm').submit();}" class="btn btn-info m-t-lg">加入</a>
                          </form>
                   </div>
-                </section>
+               </section>
+               @else
+              <section class="panel text-center bg-success dker">
+                  <div class="panel-body">
+                    <h4 class="text-uc">选择团队</h4>
+                    <p>个人报名可无视，加入新团队请前往 PORTAL 页</p>
+                        <form id="selectTeamForm" class="m-t-lg m-l m-r m-b-sm" data-validate="parsley" action="{{mp_url('/doSelectTeam')}}" method="post">
+                            {{csrf_field()}}
+                                <div class="input-group input-group-lg">
+                                    <span class="input-group-addon lt no-border" style="color:white"><i class="fa fa-users" aria-hidden="true"></i></span>
+                                    <select  name="team" class="form-control input-lg no-border">
+                                    @foreach (Auth::user()->schools as $school)
+                                    <option value="{{$school->id}}">{{$school->name}}</option>
+                                    @endforeach
+                                    </select>
+                                </div>
+                               <a onclick="if ($('#selectTeamForm').parsley('validate')){loader(this); $('#selectTeamForm').submit();}" class="btn btn-info m-t-lg">选择</a>
+                         </form>
+                  </div>
+               </section>
+               @endif
+               @endunless
                <section class="panel bg-danger lter no-borders">
                 <div class="panel-body">
                   <span class="h4">{{ Reg::current()->name() }}</span>

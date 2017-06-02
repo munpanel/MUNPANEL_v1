@@ -108,6 +108,19 @@ class PortalController extends Controller
         return redirect('/teams');
     }
 
+    public function joinTeam(Request $request)
+    {
+        $code = $request->code;
+        $team = School::where('joinCode', $code)->first();
+        if (DB::table('school_user')
+            ->whereUserId(Auth::id())
+            ->whereSchoolId($team->id)
+            ->count() > 0)
+            return 'Already Member!';
+        $team->users()->attach(Auth::id());
+        return redirect('/teams');
+    }
+
     /**
      * Update a property of a team.
      *

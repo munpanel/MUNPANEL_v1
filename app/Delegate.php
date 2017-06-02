@@ -13,6 +13,8 @@ namespace App;
 
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
+use App\Document;
 
 class Delegate extends Model
 {
@@ -342,11 +344,22 @@ class Delegate extends Model
                 }
             }
         }
-        $documents = $this->committee->documents;
+        $com = $this->committee;
+        $documents = $com->documents;
         if (isset($documents))
         {
             foreach ($documents as $document)
                 $result->push($document);
+        }
+        while (isset($com->father_committee_id))
+        {
+            $com = $com->parentCommittee;
+            $documents = $com->documents;
+            if (isset($documents))
+            {
+                foreach ($documents as $document)
+                    $result->push($document);
+            }
         }
         $delegategroups = $this->delegategroups;
         if (isset($delegategroups))

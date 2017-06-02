@@ -5,10 +5,11 @@ $(document).ready(function() {
         ajax: 'ajax/registrations',
         columns: [
             {data: 'details', name: 'details', orderable: false},
+            {data: 'id', name: 'id', orderable: true},
             {data: 'name', name: 'name', orderable: false},
+            {data: 'partner', name: 'partner', orderable: true},
             {data: 'committee', name: 'committee', orderable: true},
-            {data: 'partner', name: 'partner', orderable: false},
-            {data: 'approval', name: 'approval', orderable: true}
+            {data: 'status', name: 'status', orderable: true}
         ],
         fnInitComplete: function(oSettings, json) {
             $(document).on('click', '.approval-status', function(e) {

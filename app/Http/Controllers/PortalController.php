@@ -47,7 +47,7 @@ class PortalController extends Controller
     {
         $result = new Collection;
         $teams = Auth::user()->schools()->withCount(['teamadmins' => function ($query) {
-            $query->whereExists(function ($query) {
+            $query->whereNull('conference_id')->whereExists(function ($query) {
                 $query->select(DB::raw(1))
                       ->from('regs')
                       ->whereRaw('regs.user_id = ' . Auth::id() . ' and regs.id=teamadmins.reg_id');
@@ -100,6 +100,8 @@ class PortalController extends Controller
         $reg = new Reg;
         $reg->user_id = $uid;
         $reg->type = 'teamadmin';
+        $reg->enabled = 1;
+        $newreg->school_id = $team->id;
         $reg->save();
         $teamadmin = new Teamadmin;
         $teamadmin->reg_id = $reg->id;

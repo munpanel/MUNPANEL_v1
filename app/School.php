@@ -57,13 +57,23 @@ class School extends Model
         }
     }
 
-    public function isAdmin() {
-        if ($this->teamadmins()->whereExists(function ($query) {
-                $query->select(DB::raw(1))
-                      ->from('regs')
-                      ->whereRaw('regs.user_id = ' . Auth::id() . ' and regs.id=teamadmins.reg_id');
-            })->count() > 0)
-            return true;
-        return false;
+    public function isAdmin($conference_id = null) {
+        if (is_null($conference_id)) {
+            if ($this->teamadmins()->whereNull('conference_id')->whereExists(function ($query) {
+                    $query->select(DB::raw(1))
+                          ->from('regs')
+                          ->whereRaw('regs.user_id = ' . Auth::id() . ' and regs.id=teamadmins.reg_id');
+                })->count() > 0)
+                return true;
+            return false;
+        } else {
+            if ($this->teamadmins()->where('conference_id', $conference_id)->whereExists(function ($query) {
+                    $query->select(DB::raw(1))
+                          ->from('regs')
+                          ->whereRaw('regs.user_id = ' . Auth::id() . ' and regs.id=teamadmins.reg_id');
+                })->count() > 0)
+                return true;
+            return false;
+        }
     }
 }

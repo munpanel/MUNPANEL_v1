@@ -112,12 +112,21 @@ if (Reg::current()->type == 'delegate' && isset(Reg::current()->delegate))
               @endif
             </div>
             <div class="col-lg-4">
-              @unless (is_object(Reg::current()->school))
-              @if (Auth::user()->schools->count() == 0)
+              @if (is_object(Reg::current()->school))
+              @if (Reg::current()->school->isAdmin() && (!Reg::current()->school->isAdmin(Reg::currentConferenceID())))
+              <section class="panel text-center bg-success dker">
+                  <div class="panel-body">
+                    <h4 class="text-uc">创建团队管理身份</h4>
+                    <p>您已选择以{{Reg::current()->school->name}}成员参与会议。而您是该团队全局管理员，是否创建一个针对本会议的团队管理员身份以管理团队报名信息？</p>
+                    <a href="{{mp_url('createTeamAdmin')}}" onclick="loader(this)" class="btn btn-info m-t-lg">创建</a>
+                  </div>
+               </section>
+              @endif
+              @elseif (Auth::user()->schools->count() == 0)
               <section class="panel text-center bg-success dker">
                   <div class="panel-body">
                     <h4 class="text-uc">加入团队</h4>
-                    <p>个人报名可无视</p>
+                    <p>个人报名可无视，创建新团队请前往 PORTAL 页</p>
                         <form id="joinTeamForm" class="m-t-lg m-l m-r m-b-sm" data-validate="parsley" action="{{route('doJoinTeam')}}" method="post">
                             {{csrf_field()}}
                             <input type="hidden" name="reg_id" value="{{Reg::currentID()}}">
@@ -149,7 +158,6 @@ if (Reg::current()->type == 'delegate' && isset(Reg::current()->delegate))
                   </div>
                </section>
                @endif
-               @endunless
                <section class="panel bg-danger lter no-borders">
                 <div class="panel-body">
                   <span class="h4">{{ Reg::current()->name() }}</span>

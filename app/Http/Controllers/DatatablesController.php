@@ -209,77 +209,99 @@ class DatatablesController extends Controller //To-Do: Permission Check
         $type = ['delegate', 'volunteer', 'observer'];
         if (Dais::where('conference_id', $conf)->whereIn('status', ['sVerified', 'oVerified'])->count() > 0) $type[] = 'dais';
         if (Orgteam::where('conference_id', $conf)->whereIn('status', ['sVerified', 'oVerified'])->count() > 0) $type[] = 'ot';
+        if ($user->type == 'teamadmin')
+        {
+            $regs = Reg::where('conference_id', Reg::currentConferenceID())->whereIn('type', ['delegate', 'volunteer', 'observer'])->with(['user' => function($q) {$q->select('name', 'id');}])->get(['id', 'user_id', 'type']);
+        }
         if (in_array($user->type, ['ot', 'dais', 'teamadmin']))
         {
-            if (!Reg::current()->can('view-regs'))
+            if ($user->type != 'teamadmin' && !Reg::current()->can('view-regs'))
                 return "ERROR";
             $result = new Collection;
             // 过滤结果: 只保留 delegate, observer 和 volunteer
-            if (Reg::currentConference()->status == 'daisreg')
-                $regs = Reg::where('conference_id', Reg::currentConferenceID())->whereIn('type', ['dais', 'ot'])->with(['user' => function($q) {$q->select('name', 'id');}])->get(['id', 'user_id', 'type']);
+            $regs = Reg::where('conference_id', Reg::currentConferenceID());
+            if ($user->type == 'ot')
+                $regs = $regs->whereIn('type', $type);
             else
-                $regs = Reg::where('conference_id', Reg::currentConferenceID())->whereIn('type', $type)->with(['user' => function($q) {$q->select('name', 'id');}])->get(['id', 'user_id', 'type']);
+                $regs = $regs->whereIn('type', ['delegate', 'volunteer', 'observer']);
+            if ($user->type == 'teamadmin')
+                $regs = $regs->where('school_id', $user->school_id);
+            $regs = $regs->with(['user' => function($q) {$q->select('name', 'id');}])->get(['id', 'user_id', 'type', 'enabled']);
             foreach ($regs as $reg)
             {
-                if ($reg->type == 'unregistered')
-                    $type = '未报名';
-                else if ($reg->type == 'delegate')
-                    $type = '代表';
-                else if ($reg->type == 'volunteer')
-                    $type = '志愿者';
-                else if ($reg->type == 'observer')
-                    $type = '观察员';
-                else if ($reg->type == 'dais')
-                    $type = '学术团队';
-                else if ($reg->type == 'ot')
-                    $type = '组织团队';
-                else
-                    $type = '未知';
-            if (null !== $reg->specific())
-            {
-                if ($reg->specific()->status == 'paid')
-                    $statusbar = 'has-success';
-                else if ($reg->specific()->status == 'oVerified')
-                    $statusbar = 'has-warning';
-                else if ($reg->specific()->status == 'sVerified')
-                    $statusbar = '';
-                else
-                    $statusbar = 'has-error';
-                if ($reg->specific()->status == 'paid' && (!$user->can('approve-regs-pay')))
-                    $status = '成功';
-                else if ($user->can('approve-regs'))
-                    $status = '<div class="status-select '.$statusbar.'" uid="'. $reg->user_id .'">'.$reg->specific()->status."</div>";
-                else if ($reg->specific()->status == 'reg')
-                    $status = '等待学校审核';
-                else if ($reg->specific()->status == 'sVerified')
-                    $status = '等待组委审核';
-                 else if ($reg->specific()->status == 'oVerified')
-                    $status = '待缴费';
-                 else if ($reg->specific()->status == 'paid')
-                    $status = '成功';
-                 else if ($reg->specific()->status == 'init')
-                    $status = '报名学测未完成';
-                 else if ($reg->specific()->status == 'fail')
-                    $status = '审核未通过';
-                 if (in_array($reg->type, ['delegate', 'volunteer', 'dais', 'ot']))
-                     $status = $reg->specific()->statusText();
-            }
-            else $status = '';
-            # if (!$reg->enabled) $status = '已禁用';
+                switch ($reg->type)
+                {
+                    case 'unregistered':
+                        $type = '未报名'; break;
+                    case 'delegate':
+                        $type = '代表'; break;
+                    case 'volunteer':
+                        $type = '志愿者'; break;
+                    case 'observer':
+                        $type = '观察员'; break;
+                    case 'dais':
+                        $type = '学术团队'; break;
+                    case 'ot':
+                        $type = '组织团队'; break;
+                    default:
+                        $type = '未知';
+                }
+                if (null !== $reg->specific())
+                {
+                    if ($reg->specific()->status == 'paid')
+                        $statusbar = 'has-success';
+                    else if ($reg->specific()->status == 'oVerified')
+                        $statusbar = 'has-warning';
+                    else if ($reg->specific()->status == 'sVerified')
+                        $statusbar = '';
+                    else
+                        $statusbar = 'has-error';
+                    if ($reg->specific()->status == 'paid' && (!$user->can('approve-regs-pay')))
+                        $status = '成功';
+                    else if ($user->can('approve-regs'))
+                        $status = '<div class="status-select '.$statusbar.'" uid="'. $reg->user_id .'">'.$reg->specific()->status."</div>";
+                    else if ($reg->specific()->status == 'reg')
+                        $status = '等待学校审核';
+                    else if ($reg->specific()->status == 'sVerified')
+                        $status = '等待组委审核';
+                     else if ($reg->specific()->status == 'oVerified')
+                        $status = '待缴费';
+                     else if ($reg->specific()->status == 'paid')
+                        $status = '成功';
+                     else if ($reg->specific()->status == 'init')
+                        $status = '报名学测未完成';
+                     else if ($reg->specific()->status == 'fail')
+                        $status = '审核未通过';
+                     if (in_array($reg->type, ['delegate', 'volunteer', 'dais', 'ot']))
+                         $status = $reg->specific()->statusText();
+                }
+                else $status = '';
+                if (!$reg->enabled) $status = '已禁用';
 
-            if (in_array($reg->type, ['ot', 'dais']))
-                $detail =  '<a href="ot/daisregInfo.modal/'. $reg->id .'" data-toggle="ajaxModal" id="'. $reg->id .'" class="details-modal"><i class="fa fa-search-plus"></i></a>';
-            else
-                $detail =  '<a href="ot/regInfo.modal/'. $reg->id .'" data-toggle="ajaxModal" id="'. $reg->id .'" class="details-modal"><i class="fa fa-search-plus"></i></a>';
-                $result->push([
-                    'details' => $detail,
-                    'id' => $reg->id,
-                    'name' => $reg->user->name,
-                    'school' => isset($reg->specific()->delegategroups) ? $reg->specific()->scopeDelegateGroup(true, 5) : '无',
-                    'committee' => isset($reg->specific()->committee) ? $reg->specific()->committee->name : '无',
-                    'partner' => $type,
-                    'status' => $status,
-                ]);
+                if (in_array($reg->type, ['ot', 'dais']))
+                    $detail =  '<a href="ot/daisregInfo.modal/'. $reg->id .'" data-toggle="ajaxModal" id="'. $reg->id .'" class="details-modal"><i class="fa fa-search-plus"></i></a>';
+                else
+                    $detail =  '<a href="ot/regInfo.modal/'. $reg->id .'" data-toggle="ajaxModal" id="'. $reg->id .'" class="details-modal"><i class="fa fa-search-plus"></i></a>';
+                if ($user->type == 'teamadmin') {
+                    $result->push([
+                        'details' => $detail,
+                        'id' => $reg->id,
+                        'name' => $reg->user->name,
+                        'committee' => isset($reg->specific()->committee) ? $reg->specific()->committee->name : '无',
+                        'partner' => $type,
+                        'status' => $status,
+                    ]);
+                } else {
+                    $result->push([
+                        'details' => $detail,
+                        'id' => $reg->id,
+                        'name' => $reg->user->name,
+                        'school' => isset($reg->specific()->delegategroups) ? $reg->specific()->scopeDelegateGroup(true, 5) : '无',
+                        'committee' => isset($reg->specific()->committee) ? $reg->specific()->committee->name : '无',
+                        'partner' => $type,
+                        'status' => $status,
+                    ]);
+                }
             }
         }
         return Datatables::of($result)->make(true);

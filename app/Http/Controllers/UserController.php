@@ -31,6 +31,7 @@ use App\Good;
 use App\Order;
 use App\Note;
 use App\Nation;
+use App\Teamadmin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -1470,5 +1471,28 @@ return view('blank',['testContent' => $js, 'convert' => false]);
             $specific->save();
         }
         return back();
+    }
+
+    public function createTeamAdmin()
+    {
+        $reg = Reg::current();
+        $team = $reg->school;
+        if (!is_object($team))
+            return 'error';
+        if (!$team->isAdmin())
+            return 'Permission Denied!';
+        $newreg = new Reg;
+        $newreg->user_id = $reg->user_id;
+        $newreg->conference_id = Reg::currentConferenceID();
+        $newreg->type = 'teamadmin';
+        $newreg->enabled = 1;
+        $newreg->school_id = $team->id;
+        $newreg->save();
+        $teamadmin = new Teamadmin;
+        $teamadmin->reg_id = $newreg->id;
+        $teamadmin->school_id = $team->id;
+        $teamadmin->conference_id = Reg::currentConferenceID();
+        $teamadmin->save();
+        return redirect(mp_url('/doSwitchIdentity/'.$newreg->id));
     }
 }

@@ -784,7 +784,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
             if (!$delegate->canAssignSeats())
                 continue;
             $name = $delegate->reg->user->name;
-            $name .= '（'.($delegate->delegategroups->count() > 0 ? $delegate->scopeDelegateGroup(true, 0, true) . '，' : '').$delegate->statusText().'）';
+            $name .= ' ('.($delegate->delegategroups->count() > 0 ? $delegate->scopeDelegateGroup(true, 0, true) . ', ' : '').$delegate->statusText().')';
             if ($delegate->seat_locked)
                 $command = '已锁定';
             else {

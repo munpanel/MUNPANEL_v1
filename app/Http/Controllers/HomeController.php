@@ -824,8 +824,8 @@ class HomeController extends Controller
         {
             if (Reg::current()->specific()->status == 'reg')//TO-DO: parameters for this
                 return view('error', ['msg' => '请等待学校和/或组织团队审核！']);
-            if (Reg::current()->specific()->status != 'paid')//TO-DO: parameters for this
-                return view('error', ['msg' => '请先缴费！如果您已通过社团缴费，请等待组织团队确认']);
+            //if (Reg::current()->specific()->status != 'paid')//TO-DO: parameters for this
+            //    return view('error', ['msg' => '请先缴费！如果您已通过社团缴费，请等待组织团队确认']);
         }
         $committee = Reg::current()->specific()->committee;
         return view('documentsList', ['type' => Reg::current()->type]);

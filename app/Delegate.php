@@ -391,13 +391,16 @@ class Delegate extends Model
                     else
                         break;
                 }
-                $prefix = ', ';
+                $prefix = ($html ? '<br>' : ', ');
             }
         }
         if ($maxDisplay > 0 && $n > $maxDisplay) $scope .= "等 ".$n." 个";
         else if ($maxDisplay == 0) $scope = $n.'个代表组';
         if ($html)
+        {
+            if ($maxDisplay == 0) $scope = '<i class="fa fa-users"></i> '.$n;
             return  "<a style='cursor: pointer;' class='details-popover' data-html='1' data-placement='right' data-trigger='click' data-original-title='代表组 - ".$this->reg->name()."' data-toggle='popover' data-content='".$htmlContent."'>".$scope."</a>";
+        }
         return $scope;
     }
 
@@ -418,7 +421,7 @@ class Delegate extends Model
             }
             else
                 $result = '';
-            $result .= $this->nation->name;
+            $result .= $this->nation->displayName();
         }
         else
         {
@@ -435,15 +438,15 @@ class Delegate extends Model
         }
         if ($explain)
         {
-            $explain = '(从'.$nations->count().'个席位中选择)<div style="display:none">已分配</div>';
+            $explain = ' (<i class="fa fa-wheelchair"></i> '.$nations->count().')<div style="display:none">已分配</div>';
             if ($html)
             {
                 $htmlContent = '';
                 $prefix = '';
                 foreach ($nations as $nation)
                 {
-                    $htmlContent .= $prefix . $nation->name;
-                    $prefix = '，';
+                    $htmlContent .= $prefix . $nation->displayName();
+                    $prefix = '<br>';
                 }
                 $explain =   "<a style='cursor: pointer;' class='details-popover' data-html='1' data-placement='right' data-trigger='click' data-original-title='可选席位 - ".$this->reg->name()."' data-toggle='popover' data-content='".$htmlContent."'>".$explain."</a>";
             }

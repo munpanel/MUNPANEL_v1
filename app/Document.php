@@ -12,6 +12,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Document extends Model
 {
@@ -75,6 +76,21 @@ class Document extends Model
             foreach ($nationgroups as $nationgroup)
                 if ($nationgroup->hasDelegate($uid))
                     return true;
+        }
+        $com = Delegate::find($uid)->committee;
+        if (DB::table('committee_document')
+            ->whereCommitteeId($com->id)
+            ->whereDocumentId($this->id)
+            ->count() > 0)
+            return true;
+        while (isset($com->father_committee_id))
+        {
+            $com = $com->parentCommittee;
+            if (DB::table('committee_document')
+                ->whereCommitteeId($com->id)
+                ->whereDocumentId($this->id)
+                ->count() > 0)
+                return true;
         }
         if (isset($this->delegategroups))
         {

@@ -2,7 +2,7 @@
     <div class="modal-content">
         <div class="modal-body">
             @if($isAdmin)
-            <button id="enableEditable-{{$school->id}}" class="btn btn-default pull-right">编辑模式</button><span class="pull-right">&nbsp;</span><a href="#" class="btn btn-warning pull-right">控制面板</a>
+            <button id="enableEditable-{{$school->id}}" class="btn btn-default pull-right">编辑模式</button><span class="pull-right">&nbsp;</span><a href="{{mp_url('/teams/'.$school->id.'/admin')}}" class="btn btn-warning pull-right">控制面板</a>
             @endif
             <h4>团队ID {{$school->id}} - 基本信息</h4>
             <table id="school-{{$school->id}}" class="table table-bordered table-striped" style="clear: both">

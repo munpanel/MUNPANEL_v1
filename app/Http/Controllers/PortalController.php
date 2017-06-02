@@ -125,4 +125,12 @@ class PortalController extends Controller
         $school->$name = $value;
         $school->save();
     }
+
+    public function teamAdmin($id)
+    {
+        $school = School::findOrFail($id);
+        if (!$school->isAdmin())
+            return 'error';
+        return view('portal.teamAdmin', ['team' => $school]);
+    }
 }

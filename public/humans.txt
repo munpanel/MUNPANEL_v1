@@ -1,5 +1,5 @@
 /* TEAM */
-        Founder and Main Developer: Adam Yi
+        Founder and Chief Technology Officer: Adam Yi
         Contact: adamyi [at] munpanel.com
         From: Beijing, China
 

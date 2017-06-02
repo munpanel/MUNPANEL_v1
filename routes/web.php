@@ -28,6 +28,7 @@ Route::group(['domain' => 'portal.dev.yiad.am'], function () {
     Route::get('/teams/join.modal', 'PortalController@joinTeamModal');
     Route::get('/teams/{id}/details.modal', 'PortalController@detailsModal');
     Route::post('/teams/{id}/doUpdate', 'PortalController@updateTeam');
+    Route::get('/teams/{id}/admin', 'PortalController@teamAdmin');
     Route::post('/teams/doCreateTeam', 'PortalController@createTeam');
     Route::post('/teams/doJoinTeam', 'PortalController@joinTeam');
     Route::get('/ajax/teams', 'PortalController@teamsTable');

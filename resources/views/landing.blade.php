@@ -65,7 +65,7 @@
                                 clubs, and conferences. It is not only a new way of modelling, but a new lifestyle
                                 of Model United Nations.</h2>
                                 
-                                <p><a href="mailto:xuan@yiad.am" class="btn btn-primary">Contact</a> <a href="#" class="btn btn-secondary">Portal under Development...</a></p>
+                                <p><a href="mailto:xuan@yiad.am" class="btn btn-primary">Contact</a> <a href="{{route('portal')}}" class="btn btn-secondary">Portal</a></p>
                                 
                                 
                             

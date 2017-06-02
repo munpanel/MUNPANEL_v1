@@ -887,6 +887,15 @@ class UserController extends Controller
      */
     public function test(Request $request)
     {
+        $i = 0;
+        $teams = School::where('id', '<', 94)->get();
+        foreach ($teams as $team)
+        {
+            $team->joinCode = generateID(32);
+            $team->save();
+            $i++;
+        }
+        return "已为 $i 个既有团队分配加入码";
         return (is_object(Reg::current()->specific())) ? 'true' : 'false';
             $date = date_sub(date_create('2017-05-31 10:30:00'), new \DateInterval('P3D'));
             $deelegates = Delegate::whereNotNull('nation_id')->where('seat_locked', false)->where('updated_at', '<', date('Y-m-d H:i:s', $date->getTimestamp()))->get()->pluck('reg_id');

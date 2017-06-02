@@ -329,6 +329,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
             $regs = Reg::where('conference_id', Reg::currentConferenceID())->whereIn('type', ['ot', 'dais', 'teamadmin', 'interviewer'])->with(['user' => function($q) {$q->select('name', 'id');}])->get(['id', 'user_id', 'type']);
             foreach ($regs as $reg)
             {
+                if (in_array($reg->type, ['ot', 'dais']) && null !== $reg->specific() && $reg->specific()->status != 'success') continue;
                 if ($reg->type == 'unregistered')
                     $type = '未报名';
                 else if ($reg->type == 'ot')

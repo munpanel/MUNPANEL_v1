@@ -12,6 +12,7 @@
 namespace App;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 
 class School extends Model
@@ -38,6 +39,10 @@ class School extends Model
         return $this->hasMany('App\Teamadmin');
     }
 
+    public function users() {
+        return $this->belongsToMany('App\User');
+    }
+
     public function toPayAmount() {
         return Auth::user()->school->delegates->where('status', 'oVerified')->count() * 530 + Auth::user()->school->delegates->where('status','oVerified')->where('accomodate', 1)->count() * 510 + Auth::user()->school->volunteers->where('status','oVerified')->where('accomodate', 1)->count() * 510;
 
@@ -48,7 +53,17 @@ class School extends Model
         {
             case 'school': return '中学';
             case 'university': return '高等学校';
-            default: return '团队';
+            default: return '团体';
         }
+    }
+
+    public function isAdmin() {
+        if ($this->teamadmins()->whereExists(function ($query) {
+                $query->select(DB::raw(1))
+                      ->from('regs')
+                      ->whereRaw('regs.user_id = ' . Auth::id() . ' and regs.id=teamadmins.reg_id');
+            })->count() > 0)
+            return true;
+        return false;
     }
 }

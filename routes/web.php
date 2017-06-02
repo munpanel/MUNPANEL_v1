@@ -24,8 +24,10 @@ Route::group(['domain' => 'portal.dev.yiad.am'], function () {
 
     Route::get('/home', 'PortalController@index')->name('portal');
     Route::get('/teams', 'PortalController@teams');
-    Route::get('/teams/newteam.modal', 'PortalController@newTeamModal');
-    Route::get('/teams/jointeam.modal', 'PortalController@joinTeamModal');
+    Route::get('/teams/new.modal', 'PortalController@newTeamModal');
+    Route::get('/teams/join.modal', 'PortalController@joinTeamModal');
+    Route::get('/teams/{id}/details.modal', 'PortalController@detailsModal');
+    Route::post('/teams/{id}/doUpdate', 'PortalController@updateTeam');
     Route::post('/teams/doCreateTeam', 'PortalController@createTeam');
     Route::post('/teams/doJoinTeam', 'PortalController@joinTeam');
     Route::get('/ajax/teams', 'PortalController@teamsTable');
@@ -169,7 +171,6 @@ Route::group(['domain' => 'static.munpanel.com'], function () {
     Route::get('/school/unverify/{id}', 'UserController@schoolUnverify');
     Route::get('/ot/verify/{id}/{status}', 'UserController@setStatus');
     Route::post('/ot/update/user/{id}', ['middleware' => ['permission:edit-users'], 'uses' => 'UserController@updateUser']);
-    Route::post('/ot/update/school/{id}', ['middleware' => ['permission:edit-schools'], 'uses' => 'UserController@updateSchool']);
     Route::post('/ot/update/committee/{id}', ['middleware' => ['permission:edit-committees'], 'uses' => 'UserController@updateCommittee']);
     Route::post('/ot/update/interview/{id}', 'InterviewController@updateInterview');
     Route::post('/ot/update/reg/{id}', 'UserController@updateReg');

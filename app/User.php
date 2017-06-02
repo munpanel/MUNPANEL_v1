@@ -45,6 +45,10 @@ class User extends Authenticatable
         return $this->hasMany('App\Reg');
     }
 
+    public function schools() {
+        return $this->belongsToMany('App\School');
+    }
+
     public function invoiceItems() {
         $items = array();
         if ($this->type == 'delegate')

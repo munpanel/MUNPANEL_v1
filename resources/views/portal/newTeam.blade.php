@@ -18,7 +18,7 @@
                         <input type="radio" name="type" value="university"> <i class="fa fa-check text-active"></i> 高等学校
                     </label>
                     <label class="btn btn-sm btn-primary">
-                        <input type="radio" name="type" value="team"> <i class="fa fa-check text-active"></i> 团队
+                        <input type="radio" name="type" value="group"> <i class="fa fa-check text-active"></i> 团队
                     </label>
                   </div>
                 </div>

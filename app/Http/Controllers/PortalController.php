@@ -46,7 +46,7 @@ class PortalController extends Controller
     public function teamsTable()
     {
         $result = new Collection;
-        $teams = School::withCount(['teamadmins' => function ($query) {
+        $teams = Auth::user()->schools()->withCount(['teamadmins' => function ($query) {
             $query->whereExists(function ($query) {
                 $query->select(DB::raw(1))
                       ->from('regs')
@@ -56,7 +56,7 @@ class PortalController extends Controller
         foreach ($teams as $team)
         {
             $result->push([
-                'details' => '<a href="ot/teamDetails.modal/'. $team->id .'" data-toggle="ajaxModal" id="'. $team->id .'" class="details-modal"><i class="fa fa-search-plus"></i></a>',
+                'details' => '<a href="teams/'. $team->id .'/details.modal" data-toggle="ajaxModal" id="'. $team->id .'" class="details-modal"><i class="fa fa-search-plus"></i></a>',
                 'id' => $team->id,
                 'type' => $team->typeText(),
                 'name' => $team->name,
@@ -76,16 +76,29 @@ class PortalController extends Controller
         return view('portal.joinTeam');
     }
 
+    public function detailsModal($id)
+    {
+        $school = School::findOrFail($id);
+        if (DB::table('school_user')
+            ->whereUserId(Auth::id())
+            ->whereSchoolId($id)
+            ->count() > 0)
+            return view('portal.teamDetailsModal', ['school' => $school, 'isAdmin' => $school->isAdmin()]);
+        return 'error';
+    }
+
     public function createTeam(Request $request)
     {
+        $uid = Auth::id();
         $team = new School;
         $team->name = $request->name;
         $team->type = $request->type;
         $team->description = $request->description;
         $team->joinCode = generateID(32);
         $team->save();
+        $team->users()->attach($uid);
         $reg = new Reg;
-        $reg->user_id = Auth::id();
+        $reg->user_id = $uid;
         $reg->type = 'teamadmin';
         $reg->save();
         $teamadmin = new Teamadmin;
@@ -93,5 +106,23 @@ class PortalController extends Controller
         $teamadmin->school_id = $team->id;
         $teamadmin->save();
         return redirect('/teams');
+    }
+
+    /**
+     * Update a property of a team.
+     *
+     * @param Request $request
+     * @param int $id the id of the team to be updated
+     * @return void
+     */
+    public function updateTeam(Request $request, $id)
+    {
+        $school = School::findOrFail($id);
+        if (!$school->isAdmin())
+            return 'error';
+        $name = $request->get('name');
+        $value = $request->get('value');
+        $school->$name = $value;
+        $school->save();
     }
 }

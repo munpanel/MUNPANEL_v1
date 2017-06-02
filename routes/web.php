@@ -17,7 +17,7 @@ Route::group(['domain' => 'www.munpanel.com'], function () {
     });
 });
 
-Route::group(['domain' => 'portal.dev.yiad.am'], function () {
+Route::group(['domain' => 'portal.munpanel.com'], function () {
     Route::get('/', function () {
         return redirect(secure_url('home'));
     });

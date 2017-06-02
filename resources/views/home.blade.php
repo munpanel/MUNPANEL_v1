@@ -89,6 +89,20 @@ if (Reg::current()->type == 'delegate' && isset(Reg::current()->delegate))
               </div-->
             </div>
             <div class="col-lg-4">
+              <section class="panel text-center bg-success dker">
+                  <div class="panel-body">
+                    <h4 class="text-uc">加入团队</h4>
+                    <p>使用您的团队邀请码</p>
+                        <form id="joinForm" class="m-t-lg m-l m-r m-b-sm" data-validate="parsley" action="{{route('doJoinTeam')}}" method="post">
+                            {{csrf_field()}}
+                                <div class="input-group input-group-lg">
+                                    <span class="input-group-addon lt no-border">code</span>
+                                    <input type="text" name="code" class="form-control input-lg no-border" placeholder="由您的团队管理员提供">
+                                </div>
+                               <a onclick="if ($('#joinForm').parsley('validate')){loader(this); $('#joinForm').submit();}" class="btn btn-danger m-t-lg">加入</a>
+                         </form>
+                  </div>
+                </section>
                <section class="panel bg-danger lter no-borders">
                 <div class="panel-body">
                   <span class="h4">{{ Reg::current()->name() }}</span>

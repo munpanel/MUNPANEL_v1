@@ -105,7 +105,7 @@ class PortalController extends Controller
         $teamadmin->reg_id = $reg->id;
         $teamadmin->school_id = $team->id;
         $teamadmin->save();
-        return redirect('/teams');
+        return back();
     }
 
     public function joinTeam(Request $request)
@@ -116,9 +116,9 @@ class PortalController extends Controller
             ->whereUserId(Auth::id())
             ->whereSchoolId($team->id)
             ->count() > 0)
-            return 'Already Member!';
-        $team->users()->attach(Auth::id());
-        return redirect('/teams');
+            $a=1;//return 'Already Member!';
+        //$team->users()->attach(Auth::id());
+        return back(); 
     }
 
     /**

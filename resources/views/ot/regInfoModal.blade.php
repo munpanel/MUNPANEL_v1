@@ -200,7 +200,8 @@ if (empty($active))
               @else
               <p>{{$isOtOrDais ? '该用户' : '您'}}还没有选择任何席位。</p>
               @endif
-              @if ($reg->delegate->assignedNations->count() > 0 && !$reg->delegate->seat_locked)
+              @if ($reg->delegate->assignedNations->count() > 0)
+              @if (!$reg->delegate->seat_locked)
               <h3>可供选择席位列表</h3>
               @unless($isOtOrDais)
               <div class="alert alert-info">您的席位分配仍有一定几率调整，我们仍有可能为您增加席位分配，如其他代表选择了您的可选席位并该席位，您将无法选择该席位。在您选择席位后，您仍可修改您的选择，直到您的席位被锁定。您的席位将在您选定席位后 72 小时左右自动锁定或被提前手动锁定。</div>
@@ -249,6 +250,36 @@ if (empty($active))
               </table>
               <button type="submit" class="btn btn-success" onclick="loader(this)">保存更改</button>
               </form>
+              @else
+              <h3>可供选择席位列表</h3>
+              <div class="alert alert-info">席位锁定中，不可选择席位，不可编辑列表。</div>
+              <table class="table table-bordered table-striped table-hover">
+              <tbody>
+              <tr>
+              <td style="width:30px">#</td>
+              <td>席位名称</td>
+                @if ($isOtOrDais)
+                <td>席位组</td>
+                @endif
+              </tr>
+              @php
+              $nations = $reg->delegate->assignedNations;
+              $i = 0;
+              @endphp
+              @foreach($nations as $nation)
+              <tr>
+              <td><center>{{++$i}}</center></td>
+                @if ($isOtOrDais)
+                <td>{{$nation->displayName(true, 1)}}</td>
+                <td>{{isset($nation->nationgroups) ? $nation->scopeNationGroup(true, 2) : '无'}}</td>
+                @else
+                <td>{{$nation->displayName(true, 2)}}</td>
+                @endif
+              </tr>
+              @endforeach
+              </tbody>
+              </table>
+              @endif
               @endif
               </div>
             </div>

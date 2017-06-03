@@ -12,6 +12,8 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class DomainRouting
 {
@@ -26,19 +28,18 @@ class DomainRouting
     {
         if (!isset($request->route()->action['domain']))
         {
-            //To-Do: query for conference id and redirect invalid domains to portal
             if (is_null(config('munpanel.conference_id'))) //we may route all domains to one conference for debugging and developing.
             {
-                if ($_SERVER['HTTP_HOST'] == 'romun.munpanel.com')
-                    config(['munpanel.conference_id' => 2]);
-                if ($_SERVER['HTTP_HOST'] == 'bjmun.munpanel.com')
-                    config(['munpanel.conference_id' => 3]);
-                if ($_SERVER['HTTP_HOST'] == 'ffmun.munpanel.com')
-                    config(['munpanel.conference_id' => 4]);
-                if ($_SERVER['HTTP_HOST'] == 'romun.dev.yiad.am')
-                    config(['munpanel.conference_id' => 2]);
-                if ($_SERVER['HTTP_HOST'] == 'bjmun.dev.yiad.am')
-                    config(['munpanel.conference_id' => 3]);
+                $conference_id = DB::table('domains')->where('domain', $_SERVER['HTTP_HOST'])->value('conference_id');
+                if (isset($conference_id))
+                    config(['munpanel.conference_id' => $conference_id]);
+                else
+                {
+                    if (Auth::check())
+                        return redirect(route('portal'));
+                    else
+                        return redirect(route('landing'));
+                }
             }
         }
         return $next($request);

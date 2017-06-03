@@ -887,6 +887,13 @@ class UserController extends Controller
      */
     public function test(Request $request)
     {
+        $com = Committee::find(24);
+        $setas = $com->nations;
+        foreach($setas as $t)
+        {
+            $t->nationgroups()->attach(28);
+        }
+        return 'gua';
         $i = 0;
         $teams = School::where('id', '<', 94)->get();
         foreach ($teams as $team)

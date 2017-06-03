@@ -222,4 +222,5 @@ class PortalController extends Controller
             }
             return Datatables::of($result)->make(true);
         }
+    }
 }

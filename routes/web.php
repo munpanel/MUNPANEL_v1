@@ -34,6 +34,34 @@ Route::group(['domain' => 'portal.munpanel.com'], function () {
     Route::post('/teams/doCreateTeam', 'PortalController@createTeam');
     Route::post('/teams/doJoinTeam', 'PortalController@joinTeam')->name('doJoinTeam');
     Route::get('/ajax/teams', 'PortalController@teamsTable');
+
+    // Authentication Routes...
+    Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
+    Route::post('login', 'Auth\LoginController@login')->middleware('recaptcha');
+    Route::post('logout', 'Auth\LoginController@logout')->name('logout');
+    Route::get('/loginViaConsoleMail', 'Auth\\LoginController@loginConsoleMail');
+    Route::post('/loginMail', 'Auth\\LoginController@doLoginMail')->middleware('recaptcha');
+
+
+    // Registration Routes...
+    Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('register');
+    Route::post('register', 'Auth\RegisterController@register')->middleware('recaptcha');
+
+    // Password Reset Routes...
+    Route::get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('password.request');
+    Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
+    Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
+    Route::post('password/reset', 'Auth\ResetPasswordController@reset');
+
+    Route::get('/verifyEmail', 'HomeController@verifyEmail');
+    Route::get('/verifyTel', 'HomeController@verifyTel');
+    Route::get('/verifyEmail/{email}/{token}', 'UserController@doVerifyEmail');
+    Route::get('/verifyTel.modal/{method}/{tel}', 'UserController@verifyTelModal');
+    Route::post('/verifyTel', 'UserController@doVerifyTel');
+    Route::get('/verifyEmail/resend', 'UserController@resendRegMail');
+    Route::post('/doSwitchIdentity', 'UserController@doSwitchIdentity');
+    Route::get('/doSwitchIdentity/{reg}', 'UserController@doSwitchIdentity');
+    Route::get('/selectIdentityModal', 'HomeController@selectIdentityModal');
 });
 
 Route::group(['domain' => 'static.munpanel.com'], function () {
@@ -71,7 +99,7 @@ Route::group(['domain' => 'static.munpanel.com'], function () {
     Route::get('/resendMail/{id}', 'EmailController@resend');
     //Route::get('/daisBJMUN', 'EmailController@daisBJMUN');
 
-    Route::get('/startCaptchaServlet', 'GeeTestController@startCaptcha');
+    //Route::get('/startCaptchaServlet', 'GeeTestController@startCaptcha');
 
     // Authentication Routes...
     Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
@@ -97,11 +125,12 @@ Route::group(['domain' => 'static.munpanel.com'], function () {
     Route::get('/verifyTel.modal/{method}/{tel}', 'UserController@verifyTelModal');
     Route::post('/verifyTel', 'UserController@doVerifyTel');
     Route::get('/verifyEmail/resend', 'UserController@resendRegMail');
-    Route::get('/reg.first.modal', 'HomeController@firstModal');
-    Route::get('/selectIdentityModal', 'HomeController@selectIdentityModal');
-    Route::get('/regAssignment.modal', 'HomeController@regAssignmentModal');
     Route::post('/doSwitchIdentity', 'UserController@doSwitchIdentity');
     Route::get('/doSwitchIdentity/{reg}', 'UserController@doSwitchIdentity');
+    Route::get('/selectIdentityModal', 'HomeController@selectIdentityModal');
+
+    Route::get('/reg.first.modal', 'HomeController@firstModal');
+    Route::get('/regAssignment.modal', 'HomeController@regAssignmentModal');
     Route::post('/doSelectTeam', 'UserController@doSelectTeam');
     Route::get('/createTeamAdmin', 'UserController@createTeamAdmin');
 

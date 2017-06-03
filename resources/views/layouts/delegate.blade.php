@@ -5,12 +5,12 @@
                 </a>
               </li>
               @if (Reg::current()->type != 'unregistered')
-              <li class="@yield('invoice_active')">
+              <!--li class="@yield('invoice_active')">
                 <a href="{{ mp_url('/pay/invoice') }}">
                   <i class="fa fa-money"></i>
                   <span>Invoice</span>
                 </a>
-              </li>
+              </li-->
               <li class="dropdown-submenu @yield('assignments_active')">
                 <a href="{{ mp_url('/assignments') }}" class="dropdown-toggle" > <!-- data-toggle="dropdown"-->
                   <i class="fa fa-flask"></i>

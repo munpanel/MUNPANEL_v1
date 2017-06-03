@@ -101,7 +101,7 @@
                   <a href="{{mp_url('/selectIdentityModal')}}" data-toggle="ajaxModal">切换身份(退出SUDO)</a>
                   @endif
                   <a href="{{ mp_url('/help.html') }}">帮助</a>
-                  <a href="{{ mp_url('/logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">注销</a>
+                  <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">注销</a>
                 </li>
               </ul>
               <div class="visible-xs m-t m-b">
@@ -217,7 +217,7 @@
     </section>
     <!-- /.vbox -->
   </section>
-  <form id="logout-form" action="{{ mp_url('/logout') }}" method="POST" style="display: none;"> {{ csrf_field() }} </form>
+  <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;"> {{ csrf_field() }} </form>
   <script src="{{cdn_url('/js/jquery.min.js')}}"></script>
   <!-- Bootstrap -->
   <script src="{{cdn_url('/js/bootstrap.min.js')}}"></script>

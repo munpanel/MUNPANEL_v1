@@ -52,6 +52,34 @@ class LoginController extends Controller
         $this->middleware('guest', ['except' => ['logout', 'logoutReg']]);
     }
 
+
+    /**
+     * Log the user out of the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function logout(Request $request)
+    {
+        $previous = session('_previous.url');
+
+        $this->guard()->logout();
+
+        $request->session()->flush();
+
+        $request->session()->regenerate();
+
+        session(['url.intended' => $previous]);
+
+        return redirect(route('login'));
+    }
+
+    /**
+     * Log the reg out of the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function logoutReg()
     {
         session()->forget('regIdforConference'.Reg::currentConferenceID());
@@ -76,12 +104,15 @@ class LoginController extends Controller
                     $regs = DB::table('defaultregs')->where('email', $request->email)->get(['reg_id']);
                     foreach ($regs as $reg0)
                     {
-                        $reg = Reg::findOrFail($reg0->reg_id);
-                        $reg->user_id = $user->id;
-                        $reg->save();
+                        $reg = Reg::find($reg0->reg_id);
+                        if (is_object($reg))
+                        {
+                            $reg->user_id = $user->id;
+                            $reg->save();
+                        }
                     }
                     DB::table('defaultregs')->where('email', $request->email)->delete();
-                    return redirect('/home');
+                    return redirect()->intended('/home');
                 }
                 $email = explode('@', $request->email);
                 $password = $request->password;
@@ -158,7 +189,7 @@ class LoginController extends Controller
                     $reg->save();
                 }
                 DB::table('defaultregs')->where('email', $request->email)->delete();
-                return redirect('/verifyTel');
+                return redirect(route('verifyTel'));
             }
             else
             {

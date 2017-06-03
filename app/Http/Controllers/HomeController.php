@@ -953,7 +953,7 @@ class HomeController extends Controller
     public function verifyEmail()
     {
         if (Auth::user()->emailVerificationToken == 'success')
-            return redirect('/verifyTel');
+            return redirect()->intended('/verifyTel');
         return view('verifyEmail');
     }
 
@@ -965,7 +965,7 @@ class HomeController extends Controller
     public function verifyTel()
     {
         if (Auth::user()->telVerifications == -1) //3/2/1: tries left; -1: activated
-            return redirect(mp_url('/home'));
+            return redirect()->intended(mp_url('/home'));
         return view('verifyTel');
     }
 

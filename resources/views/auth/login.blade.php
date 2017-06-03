@@ -39,6 +39,11 @@
           <header class="panel-heading text-center">
             登陆&nbsp({{isset($mailLogin)?"Console Mail":"MUNPANEL"}}&nbsp账号)
           </header>
+          @if (isset($mailLogin))
+              <div class="alert alert-info">
+                  此通道仅用于拥有 Console Mail 邮箱账号的用户；对于大部分用户，请使用 MUNPANEL 账号登陆。
+              </div>
+          @endif
           @if (count($errors) > 0)
               <div class="alert alert-danger">
                   <ul>
@@ -71,7 +76,7 @@
                   data-size="invisible"></div>
             <div class="line line-dashed"></div>
             <p class="text-muted text-center"><small>没有账号?</small></p>
-            <a href="{{ mp_url('/register') }}" class="btn btn-white btn-block">新建帐号并报名会议</a>
+            <a href="{{ mp_url('/register') }}" class="btn btn-white btn-block">注册新账号</a>
             @if (isset($mailLogin))
             <a href="{{ mp_url('/login') }}" class="btn btn-white btn-block">使用 MUNPANEL 账号登录</a>
             @else

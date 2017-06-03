@@ -887,6 +887,7 @@ class UserController extends Controller
      */
     public function test(Request $request)
     {
+        return session('_previous.url');
         $com = Committee::find(24);
         $setas = $com->nations;
         foreach($setas as $t)
@@ -1328,7 +1329,7 @@ return view('blank',['testContent' => $js, 'convert' => false]);
         {
             $user->emailVerificationToken = 'success';
             $user->save();
-            return redirect('/verifyTel');
+            return redirect()->intended(route('verifyTel'));
         }
         return 'Token mismatch!';
     }
@@ -1387,7 +1388,7 @@ return view('blank',['testContent' => $js, 'convert' => false]);
             $user = Auth::user();
             $user->telVerifications = -1;
             $user->save();
-            return redirect('/home');
+            return redirect()->intended('/home');
         } else {
             return redirect('/verifyTel'); //To-Do: error prompt
         }

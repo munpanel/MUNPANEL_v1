@@ -37,7 +37,7 @@
               您当前登陆{{Reg::currentConference()->name}}的身份（{{Reg::current()->regText()}}）已被系统／会议管理员禁用。如您的账号在该会议中有其他身份，您可切换为其他身份登陆。
               </div>
               <a href="{{ mp_url('/logout.reg') }}" class="btn btn-white btn-block">切换其他身份</a>
-              <a href="{{ mp_url('/logout') }}" class="btn btn-white btn-block" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">注销</a>
+              <a href="{{ route('logout') }}" class="btn btn-white btn-block" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">注销</a>
         </section>
       </div>
     </div>
@@ -52,7 +52,7 @@
       </small></p>
     </div>
   </footer>
-  <form id="logout-form" action="{{ mp_url('/logout') }}" method="POST" style="display: none;"> {{ csrf_field() }} </form>
+  <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;"> {{ csrf_field() }} </form>
   <!-- / footer -->
 	<script src="{{cdn_url('js/jquery.min.js')}}"></script>
   <!-- Bootstrap -->

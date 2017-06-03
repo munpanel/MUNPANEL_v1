@@ -29,7 +29,6 @@ use App\Good;
 use App\Document;
 use Config;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 class DatatablesController extends Controller //To-Do: Permission Check
 {
@@ -317,47 +316,40 @@ class DatatablesController extends Controller //To-Do: Permission Check
      *
      * @return string JSON of team members
      */
-    public function teamTable($id)
+    public function teamTable()
     {
-        $user = Auth::user();
-        $school = School::findOrFail($id);
-        if ($school->isAdmin())
+        $user = Reg::current();
+        $conf = 2;
+        if ($user->type == 'ot')
         {
+            if (false)//(!Reg::current()->can('view-regs'))
+                return "ERROR";
             $result = new Collection;
-            $users = User::with(['regs.teamadmin' => function($query) use($school) {
-                $query->whereRaw('teamadmins.school_id = ' . $school->id);
-            }])->whereExists( function($query) use($school, $user) {
-                $query->select(DB::raw(1))
-                      ->from('school_user')
-                      ->whereRaw('school_user.user_id = users.id and school_user.school_id=' . $school->id);
-            })->get(['id', 'email', 'name', 'tel']);
-            foreach ($users as $user)
+            // 过滤结果: 只保留 delegate, observer 和 volunteer
+            $regs = Reg::where('conference_id', Reg::currentConferenceID())->whereIn('type', ['ot', 'dais', 'teamadmin', 'interviewer'])->with(['user' => function($q) {$q->select('name', 'id');}])->get(['id', 'user_id', 'type']);
+            foreach ($regs as $reg)
             {
-                $globalAdmin = false;
-                $confAdmins = 0;
-                foreach ($user->regs as $reg)
-                {
-                    if (is_object($reg->teamadmin))
-                    {
-                        if ($reg->conference_id == 0)
-                        {
-                           $globalAdmin = true;
-                           break;
-                        } else
-                            $confAdmins++;
-                    }
-                }
-                $adminText = '否';
-                if ($globalAdmin)
-                    $adminText = '全局';
-                elseif ($confAdmins > 0)
-                    $adminText = $confAdmins.'场会议';
+                if (in_array($reg->type, ['ot', 'dais']) && null !== $reg->specific() && $reg->specific()->status != 'success') continue;
+                if ($reg->type == 'unregistered')
+                    $type = '未报名';
+                else if ($reg->type == 'ot')
+                    $type = '组织团队';
+                else if ($reg->type == 'teamadmin')
+                    $type = $reg->teamadmin->school->typeText().'管理';
+                else if ($reg->type == 'dais')
+                    $type = '学术团队';
+                else if ($reg->type == 'interviewer')
+                    $type = '面试官';
+                else
+                    $type = '未知';
+                $school = isset($reg->reginfo) ? json_decode($reg->reginfo)->personinfo->school : '未填写';
                 $result->push([
-                    'id' => $user->id,
-                    'name' => $user->name,
-                    'email' => $user->email,
-                    'tel' => $user->tel,
-                    'admin' => $adminText,
+                    'details' => '<a href="ot/regInfo.modal/'. $reg->id .'" data-toggle="ajaxModal" id="'. $reg->id .'" class="details-modal"><i class="fa fa-search-plus"></i></a>',
+                    'name' => $reg->user->name,
+                    'school' => isset($reg->specific()->position) ? $reg->specific()->position : '无',
+                    'committee' => isset($reg->specific()->committee) ? $reg->specific()->committee->name : '无',
+                    'partner' => $type,
+                    'status' => $reg->type == 'ot' ? $reg->specific()->scopeRoles() : '不适用'
                 ]);
             }
             return Datatables::of($result)->make(true);

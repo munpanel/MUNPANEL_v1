@@ -171,4 +171,55 @@ class PortalController extends Controller
             return 'error';
         return view('portal.teamMembers', ['team' => $school]);
     }
+
+    /**
+     * Show team member datatables json
+     *
+     * @return string JSON of team members
+     */
+    public function groupMemberTable($id)
+    {
+        $user = Auth::user();
+        $school = School::findOrFail($id);
+        if ($school->isAdmin())
+        {
+            $result = new Collection;
+            $users = User::with(['regs.teamadmin' => function($query) use($school) {
+                $query->whereRaw('teamadmins.school_id = ' . $school->id);
+            }])->whereExists( function($query) use($school, $user) {
+                $query->select(DB::raw(1))
+                      ->from('school_user')
+                      ->whereRaw('school_user.user_id = users.id and school_user.school_id=' . $school->id);
+            })->get(['id', 'email', 'name', 'tel']);
+            foreach ($users as $user)
+            {
+                $globalAdmin = false;
+                $confAdmins = 0;
+                foreach ($user->regs as $reg)
+                {
+                    if (is_object($reg->teamadmin))
+                    {
+                        if ($reg->conference_id == 0)
+                        {
+                           $globalAdmin = true;
+                           break;
+                        } else
+                            $confAdmins++;
+                    }
+                }
+                $adminText = '否';
+                if ($globalAdmin)
+                    $adminText = '全局';
+                elseif ($confAdmins > 0)
+                    $adminText = $confAdmins.'场会议';
+                $result->push([
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'tel' => $user->tel,
+                    'admin' => $adminText,
+                ]);
+            }
+            return Datatables::of($result)->make(true);
+        }
 }

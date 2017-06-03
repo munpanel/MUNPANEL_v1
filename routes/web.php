@@ -30,7 +30,7 @@ Route::group(['domain' => 'portal.munpanel.com'], function () {
     Route::post('/teams/{id}/doUpdate', 'PortalController@updateTeam');
     Route::get('/teams/{id}/admin', 'PortalController@teamAdmin');
     Route::get('/teams/{id}/admin/members', 'PortalController@teamMembers');
-    Route::get('/teams/{id}/admin/members.ajax', 'DatatablesController@teamTable');
+    Route::get('/teams/{id}/admin/members.ajax', 'PortalController@groupMemberTable');
     Route::post('/teams/doCreateTeam', 'PortalController@createTeam');
     Route::post('/teams/doJoinTeam', 'PortalController@joinTeam')->name('doJoinTeam');
     Route::get('/ajax/teams', 'PortalController@teamsTable');
@@ -247,6 +247,7 @@ Route::group(['domain' => 'static.munpanel.com'], function () {
     Route::get('/allOrders/{id}', 'StoreController@viewAllOrders');
     Route::get('/shipOrder/{id}', 'StoreController@shipOrder');
     Route::get('/ajax/registrations', 'DatatablesController@reg2Table');
+    Route::get('/ajax/teammembers', 'DatatablesController@teamTable');
     Route::get('/ajax/users', ['middleware' => ['permission:edit-users'], 'uses' => 'DatatablesController@users']);
     Route::get('/ajax/schools', ['middleware' => ['permission:edit-schools'], 'uses' => 'DatatablesController@schools']);
     Route::get('/ajax/committees', ['middleware' => ['permission:edit-committees'], 'uses' => 'DatatablesController@committees']);

@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Yajra\Datatables\Datatables;
 use App\School;
+use App\Conference;
 use App\Reg;
 use App\User;
 use App\Teamadmin;
@@ -90,7 +91,11 @@ class PortalController extends Controller
     public function createTeam(Request $request)
     {
         $uid = Auth::id();
-        $team = new School;
+        $team = School::where('name', $request->name);
+        if (!is_null($team) && $team->isAdmin())
+            return 'team already exist';
+        if (is_null($team))
+            $team = new School;
         $team->name = $request->name;
         $team->type = $request->type;
         $team->description = $request->description;
@@ -195,6 +200,7 @@ class PortalController extends Controller
             {
                 $globalAdmin = false;
                 $confAdmins = 0;
+                // TODO: ignore conference with status in ['finished', 'cancelled']
                 foreach ($user->regs as $reg)
                 {
                     if (is_object($reg->teamadmin))
@@ -217,10 +223,43 @@ class PortalController extends Controller
                     'name' => $user->name,
                     'email' => $user->email,
                     'tel' => $user->tel,
-                    'admin' => $adminText,
+                    'admin' => '<a href="teams/'.$id.'/groupMember/'.$user->id.'/admin.modal" data-toggle="ajaxModal">'.$adminText.'</a>',
                 ]);
             }
             return Datatables::of($result)->make(true);
         }
+    }
+
+    public function groupMemberAdminModal($gid, $uid)
+    {
+        //TODO: auth check
+        $user = User::findOrFail($gid);
+        $conferences = Conference::whereIn('status', ['prep', 'reg']);
+        return view('portal.groupMemberAdminModal', ['user' => $user, 'confs' => $conferences, 'group' => $gid]);
+    }
+
+    public function addAdmin(Request $request)
+    {
+        $user = User::findOrFail($request->user);
+        $conference_id = Cache::tags('domains')->get($domain);
+        if (!isset($conference_id))
+            $conference_id = DB::table('domains')->where('domain', $domain)->value('conference_id');
+        if (!isset($conference_id))
+            return '会议不存在！';
+        $conference = Conference::findOrFail($conference_id);
+        if (!in_array($conference->status, ['prep', 'reg']))
+            return '会议未开放报名，不能注册领队！';
+        $group = $request->gid;
+        // 假设单场会议单个团队只能有一个 teamadmin
+        $admins = Reg::where('conference_id', $conference->id)->where('school_id', $gid)->where('type', 'teamadmin')->count();
+        if ($admins > 0)
+            return '本团队在该会议已注册领队，不能重复注册！';
+        $new = new Reg;
+        $new->user_id = $request->user;
+        $new->conference_id = $conference_id;
+        $new->school_id = $gid;
+        $new->type = 'teamadmin';
+        $new->save();
+        return 'success';
     }
 }

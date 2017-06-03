@@ -32,6 +32,11 @@ class DomainRouting
         {
             if (is_null(config('munpanel.conference_id'))) //we may route all domains to one conference for debugging and developing.
             {
+                if ($_SERVER['HTTP_HOST'] == 'bjmun.dev.yiad.am')
+                {
+                    config(['munpanel.conference_id' => 3]);
+                    return $next($request);
+                }
                 $domain = $_SERVER['HTTP_HOST'];
                 $conference_id = Cache::tags('domains')->get($domain);
                 if (!isset($conference_id))

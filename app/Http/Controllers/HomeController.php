@@ -1025,6 +1025,8 @@ class HomeController extends Controller
      */
     public function blank()
     {
+        $html = '<a href="groupMember/1352/admin.modal" data-toggle="ajaxModal">fuck i can\'t access test server</a>';
+        return view('blank', ['testContent' => $html, 'convert' => true]);
         $i = 12;
         $test = json_decode('[
         {

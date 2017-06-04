@@ -92,11 +92,11 @@ class PortalController extends Controller
     public function createTeam(Request $request)
     {
         $uid = Auth::id();
-        $team = School::where('name', $request->name);
+        /*$team = School::where('name', $request->name);
         if (!is_null($team) && $team->isAdmin())
             return 'team already exist';
-        if (is_null($team))
-            $team = new School;
+        if (is_null($team))*/
+        $team = new School;
         $team->name = $request->name;
         $team->type = $request->type;
         $team->description = $request->description;
@@ -219,8 +219,9 @@ class PortalController extends Controller
                     $adminText = '全局';
                 elseif ($confAdmins > 0)
                     $adminText = $confAdmins.'场会议';
+                $hasAdmin = ($adminText != '否') ? true : false;
                 $adminText .= '&nbsp;<a href="'.mp_url('teams/'.$id.'/groupMember/'.$user->id.'/addAdmin.modal').'" data-toggle="ajaxModal"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>';
-                if ($adminText != '否')
+                if ($hasAdmin)
                     $adminText .= '&nbsp;<a href="'.mp_url('teams/'.$id.'/groupMember/'.$user->id.'/delAdmin.modal').'" data-toggle="ajaxModal"><i class="fa fa-minus-circle" aria-hidden="true"></i></a>';
                 $result->push([
                     'id' => $user->id,

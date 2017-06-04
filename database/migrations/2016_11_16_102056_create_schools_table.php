@@ -24,7 +24,7 @@ class CreateSchoolsTable extends Migration
     {
         Schema::create('schools', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name')->unique();
+            $table->string('name');
             //$table->integer('reg_id')->unsigned();
             $table->enum('type', ['school', 'university', 'group']);
             $table->string('description')->nullable();

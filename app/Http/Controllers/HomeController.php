@@ -413,9 +413,9 @@ class HomeController extends Controller
                         $operations[] = 'unlockSeat';
                 if (Reg::current()->can('sudo'))
                     $operations[] = 'sudo';
-                $status = $reg->delegate->realStatus();
+                $interviewStatus = $reg->delegate->interviewStatus();
                 if (Reg::current()->can('view-regs')) {
-                    switch($status)
+                    switch($interviewStatus)
                     {
                         case 'interview_assigned':break;
                         case 'interview_passed':

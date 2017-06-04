@@ -31,9 +31,11 @@ Route::group(['domain' => 'portal.munpanel.com'], function () {
     Route::get('/teams/{id}/admin', 'PortalController@teamAdmin');
     Route::get('/teams/{id}/admin/members', 'PortalController@teamMembers');
     Route::get('/teams/{id}/admin/members.ajax', 'PortalController@groupMemberTable');
-    Route::get('/teams/{gid}/groupMember/{uid}/admin.modal', 'PortalController@groupMemberAdminTable');
+    Route::get('/teams/{gid}/groupMember/{uid}/addAdmin.modal', 'PortalController@groupMemberAddAdminModal');
+    Route::get('/teams/{gid}/groupMember/{uid}/delAdmin.modal', 'PortalController@groupMemberDelAdminModal');
     Route::post('/teams/doCreateTeam', 'PortalController@createTeam');
     Route::post('/teams/doAddAdmin', 'PortalController@addAdmin');
+    Route::post('/teams/doDelAdmin', 'PortalController@delAdmin');
     Route::post('/teams/doJoinTeam', 'PortalController@joinTeam')->name('doJoinTeam');
     Route::get('/ajax/teams', 'PortalController@teamsTable');
 

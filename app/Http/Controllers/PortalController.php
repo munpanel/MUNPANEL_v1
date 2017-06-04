@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Yajra\Datatables\Datatables;
 use App\School;
 use App\Conference;
@@ -218,48 +219,116 @@ class PortalController extends Controller
                     $adminText = '全局';
                 elseif ($confAdmins > 0)
                     $adminText = $confAdmins.'场会议';
+                $adminText .= '&nbsp;<a href="'.mp_url('teams/'.$id.'/groupMember/'.$user->id.'/addAdmin.modal').'" data-toggle="ajaxModal"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>';
+                $adminText .= '&nbsp;<a href="'.mp_url('teams/'.$id.'/groupMember/'.$user->id.'/delAdmin.modal').'" data-toggle="ajaxModal"><i class="fa fa-minus-circle" aria-hidden="true"></i></a>';
                 $result->push([
                     'id' => $user->id,
                     'name' => $user->name,
                     'email' => $user->email,
                     'tel' => $user->tel,
-                    'admin' => '<a href="teams/'.$id.'/groupMember/'.$user->id.'/admin.modal" data-toggle="ajaxModal">'.$adminText.'</a>',
+                    'admin' => $adminText,
                 ]);
             }
             return Datatables::of($result)->make(true);
         }
     }
 
-    public function groupMemberAdminModal($gid, $uid)
+    public function groupMemberAddAdminModal($gid, $uid)
     {
-        //TODO: auth check
-        $user = User::findOrFail($gid);
-        $conferences = Conference::whereIn('status', ['prep', 'reg']);
-        return view('portal.groupMemberAdminModal', ['user' => $user, 'confs' => $conferences, 'group' => $gid]);
+        $group = School::findOrFail($gid);
+        if (!$group->isAdmin())
+            return 'error';
+        if (DB::table('school_user')
+            ->whereUserId(Auth::id())
+            ->whereSchoolId($gid)
+            ->count() == 0)
+            return 'error';
+        $user = User::findOrFail($uid);
+        if (Reg::where('type', 'teamadmin')->where('user_id', $uid)->where('school_id', $gid)->whereNull('conference_id')->count() > 0)
+            return view('errorModal', ['msg' => '已是全局管理！']);
+        return view('portal.groupMemberAddAdminModal', ['user' => $user, 'group' => $group]);
+    }
+
+    public function groupMemberDelAdminModal($gid, $uid)
+    {
+        $group = School::findOrFail($gid);
+        if (!$group->isAdmin())
+            return 'error';
+        if (DB::table('school_user')
+            ->whereUserId(Auth::id())
+            ->whereSchoolId($gid)
+            ->count() == 0)
+            return 'error';
+        $user = User::findOrFail($uid);
+        $admins = Reg::where('type', 'teamadmin')->where('user_id', $uid)->where('school_id', $gid)->get();
+        if ($admins->where('conference_id', null)->count() > 0)
+            return view('portal.groupMemberDelGlobalAdminModal', ['user' => $user, 'group' => $group]);
+        $admins->load('conference');
+        return view('portal.groupMemberDelConfAdminModal', ['user' => $user, 'group' => $group, 'admins' => $admins]);
+    }
+
+    public function delAdmin(Request $request)
+    {
+        $user = User::findOrFail($request->user);
+        $group = School::findOrFail($request->group);
+        if (!$group->isAdmin())
+            return 'error';
+        $reg = $request->reg;
+        if ($reg == 'all')
+        {
+            $regs = DB::table('regs')->where('user_id', $user->id)->where('school_id', $group->id)->where('type', 'teamadmin')->pluck('id');
+            Teamadmin::destroy($regs);
+            Reg::destroy($regs);
+        }
+        else
+        {
+            $reg = Reg::findOrFail($reg);
+            if ($reg->school_id != $group->id || $reg->type != 'teamadmin')
+                return 'error';
+            $reg->delete();
+        }
+        return 'success';
     }
 
     public function addAdmin(Request $request)
     {
         $user = User::findOrFail($request->user);
-        $conference_id = Cache::tags('domains')->get($domain);
-        if (!isset($conference_id))
-            $conference_id = DB::table('domains')->where('domain', $domain)->value('conference_id');
-        if (!isset($conference_id))
-            return '会议不存在！';
-        $conference = Conference::findOrFail($conference_id);
-        if (!in_array($conference->status, ['prep', 'reg']))
-            return '会议未开放报名，不能注册领队！';
-        $group = $request->gid;
+        $domain = $request->domain;
+        $group = School::findOrFail($request->group);
+        $global = (strtolower($domain) == 'global');
+        if (!$group->isAdmin())
+            return 'error';
+        if (DB::table('school_user')
+            ->whereUserId(Auth::id())
+            ->whereSchoolId($group->id)
+            ->count() == 0)
+            return 'error';
+        if (!$global)
+        {
+            $conference_id = Cache::tags('domains')->get($domain);
+            if (!isset($conference_id))
+                $conference_id = DB::table('domains')->where('domain', $domain)->value('conference_id');
+            $conference = Conference::find($conference_id);
+            if (!is_object($conference))
+                return '会议不存在！';
+        } else
+            $conference_id = null;
+        //if (!in_array($conference->status, ['prep', 'reg']))
+        //    return '会议未开放报名，不能注册领队！';
         // 假设单场会议单个团队只能有一个 teamadmin
-        $admins = Reg::where('conference_id', $conference->id)->where('school_id', $gid)->where('type', 'teamadmin')->count();
-        if ($admins > 0)
-            return '本团队在该会议已注册领队，不能重复注册！';
+        //$admins = Reg::where('conference_id', $conference->id)->where('school_id', $gid)->where('type', 'teamadmin')->count();
+        //if ($admins > 0)
+        //    return '本团队在该会议已注册领队，不能重复注册！';
         $new = new Reg;
         $new->user_id = $request->user;
         $new->conference_id = $conference_id;
-        $new->school_id = $gid;
+        $new->school_id = $group->id;
         $new->type = 'teamadmin';
         $new->save();
+        $teamadmin = new Teamadmin;
+        $teamadmin->reg_id = $new->id;
+        $teamadmin->school_id = $group->id;
+        $teamadmin->save();
         return 'success';
     }
 }

@@ -209,10 +209,6 @@ class DatatablesController extends Controller //To-Do: Permission Check
         $type = ['delegate', 'volunteer', 'observer'];
         if (Dais::where('conference_id', $conf)->whereIn('status', ['sVerified', 'oVerified'])->count() > 0) $type[] = 'dais';
         if (Orgteam::where('conference_id', $conf)->whereIn('status', ['sVerified', 'oVerified'])->count() > 0) $type[] = 'ot';
-        if ($user->type == 'teamadmin')
-        {
-            $regs = Reg::where('conference_id', Reg::currentConferenceID())->whereIn('type', ['delegate', 'volunteer', 'observer'])->with(['user' => function($q) {$q->select('name', 'id');}])->get(['id', 'user_id', 'type']);
-        }
         if (in_array($user->type, ['ot', 'dais', 'teamadmin']))
         {
             if ($user->type != 'teamadmin' && !Reg::current()->can('view-regs'))

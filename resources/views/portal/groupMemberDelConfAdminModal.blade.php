@@ -12,7 +12,7 @@
                   <div class="col-sm-12">
                     <p>{{$user->name}}共有以下会议的管理身份，请选择您希望删除的身份：</p>
                     @foreach($admins as $admin)
-                    <input type="radio" name="reg" value="{{$admin->id}}"> {{$admin->conference->fullname}}<br>
+                    <input type="radio" name="reg" value="{{$admin->id}}" data-required="true"> {{$admin->conference->fullname}}<br>
                     @endforeach
                   </div>
                 </div>{{--

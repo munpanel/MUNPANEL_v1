@@ -11,7 +11,7 @@
                 <div class="form-group">
                   <label class="col-sm-2 control-label">团队邀请码</label>
                   <div class="col-sm-10">
-                    <input type="text" name="code" class="form-control" placeholder="由您的团队管理员提供">
+                    <input type="text" name="code" class="form-control" placeholder="由您的团队管理员提供" data-required="true">
                   </div>
                 </div>
              <p class="checkbox m-t-lg">

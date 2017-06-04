@@ -184,6 +184,18 @@
                 @else
                 @include('layouts.delegate')
                 @endif
+                @if (Reg::currentConferenceID() != 0)
+                  @foreach(Auth::user()->regs->where('conference_id', Reg::currentConferenceID())->where('enabled', true) as $reg)
+                  @if ($reg->type == 'teamadmin')
+                  <li class="@yield('interview_active')">
+                    <a href="{{ mp_url('/doSwitchIdentity/'.$reg->id) }}">
+                      <i class="fa fa-university"></i>
+                      <span>Manage my group</span>
+                    </a>
+                  </li>
+                  @endif
+                  @endforeach
+                @endif 
             </ul>
           </nav>
           <!-- / nav -->

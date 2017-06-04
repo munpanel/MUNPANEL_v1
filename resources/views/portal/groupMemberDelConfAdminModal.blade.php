@@ -1,6 +1,6 @@
 ﻿<div class="modal-dialog">
  <div class="modal-content">
-   <header class="header bg-info bg-gradient mp-modal-header">
+   <header class="header bg-warning bg-gradient mp-modal-header">
       <center><h4>管理身份删除</h4></center>
    </header>
    <div class="modal-body">
@@ -10,19 +10,19 @@
             {{csrf_field()}}
                 <div class="form-group">
                   <div class="col-sm-12">
-                    <p>{{$user->name}}共有如下管理身份：</p>
+                    <p>{{$user->name}}共有以下会议的管理身份，请选择您希望删除的身份：</p>
                     @foreach($admins as $admin)
-                    {{$admin->id}}.{{$admin->conference->name}}<br>
+                    <input type="radio" name="reg" value="{{$admin->id}}"> {{$admin->conference->fullname}}<br>
                     @endforeach
                   </div>
-                </div>
+                </div>{{--
                 <div class="form-group">
                   <label class="col-sm-2 control-label">ID</label>
                   <div class="col-sm-10">
                     <input type="text" name="reg" class="form-control">
-                    <span class="help-block m-b-none">您希望删除的管理身份ID</span>
+                    <span class="help-block m-b-none"></span>
                   </div>
-                </div>
+                </div>--}}
              <p class="checkbox m-t-lg">
                <input type="hidden" name="user" value="{{$user->id}}">
                <input type="hidden" name="group" value="{{$group->id}}">

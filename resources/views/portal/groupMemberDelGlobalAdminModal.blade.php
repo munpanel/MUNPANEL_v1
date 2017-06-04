@@ -1,6 +1,6 @@
 ﻿<div class="modal-dialog">
  <div class="modal-content">
-   <header class="header bg-info bg-gradient mp-modal-header">
+   <header class="header bg-warning bg-gradient mp-modal-header">
       <center><h4>管理身份清空</h4></center>
    </header>
    <div class="modal-body">

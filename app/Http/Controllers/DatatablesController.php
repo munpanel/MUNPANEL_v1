@@ -490,11 +490,8 @@ class DatatablesController extends Controller //To-Do: Permission Check
         $result = new Collection;
         if (Reg::current()->type == 'ot')
         {
-            $committees = Committee::where('conference_id', Reg::currentConferenceID())->get(['id']);
-            $arr_committee = [];
-            foreach ($committees as $committee)
-                $arr_committee[] = $committee->id;
-            $nations = Nation::whereIn('committee_id', $arr_committee)->get();
+            $committees = Committee::where('conference_id', Reg::currentConferenceID())->get()->pluck(['id']);
+            $nations = Nation::whereIn('committee_id', $committees)->get();
             foreach($nations as $nation)
             {
                 $result->push([

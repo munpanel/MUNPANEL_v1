@@ -100,12 +100,16 @@ class RoleAllocController extends Controller
             }
         }
         if ($assignOptions->ot && $reg->type == 'ot' && $reg->can('assign-roles'))
-            return Nation::where('conference_id', Reg::currentConferenceID())->get();
+        {
+            $committees = Committee::where('conference_id', Reg::currentConferenceID())->get()->pluck(['id']);
+            return Nation::whereIn('committee_id', $committees)->get();
+        }
         if ($assignOptions->dais && $reg->type == 'dais')
             return $reg->dais->committee->nations;
         if ($assignOptions->interviewer && $reg->type == 'interviewer')
         {
-            return Nation::where('conference_id', Reg::currentConferenceID())->get();
+            $committees = Committee::where('conference_id', Reg::currentConferenceID())->get()->pluck(['id']);
+            return Nation::whereIn('committee_id', $committees)->get();
             // now interviewers can assign all nations
             return Nation::whereHas('committee', function($query) {
                 $query->whereHas('delegates.interviews', function($query) {

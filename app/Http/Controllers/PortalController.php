@@ -220,7 +220,8 @@ class PortalController extends Controller
                 elseif ($confAdmins > 0)
                     $adminText = $confAdmins.'场会议';
                 $adminText .= '&nbsp;<a href="'.mp_url('teams/'.$id.'/groupMember/'.$user->id.'/addAdmin.modal').'" data-toggle="ajaxModal"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>';
-                $adminText .= '&nbsp;<a href="'.mp_url('teams/'.$id.'/groupMember/'.$user->id.'/delAdmin.modal').'" data-toggle="ajaxModal"><i class="fa fa-minus-circle" aria-hidden="true"></i></a>';
+                if ($adminText != '否')
+                    $adminText .= '&nbsp;<a href="'.mp_url('teams/'.$id.'/groupMember/'.$user->id.'/delAdmin.modal').'" data-toggle="ajaxModal"><i class="fa fa-minus-circle" aria-hidden="true"></i></a>';
                 $result->push([
                     'id' => $user->id,
                     'name' => $user->name,

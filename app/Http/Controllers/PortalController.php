@@ -120,6 +120,8 @@ class PortalController extends Controller
     {
         $code = $request->code;
         $team = School::where('joinCode', $code)->first();
+        if (!is_object($team))
+            return 'Wrong Code... Please double-check it.';
         if (isset($request->reg_id))
         {
             $reg = Reg::find($request->reg_id);

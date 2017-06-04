@@ -82,6 +82,10 @@ Route::group(['domain' => 'static.munpanel.com'], function () {
     Route::get('/', function () {
         return redirect(secure_url('home'));
     });
+    
+    Route::get('/login', function () {
+        return redirect(secure_url('home'));
+    });
 
     Route::get('500', function()
     {

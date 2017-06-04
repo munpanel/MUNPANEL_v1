@@ -7,6 +7,7 @@ $events = $reg->events()->orderBy('created_at', 'dsc')->get();
 $notes = $reg->notes()->orderBy('created_at', 'dsc')->get();
 $interviewers = $reg->interviews()->orderBy('created_at', 'dsc')->get();
 $active = request()->active;
+$self = ($reg->id == Reg::currentID());
 if (empty($active))
     $active = 'info';
 @endphp
@@ -53,10 +54,10 @@ if (empty($active))
                 <br>状态: {{$reg->enabled ? $reg->specific()->statusText() : '已禁用'}}</p>
                 @endif
               @else
-                <p>{{$reg->user->name}}，您已以<strong>{{ $reg->type == 'delegate' ? '代表' : ($reg->type == 'observer' ? '观察员' : '志愿者') }}</strong>身份报名参加{{Reg::currentConference()->fullname}}。</p>
+                <p>{{$reg->user->name. ($self ? '，您':'')}}已以<strong>{{ $reg->type == 'delegate' ? '代表' : ($reg->type == 'observer' ? '观察员' : '志愿者') }}</strong>身份报名参加{{Reg::currentConference()->fullname}}。</p>
               @endif
               @if (isset($regInfo))
-                @if (Reg::current()->type == 'ot')
+                @if (Reg::current()->type == 'ot' || (Reg::current()->type == 'teamadmin' && in_array($reg->specific()->status, ['reg', 'sVerified'])) || (Reg::currentID() == $reg->id && $reg->status == 'reg'))
                   @include('components.regInfoEdit')
                 @else
                   @include('components.regInfoShow')
@@ -71,9 +72,9 @@ if (empty($active))
             <div class="row">
               <div class="col-sm-12 b-r">
               @if (count($handins) == 0)
-              <p>{{$isOtOrDais ? '该用户' : '您'}}还没有提交任何学术作业。</p>
+              <p>{{$self ? '您' : '该用户'}}还没有提交任何学术作业。</p>
               @else
-              <p>{{$isOtOrDais ? '该用户' : '您'}}提交了以下 {{count($handins)}} 项学术作业。</p>
+              <p>{{$self ? '您' : '该用户'}}提交了以下 {{count($handins)}} 项学术作业。</p>
               <table class="table table-striped m-b-none">
                 <thead>
                   <tr>
@@ -131,7 +132,7 @@ if (empty($active))
             <div class="row">
               <div class="col-sm-12 b-r">
               @if ($interviewers->count() == 0)
-                <p>暂无任何对{{$isOtOrDais ? '该用户' : '您'}}分配的面试。</p>
+                <p>暂无任何对{{$self ? '您' : '该用户'}}分配的面试。</p>
               @else
               @foreach ($interviewers as $interview)
               <h3 class="m-t-sm">{{$interview->id == $reg->currentInterviewID() ? '当前面试信息' : '早前面试信息'}}</h3>
@@ -192,18 +193,18 @@ if (empty($active))
               <div class="col-sm-12 b-r">
               <h3 class="m-t-sm">当前席位</h3>
               @if (isset($reg->delegate->nation_id))
-              <p>{{$isOtOrDais ? '该用户' : '您'}}已{{$reg->delegate->seat_locked ? '锁定':'选择'}}席位<strong>{{$reg->delegate->nation->displayName()}}</strong>。
+              <p>{{$self ?  '您' : '该用户'}}已{{$reg->delegate->seat_locked ? '锁定':'选择'}}席位<strong>{{$reg->delegate->nation->displayName()}}</strong>。
                 @if (!$reg->delegate->seat_locked)
-                <br>选定席位将在{{$isOtOrDais ? '该用户' : '您'}}选定该席位 72 小时左右自动锁定。
+                <br>选定席位将在{{$self ? '您' : '该用户'}}选定该席位 72 小时左右自动锁定。
                 @endif
               </p>
               @else
-              <p>{{$isOtOrDais ? '该用户' : '您'}}还没有选择任何席位。</p>
+              <p>{{$self ? '您' : '该用户'}}还没有选择任何席位。</p>
               @endif
               @if ($reg->delegate->assignedNations->count() > 0)
               @if (!$reg->delegate->seat_locked)
               <h3>可供选择席位列表</h3>
-              @unless($isOtOrDais)
+              @unless($self)
               <div class="alert alert-info">您的席位分配仍有一定几率调整，我们仍有可能为您增加席位分配，如其他代表选择了您的可选席位并该席位，您将无法选择该席位。在您选择席位后，您仍可修改您的选择，直到您的席位被锁定。您的席位将在您选定席位后 72 小时左右自动锁定或被提前手动锁定。</div>
               @endunless
               <form method="post" id="updateSeatForm">
@@ -217,7 +218,7 @@ if (empty($active))
                 <td>席位组</td>
                 <td width="45px">保留</td>
                 @endif
-                @if (!$reg->delegate->seat_locked && Reg::currentID() == $reg->id)
+                @if (!$reg->delegate->seat_locked && $self)
                 <td width="45px">选择</td>
                 @endif
               </tr>

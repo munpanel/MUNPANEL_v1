@@ -1465,23 +1465,25 @@ return view('blank',['testContent' => $js, 'convert' => false]);
 
     public function updateReg(Request $request, $id)
     {
-        if (Reg::current()->type != 'ot')
-            return 'Error';
         $reg = Reg::findOrFail($id);
-        $name = $request->get('name');
-        $value = $request->get('value');
-        if ($reg->conference_id != Reg::currentConferenceID())
-            return 'error';
-        $keys = explode('.', $name);
-        if ($keys[0] == 'reg')
-            $reg->{$keys[1]} = $value;
-        else
+        if (Reg::current()->type == 'ot' || (Reg::current()->type == 'teamadmin' && Reg::current()->school_id == $reg->school_id && in_array($reg->specific()->status, ['reg', 'sVerified'])) || (Reg::currentID() == $reg->id && $reg->specific()->status == 'reg'))
         {
-            $regInfo = json_decode($reg->reginfo);
-            $regInfo->{$keys[0]}->{$keys[1]} = $value;
-            $reg->reginfo = json_decode($regInfo);
-        }
-        $reg->save();
+            $name = $request->get('name');
+            $value = $request->get('value');
+            if ($reg->conference_id != Reg::currentConferenceID())
+                return 'error';
+            $keys = explode('.', $name);
+            if ($keys[0] == 'reg')
+                $reg->{$keys[1]} = $value;
+            else
+            {
+                $regInfo = json_decode($reg->reginfo);
+                $regInfo->{$keys[0]}->{$keys[1]} = $value;
+                $reg->reginfo = json_encode($regInfo);
+            }
+            $reg->save();
+        } else
+            return 'error';
     }
 
     public function disabledHome()

@@ -47,7 +47,7 @@
                         <th width="20">ID</th>
                         <th width="60">类型</th>
                         <th>名称</th>
-                        <th width="60">是否管理</th>
+                        <th width="60">全局管理</th>
                       </tr>
                     </thead>
                   </table>

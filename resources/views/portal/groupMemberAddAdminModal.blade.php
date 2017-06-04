@@ -16,7 +16,7 @@
                 <div class="form-group">
                   <label class="col-sm-2 control-label">会议域名</label>
                   <div class="col-sm-10">
-                    <input type="text" name="domain" class="form-control" placeholder="如xxmun.munpanel.com">
+                    <input type="text" name="domain" class="form-control" placeholder="如xxmun.munpanel.com" data-required="true">
                     <span class="help-block m-b-none">您访问该会议所用的网址（不含https://和后续内容）；如需添加全局管理，此处填写“global”</span>
                   </div>
                 </div>

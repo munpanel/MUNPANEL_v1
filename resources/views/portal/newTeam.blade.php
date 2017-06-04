@@ -18,20 +18,20 @@
                         <input type="radio" name="type" value="university"> <i class="fa fa-check text-active"></i> 高等学校
                     </label>
                     <label class="btn btn-sm btn-primary">
-                        <input type="radio" name="type" value="group"> <i class="fa fa-check text-active"></i> 团体
+                        <input type="radio" name="type" value="group" data-required="true"> <i class="fa fa-check text-active"></i> 团体
                     </label>
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-2 control-label">团队名称</label>
                   <div class="col-sm-10">
-                    <input type="text" name="name" class="form-control" placeholder="如 Massachusetts Institute of Technology">
+                    <input type="text" name="name" class="form-control" placeholder="如 Massachusetts Institute of Technology" data-required="true">
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-2 control-label">团队简介</label>
                   <div class="col-sm-10">
-                    <input type="text" name="description" class="form-control" placeholder="其他用户将可看到此简介">
+                    <input type="text" name="description" class="form-control" placeholder="其他用户将可看到此简介" data-required="true">
                   </div>
                 </div>
              <p class="checkbox m-t-lg">

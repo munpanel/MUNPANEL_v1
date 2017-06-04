@@ -35,7 +35,7 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $exception)
     {
-        if (app()->environment() == 'production' && $this->shouldReport($exception)) { //Sentry for production
+        if ((!config('app.debug')) && $this->shouldReport($exception)) { //Sentry for production
             $this->sentryID = app('sentry')->captureException($exception);
         }
         parent::report($exception);
@@ -67,14 +67,13 @@ class Handler extends ExceptionHandler
         }
 
         //return $this->prepareResponse($request, $e);
-        if (app()->environment() == 'production')
+        if (config('app.debug'))
         {
+            return $this->toIlluminateResponse($this->convertExceptionToResponse($e), $e);
+        } else {
             return response()->view('errors.500', [
                 'sentryID' => $this->sentryID,
             ], 500);
-        } else {
-            //dd($exception);
-            return $this->toIlluminateResponse($this->convertExceptionToResponse($e), $e);
         }
 
         //return parent::render($request, $exception);

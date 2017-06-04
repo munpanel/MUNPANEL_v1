@@ -10,7 +10,7 @@
             {{csrf_field()}}
                 <div class="form-group">
                   <div class="col-sm-12">
-                    <p>请为{{$user->name}}指派新的全局或会议管理身份。</p>
+                    <p>请为{{$user->name}}指派新的全局或会议管理身份。全局管理可以管理您的团队的各项事物，包括参加的所有会议，通常为您的社团管理；会议管理仅可管理此场会议中您的团队的报名等事宜，通常用于会议领队。</p>
                   </div>
                 </div>
                 <div class="form-group">

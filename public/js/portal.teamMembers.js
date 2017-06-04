@@ -5,7 +5,7 @@ $(document).ready(function() {
         ajax: 'members.ajax',
         columns: [
             {data: 'id', name: 'id', orderable: true},
-            {data: 'email', name:'email', orderable: true},
+            {data: 'email', name:'email', orderable: false},
             {data: 'name', name: 'name', orderable: false},
             {data: 'tel', name: 'tel', orderable: false},
             {data: 'admin', name: 'admin', orderable: false}
@@ -38,7 +38,7 @@ $(document).ready(function() {
             "infoEmpty": "无记录",
             "infoFiltered": "(从 _MAX_ 条记录过滤)"
         },
-        "order": [[2, "asc"]],
+        "order": [[0, "asc"]],
     });
     var table=$('#member-table').DataTable();
     $("#searchButton").click(function() {

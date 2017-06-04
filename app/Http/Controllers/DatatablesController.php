@@ -731,6 +731,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
                     break;
                 case 'locked':
                     $delnames = "<i class='fa fa-lock' aria-hidden='true'></i> ".$delnames;
+                    $delnames =  "<a style='cursor: pointer;' class='details-popover' data-html='1' data-placement='right' data-trigger='click' data-original-title='原可选此席位的代表列表' data-toggle='popover' data-content='".$nation->scopeAssignedDelegate()."'>".$delnames."</a>";
                     break;
                 case 'open':
                     $delnames = "<i class='fa fa-unlock' aria-hidden='true'></i> ".$delnames;

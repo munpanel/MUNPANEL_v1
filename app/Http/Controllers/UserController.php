@@ -887,6 +887,18 @@ class UserController extends Controller
      */
     public function test(Request $request)
     {
+        return '...';
+        $reg = new Reg;
+        $reg->user_id = 1080;
+        $reg->type = 'teamadmin';
+        $reg->enabled = 1;
+        $reg->school_id = 96;
+        $reg->save();
+        $teamadmin = new Teamadmin;
+        $teamadmin->reg_id = $reg->id;
+        $teamadmin->school_id = 96;
+        $teamadmin->save();
+        return 'done';
         return session('_previous.url');
         $com = Committee::find(24);
         $setas = $com->nations;

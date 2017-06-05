@@ -233,8 +233,8 @@ class UserController extends Controller
         if (!empty($request->province))
             $personal_info->province = $request->province;
         $personal_info->school = $request->school;
-        $school = School::where('name', $request->school)->first();
-        if (!empty($school)) $reg->school_id = $school->id;
+        //$school = School::where('name', $request->school)->first();
+        //if (!empty($school)) $reg->school_id = $school->id;
         $personal_info->yearGraduate = $request->yearGraduate;
         if (!empty($request->sfz))
         {

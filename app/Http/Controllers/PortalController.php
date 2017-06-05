@@ -107,7 +107,7 @@ class PortalController extends Controller
         $reg->user_id = $uid;
         $reg->type = 'teamadmin';
         $reg->enabled = 1;
-        $newreg->school_id = $team->id;
+        $reg->school_id = $team->id;
         $reg->save();
         $teamadmin = new Teamadmin;
         $teamadmin->reg_id = $reg->id;

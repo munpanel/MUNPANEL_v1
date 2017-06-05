@@ -100,7 +100,7 @@
             <div class="clearfix padder"> 
               <h3 class="text-success" id="overview">概览 <small>认识 MUNPANEL</small></h3>
               <div class="line"></div>
-              <p>本节内容主要是对 MUNPANEL 通用平台的介绍，以及本帮助文档的阅读说明和注意事项。</p>
+              <p>本章内容主要是对 MUNPANEL 通用平台的介绍，以及本帮助文档的阅读说明和注意事项。</p>
               
               <h4>MUNPANEL 简介</h4>
               <p>MUNPANEL 是一个以统一面板的形式整合报名、学术作业、文件下发、席位分配、缴费等功能，并与其他 Console iT 旗下产品联动的在线模拟联合国通用会议平台。</p>
@@ -278,9 +278,17 @@
               <p>you can use the .layout-box on the html tag to build the layout box <code>&lt;html class="layout-box">&lt;/html></code></p>
               
               <h4 id="join-or-create" class="m-t-lg">加入或创建社团</h4>
-              <p>Support three nav styles on mobile, "Pull down", "push left", "push right"</p>
-              <h5><strong>Pull down</strong></h5>
-              <p>use <code>data-toggle="class:show" data-target=".nav-primary"</code> to trigger the nav pull down in the header</p>
+              <p>MUNPANEL 的学校社团指类别为“中学”或“高等学校”的团队。学校社团是您接触和参与模拟联合国活动的重要组织，同时也是许多会议组织报名的基本单位。</p>
+              <p>您可以通过在 MUNPANEL Portal 点击左侧的“<i class="fa fa-users"></i> Teams”查看您已经加入的社团。</p>
+              <h5><strong>加入社团</strong></h5>
+              <p>MUNPANEL 将在未来加入通过社团招新加入社团的功能。</p>
+              <h5><strong>创建社团</strong></h5>
+              <p>在页面顶部，点击 <a class="btn btn-sm btn-success"><i class="fa fa-plus"></i> 新建新团队</a>，在弹出的对话框中选择团队类型（学校社团请选择“中学”或“高等学校”），并填写团队名称与简介，点击 <a class="btn btn-sm btn-success text-uc"><i class="fa fa-check"></i> 确定</a>。之后在列表中看到您新创建的团队，即为创建成功。</p>
+              <p class="text-info"><strong>提示：在 MUNPANEL 中，学校团队默认特指本校的模拟联合国社团。因此，在您创建社团时，无需在团队名称中加入“模拟联合国社团”等字样。</strong></p>
+              <p>创建成功后，您将自动成为该社团的全局管理员。请参阅<strong><a href="#add-new-muner">成为社团管理人</a></strong>一章以了解社团的管理功能。</p>
+              <h5><strong>使用团队加入码</strong></h5>
+              <p>您也可以通过使用团队加入码加入学校社团。团队加入码允许社员在招新时间以外加入社团，同时也是加入“一般团体”类别团队的唯一方式。</p>
+              <p>团队加入码是一个由大小写字母及阿拉伯数字组成的 32 位长度字符串，由您的社团管理层提供。在索取团队加入码之后，请点击 <a class="btn btn-sm btn-success"><i class="fa fa-plus"></i> 新建新团队</a> 并在对话框中输入您的团队加入码，即可加入团队。</p>
         <pre><code class="html"><a class="btn btn-link visible-xs" data-toggle="class:show" data-target=".nav-primary">
           <i class="fa fa-bars"></i>
         </a></code></pre>
@@ -454,9 +462,14 @@
               <div class="line"></div>
               
               <h4 id="add-new-muner" class="m-t-lg">接收新社员</h4>
-              <p>Check more details on <a href="http://github.com/rendro/easy-pie-chart/"><strong>Easy Pie Chart</strong></a>. use excanvas.js for IE8 rendering. if your app do not need support IE8, you can remove it.</p>
-              <h5><strong>Usage</strong></h5>
-              <p>add <code>.easypiechart</code> class and use data attribute to config <code>data-percent="75"</code>, <code>data-size="120"</code>, <code>data-bar-color="75"</code>, <code>data-line-width="5"</code>, <code>data-track-color="#eee"</code></p>
+              <h5><strong>组织招新</strong></h5>
+              <p>有待添加……</p>
+              <h5><strong>审核新社员</strong></h5>
+              <p>有待添加……</p>
+              <h5><strong>使用团队加入码</strong></h5>
+              <p class="text-warning"><strong>注意：除“一般团体”类别的团队以外，团队加入码仅为特殊情况下社员加入的备用方案。因此，请尽可能利用招新功能接收新社员，并严格控制加入码以免外泄。<!--为保证社团安全，所有团队的加入码均由 MUNPANEL 系统在每周一上午 4 时自动强制刷新。--></strong></p>
+              <p>社团的管理人员可在社团后台控制面板<!--的“加入码”选项卡-->首页找到团队加入码。点击 <button class="btn btn-danger">显示加入码</button> 即可查看您的团队的 32 位加入码，团队成员通过使用该加入码即可直接加入社团。</p>
+              <p class="text-danger"><strong>警告：使用加入码的人员将不需要任何审核而加入社团，因此请妥善保管您的社团加入码，严格防止外泄。MUNPANEL 将不会承担由于加入码外泄造成的任何损失。</strong></p>
               <h5><strong>Example</strong></h5>
               <div class="easypiechart" data-percent="75" data-line-width="5" data-size="120" data-bar-color="#576879" data-track-color="#eee" >
                 <span class="h2">75</span>%
@@ -477,7 +490,10 @@
         <pre class="m-t"><code class="html"><input class="input-sm datepicker" size="16" type="text" value="12-02-2013" data-date-format="dd-mm-yyyy" >
         </code></pre>
         <h4 id="group-register" class="m-t-lg">管理会议报名</h4>
-              <p>某些会议可能需要以学校为单位管理报名或不接受个人报名。在这种情况下，学校社团管理人需要通过 MUNPANEL 管理社员对会议的报名。其他项目有待添加</p>
+              <p>某些会议可能需要以学校为单位管理报名或不接受个人报名。在这种情况下，学校社团管理人需要通过 MUNPANEL 管理社员对会议的报名。</p>
+              <p>首先，团队管理需要访问会议的子域名 (如 https://bjmun.munpanel.com)。如果您是社团的全局管理，在第一次访问会议页面时，需要在主页上和代表一样选择自己的团队，成功后在主页上点击创建自己的管理身份；之后再访问此场会议，只需要在登录时将提示选择要登陆的身份，选择团队管理即可。您也可以通过左边栏的“<i class="fa fa-university"></i> [学校名称]报名管理”进入团队管理界面。</p>
+              <p>在进入团队管理界面后，点击左侧的“<i class="fa fa-tasks"></i> Registration Management”，即可查看团队报名列表。点击“状态”列的“等待学校审核”和“等待组织团队审核”文字即可修改社员的学校审核状态。您也可以点击人名左侧 <i class="fa fa-search-plus"></i> 图标查看或编辑社员的报名信息。</p>
+              <p>如果您希望为其他成员添加会议管理身份，您可以在“成员管理”<!--选项卡-->中点击特定成员在“管理”列中的 <i class="fa fa-plus-circle" aria-hidden="true"></i> 图标，并在弹出对话框中选择希望指派的会议。</p>
               <h5><strong>管理缴费状态</strong></h5>
               <p>在学校后台页面，点击左侧的“<i class="fa fa-money"></i> Payment Management”进入缴费状态页面。本校参会者的缴费情况和剩余应交款项显示在页面的显著位置，在“缴费方式”选项卡显示本校当前选择的缴费方式。</p>
               <p>学校社团管理人可以自行决定本校参会者的会费支付方式。在 Payment Management 页面下，管理人可选择“个人缴费”或“团体缴费”选项卡，并点击选项卡内的 <a href="#" class="btn btn-s-md btn-success btn-rounded">选用此种方式</a> ，以切换缴费方式。</p>
@@ -659,6 +675,23 @@
         <script src="js/ie/excanvas.js" cache="false"></script>
         <![endif]--></code></pre>       
               <h4 id="credits" class="m-t-lg">制作者</h4>
+              <h5><strong>Humans.txt</strong></h5>
+              <p>点击下图查看本站的 Humans.txt 制作人员名单。</p>
+              <a href="humans.txt"><img width="88" height="31" alt="Humans.txt" src="images/humanstxt-isolated-blank.gif"></a>
+              <h5><strong>制作人员</strong></h5>
+              <ul>
+                <li><i>MUNPANEL 创始人、核心工程师</i><br>&emsp;&emsp;易轩 (<a href="http://github.com/adamyi/">adamyi</a>)</li>
+                <li><i>全栈工程师</i><br>&emsp;&emsp;宋子睿 (<a href="http://github.com/CRH380B-6216L/">CRH380B-6216L</a>)</li>
+                <li><i>前端工程师</i><br>&emsp;&emsp;刘晓义 (<a href="http://github.com/CircuitCoder/">CircuitCoder</a>)</li>
+              </ul>
+              <h5><strong>鸣谢</strong></h5>
+              <ul>
+                <li><i>Console iT 发起者</i><br>&emsp;&emsp;许嘉昭</li>
+                <li><i>协会支持</i><br>&emsp;&emsp;<a href="http://bjmun.org/">北京市高中生模拟联合国协会</a></li>
+                <li><i>协会支持</i><br>&emsp;&emsp;<a href="http://romun.net/">环梦模拟联合国大会</a></li>
+                <li><i>UI 原作</i><br>&emsp;&emsp;<a href="https://themeforest.net/user/flatfull/portfolio">Flatfull</a></li>
+              </ul>
+              <h5><strong>开源库</strong></h5>
               <ul>
                 <li><a href="http://fortawesome.github.io/Font-Awesome/">FontAwesome</a></li>
                 <li><a href="http://github.com/vitalets/combodate">Combodate</a></li>

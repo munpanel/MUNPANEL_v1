@@ -30,6 +30,7 @@
               </div>
             </header>
             <section class="scrollable wrapper w-f">
+            <div class="alert alert-info">十分抱歉由于一些问题，在6月5日13:20前注册的团队系统并未成功添加默认全局管理身份，而提示错误信息，目前问题已得到解决。先前注册的团队的默认全局管理身份已全部得以添加，因此问题而重复注册的团队已被删除，感谢您的理解与支持。</div>
               <section class="panel">
                 <div class="table-responsive">
                   <table class="table table-striped m-b-none" id="team-table">

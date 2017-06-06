@@ -60,7 +60,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://www.munpanel.com'),
+    'url' => env('APP_URL', 'http://portal.munpanel.com'),
 
     /*
     |--------------------------------------------------------------------------

@@ -414,6 +414,7 @@ class HomeController extends Controller
                 if (Reg::current()->can('sudo'))
                     $operations[] = 'sudo';
                 $interviewStatus = $reg->delegate->interviewStatus();
+                $status = $reg->delegate->status;
                 if (Reg::current()->can('view-regs')) {
                     switch($interviewStatus)
                     {
@@ -424,8 +425,14 @@ class HomeController extends Controller
                         case 'interview_retest_failed':
                         case 'interview_retest_unassigned':
                         case 'interview_unassigned': if (Reg::current()->can('view-all-interviews')) $operations[] = 'assignInterview'; break;
-                        case 'sVerified': if ($reg->enabled) $operations[] = 'oVerification'; break;
-                        case 'fail': if ($reg->enabled) $operations[] = 'oReverification'; break;
+                    }
+                    if ($reg->enabled)
+                    {
+                        switch($status)
+                        {
+                            case 'sVerified': if ($reg->enabled) $operations[] = 'oVerification'; break;
+                            case 'fail': if ($reg->enabled) $operations[] = 'oReverification'; break;
+                        }
                     }
                 }
                 if (Reg::current()->type == 'ot' || Reg::current()->type == 'dais')

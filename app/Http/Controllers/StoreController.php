@@ -117,8 +117,9 @@ class StoreController extends Controller
     public function doCheckout(Request $request)
     {
         $order = new Order;
-        $order->id = date("YmdHis");
+        $order->id = date("YmdHis").generateID(6);
         $order->user_id = Auth::user()->id;
+        $order->conference_id = Reg::currentConferenceID();
         $method = $request->method;
         $order->shipment_method = $method;
         if ($method == 'mail')

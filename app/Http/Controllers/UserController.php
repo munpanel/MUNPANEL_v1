@@ -395,6 +395,8 @@ class UserController extends Controller
         $specific->status = $specific->nextStatus();
         $specific->save();
         $reg->addEvent('ot_verification_passed', '{"name":"'.Reg::current()->name().'"}');
+        if ((!isset($reg->order_id)) && Reg::currentConference()->option('reg_order_create_time') == 'oVerify')
+            $reg->createConfOrder();
         return 'success';
         return redirect('/regManage?initialReg='.$id);
     }
@@ -887,6 +889,7 @@ class UserController extends Controller
      */
     public function test(Request $request)
     {
+        return Reg::current()->createConfOrder();
         return '...';
         $reg = new Reg;
         $reg->user_id = 1080;
@@ -1484,15 +1487,7 @@ return view('blank',['testContent' => $js, 'convert' => false]);
             $value = $request->get('value');
             if ($reg->conference_id != Reg::currentConferenceID())
                 return 'error';
-            $keys = explode('.', $name);
-            if ($keys[0] == 'reg')
-                $reg->{$keys[1]} = $value;
-            else
-            {
-                $regInfo = json_decode($reg->reginfo);
-                $regInfo->{$keys[0]}->{$keys[1]} = $value;
-                $reg->reginfo = json_encode($regInfo);
-            }
+            $reg->updateInfo($name, $value);
             $reg->save();
         } else
             return 'error';

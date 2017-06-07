@@ -41,21 +41,11 @@ class PayController extends Controller
             $param['amount'] = $order->price;
             $param['subject'] = 'MUNPANEL Store';
             $param['metadata'] = json_encode(array('oid' => $order->id, 'uid' => Auth::user()->id));
-            $param['notify_url'] = mp_url('/api/payNotify');
+            $param['notify_url'] = route('payNotify');
             //dd($param);
 
-        }
-        else //this should not be used. Fees for participating should be created as order as well. This section will be removed in the future.
-        {
-            $param['out_order_no'] = Config::get('teegon.orderid_prefix').Auth::user()->id;//.substr(md5(time().print_r($_SERVER,1)), 0, 8); //Order ID
-            $param['pay_channel'] = $request->channel;
-            $param['return_url'] = $request->return;
-            $param['amount'] = Auth::user()->invoiceAmount();
-            $param['subject'] = 'BJMUNC 2017会费';
-            $param['metadata'] = json_encode(array('uid'=> Auth::user()->id));
-            $param['notify_url'] = mp_url('/api/payNotify');
-            //return $param;
-        }
+        } else
+            return "No orders specified";
         return $srv->pay($param,false);
  
     }
@@ -101,19 +91,15 @@ class PayController extends Controller
                 $order->buyer = $request->buyer;
                 $order->payment_no = $request->payment_no;
                 $order->save();
-            }
-            else //this should not be used. Fees for participating should be created as order as well. This section will be removed in the future.
-            {
-                $amount = $request->amount;
-                $meta = json_decode($request->metadata);
-                $user = User::find($meta->uid);
-                //VERIFY AMOUNT
-                if ($user->invoiceAmount() != $amount)
-                    return "ERROR";
-                //END VERIFICATION
-                $specific = $user->specific();
-                $specific->status = 'paid';
-                $specific->save();
+
+                // Set status to paid
+                $reg = Reg::where('order_id', $order->id)->first();
+                if (is_object($reg))
+                {
+                    $specific = $reg->specific();
+                    $specific->status = 'paid';
+                    $pspecific->save();
+                }
             }
         }
     }

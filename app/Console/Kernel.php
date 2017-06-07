@@ -59,6 +59,8 @@ class Kernel extends ConsoleKernel
                 $delegate->committee_id = $delegate->nation->committee_id;
                 $delegate->save();
                 $reg->addEvent('role_locked', '{"name":" MUNPANEL 自动"}');
+                if ((!isset($reg->order_id)) && Reg::currentConference()->option('reg_order_create_time') == 'seatLock')
+                    $reg->createConfOrder();
             }
         })->hourly();
     }

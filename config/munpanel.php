@@ -19,5 +19,8 @@ return [
     'mailapi_host' => env('MP_MAILAPI_HOST', 'http://mail.yiad.am/'),
     'mailapi_key' => env('MP_MAILAPI_KEY', 'api@yiad.am'),
     'mailapi_secret' => env('MP_MAILAPI_SECRET', ''),
-    'icp_license' => env('MP_ICPLICENSE', '')
+    'icp_license' => env('MP_ICPLICENSE', ''),
+    'landingDomain' => env('MP_LANDINGDOMAIN', 'www.munpanel.com'),
+    'portalDomain' => env('MP_PORTALDOMAIN', 'portal.munpanel.com'),
+    'payDomain' => env('MP_PAYDOMAIN', 'pay.munpanel.com')
 ];

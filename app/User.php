@@ -49,25 +49,6 @@ class User extends Authenticatable
         return $this->belongsToMany('App\School');
     }
 
-    public function invoiceItems() {
-        $items = array();
-        if ($this->type == 'delegate')
-            array_push($items, array(1, 'BJMUNC 2017 会费', 530));
-        if ($this->specific()->accomodate)
-            array_push($items, array(3, '二十一世纪饭店住宿费', 170));
-        return $items;
-    }
-
-    public function invoiceAmount() {
-        $items = $this->invoiceItems();
-        $sum = 0;
-        foreach ($items as $tmp)
-        {
-            $sum += $tmp[2] * $tmp[0];
-        }
-        return $sum;
-    }
-
     public function sendVerificationEmail() {
         $url = mp_url('/verifyEmail/'.$this->email.'/'.$this->emailVerificationToken);
         $mail = new Email;

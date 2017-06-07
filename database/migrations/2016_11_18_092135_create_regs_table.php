@@ -27,6 +27,7 @@ class CreateRegsTable extends Migration
             $table->integer('user_id')->unsigned();
             $table->integer('conference_id')->unsigned()->nullable(); // null -> global things
             $table->integer('school_id')->unsigned()->nullable();
+            $table->string('order_id')->nullable();
             $table->enum('type', ['unregistered', 'ot', 'dais', 'teamadmin', 'delegate', 'observer', 'volunteer', 'interviewer']);
             $table->enum('gender', ['male', 'female'])->nullable();
             $table->string('password')->nullable();
@@ -40,6 +41,7 @@ class CreateRegsTable extends Migration
             $table->foreign('conference_id')->references('id')->on('conferences')->onDelete('cascade');
             $table->foreign('school_id')->references('id')->on('schools')->onDelete('set null');
             $table->foreign('roommate_user_id')->references('id')->on('users')->onDelete('set null');
+            $table->foreign('order_id')->references('id')->on('orders')->onDelete('set null');
         });
     }
 

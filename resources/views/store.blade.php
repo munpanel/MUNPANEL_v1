@@ -12,7 +12,7 @@
 @section('content')
 <section class="vbox">
       <header class="header b-b bg-white">          
-        <p>{{Reg::currentConference()->name}} 纪念品商店</p>
+        <p>MUNPANEL STORE - {{Reg::currentConference()->name}}</p>
         <a href="{{mp_url('/store/cart')}}" class="btn btn-sm btn-info pull-right"><i class="fa fa-shopping-cart"></i> 我的购物车</a>
         <p class="pull-right">&nbsp;</p>
         <div class="btn-group pull-right">

@@ -41,7 +41,7 @@ var client_id = "{{Config::get('teegon.client_id')}}";
         $('#choose').toggleClass('active', false);
         $('#pay').toggleClass('active', true);
         $.ajax({
-            url: "{{mp_url('/pay/info')}}",
+            url: "{{route('payInfo')}}",
             data: "_token={{ csrf_token() }}&oid={{$id}}&channel="+$(e.target).attr('channel')+"&return="+window.location,
             method:'post'
         }).done(tee.charge);

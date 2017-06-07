@@ -617,4 +617,77 @@ class Reg extends Model
             $this->detachRole($role);
         }
     }
+
+    public function updateInfo($name, $value)
+    {
+        $keys = explode('.', $name);
+        if ($keys[0] == 'reg')
+            $reg->{$keys[1]} = $value;
+        else
+        {
+            $regInfo = json_decode($reg->reginfo);
+            $regInfo->{$keys[0]}->{$keys[1]} = $value;
+            $reg->reginfo = json_encode($regInfo);
+        }
+    }
+
+    public function getInfo($name)
+    {
+        $keys = explode('.', $name);
+        if ($keys[0] == 'reg')
+            return $this->{$keys[1]};
+        else
+        {
+            $regInfo = json_decode($this->reginfo);
+            return $regInfo->{$keys[0]}->{$keys[1]};
+        }
+    }
+
+    public function createConfOrder()
+    {
+        $conf = $this->conference;
+        $order_details = json_decode($conf->option('reg_order'), true);
+        $i = 0;
+        $orderContent = array();
+        $price = 0;
+        foreach ($order_details as $item_details)
+        {
+            $criteria = $item_details['criteria'];
+            $skip = false;
+            if (is_array($criteria))
+            {
+                foreach($criteria as $criterion)
+                {
+                    if ($this->getInfo($criterion['name']) != $criterion['value'])
+                    {
+                        $skip = true;
+                        break;
+                    }
+                }
+            }
+            if ($skip)
+                continue;
+            $rowId = 'confOrder'. $i++;
+            $orderItem = array();
+            $orderItem['rowId'] = $rowId;
+            $orderItem['id'] = 'NID_'.$item_details['id'];
+            $orderItem['name'] = $item_details['name'];
+            $orderItem['qty'] = $item_details['qty'];
+            $orderItems['price'] = $item_details['price'];
+            $orderItem['options'] = array();
+            $orderItem['tax'] = 0;
+            $orderItem['subtotal'] = $item_details['price'] * $item_details['qty'];
+            $price += $orderItem['subtotal'];
+            $orderContent[$rowId] = $orderItem;
+        }
+        $order = new Order;
+        $order->id = date("YmdHis").generateID(6);
+        $order->user_id = $this->user_id;
+        $order->conference_id = $conf->id;
+        $order->content = json_encode($orderContent);
+        $order->price = $price;
+        $order->save();
+        $this->order_id = $order->id;
+        $this->save();
+    }
 }

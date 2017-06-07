@@ -25,6 +25,7 @@ class CreateOrdersTable extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->string('id');
             $table->integer('user_id')->unsigned();
+            $table->integer('conference_id')->unsigned()->nullable();
             $table->enum('status', ['unpaid', 'paid', 'done', 'cancelled'])->default('unpaid');
             $table->enum('shipment_method', ['mail', 'conference', 'none'])->nullable(); //快递；会议领取；虚拟商品
             $table->string('address')->nullable();
@@ -42,6 +43,7 @@ class CreateOrdersTable extends Migration
             $table->timestamps();
             $table->primary('id');
             $table->foreign('user_id')->references('id')->on('regs')->onDelete('no action');
+            $table->foreign('conference_id')->references('id')->on('conferences')->onDelete('no action');
         });
     }
 

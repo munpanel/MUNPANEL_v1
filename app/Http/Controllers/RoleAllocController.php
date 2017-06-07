@@ -456,17 +456,24 @@ class RoleAllocController extends Controller
             $delegate->reg->addEvent('committee_moved', '{"name":" MUNPANEL 自动","committee":"'.$delegate->nation->committee->display_name.'"}');
         $delegate->committee_id = $delegate->nation->committee_id;
         $delegate->save();
-        $delegate->reg->addEvent('role_locked', '{"name":"'.Reg::current()->name().'"}');
-        if (is_object($delegate->partner))
+        $reg = $delegate->reg;
+        $reg->addEvent('role_locked', '{"name":"'.Reg::current()->name().'"}');
+        $partner = $delegate->partner;
+        if (is_object($partner))
         {
-            $delegate->partner->seat_locked = true;
-            $delegate->partner->committee_id = $delegate->partner->nation->committee_id;
-            $delegate->partner->save();
-            $delegate->partner->reg->addEvent('role_locked', '{"name":"'.Reg::current()->name().'"}');
+            $partner->seat_locked = true;
+            $partner->committee_id = $delegate->partner->nation->committee_id;
+            $partner->save();
+            $partnerReg = $partner->reg;
+            $partnerReg->addEvent('role_locked', '{"name":"'.Reg::current()->name().'"}');
+            if ((!isset($partnerReg->order_id)) && Reg::currentConference()->option('reg_order_create_time') == 'seatLock')
+                $partnerReg->createConfOrder();
         }
         //$delegate->nation->setLock();
         $delegate->nation->status = 'locked';
         $delegate->nation->save();
+        if ((!isset($reg->order_id)) && Reg::currentConference()->option('reg_order_create_time') == 'seatLock')
+            $reg->createConfOrder();
         return 'success';
     }
 

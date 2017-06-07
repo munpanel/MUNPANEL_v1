@@ -54,14 +54,6 @@
                 </a>
               </li>
               @endif
-              @if (Reg::currentConferenceID() == 3)
-              <li class="@yield('store_active')">
-                <a href="{{ mp_url('/store') }}">
-                  <i class="fa fa-shopping-bag"></i>
-                  <span>Souvenir Store</span>
-                </a>
-              </li>
-              @endif
               <li class="@yield('fb_active')">
                 <a href="{{ mp_url('/fb') }}">
                   <i class="fa fa-pencil"></i>

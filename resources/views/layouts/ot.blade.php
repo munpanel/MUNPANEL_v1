@@ -37,12 +37,12 @@
               </li>
               @endpermission
               @permission('edit-schools')
-              <li class="@yield('schoolManage_active')">
+              <!--li class="@yield('schoolManage_active')">
                 <a href="{{ mp_url('/schoolManage') }}">
                   <i class="fa fa-university"></i>
                   <span>Schools Management</span>
                 </a>
-              </li>
+              </li-->
               @endpermission
               @permission('view-regs')
               <li class="@yield('regManage_active')">

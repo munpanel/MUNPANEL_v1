@@ -992,6 +992,8 @@ class HomeController extends Controller
             return redirect(mp_url('/ecosocEasterEgg.modal'));
         if (Reg::current()->specific()->status == 'fail')
             return redirect(mp_url('/regNotVerified.modal'));
+        if (Reg::currentConferenceID() == 3 && in_array(Reg::current()->type, ['delegate', 'volunteer']) && !isset(Reg::current()->accomodate))
+            return redirect(mp_url('/setAccomodation.modal'));
         return redirect(mp_url('/regAssignment.modal'));
     }
 
@@ -1017,6 +1019,17 @@ class HomeController extends Controller
     public function ecosocEasterEggModal()
     {
         return view('ecosocEasterEggModal');
+    }
+
+    /**
+     *
+     */
+    public function setAccomodationModal()
+    {
+        $json = '[{"uses":["delegate","observer","volunteer"],"type":"preIsAccomodate"},{"uses":["delegate","observer","volunteer"],"type":"preRoommateName"}]';
+        $customTable = json_decode($json);
+        $confForm = FormController::render($customTable, Reg::current()->type, 'uses');
+        return view('setAccomodateModal', ['confForm' => $confForm]);
     }
 
     /**

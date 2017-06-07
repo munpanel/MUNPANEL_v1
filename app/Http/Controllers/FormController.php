@@ -52,6 +52,23 @@ class FormController extends Controller
                   <input name="partnername" class="form-control" type="text" placeholder="无则空">
                 </div>';
                 break;
+                case 'preIsAccomodate': 
+                    if (isset($item->value))
+                        $html .= '<input name="accomodate" type="hidden" value="'.$item->value.'">';
+                    else
+                        $html .='
+            <div class="form-group form-inline">
+              <label>是否住宿 *</label>
+              <div class="btn-group" data-toggle="buttons">
+                <label class="btn btn-sm btn-info" onclick="$(\'input#male\').checked = true;">
+                  <input name="accomodate" id="true" type="radio" value="true" data-required="true"> <i class="fa fa-check text-active"></i>是
+                </label>
+                <label class="btn btn-sm btn-success" onclick="$(\'input#female\').checked = true;">
+                  <input name="accomodate" id="false" type="radio" value="false"> <i class="fa fa-check text-active"></i>否
+                </label>
+              </div>
+            </div>';
+                break;
                 case 'preRoommateName': $html .='
                 <div class="form-group">
                   <label>室友姓名</label>

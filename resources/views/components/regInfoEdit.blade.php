@@ -138,12 +138,16 @@ $customTable = json_decode(Reg::currentConference()->option('reg_tables'))->regT
                 <td width="65%"><a href="#" id="conference.partnername" data-type="text" data-pk="{{$reg->id??''}}" data-url="{{mp_url('/ot/update/reg/'.$reg->id)??''}}" data-title="conference.partnername" class="editable">{{$regInfo->conference->partnername??''}}</a></td>
             </tr>
             <tr>
+                <td width="35%">是否住宿</td>
+                <td width="65%"><a href="#" id="reg.accomodate" data-type="select" data-pk="{{$reg->id??''}}" data-url="{{mp_url('/ot/update/reg/'.$reg->id)??''}}" data-title="reg.accomodate" data-value='{{$reg->accomodate??''}}' data-source="[{'value':'true', 'text':'是'},{'value':'false', 'text':'否'}]" class="editable">{{$reg->accomodate ? '是':'否'}}</a></td>
+            </tr>
+            <tr>
                 <td width="35%">室友姓名</td>
                 <td width="65%"><a href="#" id="conference.roommatename" data-type="text" data-pk="{{$reg->id??''}}" data-url="{{mp_url('/ot/update/reg/'.$reg->id)??''}}" data-title="conference.roommatename" class="editable">{{$regInfo->conference->roommatename??''}}</a></td>
             </tr>
             <tr>
                 <td width="35%">备注</td>
-                <td width="65%"><a href="#" id="conference.remarks" data-type="text" data-pk="{{$reg->id??''}}" data-url="{{mp_url('/ot/update/reg/'.$reg->id)??''}}" data-title="conference.remarks" class="editable">{{$regInfo->conference->remarks??''}}</a></td>
+                <td width="65%">{{$regInfo->conference->remarks??''}}</td>
             </tr>
           </tbody>
     </table>

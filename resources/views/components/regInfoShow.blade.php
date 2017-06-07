@@ -74,7 +74,7 @@
     <p><i>搭档姓名</i><br>&emsp;&emsp;{{$regInfo->conference->partnername}}</p>
     @endif
     @if (isset($regInfo->conference->roommatename))
-    <p><i>室友姓名</i><br>&emsp;&emsp;{{$regInfo->conference->roommatename}}</p>
+    <p><i>室友姓名</i><br>&emsp;&emsp;{{$reg->accomodate ? ($regInfo->conference->roommatename ?? '未填写') : '未选择住宿'}}</p>
     @endif
     @if (isset($regInfo->conference->groupOption))
     <p><i>团队报名选项</i><br>&emsp;&emsp;{{groupOption($regInfo->conference->groupOption)}}</p>

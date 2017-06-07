@@ -317,6 +317,9 @@ class UserController extends Controller
                     case 'prePartnerName':
                         $conf_info->partnername = $request->partnername;
                     break;
+                    case 'preIsAccomodate':
+                        $reg->accomodate = $request->accomodate;
+                    break;
                     case 'preRoommateName':
                         $conf_info->roommatename = $request->roommatename;
                     break;
@@ -378,6 +381,15 @@ class UserController extends Controller
         return redirect('/home');
     }
 
+    public function setAccomodation(Request $request)
+    {
+        $reg = Reg::findOrFail($request->reg_id);
+        $reg->accomodate = $request->accomodate;
+        $reg->updateInfo('conference.roommatename', $request->roommatename);
+        $reg->save();
+        return redirect('/home');
+    }
+    
     /**
      * make a registration ot verified.
      *
@@ -889,8 +901,25 @@ class UserController extends Controller
      */
     public function test(Request $request)
     {
+        $regs = Reg::where('conference_id', 3)->whereIn('type', ['delegate', 'volunteer'])->get();
+        $i = 0;
+        foreach ($regs as $reg)
+        {
+            $reginfo = json_decode($reg->reginfo);
+            if (!empty($reginfo->conference->roommatename))
+                $reg->accomodate = true;
+            $reg->save();
+            $i++;
+        }
+        return "已更新 $i 人的住宿信息";
         return Reg::current()->createConfOrder();
         return '...';
+        $reg = new Reg;
+        $reg->user_id = 1080;
+        $reg->type = 'teamadmin';
+        $reg->enabled = 1;
+        $reg->school_id = 96;
+        $reg->save();
         $reg = new Reg;
         $reg->user_id = 1080;
         $reg->type = 'teamadmin';
@@ -1529,12 +1558,6 @@ return view('blank',['testContent' => $js, 'convert' => false]);
         if (!is_object($team))
             return 'error';
         if (!$team->isAdmin())
-            return 'Permission Denied!';
-        $newreg = new Reg;
-        $newreg->user_id = $reg->user_id;
-        $newreg->conference_id = Reg::currentConferenceID();
-        $newreg->type = 'teamadmin';
-        $newreg->enabled = 1;
         $newreg->school_id = $team->id;
         $newreg->save();
         $teamadmin = new Teamadmin;

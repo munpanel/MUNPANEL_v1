@@ -622,12 +622,12 @@ class Reg extends Model
     {
         $keys = explode('.', $name);
         if ($keys[0] == 'reg')
-            $reg->{$keys[1]} = $value;
+            $this->{$keys[1]} = $value;
         else
         {
-            $regInfo = json_decode($reg->reginfo);
+            $regInfo = json_decode($this->reginfo);
             $regInfo->{$keys[0]}->{$keys[1]} = $value;
-            $reg->reginfo = json_encode($regInfo);
+            $this->reginfo = json_encode($regInfo);
         }
     }
 

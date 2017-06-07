@@ -11,7 +11,7 @@ if (Reg::current()->type == 'delegate' && isset(Reg::current()->delegate))
     <script src="{{cdn_url('js/charts/easypiechart/jquery.easy-pie-chart.js')}}"></script>
     <script src="{{cdn_url('/js/fuelux/fuelux.js')}}"></script>
     <script src="{{cdn_url('/js/datepicker/bootstrap-datepicker.js')}}"></script>
-    @if ((!Auth::user()->verified()) || (Reg::currentConference()->status == 'reg' && Reg::current()->type == 'unregistered') || (!Reg::selectConfirmed()) || (!Reg::current()->enabled) || (null!==(Reg::current()->specific()) && Reg::current()->specific()->status == 'fail') || ($hasRegAssignment) || (Reg::current()->type != 'unregistered' && is_null(Reg::current()->specific())))
+    @if ((!Auth::user()->verified()) || (Reg::currentConference()->status == 'reg' && Reg::current()->type == 'unregistered') || (!Reg::selectConfirmed()) || (!Reg::current()->enabled) || (null!==(Reg::current()->specific()) && Reg::current()->specific()->status == 'fail') || ($hasRegAssignment) || (Reg::current()->type != 'unregistered' && is_null(Reg::current()->specific())) || (!isset(Reg::current()->accomodate)))
     <script src="{{cdn_url('/js/reg.firsttime.js')}}"></script>
     @endif
 @endpush

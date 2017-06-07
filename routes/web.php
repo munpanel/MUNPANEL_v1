@@ -176,6 +176,8 @@ Route::group(['domain' => 'static.munpanel.com'], function () {
     Route::get('/ecosocEasterEgg.modal', 'HomeController@ecosocEasterEggModal');
     Route::get('/regNotVerified.modal', 'HomeController@regNotVerifiedModal');
     Route::get('/resetReg/{force?}', 'UserController@resetReg');
+    Route::get('/setAccomodation.modal', 'HomeController@setAccomodationModal');
+    Route::post('/setAccomodate', 'UserController@setAccomodation');
 
     Route::get('/roleList', 'HomeController@roleList');
     Route::get('/roleAlloc', 'HomeController@roleAlloc');

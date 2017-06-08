@@ -10,6 +10,10 @@
             <p class="pull-right">&nbsp;&nbsp;&nbsp;</p> 
             <a href="{{ mp_url('/store/deleteOrder/'.$order->id) }}" data-toggle="ajaxModal" class="btn btn-sm btn-white pull-right"><span class="text-danger">取消订单</span></a>
           @endif
+          @if ($admin)
+            <p class="pull-right">&nbsp;&nbsp;&nbsp;</p> 
+            <a href="{{ mp_url('/store/orderAdmin.modal/'.$order->id) }}" data-toggle="ajaxModal" class="btn btn-sm btn-white pull-right">管理与审计</a>
+          @endif
           <p>订单详情</p>
         </header>
         <section class="scrollable wrapper">
@@ -26,25 +30,20 @@
           <div class="well m-t">
             <div class="row">
               <div class="col-xs-6">
-                <strong>付款人:</strong>
-                <h4>{{Reg::current()->name()}}</h4>
+                <strong>付款方:</strong>
+                <h4>{{$user->name}}</h4>
                 <p>
-                  @if (is_object(Reg::current()->specific()) && is_object(Reg::current()->specific()->school))
-                  {{Reg::current()->specific()->school->name}}<br>
-                  @endif
                   @if ($order->shipment_method == 'mail')
                   Address: {{$order->address}}<br>
                   @elseif ($order->shipment_method == 'conference')
                   会议期间取货<br>
                   @endif
-                  @if (is_object(Reg::current()->specific()) && isset(Reg::current()->specific()->tel))
-                  Phone: {{Reg::current()->specific()->tel}}<br>
-                  @endif
-                  Email: {{Auth::user()->email}}
+                  Phone: {{$user->tel}}<br>
+                  Email: {{$user->email}}
                 </p>
               </div>
               <div class="col-xs-6">
-                <strong>收款人:</strong>
+                <strong>收款方:</strong>
                 <h4>{{Reg::currentConference()->option('organizer')}}</h4>
                 <p>
                   {!!textWithBr(Reg::currentConference()->option('store_contact'))!!}

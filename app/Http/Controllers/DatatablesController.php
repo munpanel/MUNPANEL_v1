@@ -26,6 +26,7 @@ use App\Assignment;
 use App\Handin;
 use App\Nation;
 use App\Good;
+use App\Order;
 use App\Document;
 use Config;
 use Illuminate\Support\Facades\Auth;
@@ -638,20 +639,41 @@ class DatatablesController extends Controller //To-Do: Permission Check
      *
      * @return string JSON of orders
      */
-    public function orders()
+    public function orders($id)
     {
         $result = new Collection;
-        $orders = Auth::user()->orders()->where('conference_id', Reg::currentConferenceID())->get();
-        $i = 0;
-        foreach($orders as $order)
+        $self = (Auth::id() == $id);
+        if ($self || Reg::current()->can('edit-orders'))
         {
-            $result->push([
-                'details' => '<a href="'. mp_url('/store/order/' . $order->id) .'"><i class="fa fa-search-plus"></i></a>',
-                'id' => $order->id,
-                'price' => '¥' . number_format($order->price, 2),
-                'status' => $order->statusBadge(),
-                'time' => nicetime($order->created_at),
-            ]);
+            $orders = Order::where('conference_id', Reg::currentConferenceID());
+            if ($id != -1)
+                $orders = $orders->where('user_id', $id);
+            if (!$self)
+                $orders = $orders->with('user');
+            $orders = $orders->get();
+            $i = 0;
+            foreach($orders as $order)
+            {
+                if ($self) {
+                    $result->push([
+                        'details' => '<a href="'. mp_url('/store/order/' . $order->id) .'"><i class="fa fa-search-plus"></i></a>',
+                        'id' => $order->id,
+                        'price' => '¥' . number_format($order->price, 2),
+                        'status' => $order->statusBadge(),
+                        'time' => nicetime($order->created_at),
+                    ]);
+                } else {
+                    $result->push([
+                        'details' => '<a href="'. mp_url('/store/order/' . $order->id) .'"><i class="fa fa-search-plus"></i></a>',
+                        'id' => $order->id,
+                        'uid' => $order->user_id,
+                        'username' => $order->user->name,
+                        'price' => '¥' . number_format($order->price, 2),
+                        'status' => $order->statusBadge(),
+                        'time' => nicetime($order->created_at),
+                    ]);
+                }
+            }
         }
         return Datatables::of($result)->make(true);
     }

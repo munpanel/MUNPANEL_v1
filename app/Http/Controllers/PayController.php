@@ -93,6 +93,7 @@ class PayController extends Controller
                 $order->charge_id = $request->charge_id;
                 $order->buyer = $request->buyer;
                 $order->payment_no = $request->payment_no;
+                $order->payment_channel = $request->pay_channel;
 
                 // Set status to paid
                 $reg = Reg::where('order_id', $order->id)->first();

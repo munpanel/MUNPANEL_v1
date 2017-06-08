@@ -52,6 +52,14 @@
                 </a>
               </li>
               @endpermission
+              @permission('edit-orders')
+              <li class="@yield('orderManage_active')">
+                <a href="{{ mp_url('/store/orders/-1') }}">
+                  <i class="fa fa-money"></i>
+                  <span>Orders Audition</span>
+                </a>
+              </li>
+              @endpermission
               @permission('edit-ot')
               <li class="@yield('teamManage_active')">
                 <a href="{{ mp_url('/teamManage') }}">

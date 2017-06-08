@@ -79,9 +79,19 @@ class StoreController extends Controller
     public function displayOrder($id)
     {
         $order = Order::findOrFail($id);
-        if ($order->user_id != Auth::user()->id)
-            return view('error', ['msg' => '该订单不属于您！']);
-        return view('order', ['order' => $order, 'orderItems' => $order->items()]);
+        $self = ($order->user_id == Auth::id());
+        $admin = Reg::current()->can('edit-orders') && $order->conference_id == Reg::currentConferenceID();
+        if ($self || $admin)
+            return view('order', ['order' => $order, 'orderItems' => $order->items(), 'user' => $order->user, 'admin' => $admin]);
+        return view('error', ['msg' => '该订单不属于您！']);
+    }
+
+    public function orderAdmin($id)
+    {
+        $order = Order::findOrFail($id);
+        if (Reg::current()->can('edit-orders') && $order->conference_id == Reg::currentConferenceID())
+            return view('orderAdminModal', ['order' => $order]);
+        return view('error', ['msg' => 'Access Denied.']);
     }
 
     /**
@@ -200,9 +210,11 @@ class StoreController extends Controller
         return view('store', ['orders' => Auth::user()->orders()->where('conference_id', Reg::currentConferenceID())->latest()->limit(3)->get(), 'count' => Auth::user()->orders()->where('conference_id', Reg::currentConferenceID())->count()]);
     }
 
-    public function ordersList()
+    public function ordersList($id = 0)
     {
-        return view('orders');
+        if ($id == 0)
+            $id = Auth::id();
+        return view('orders', ['id' => $id]);
     }
     
     /**

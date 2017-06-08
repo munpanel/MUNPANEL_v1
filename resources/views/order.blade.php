@@ -45,25 +45,15 @@
               </div>
               <div class="col-xs-6">
                 <strong>收款人:</strong>
-                <h4>北京市高中生模拟联合国协会</h4>
+                <h4>{{Reg::currentConference()->option('organizer')}}</h4>
                 <p>
-                  <a href="https://www.bjmun.org/">www.bjmun.org</a><br>
-                  Email: official@bjmun.org<br>
-                  Wechat: beijingbjmun<br>
+                  {!!textWithBr(Reg::currentConference()->option('store_contact'))!!}
                 </p>
               </div>
             </div>
           </div>
           <p class="m-t m-b">
-          @if ($order->status == 'cancelled')
-              订单状态: <span class="label bg-danger">已取消</span><br>
-          @elseif ($order->status == 'unpaid')
-              订单状态: <span class="label bg-danger">未支付</span><br>
-          @elseif ($order->status == 'paid')
-              订单状态: <span class="label bg-info">待发货</span><br>
-          @else
-              订单状态: <span class="label bg-success">已发货</span><br>
-          @endif
+              订单状态：{!!$order->statusBadge()!!}<br>
               订单ID: <strong>{{$order->id}}</strong><br>
               付款时间：{{isset($order->payed_at)?$order->payed_at:'未付款'}}<br>
               发货时间：{{isset($order->shipped_at)?$order->shipped_at:'未发货'}}

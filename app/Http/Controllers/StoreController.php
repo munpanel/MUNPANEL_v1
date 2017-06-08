@@ -12,6 +12,7 @@
 namespace App\Http\Controllers;
 
 use Config;
+use App\Reg;
 use App\User;
 use App\Good;
 use App\Order;
@@ -196,7 +197,12 @@ class StoreController extends Controller
      */
     public function home()
     {
-        return view('store', ['orders' => Auth::user()->orders]);
+        return view('store', ['orders' => Auth::user()->orders()->where('conference_id', Reg::currentConferenceID())->latest()->limit(3)->get(), 'count' => Auth::user()->orders()->where('conference_id', Reg::currentConferenceID())->count()]);
+    }
+
+    public function ordersList()
+    {
+        return view('orders');
     }
     
     /**

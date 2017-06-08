@@ -57,3 +57,7 @@ function cdn_url($url, $update = 0) {
         $domain = \Config::get('cdn.rackspace_domain');
     return 'https://'.$domain.'/'.$url;
 }
+
+function textWithBr($text) {
+    return nl2br(htmlspecialchars($text, ENT_QUOTES));
+}

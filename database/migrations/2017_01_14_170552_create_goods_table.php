@@ -24,12 +24,14 @@ class CreateGoodsTable extends Migration
     {
         Schema::create('goods', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('conference_id')->unsigned()->nullable();
             $table->string('name');
             $table->string('image');
             $table->boolean('enabled')->default(false);
             $table->double('price');
             $table->integer('remains'); //-1 for unlimited
             $table->timestamps();
+            $table->foreign('conference_id')->references('id')->on('conferences')->onDelete('cascade');
         });
     }
 

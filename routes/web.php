@@ -257,6 +257,7 @@ Route::group(['domain' => 'static.munpanel.com'], function () {
     Route::post('/store/cart/add/{id}', 'StoreController@addCart');
     Route::get('/store/cart/remove/{id}', 'StoreController@removeCart');
     Route::get('/store/cart/empty', 'StoreController@emptyCart');
+    Route::get('/store/orders', 'StoreController@ordersList');
     Route::get('/store/order/{id}', 'StoreController@displayOrder');
     Route::get('/store/deleteOrder/{id}/{confirm?}', 'StoreController@deleteOrder');
     Route::get('/store/checkout', 'StoreController@checkout');
@@ -274,6 +275,7 @@ Route::group(['domain' => 'static.munpanel.com'], function () {
     Route::get('/ajax/nations', 'DatatablesController@nations');
     Route::get('/ajax/assignments', 'DatatablesController@assignments');
     Route::get('/ajax/store', 'DatatablesController@goods');
+    Route::get('/ajax/orders', 'DatatablesController@orders');
     Route::get('/ajax/documents', 'DatatablesController@documents');
     Route::get('/ot/generateBadge/{template}/{name}/{school}/{role}/{title}/{mode?}', 'ImageController@generateBadge');
     Route::get('/ot/generateBadgeCommittee/{cid}', 'ImageController@committeeBadge');

@@ -102,6 +102,7 @@ class PayController extends Controller
                     $specific->status = 'paid';
                     $specific->save();
                     $order->status = 'done';
+                    $order->shipped_at = date('Y-m-d H:i:s');
                 }
 
                 $order->save();

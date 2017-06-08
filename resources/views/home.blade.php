@@ -158,6 +158,15 @@ if (Reg::current()->type == 'delegate' && isset(Reg::current()->delegate))
                   </div>
                </section>
                @endif
+               @if (Auth::user()->orders()->where('conference_id', Reg::currentConferenceID())->where('status', 'unpaid')->count() > 0)
+              <section class="panel text-center bg-warning dker">
+                  <div class="panel-body">
+                    <h4 class="text-uc">待缴费订单</h4>
+                    <p>您有{{Auth::user()->orders()->where('conference_id', Reg::currentConferenceID())->where('status', 'unpaid')->count()}}个待缴费订单</p>
+                    <a href="{{ mp_url('/store/orders') }}" class="btn btn-danger">查看详情</a>
+                  </div>
+               </section>
+               @endif
                <section class="panel bg-danger lter no-borders">
                 <div class="panel-body">
                   <span class="h4">{{ Reg::current()->name() }}</span>

@@ -597,7 +597,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
     public function goods()
     {
         $result = new Collection;
-        $goods = Good::all();//get(['id', 'title', 'deadline']);
+        $goods = Good::whereNull('conference_id')->orWhere('conference_id', Reg::currentConferenceID())->get();//get(['id', 'title', 'deadline']);
         $i = 0;
         foreach($goods as $good)
         {
@@ -628,6 +628,29 @@ class DatatablesController extends Controller //To-Do: Permission Check
                 'title' => '<a href="'. mp_url('/store/good.modal/'.$good->id).'" data-toggle="ajaxModal" class="details-modal">'.$good->name.'</a>',
                 'price' => '¥' . number_format($good->price, 2),
                 'command' => $command,
+            ]);
+        }
+        return Datatables::of($result)->make(true);
+    }
+
+    /**
+     * Show order datatables json
+     *
+     * @return string JSON of orders
+     */
+    public function orders()
+    {
+        $result = new Collection;
+        $orders = Auth::user()->orders()->where('conference_id', Reg::currentConferenceID())->get();
+        $i = 0;
+        foreach($orders as $order)
+        {
+            $result->push([
+                'details' => '<a href="'. mp_url('/store/order/' . $order->id) .'"><i class="fa fa-search-plus"></i></a>',
+                'id' => $order->id,
+                'price' => '¥' . number_format($order->price, 2),
+                'status' => $order->statusBadge(),
+                'time' => nicetime($order->created_at),
             ]);
         }
         return Datatables::of($result)->make(true);

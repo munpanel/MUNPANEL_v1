@@ -207,13 +207,13 @@ class DatatablesController extends Controller //To-Do: Permission Check
         $user = Reg::current();
         $conf = Reg::currentConferenceID();
         $type = ['delegate', 'volunteer', 'observer'];
+        $result = new Collection;
         if (Dais::where('conference_id', $conf)->whereIn('status', ['sVerified', 'oVerified'])->count() > 0) $type[] = 'dais';
         if (Orgteam::where('conference_id', $conf)->whereIn('status', ['sVerified', 'oVerified'])->count() > 0) $type[] = 'ot';
         if (in_array($user->type, ['ot', 'dais', 'teamadmin']))
         {
             if ($user->type != 'teamadmin' && !Reg::current()->can('view-regs'))
                 return "ERROR";
-            $result = new Collection;
             // 过滤结果: 只保留 delegate, observer 和 volunteer
             $regs = Reg::where('conference_id', Reg::currentConferenceID());
             if ($user->type == 'ot')
@@ -440,9 +440,9 @@ class DatatablesController extends Controller //To-Do: Permission Check
     {
         $result = new Collection;
         if (Reg::current()->type == 'dais')
-            $assignments = /*Reg::current()->dais->Assignment();*/Assignment::where('conference_id', Reg::currentConferenceID())->get(); // TODO: get docs per committee
+            $assignments = Reg::current()->dais->committee->assignments; //Assignment::where('conference_id', Reg::currentConferenceID())->get(); 
         else
-            $assignments = Reg::current()->delegate->assignments();//Assignment::all();//get(['id', 'title', 'deadline']);
+            $assignments = Reg::current()->specific()->assignments();//Assignment::all();//get(['id', 'title', 'deadline']);
         $i = 0;
         foreach($assignments as $assignment)
         {
@@ -541,9 +541,9 @@ class DatatablesController extends Controller //To-Do: Permission Check
     {
         $result = new Collection;
         if (Reg::current()->type == 'dais')
-            $documents = /*Reg::current()->dais->documents();*/Document::where('conference_id', Reg::currentConferenceID())->get(); // TODO: get docs per committee
+            $documents = Reg::current()->dais->committee->documents;///*Reg::current()->dais->documents();*/Document::where('conference_id', Reg::currentConferenceID())->get(); 
         else
-            $documents = Reg::current()->delegate->documents();//Assignment::all();//get(['id', 'title', 'deadline']);
+            $documents = Reg::current()->specific()->documents();//Assignment::all();//get(['id', 'title', 'deadline']);
         $i = 0;
         foreach($documents as $document)
         {

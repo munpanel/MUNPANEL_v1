@@ -129,11 +129,14 @@ class PortalController extends Controller
             {
                 $reg->school_id = $team->id;
                 $reg->save();
-                if ($reg->specific()->status == 'sVerified')
-                {
-                    $specific = $reg->specific();
-                    $specific->status = 'reg';
-                    $specific->save();
+                $specific = $reg->specific();
+                if (is_object($specific)) {
+                    if ($reg->specific()->status == 'sVerified')
+                    {
+                        $specific = $reg->specific();
+                        $specific->status = 'reg';
+                        $specific->save();
+                    }
                 }
             }
         }

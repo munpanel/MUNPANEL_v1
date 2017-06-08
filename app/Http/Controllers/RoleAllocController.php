@@ -430,14 +430,16 @@ class RoleAllocController extends Controller
             }
             if (!$delegate->assignedNations->contains($delegate->nation_id))
             {
-                $delegate->nation->status = 'open';
-                $delegate->nation->save();
+                $nation = $delegate->nation;
+                $nation->status = 'open';
+                $nation->save();
                 $delegate->nation_id = null;
                 $delegate->save();
                 if (is_object($delegate->partner))
                 {
-                    $delegate->partner->nation_id = null;
-                    $delegate->partner->save();
+                    $partner = $delegate->partner;
+                    $partner->nation_id = null;
+                    $partner->save();
                 }
             }
         }

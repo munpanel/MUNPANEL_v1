@@ -60,11 +60,11 @@ class FormController extends Controller
             <div class="form-group form-inline">
               <label>是否住宿 *</label>
               <div class="btn-group" data-toggle="buttons">
-                <label class="btn btn-sm btn-info" onclick="$(\'input#male\').checked = true;">
-                  <input name="accomodate" id="true" type="radio" value="true" data-required="true"> <i class="fa fa-check text-active"></i>是
+                <label class="btn btn-sm btn-info" onclick="$(\'input#accomodateChoice\').checked = true;">
+                  <input name="accomodate" id="accomodateChoice" type="radio" value="1"> <i class="fa fa-check text-active"></i>是
                 </label>
-                <label class="btn btn-sm btn-success" onclick="$(\'input#female\').checked = true;">
-                  <input name="accomodate" id="false" type="radio" value="false"> <i class="fa fa-check text-active"></i>否
+                <label class="btn btn-sm btn-success" onclick="$(\'input#noAccomodateChoide\').checked = true;">
+                  <input name="accomodate" id="noAccomodateChoice" type="radio" value="0" data-required="true"> <i class="fa fa-check text-active"></i>否
                 </label>
               </div>
             </div>';

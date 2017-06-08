@@ -466,13 +466,13 @@ class RoleAllocController extends Controller
             $partner->save();
             $partnerReg = $partner->reg;
             $partnerReg->addEvent('role_locked', '{"name":"'.Reg::current()->name().'"}');
-            if ((!isset($partnerReg->order_id)) && Reg::currentConference()->option('reg_order_create_time') == 'seatLock')
+            if ((!isset($partnerReg->order_id)) && Reg::currentConference()->option('reg_order_create_time') == 'seatLock' && isset($partnerReg->accomodate))
                 $partnerReg->createConfOrder();
         }
         //$delegate->nation->setLock();
         $delegate->nation->status = 'locked';
         $delegate->nation->save();
-        if ((!isset($reg->order_id)) && Reg::currentConference()->option('reg_order_create_time') == 'seatLock')
+        if ((!isset($reg->order_id)) && Reg::currentConference()->option('reg_order_create_time') == 'seatLock' && isset($reg->accomodate))
             $reg->createConfOrder();
         return 'success';
     }

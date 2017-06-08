@@ -383,10 +383,16 @@ class UserController extends Controller
 
     public function setAccomodation(Request $request)
     {
+        if (Reg::currentID() != $request->reg_id && Reg::current()->type != 'ot')
+            return 'error';
         $reg = Reg::findOrFail($request->reg_id);
         $reg->accomodate = $request->accomodate;
         $reg->updateInfo('conference.roommatename', $request->roommatename);
         $reg->save();
+        if ((!isset($reg->order_id)) && Reg::currentConference()->option('reg_order_create_time') == 'seatLock' && $reg->specific()->seat_locked)
+            $reg->createConfOrder();
+        elseif ((!isset($reg->order_id)) && Reg::currentConference()->option('reg_order_create_time') == 'oVerify' && $reg->specific()->status == 'oVerified')
+            $reg->createConfOrder();
         return redirect('/home');
     }
     
@@ -407,7 +413,7 @@ class UserController extends Controller
         $specific->status = $specific->nextStatus();
         $specific->save();
         $reg->addEvent('ot_verification_passed', '{"name":"'.Reg::current()->name().'"}');
-        if ((!isset($reg->order_id)) && Reg::currentConference()->option('reg_order_create_time') == 'oVerify')
+        if ((!isset($reg->order_id)) && Reg::currentConference()->option('reg_order_create_time') == 'oVerify' && isset($reg->accomodate))
             $reg->createConfOrder();
         return 'success';
         return redirect('/regManage?initialReg='.$id);
@@ -901,6 +907,8 @@ class UserController extends Controller
      */
     public function test(Request $request)
     {
+        return 'test';
+        return Reg::current()->createConfOrder();
         $regs = Reg::where('conference_id', 3)->whereIn('type', ['delegate', 'volunteer'])->get();
         $i = 0;
         foreach ($regs as $reg)
@@ -912,7 +920,6 @@ class UserController extends Controller
             $i++;
         }
         return "已更新 $i 人的住宿信息";
-        return Reg::current()->createConfOrder();
         return '...';
         $reg = new Reg;
         $reg->user_id = 1080;

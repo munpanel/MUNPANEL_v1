@@ -673,7 +673,7 @@ class Reg extends Model
             $orderItem['id'] = 'NID_'.$item_details['id'];
             $orderItem['name'] = $item_details['name'];
             $orderItem['qty'] = $item_details['qty'];
-            $orderItems['price'] = $item_details['price'];
+            $orderItem['price'] = $item_details['price'];
             $orderItem['options'] = array();
             $orderItem['tax'] = 0;
             $orderItem['subtotal'] = $item_details['price'] * $item_details['qty'];

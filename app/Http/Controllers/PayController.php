@@ -79,34 +79,8 @@ class PayController extends Controller
                     return "ERROR";
                 //END VERIFICATION
                 Cache::tags('orders')->put($order->id, 1, 2);
-                if ($order->status == 'unpaid' || $order->status == 'cancelled') //even if it's cancelled, we should still set the order as paid as the user wants the order again
-                {
-                    $order->status ='paid';
-                    $order->payed_at = date('Y-m-d H:i:s');
-                }
-                /*
-                migration:
-                $table->string('charge_id')->nullable();//流水号
-                $table->string('buyer')->nullable();//支付方(微信ID/支付宝手机号)
-                $table->string('payment_no')->nullable();//第三方交易单号
-                */
-                $order->charge_id = $request->charge_id;
-                $order->buyer = $request->buyer;
-                $order->payment_no = $request->payment_no;
-                $order->payment_channel = $request->pay_channel;
 
-                // Set status to paid
-                $reg = Reg::where('order_id', $order->id)->first();
-                if (is_object($reg))
-                {
-                    $specific = $reg->specific();
-                    $specific->status = 'paid';
-                    $specific->save();
-                    $order->status = 'done';
-                    $order->shipped_at = date('Y-m-d H:i:s');
-                }
-
-                $order->save();
+                $order->getPaid($request->charge_id, $request->buyer, $request->payment_no, $request->pay_channel);
             }
         }
     }

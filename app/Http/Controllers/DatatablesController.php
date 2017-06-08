@@ -664,7 +664,8 @@ class DatatablesController extends Controller //To-Do: Permission Check
                     ]);
                 } else {
                     $result->push([
-                        'details' => '<a href="'. mp_url('/store/order/' . $order->id) .'"><i class="fa fa-search-plus"></i></a>',
+                        'details' => '<a href="'. mp_url('/store/order/' . $order->id) .'"><i class="fa fa-search-plus"></i></a>'.
+                                     '<a href="'. mp_url('/store/orderAdmin.modal/' . $order->id . '?refresh=no') .'" data-toggle="ajaxModal"><i class="fa fa-id-card-o"></i></a>',
                         'id' => $order->id,
                         'uid' => $order->user_id,
                         'username' => $order->user->name,

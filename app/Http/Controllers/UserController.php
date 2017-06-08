@@ -907,6 +907,7 @@ class UserController extends Controller
      */
     public function test(Request $request)
     {
+        return url()->current();
         return 'test';
         return Reg::current()->createConfOrder();
         $regs = Reg::where('conference_id', 3)->whereIn('type', ['delegate', 'volunteer'])->get();

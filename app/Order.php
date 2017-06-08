@@ -36,4 +36,32 @@ class Order extends Model
         }
     }
 
+    public function getPaid($charge_id, $buyer, $payment_no, $pay_channel) {
+        if ($this->status == 'unpaid' || $this->status == 'cancelled') //even if it's cancelled, we should still set the this as paid as the user wants the this again
+        {
+            $this->status ='paid';
+            $this->payed_at = date('Y-m-d H:i:s');
+        }
+
+        $this->charge_id = $charge_id;
+        $this->buyer = $buyer;
+        $this->payment_no = $payment_no;
+        $this->payment_channel = $pay_channel;
+
+        // Set status to paid
+        $reg = Reg::where('order_id', $this->id)->first();
+        if (is_object($reg))
+        {
+            $specific = $reg->specific();
+            if (is_object($specific)) {
+                $specific->status = 'paid';
+                $specific->save();
+                $this->status = 'done';
+                $this->shipped_at = date('Y-m-d H:i:s');
+            }
+        }
+
+        $this->save();
+    }
+
 }

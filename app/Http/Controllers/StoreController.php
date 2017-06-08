@@ -86,12 +86,24 @@ class StoreController extends Controller
         return view('error', ['msg' => '该订单不属于您！']);
     }
 
-    public function orderAdmin($id)
+    public function orderAdmin(Request $request, $id)
     {
         $order = Order::findOrFail($id);
         if (Reg::current()->can('edit-orders') && $order->conference_id == Reg::currentConferenceID())
-            return view('orderAdminModal', ['order' => $order]);
+            return view('orderAdminModal', ['order' => $order, 'refresh' => $request->refresh]);
         return view('error', ['msg' => 'Access Denied.']);
+    }
+
+    public function manualPay(Request $request, $id)
+    {
+        $order = Order::findOrFail($id);
+        if (Reg::current()->can('edit-orders') && $order->conference_id == Reg::currentConferenceID()) {
+            if ($order->status != 'unpaid')
+                return 'Already paid/cancelled.';
+            $order->getPaid(Reg::current()->name().' ('.Reg::currentID().') 手动确认', $request->buyer, $request->payment_no, '*'.$request->payment_channel);
+            return 'success';
+        }
+        return 'Access denied';
     }
 
     /**

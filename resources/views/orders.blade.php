@@ -6,10 +6,10 @@
 @endif
 @push('scripts')
     <script src="{{cdn_url('/js/jquery.dataTables.min.js')}}"></script>
-    <script src="{{cdn_url('/js/fuelux/fuelux.js')}}"></script>
+    <script src="{{cdn_url('/js/datatables/fnReloadAjax.js')}}"></script>
     <script>
     $(document).ready(function() {
-    $('#store-table').DataTable({
+    $('#orders-table').DataTable({
             paging: false,
             bFilter: false,
             ajax: '{{mp_url('/ajax/orders/'.$id)}}',
@@ -25,9 +25,12 @@
                 {data: 'time', name: 'time', orderable: true}            
             ],
             fnInitComplete: function(oSettings, json) {
-            $('#store-table_length').hide();
-            $('#store-table_info').appendTo($('#store-pageinfo'));
-            $('#store-table').removeClass('no-footer');
+            $(document).on('hidden.bs.modal', '#ajaxModal', function() {
+                $('#orders-table').dataTable().fnReloadAjax(undefined, undefined, true);
+            });
+            $('#orders-table_length').hide();
+            $('#orders-table_info').appendTo($('#orders-pageinfo'));
+            $('#orders-table').removeClass('no-footer');
             },
             "language": {
                 "zeroRecords": "无订单",
@@ -60,7 +63,7 @@
       <section class="scrollable wrapper w-f">
         <section class="panel">
           <div class="table-responsive">
-            <table class="table table-striped m-b-none" id="store-table">
+            <table class="table table-striped m-b-none" id="orders-table">
               <thead>
                 <tr>
                   <th width="10"></th>
@@ -81,7 +84,7 @@
             <footer class="footer bg-white b-t">
               <div class="row m-t-sm text-center-xs">
                 <div class="col-sm-12">
-                  <small class="text-muted inline m-t-sm m-b-sm" id="store-pageinfo"></small>
+                  <small class="text-muted inline m-t-sm m-b-sm" id="orders-pageinfo"></small>
                 </div>
               </div>
             </footer>

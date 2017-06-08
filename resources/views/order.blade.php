@@ -3,7 +3,13 @@
 @section('content')
       <section class="vbox bg-white">
         <header class="header b-b hidden-print">
-          <button href="#" class="btn btn-sm btn-info pull-right" onClick="window.print();">打印</button>
+          @if ($admin)
+          <a href="{{mp_url('/store/orders/-1')}}" class="btn btn-sm btn-primary pull-right">返回</a>
+          @else
+          <a href="{{mp_url('/store/orders')}}" class="btn btn-sm btn-primary pull-right">返回</a>
+          @endif
+          <p class="pull-right">&nbsp;&nbsp;&nbsp;</p> 
+          <button class="btn btn-sm btn-info pull-right" onClick="window.print();">打印</button>
           <p class="pull-right">&nbsp;&nbsp;&nbsp;</p> 
           @if ($order->status == 'unpaid')
             <a href="{{ mp_url('/pay/checkout.modal/'.$order->id) }}" data-toggle="ajaxModal" class="btn btn-sm btn-success pull-right">支付</a>

@@ -260,6 +260,7 @@ Route::group(['domain' => 'static.munpanel.com'], function () {
     Route::get('/store/orders/{id?}', 'StoreController@ordersList');
     Route::get('/store/order/{id}', 'StoreController@displayOrder');
     Route::get('/store/orderAdmin.modal/{id}', 'StoreController@orderAdmin');
+    Route::post('/store/manualPay/{id}', 'StoreController@manualPay');
     Route::get('/store/deleteOrder/{id}/{confirm?}', 'StoreController@deleteOrder');
     Route::get('/store/checkout', 'StoreController@checkout');
     Route::get('/store/shipment.modal', 'StoreController@shipmentModal');
@@ -268,6 +269,7 @@ Route::group(['domain' => 'static.munpanel.com'], function () {
     Route::get('/store/good.modal/{id}', 'StoreController@goodModal');
     Route::get('/allOrders/{id}', 'StoreController@viewAllOrders');
     Route::get('/shipOrder/{id}', 'StoreController@shipOrder');
+
     Route::get('/ajax/registrations', 'DatatablesController@reg2Table');
     Route::get('/ajax/teammembers', 'DatatablesController@teamTable');
     Route::get('/ajax/users', ['middleware' => ['permission:edit-users'], 'uses' => 'DatatablesController@users']);

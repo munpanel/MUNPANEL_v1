@@ -18,8 +18,7 @@ Route::group(['domain' => config('munpanel.landingDomain')], function () {
 });
 
 Route::group(['domain' => config('munpanel.payDomain')], function() {
-    Route::post('/info', 'PayController@payInfo')->name('payInfo');
-    Route::post('/notify', 'PayController@payInfo')->name('payNotify');
+    Route::get('/result', 'PayController@payResult')->name('payResult');
 });
 
 //Route::group(['domain' => 'portal.munpanel.com'], function () {
@@ -250,6 +249,7 @@ Route::group(['domain' => 'static.munpanel.com'], function () {
     Route::get('/school/pay/change/{method}', 'HomeController@changeSchoolPaymentMethod');
     Route::get('/pay/invoice', 'HomeController@invoice');
     Route::get('/pay/checkout.modal/{id}', 'HomeController@checkout');
+    Route::post('/info', 'PayController@payInfo')->name('payInfo');
 
     Route::get('/store', 'StoreController@home');
     Route::get('/store/cart', 'StoreController@displayCart');

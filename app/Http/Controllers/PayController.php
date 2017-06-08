@@ -37,7 +37,7 @@ class PayController extends Controller
             }
             $param['out_order_no'] = Config::get('teegon.orderid_prefix').$order->id;
             $param['pay_channel'] = $request->channel;
-            $param['return_url'] = $request->return;
+            $param['return_url'] = route('payResult');
             $param['amount'] = $order->price;
             $param['subject'] = 'MUNPANEL Store';
             $param['metadata'] = json_encode(array('oid' => $order->id, 'uid' => Auth::user()->id));
@@ -102,5 +102,19 @@ class PayController extends Controller
                 }
             }
         }
+    }
+
+    public function payResult(Request $request)
+    {
+        //UPDATE1: verification in PHP API (no official documentation for that, but will do)  --- Adam Yi Feb 6 2017
+        //TO UPDATE: verification for security purposes (Teegon is still working on it. Update after they update lol). Payment status is strongly recommended to be manually checked now.
+        //file_put_contents("/var/www/munpanel/storage/t", 'a'.var_export($request,true));
+        $srv = new TeegonService(Config::get('teegon.api_url'));
+        if ($srv->verify_return())
+        {
+            $meta = json_decode($request->metadata);
+            return view('paySuccess', ['orderID' => $meta->oid, 'amount' => $request->amount]);
+        } else
+            return "Error! Please check if the order status is correct and contact wechat adamyi";
     }
 }

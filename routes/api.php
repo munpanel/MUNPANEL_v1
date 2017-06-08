@@ -17,7 +17,9 @@ use Illuminate\Http\Request;
 //    return $request->user();
 //})->middleware('auth:api');
 
-Route::post('/payNotify', 'PayController@payNotify');
+Route::group(['domain' => config('munpanel.payDomain')], function() {
+    Route::post('/notify', 'PayController@payNotify')->name('payNotify');
+});
 
 $api = app('Dingo\Api\Routing\Router');
 

@@ -1550,10 +1550,12 @@ return view('blank',['testContent' => $js, 'convert' => false]);
         $reg->school_id = $team->id;
         $reg->save();
         $specific = $reg->specific();
-        if ($specific->status == 'sVerified')
-        {
-            $specific->status = 'reg';
-            $specific->save();
+        if (is_object($specific)) {
+            if ($specific->status == 'sVerified')
+            {
+                $specific->status = 'reg';
+                $specific->save();
+            }
         }
         return back();
     }

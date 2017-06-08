@@ -573,7 +573,12 @@ class HomeController extends Controller
      */
     public function checkout($id)
     {
-        return view('checkoutModal', ['id' => $id]);
+        $custom = Reg::currentConference()->option('store_custom_pay_methods');
+        if (isset($custom))
+            $custom = json_decode($custom, true);
+        else
+            $custom = array();
+        return view('checkoutModal', ['id' => $id, 'custom' => $custom]);
     }
 
     /**

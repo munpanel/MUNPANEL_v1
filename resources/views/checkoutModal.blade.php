@@ -2,9 +2,15 @@
       <div class="modal-content">
 <header class="header bg-dark bg-gradient">
           <ul class="nav nav-tabs">
-            <li class="active"><a href="#choose" data-toggle="tab" aria-expanded="true">请选择支付方式</a></li>
-            <li><a href="#" class="pay" data-toggle="tab" channel="alipay" aria-expanded="false">支付宝</a></li>
-            <li><a href="#" class="pay" data-toggle="tab" channel="wxpay" aria-expanded="false">微信支付</a></li>
+            <li class="active"><a href="#choose" class="pay-tabs" data-toggle="tab" aria-expanded="true">请选择支付方式</a></li>
+            <li><a href="#" class="pay-tabs tee-tabs" data-toggle="tab" channel="alipay" aria-expanded="false">支付宝</a></li>
+            <li><a href="#" class="pay-tabs tee-tabs" data-toggle="tab" channel="wxpay" aria-expanded="false">微信支付</a></li>
+            @php
+            $i = 0;
+            @endphp
+            @foreach($custom as $method)
+            <li><a href="#customMethod_{{$i++}}" class="pay" data-toggle="tab"  aria-expanded="false">{{$method['name']}}</a></li>
+            @endforeach
           </ul>
         </header>
       <div class="tab-content">
@@ -12,7 +18,7 @@
           <div class="modal-body">
             <div class="row">
               <div class="col-sm-12 b-r">
-                <div class="alert alert-info"><b>请选择支付方式。目前支持微信、支付宝。</b></div>
+                <div class="alert alert-info"><b>请选择支付方式。如使用微信、支付宝，系统可自动确认缴费状态。</b></div>
               </div>
             </div>
           </div>          
@@ -27,6 +33,25 @@
             </div>
           </div>          
         </section>
+        @php
+        $i = 0;
+        @endphp
+        @foreach($custom as $method)
+        <section class="tab-pane" id="customMethod_{{$i++}}">
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-sm-12 b-r">
+                <div class="alert alert-info"><b>使用此种方式需要组织团队人工确认缴费状态。</b></div>
+                <div>
+                <p>
+                {!!textWithBr($method['description'])!!}
+                </p>
+                </div>
+              </div>
+            </div>
+          </div>          
+        </section>
+        @endforeach
       </div><!-- /.modal-content -->
 </div>
 <script>
@@ -62,9 +87,9 @@ var client_id = "{{Config::get('teegon.client_id')}}";
         }  
        });  
     }
-    $('.pay').click(function(e) {
+    $('.tee-tabs').click(function(e) {
         $('#native').empty();
-        $('#choose').toggleClass('active', false);
+        $('.tab-pane').toggleClass('active', false);
         $('#pay').toggleClass('active', true);
         $.ajax({
             url: "{{route('payInfo')}}",

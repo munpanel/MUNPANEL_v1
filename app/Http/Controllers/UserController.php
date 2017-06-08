@@ -1565,6 +1565,12 @@ return view('blank',['testContent' => $js, 'convert' => false]);
         if (!is_object($team))
             return 'error';
         if (!$team->isAdmin())
+            return 'Permission Denied!';
+        $newreg = new Reg;
+        $newreg->user_id = $reg->user_id;
+        $newreg->conference_id = Reg::currentConferenceID();
+        $newreg->type = 'teamadmin';
+        $newreg->enabled = 1;
         $newreg->school_id = $team->id;
         $newreg->save();
         $teamadmin = new Teamadmin;

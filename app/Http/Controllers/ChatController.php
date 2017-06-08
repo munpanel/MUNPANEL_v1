@@ -11,6 +11,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Reg;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\App;

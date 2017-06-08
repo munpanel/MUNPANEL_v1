@@ -686,6 +686,7 @@ class Reg extends Model
         $order->conference_id = $conf->id;
         $order->content = json_encode($orderContent);
         $order->price = $price;
+        $order->shipment_method = 'none';
         $order->save();
         $this->order_id = $order->id;
         $this->save();

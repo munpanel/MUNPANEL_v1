@@ -34,8 +34,34 @@ var TEE_API_URL= "{{Config::get('teegon.api_url')}}";
 var client_id = "{{Config::get('teegon.client_id')}}";
 </script>
 <script src="{{Config::get('teegon.site_url')}}jslib/t-charging.min.js"></script>
-<script src="{{Config::get('teegon.site_url')}}static/js/jquery.min.js"></script>
 <script>
+    function checkStatus() {
+       $.ajax({  
+        type:"GET",  
+        url:"{{mp_url('/ajax/payWait/'.$id)}}",  
+        timeout:60000,
+        success:function(data,textStatus){  
+            if (data == 'success') {
+                console.log('Thanks for paying lol');
+                $('#ajaxModal').modal('hide');
+                $('#ajaxModal').remove();
+                var $modal = $('<div class="modal" id="ajaxModal"><div class="modal-body"><div class="modal-dialog"><div class="modal-content"><div class="modal-body"><div class="row"><div class="col-sm-12 b-r"><div class="alert alert-success"><b>您已付款成功！</b></div></div></div></div></div></div></div></div>');
+                $('body').append($modal);
+                $modal.modal();
+                setTimeout(function(){location.reload();}, 1000);
+            }
+            else {
+                console.log('No payment yet - AJAX return: '+data);
+                checkStatus();
+            }
+        },  
+        error:function(XMLHttpRequest,textStatus,errorThrown){  
+          if(textStatus=="timeout"){  
+              chekStatus();
+          }  
+        }  
+       });  
+    }
     $('.pay').click(function(e) {
         $('#native').empty();
         $('#choose').toggleClass('active', false);
@@ -45,5 +71,10 @@ var client_id = "{{Config::get('teegon.client_id')}}";
             data: "_token={{ csrf_token() }}&oid={{$id}}&channel="+$(e.target).attr('channel'),
             method:'post'
         }).done(tee.charge);
+        if (typeof payajax_start !== undefined)
+        {
+            payajax_start = true;
+            checkStatus();
+        }
     });
 </script>

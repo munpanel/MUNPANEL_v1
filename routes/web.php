@@ -249,6 +249,7 @@ Route::group(['domain' => 'static.munpanel.com'], function () {
     Route::get('/school/pay/change/{method}', 'HomeController@changeSchoolPaymentMethod');
     Route::get('/pay/invoice', 'HomeController@invoice');
     Route::get('/pay/checkout.modal/{id}', 'HomeController@checkout');
+    Route::get('/ajax/payWait/{oid}', 'PayController@resultAjax');
     Route::post('/info', 'PayController@payInfo')->name('payInfo');
 
     Route::get('/store', 'StoreController@home');

@@ -14,8 +14,10 @@ namespace App\Http\Controllers;
 use Config;
 use App\User;
 use App\Order;
+use App\Reg;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 class PayController extends Controller
 {
@@ -76,6 +78,7 @@ class PayController extends Controller
                 if ($order->price != $amount)
                     return "ERROR";
                 //END VERIFICATION
+                Cache::tags('orders')->put($order->id, 1, 2);
                 if ($order->status == 'unpaid' || $order->status == 'cancelled') //even if it's cancelled, we should still set the order as paid as the user wants the order again
                 {
                     $order->status ='paid';
@@ -90,7 +93,6 @@ class PayController extends Controller
                 $order->charge_id = $request->charge_id;
                 $order->buyer = $request->buyer;
                 $order->payment_no = $request->payment_no;
-                $order->save();
 
                 // Set status to paid
                 $reg = Reg::where('order_id', $order->id)->first();
@@ -98,8 +100,11 @@ class PayController extends Controller
                 {
                     $specific = $reg->specific();
                     $specific->status = 'paid';
-                    $pspecific->save();
+                    $specific->save();
+                    $order->status = 'done';
                 }
+
+                $order->save();
             }
         }
     }
@@ -116,5 +121,20 @@ class PayController extends Controller
             return view('paySuccess', ['orderID' => $meta->oid, 'amount' => $request->amount]);
         } else
             return "Error! Please check if the order status is correct and contact wechat adamyi";
+    }
+
+    public function resultAjax($id)
+    {
+        set_time_limit(0);
+        $i=0;  
+        while (true){  
+         //sleep(1);  
+         if (Cache::tags('orders')->get($id))
+             return 'success';
+         usleep(500000);//0.5 seconds
+         $i++;  
+         if ($i == 60)
+             return 'error';
+         }  
     }
 }

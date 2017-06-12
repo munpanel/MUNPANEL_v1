@@ -404,6 +404,8 @@ class HomeController extends Controller
         $allRegs = Reg::where('user_id', $reg->user_id)->where('conference_id', $reg->conference_id)->get(['id', 'type']);
         $operations = array();
         if (in_array(Reg::current()->type, ['ot', 'dais', 'interviewer'])) {
+            if (Reg::current()->can('sudo'))
+                $operations[] = 'sudo';
             if ($reg->type == 'delegate')
             {
                 if ($reg->delegate->canAssignSeats() && isset($reg->delegate->nation_id))
@@ -411,8 +413,6 @@ class HomeController extends Controller
                         $operations[] = 'lockSeat';
                     else
                         $operations[] = 'unlockSeat';
-                if (Reg::current()->can('sudo'))
-                    $operations[] = 'sudo';
                 $interviewStatus = $reg->delegate->interviewStatus();
                 $status = $reg->delegate->status;
                 if (Reg::current()->can('view-regs')) {
@@ -436,7 +436,10 @@ class HomeController extends Controller
                     }
                 }
                 if (Reg::current()->type == 'ot' || Reg::current()->type == 'dais')
+                {
+                    if ($reg->delegate->status != 'fail') $operations[] = 'moveCommittee';
                     if ($reg->delegate->status != 'fail' && Reg::currentConference()->delegategroups->count() > 0) $operations[] = 'setDelgroup';
+                }
             } else if ($reg->specific()->status == 'sVerified')
                 $operations[] = 'oVerification';
         }

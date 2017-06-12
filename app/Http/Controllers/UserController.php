@@ -475,6 +475,7 @@ class UserController extends Controller
             return "error";
         $specific = $reg->specific();
         $specific->status = 'sVerified';
+        $reg->addEvent('school_verification_passed', '{"name":"'.Reg::current()->name().'"}');
         $specific->save();
     }
 
@@ -492,6 +493,27 @@ class UserController extends Controller
         $specific = $reg->specific();
         $specific->status = 'reg';
         $specific->save();
+    }
+
+    /**
+     * set committee for a single delegate.
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function setCommittee(Request $request)
+    {
+        if (Reg::current()->type != 'ot')
+            return "您无权执行该操作！";
+        $reg = Reg::findOrFail($request->reg_id);
+        $specific = $reg->specific();
+        if ($reg->type != 'delegate' || $specific->status == 'fail')
+            return "无法为此报名者执行该操作！";
+        $specific->committee_id = $request->committee;
+        $specific->save();
+        $reg->addEvent('committee_moved', '{"name":"'.Reg::current()->name().'", "committee":"'.Committee::findOrFail($request->committee)->display_name.'"}');
+        //return redirect('/regManage?initialReg='.$request->id);
+        return 'success';
     }
 
     /**
@@ -704,6 +726,7 @@ class UserController extends Controller
      */
     public function deleteCommittee(Request $request, $id)
     {
+        // TODO: 危险！！！！！尽快改用 Soft deleteing ！！！！
         if (Reg::current()->type != 'ot')
             return 'Error';
         Committee::destroy($id);

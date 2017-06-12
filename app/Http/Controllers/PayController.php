@@ -80,7 +80,7 @@ class PayController extends Controller
                 //END VERIFICATION
                 Cache::tags('orders')->put($order->id, 1, 2);
 
-                $order->getPaid($request->charge_id, $request->buyer, $request->payment_no, $request->pay_channel);
+                $order->getPaid($request->charge_id, $request->buyer, $request->payment_no, $request->channel);
             }
         }
     }

@@ -43,6 +43,7 @@
 <div class="line line-dashed"></div>
             <p class="text-muted text-center"><small>没有收到邮件?</small></p>
             <a href="{{ mp_url('/verifyEmail/resend') }}" class="btn btn-white btn-block" onclick="loader(this)">再发一封</a>
+            <a href="{{ route('logout') }}" class="btn btn-white btn-block" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">注销</a>
         </section>
       </div>
     </div>
@@ -53,6 +54,7 @@
       <p><small>&copy; {{config('munpanel.copyright_year')}} MUNPANEL. All rights reserved.</small></p>
     </div>
   </footer>
+  <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;"> {{ csrf_field() }} </form>
   <!-- / footer -->
 	<script src="{{cdn_url('js/jquery.min.js')}}"></script>
   <!-- Bootstrap -->

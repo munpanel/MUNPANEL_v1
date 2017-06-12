@@ -51,6 +51,7 @@
               <br><br><br><button id="getVerificationSMS" class="btn btn-warning">发短信</button>&nbsp&nbsp<button id="getVerificationCALL" class="btn btn-warning">打电话</button>
             </center></div>
             </form>
+            <a href="{{ route('logout') }}" class="btn btn-white btn-block" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">注销</a>
             @endif
         </section>
       </div>
@@ -62,6 +63,7 @@
       <p><small>&copy; {{config('munpanel.copyright_year')}} MUNPANEL. All rights reserved.</small></p>
     </div>
   </footer>
+  <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;"> {{ csrf_field() }} </form>
   <!-- / footer -->
 	<script src="{{cdn_url('js/jquery.min.js')}}"></script>
   <!-- Bootstrap -->

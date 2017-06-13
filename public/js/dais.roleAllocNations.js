@@ -51,7 +51,7 @@ $(document).ready(function() {
             "infoEmpty": "无记录",
             "infoFiltered": "(从 _MAX_ 条记录过滤)"
         },
-        "bSort": false,
+        "order": [[2, "asc"]],
     });
     var nattable=$('#nation-table').DataTable();
     $("#nation-searchButton").click(function() {

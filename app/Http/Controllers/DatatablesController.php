@@ -272,7 +272,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
                      if (in_array($reg->type, ['delegate', 'volunteer', 'dais', 'ot']))
                          $status = $reg->specific()->statusText();
                 }
-                else $status = '';
+                else $status = '报名数据异常';
                 if (!$reg->enabled) $status = '已禁用';
 
                 if (in_array($reg->type, ['ot', 'dais']))
@@ -288,7 +288,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
                         'details' => $detail,
                         'id' => $reg->id,
                         'name' => $reg->user->name,
-                        'committee' => isset($reg->specific()->committee) ? $reg->specific()->committee->name : '无',
+                        'committee' => isset($reg->specific()->committee) ? $reg->specific()->committee->name : (in_array($reg->type, ['dais', 'delegate', 'observer']) ? '未指定' : '不适用'),
                         'partner' => $type,
                         'status' => $status,
                     ]);
@@ -298,7 +298,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
                         'id' => $reg->id,
                         'name' => $reg->user->name,
                         'school' => isset($reg->specific()->delegategroups) ? $reg->specific()->scopeDelegateGroup(true, 5) : '无',
-                        'committee' => isset($reg->specific()->committee) ? $reg->specific()->committee->name : '无',
+                        'committee' => isset($reg->specific()->committee) ? $reg->specific()->committee->name : (in_array($reg->type, ['dais', 'delegate', 'observer']) ? '未指定' : '不适用'),
                         'partner' => $type,
                         'status' => $status,
                     ]);
@@ -343,7 +343,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
                 $result->push([
                     'details' => '<a href="ot/regInfo.modal/'. $reg->id .'" data-toggle="ajaxModal" id="'. $reg->id .'" class="details-modal"><i class="fa fa-search-plus"></i></a>',
                     'name' => $reg->user->name,
-                    'school' => isset($reg->specific()->position) ? $reg->specific()->position : '无',
+                    'school' => $reg->type == 'teamadmin' ? $reg->specific()->school->name : (isset($reg->specific()->position) ? $reg->specific()->position : '无'),
                     'committee' => isset($reg->specific()->committee) ? $reg->specific()->committee->name : '无',
                     'partner' => $type,
                     'status' => $reg->type == 'ot' ? $reg->specific()->scopeRoles() : '不适用'

@@ -507,8 +507,17 @@ class UserController extends Controller
             return "您无权执行该操作！";
         $reg = Reg::findOrFail($request->reg_id);
         $specific = $reg->specific();
-        if ($reg->type != 'delegate' || $specific->status == 'fail')
+        if ($reg->type != 'delegate' || $specific->status == 'fail' || $reg->conference_id != Reg::currentConferenceID())
             return "无法为此报名者执行该操作！";
+        if ($specific->seat_locked)
+            return "请先解锁席位！";
+
+        $committee = Committee::find($request->committee);
+        if ((!isset($committee)) || $committee->conference_id != Reg::currentConferenceID())
+            return '委员会不存在或不属于本会议！';
+        if ($specific->committee_id == $request->committee)
+            return '无需移动';
+
         $specific->committee_id = $request->committee;
         $specific->save();
         $reg->addEvent('committee_moved', '{"name":"'.Reg::current()->name().'", "committee":"'.Committee::findOrFail($request->committee)->display_name.'"}');

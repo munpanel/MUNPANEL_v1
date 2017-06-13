@@ -1524,11 +1524,11 @@ return view('blank',['testContent' => $js, 'convert' => false]);
         $list = new Collection;
         $ots = Orgteam::with('reg.user')->get();
         foreach ($ots as $ot)
-            if ($ot->conference_id == Reg::currentConferenceID() && !$list->contains($ot->reg->user))
+            if ($ot->conference_id == Reg::currentConferenceID() && !$list->contains($ot->reg->user) && $ot->status == 'success')
                 $list->push($ot->reg->user);
         $daises = Dais::with('reg.user')->get();
         foreach ($daises as $dais)
-            if ($dais->conference_id == Reg::currentConferenceID() && !$list->contains($dais->reg->user))
+            if ($dais->conference_id == Reg::currentConferenceID() && !$list->contains($dais->reg->user) && $dais->status == 'success')
                 $list->push($dais->reg->user);
         $interviewers = Interviewer::with('reg.user')->get();
         foreach ($interviewers as $interviewer)

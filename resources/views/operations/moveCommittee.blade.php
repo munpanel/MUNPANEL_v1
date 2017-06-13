@@ -25,9 +25,9 @@
 
                 </div>
 <script>
-$('#assignInterviewForm').submit(function(e){
+$('#changeCommitteeForm').submit(function(e){
     e.preventDefault();
-    $.post('{{mp_url('/ot/assignInterview/'.$reg->id)}}', $('#assignInterviewForm').serialize()).done(function(data) {
+    $.post('{{mp_url('/ot/changeCommittee')}}', $('#changeCommitteeForm').serialize()).done(function(data) {
         $.snackbar({content: data});
         $("#ajaxModal").load("{{mp_url('/ot/regInfo.modal/'.$reg->id.'?active=operations')}}");
     });

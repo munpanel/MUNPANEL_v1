@@ -25,6 +25,16 @@ use Config;
 class RoleAllocController extends Controller
 {
     /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+    /**
      * Lock the seat allocation of a committee
      *
      * @param boolean $confirm whether to lock or to prompt an warning

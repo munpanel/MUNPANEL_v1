@@ -21,6 +21,16 @@ use Illuminate\Support\Collection;
 
 class InterviewController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function interviews($id = 0)
     {
         if (!Reg::current()->can('view-all-interviews') && Reg::current()->type != 'interviewer')

@@ -4,9 +4,10 @@
     <h4 class="pull-right {{$interview->status == 'passed' ? 'text-success' : 'text-danger'}}"><strong>{{$interview->score}}</strong></h4>
     @endif
     <h4><a href="{{mp_url('/ot/regInfo.modal/'.$interview->reg->id.'?active=interview')}}" class="" data-toggle="ajaxModal">{{$interview->reg->user->name}}</a></h4>
-      <p>报名 ID: {{$interview->reg->id}}<br>
+      <p>代表状态: {{$interview->reg->statusText()}}<br>
+      报名 ID: {{$interview->reg->id}}<br>
       委员会: {{isset($interview->interviewer->committee) ? $interview->interviewer->committee->name : $interview->reg->specific()->committee->name}}<br>
-      面试官: {{$interview->interviewer->nicename()}}<br>
+      面试官: <a href="{{mp_url('ot/regInfo.modal/'.$interview->interviewer->reg_id)}}" data-toggle="ajaxModal">{{$interview->interviewer->nicename()}}<i class="fa fa-search-plus"></i></a><br>
       @if (in_array($interview->status, ['arranged', 'undecided', 'passed', 'failed']))
       面试时间: {{isset($interview->arranged_at)?nicetime($interview->arranged_at):'未经系统安排'}}<br>
       @endif

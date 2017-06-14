@@ -939,6 +939,16 @@ class UserController extends Controller
      */
     public function test(Request $request)
     {
+        $dels = Delegate::where('seat_locked', true)->with('reg')->get();
+        foreach ($dels as $del)
+        {
+            if (!isset($del->reg->order_id))
+                $del->reg->createConfOrder();
+        }
+        return 'test';
+        $reg = Reg::find(3622);
+        $reg->createConfOrder();
+        return 'meow';
         return url()->current();
         return 'test';
         return Reg::current()->createConfOrder();

@@ -39,11 +39,12 @@ if (empty($active))
                 <p>{{$reg->user->name}}在本次会议中共包含以下 {{$allRegs->count()}} 个身份。</p>
                 <ul>
                   @foreach ($allRegs as $aReg)
-                  <li><strong>{{$aReg->id}}</strong>: {{$aReg->regText()}}</li>
+
+                  <li onclick="$('#ajaxModal').load('{{mp_url('/ot/regInfo.modal/'.$aReg->id)}}');"><strong>{{$aReg->id}}</strong>: {{$aReg->regText()}}</li>
                   @endforeach
                 </ul>
-                @else
-                <p>{{$reg->user->name}}以<strong>{{ $reg->type == 'delegate' ? '代表' : ($reg->type == 'observer' ? '观察员' : ($reg->type == 'volunteer' ? '志愿者' : ($reg->type == 'ot' ? '会议团队' : ($reg->type == 'dais' ? '学术团队':'未知')))) }}</strong>身份报名参加本次会议。</p>
+                @endif
+                <p>{{$reg->user->name}}以<strong>{{ $reg->regText() }}</strong>身份报名参加本次会议。</p>
                 <p>报名 ID: {{$reg->id}}
                   @if ($reg->type == 'delegate')
                   <br>委员会: {{$reg->specific()->committee->name}}<br>代表组: {{$reg->specific()->scopeDelegateGroup()}}
@@ -51,10 +52,11 @@ if (empty($active))
                   @if (isset($regInfo) && isset($regInfo->reg_at))
                   <br>报名于: {{nicetime($regInfo->reg_at)}}
                   @endif
+                  @if ($reg->type == 'delegate')
                 <br>状态: {{$reg->enabled ? $reg->specific()->statusText() : '已禁用'}}</p>
                 @endif
               @else
-                <p>{{$reg->user->name. ($self ? '，您':'')}}已以<strong>{{ $reg->type == 'delegate' ? '代表' : ($reg->type == 'observer' ? '观察员' : '志愿者') }}</strong>身份报名参加{{Reg::currentConference()->fullname}}。</p>
+                <p>{{$reg->user->name. ($self ? '，您':'')}}已以<strong>{{ $reg->regText() }}</strong>身份报名参加{{Reg::currentConference()->fullname}}。</p>
               @endif
               @if (isset($regInfo))
                 @if (Reg::current()->type == 'ot' || (Reg::current()->type == 'teamadmin' && in_array($reg->specific()->status, ['reg', 'sVerified'])) || (Reg::currentID() == $reg->id && $reg->status == 'reg'))

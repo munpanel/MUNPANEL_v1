@@ -28,6 +28,7 @@
                 </a>
               </li>
               @endpermission
+              {{--
               @permission('edit-users')
               <li class="@yield('userManage_active')">
                 <a href="{{ mp_url('/userManage') }}">
@@ -36,6 +37,9 @@
                 </a>
               </li>
               @endpermission
+              This should be separated to a global admin instead of ot of a conf.
+              As people may sudo into global admin's ot identity.
+              --}}
               @permission('edit-schools')
               <!--li class="@yield('schoolManage_active')">
                 <a href="{{ mp_url('/schoolManage') }}">

@@ -24,6 +24,16 @@ use Cart;
 class StoreController extends Controller
 {
     /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+    /**
      * Display the cart.
      *
      * @return Illuminate\Http\Response;

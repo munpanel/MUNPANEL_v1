@@ -194,6 +194,10 @@ class Reg extends Model
         return null;
     }
 
+    public function statusText()
+    {
+        return $this->specific()->statusText();
+    }
 
     public function make()
     {

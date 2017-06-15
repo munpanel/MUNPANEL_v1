@@ -940,6 +940,18 @@ class UserController extends Controller
      */
     public function test(Request $request)
     {
+        return '404 not found';
+        $ret = '';
+        $users = User::with('orders')->get();
+        foreach($users as $user)
+        {
+            if ($user->orders()->where('status', 'unpaid')->count() > 0)
+            {
+                $user->sendSMS('您尚有'.$user->orders()->where('status', 'unpaid')->count().'笔未支付订单，请尽快前往 https://portal.munpanel.com/store/orders 完成支付，感谢。');
+                $ret .= $user->id.' '.$user->name. ' ' . $user->orders()->where('status', 'unpaid')->count().'<br>';
+            }
+        }
+        return $ret;
         Cache::tags('orders')->put('test', 1, 2);
         return Cache::tags('orders')->get('test');
         $dels = Delegate::where('seat_locked', true)->with('reg')->get();

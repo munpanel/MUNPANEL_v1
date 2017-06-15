@@ -710,5 +710,6 @@ class Reg extends Model
         $order->save();
         $this->order_id = $order->id;
         $this->save();
+        $this->user->sendSMS('感谢您报名'.$conf->name.'，系统已为您创建您的报名费用订单（ID: '.$order->id.'），共计'.number_format($order->price, 2).'元，烦请您尽快访问 https://portal.munpanel.com/store/orders 付款，感谢您的支持与配合，祝您开会愉快。');
     }
 }

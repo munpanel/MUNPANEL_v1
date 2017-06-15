@@ -6,9 +6,9 @@
 @section('content')
 <div class="container">
 <div class="check"> 
-<h1>My Cart ({{Cart::count()}})</h1>
+<h1>My Cart ({{Cart::instance('conf_'.Reg::currentConferenceID())->count()}})</h1>
 <div class="col-md-9 cart-items">
-@foreach (Cart::content() as $row)
+@foreach (Cart::instance('conf_'.Reg::currentConferenceID())->content() as $row)
 <div class="cart-header">
 <div class="close"> </div>
 <div class="cart-sec simpleCart_shelfItem">
@@ -42,18 +42,18 @@
 <div class="price-details">
 <h3>Price Details</h3>
 <span>Subtotal</span>
-<span class="total1">{{Cart::subtotal()}}</span>
+<span class="total1">{{Cart::instance('conf_'.Reg::currentConferenceID())->subtotal()}}</span>
 <span>Discount</span>
 <span class="total1">---</span>
 <span>Tax</span>
-<span class="total1">{{Cart::tax()}}</span>
+<span class="total1">{{Cart::instance('conf_'.Reg::currentConferenceID())->tax()}}</span>
 <!--span>Delivery Charges</span>
 <span class="total1">150.00</span-->
 <div class="clearfix"></div> 
 </div>
 <ul class="total_price">
 <li class="last_price"> <h4>TOTAL</h4></li>
-<li class="last_price"><span>{{Cart::total()}}</span></li>
+<li class="last_price"><span>{{Cart::instance('conf_'.Reg::currentConferenceID())->total()}}</span></li>
 <div class="clearfix"> </div>
 </ul>
 

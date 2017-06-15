@@ -30,6 +30,7 @@ use App\Order;
 use App\Document;
 use Config;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class DatatablesController extends Controller //To-Do: Permission Check
 {
@@ -643,9 +644,12 @@ class DatatablesController extends Controller //To-Do: Permission Check
     {
         $result = new Collection;
         $self = (Auth::id() == $id);
+        $conf = Reg::currentConferenceID();
         if ($self || Reg::current()->can('edit-orders'))
         {
-            $orders = Order::where('conference_id', Reg::currentConferenceID());
+            $orders = Order::orderBy('created_at', 'desc');
+            if ($conf != 0)
+                $orders = $orders->where('conference_id', Reg::currentConferenceID());
             if ($id != -1)
                 $orders = $orders->where('user_id', $id);
             if (!$self)

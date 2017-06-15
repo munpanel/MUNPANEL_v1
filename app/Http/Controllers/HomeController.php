@@ -26,6 +26,7 @@ use App\Form;
 use App\Document;
 use App\Email;
 use App\Reg;
+use App\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -576,7 +577,8 @@ class HomeController extends Controller
      */
     public function checkout($id)
     {
-        $custom = Reg::currentConference()->option('store_custom_pay_methods');
+        $order = Order::findOrFail($id);
+        $custom = $order->conference->option('store_custom_pay_methods');
         if (isset($custom))
             $custom = json_decode($custom, true);
         else

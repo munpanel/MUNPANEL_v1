@@ -35,6 +35,7 @@ use App\Teamadmin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Collection;
 
@@ -939,6 +940,8 @@ class UserController extends Controller
      */
     public function test(Request $request)
     {
+        Cache::tags('orders')->put('test', 1, 2);
+        return Cache::tags('orders')->get('test');
         $dels = Delegate::where('seat_locked', true)->with('reg')->get();
         foreach ($dels as $del)
         {

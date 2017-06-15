@@ -36,6 +36,11 @@ class Order extends Model
         }
     }
 
+    public function conference()
+    {
+        return $this->belongsTo('App\Conference');
+    }
+
     public function getPaid($charge_id, $buyer, $payment_no, $pay_channel) {
         if ($this->status == 'unpaid' || $this->status == 'cancelled') //even if it's cancelled, we should still set the this as paid as the user wants the this again
         {

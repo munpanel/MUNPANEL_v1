@@ -135,6 +135,22 @@ class Reg extends Model
         return session($sessionName);
     }
 
+    static public function currentUserID()
+    {
+        $reg = Reg::current();
+        if (is_object($reg))
+            return $reg->user_id;
+        return Auth::id();
+    }
+
+    static public function currentUser()
+    {
+        $reg = Reg::current();
+        if (is_object($reg))
+            return $reg->user;
+        return Auth::user();
+    }
+
     static public function currentConference()
     {
         return Conference::find(Reg::currentConferenceID());

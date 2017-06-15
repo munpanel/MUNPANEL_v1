@@ -53,7 +53,7 @@ class StoreController extends Controller
      */
     public function addCart(Request $request, $id)
     {
-        Cart::add(Good::findOrFail($id), $request->num);
+        Cart::instance('conf_'.Reg::currentConferenceID())->add(Good::findOrFail($id), $request->num);
         return redirect(mp_url('/store/cart')); //TODO: 添加操作成功提示
     }
 
@@ -65,7 +65,7 @@ class StoreController extends Controller
      */
     public function removeCart($id)
     {
-        Cart::remove($id); //ID is rowID instead of goodID
+        Cart::instance('conf_'.Reg::currentConferenceID())->remove($id); //ID is rowID instead of goodID
         return redirect(mp_url('/store/cart')); //TODO: 添加操作成功提示
     }
 
@@ -76,7 +76,7 @@ class StoreController extends Controller
      */
     public function emptyCart()
     {
-        Cart::destroy();
+        Cart::instance('conf_'.Reg::currentConferenceID())->destroy();
         return redirect(mp_url('/store'));
     }
 
@@ -90,9 +90,12 @@ class StoreController extends Controller
     {
         $order = Order::findOrFail($id);
         $self = ($order->user_id == Auth::id());
-        $admin = Reg::current()->can('edit-orders') && $order->conference_id == Reg::currentConferenceID();
+        $admin = is_object(Reg::current()) && Reg::current()->can('edit-orders') && $order->conference_id == Reg::currentConferenceID();
+        $parameters = ['order' => $order, 'orderItems' => $order->items(), 'user' => $order->user, 'admin' => $admin];
+        if ($self && $order->status == 'unpaid')
+            $parameters['initialModal'] = mp_url('/pay/checkout.modal/'.$order->id);
         if ($self || $admin)
-            return view('order', ['order' => $order, 'orderItems' => $order->items(), 'user' => $order->user, 'admin' => $admin]);
+            return view('order', $parameters);
         return view('error', ['msg' => '该订单不属于您！']);
     }
 
@@ -157,20 +160,20 @@ class StoreController extends Controller
         $order->shipment_method = $method;
         if ($method == 'mail')
         {
-            Cart::add('NID_shipping', '运费', 1, 15);
+            Cart::instance('conf_'.Reg::currentConferenceID())->add('NID_shipping', '运费', 1, 15);
             $order->address = $request->address;
         }
-        $order->content = Cart::content();
-        $price = str_replace(",", "", Cart::total());
+        $order->content = Cart::instance('conf_'.Reg::currentConferenceID())->content();
+        $price = str_replace(",", "", Cart::instance('conf_'.Reg::currentConferenceID())->total());
         $order->price = floatval($price);
-        Cart::destroy();
+        Cart::instance('conf_'.Reg::currentConferenceID())->destroy();
         foreach ($order->content as $row)
         {
             $id = $row->id;
             if (substr($id, 0, 4) == 'NID_')
                 continue;
             $good = Good::find($id);
-            if (is_object($good))
+            if (is_object($good) && $good->enabled)
             {
                 if ($good->remains > 0) {
                     $good->remains--;
@@ -183,6 +186,10 @@ class StoreController extends Controller
             }
         }
         $order->save();
+        if ($order->price == 0)
+        {
+            $order->getPaid('N/A', 'N/A', 'N/A', 'N/A (0元订单)');
+        }
         return redirect(mp_url('/store/order/' . $order->id));
     }
 
@@ -193,6 +200,8 @@ class StoreController extends Controller
      */
     public function shipmentModal()
     {
+        if (Cart::instance('conf_'.Reg::currentConferenceID())->count() == 0)
+            return view('errorModal', ['msg' => 'Your cart is empty!']);
         return view('shipmentModal');
     }
 
@@ -229,7 +238,18 @@ class StoreController extends Controller
      */
     public function home()
     {
-        return view('store', ['orders' => Auth::user()->orders()->where('conference_id', Reg::currentConferenceID())->latest()->limit(3)->get(), 'count' => Auth::user()->orders()->where('conference_id', Reg::currentConferenceID())->count()]);
+        $conf = Reg::currentConferenceID();
+        if ($conf == 0)
+        {
+            $count = Auth::user()->orders()->count();
+            $orders = Auth::user()->orders()->latest()->limit(3)->get();
+        }
+        else
+        {
+            $count =  Auth::user()->orders()->where('conference_id', Reg::currentConferenceID())->count();
+            $orders = Auth::user()->orders()->where('conference_id', Reg::currentConferenceID())->latest()->limit(3)->get();
+        }
+        return view('store', ['orders' => $orders, 'count' => $count]);
     }
 
     public function ordersList($id = 0)

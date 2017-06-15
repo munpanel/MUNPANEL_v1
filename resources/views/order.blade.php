@@ -52,7 +52,7 @@
                 <strong>收款方:</strong>
                 <h4>{{Reg::currentConference()->option('organizer')}}</h4>
                 <p>
-                  {!!textWithBr(Reg::currentConference()->option('store_contact'))!!}
+                  {!!textWithBr($order->conference->option('store_contact'))!!}
                 </p>
               </div>
             </div>

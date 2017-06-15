@@ -13,7 +13,7 @@
 <section class="vbox">
       <header class="header b-b bg-white">          
         <p>MUNPANEL STORE - {{Reg::currentConference()->name}}</p>
-        <a href="{{mp_url('/store/cart')}}" class="btn btn-sm btn-info pull-right"><i class="fa fa-shopping-cart"></i> 我的购物车</a>
+        <a href="{{mp_url('/store/cart')}}" class="btn btn-sm btn-info pull-right"><i class="fa fa-shopping-cart"></i> 我的购物车 ({{Cart::instance('conf_'.Reg::currentConferenceID())->count()}})</a>
         <p class="pull-right">&nbsp;</p>
         <div class="btn-group pull-right">
           <button class="btn btn-white btn-sm dropdown-toggle" aria-expanded="false" data-toggle="dropdown"><i class="fa fa-money"></i> 我的订单 ({{$count}}) <span class="caret"></span></button>

@@ -73,6 +73,42 @@ Route::group(['domain' => config('munpanel.portalDomain')], function () {
     Route::get('/doSwitchIdentity/{reg}', 'UserController@doSwitchIdentity');
     Route::get('/selectIdentityModal', 'HomeController@selectIdentityModal');
 
+    Route::get('/ajax/store', 'DatatablesController@goods');
+    Route::get('/ajax/orders/{id}', 'DatatablesController@orders');
+    Route::get('/store', 'StoreController@home');
+    Route::get('/store/cart', 'StoreController@displayCart');
+    Route::post('/store/cart/add/{id}', 'StoreController@addCart');
+    Route::get('/store/cart/remove/{id}', 'StoreController@removeCart');
+    Route::get('/store/cart/empty', 'StoreController@emptyCart');
+    Route::get('/store/orders/{id?}', 'StoreController@ordersList');
+    Route::get('/store/order/{id}', 'StoreController@displayOrder');
+    Route::get('/store/orderAdmin.modal/{id}', 'StoreController@orderAdmin');
+    Route::post('/store/manualPay/{id}', 'StoreController@manualPay');
+    Route::get('/store/deleteOrder/{id}/{confirm?}', 'StoreController@deleteOrder');
+    Route::get('/store/checkout', 'StoreController@checkout');
+    Route::get('/store/shipment.modal', 'StoreController@shipmentModal');
+    Route::post('/store/doCheckout', 'StoreController@doCheckout');
+    Route::get('/store/goodimg/{id}', 'StoreController@goodImage');
+    Route::get('/store/good.modal/{id}', 'StoreController@goodModal');
+    Route::get('/allOrders/{id}', 'StoreController@viewAllOrders');
+    Route::get('/store/cart', 'StoreController@displayCart');
+    Route::post('/store/cart/add/{id}', 'StoreController@addCart');
+    Route::get('/store/cart/remove/{id}', 'StoreController@removeCart');
+    Route::get('/store/cart/empty', 'StoreController@emptyCart');
+    Route::get('/store/orders/{id?}', 'StoreController@ordersList');
+    Route::get('/store/order/{id}', 'StoreController@displayOrder');
+    Route::get('/store/orderAdmin.modal/{id}', 'StoreController@orderAdmin');
+    Route::post('/store/manualPay/{id}', 'StoreController@manualPay');
+    Route::get('/store/deleteOrder/{id}/{confirm?}', 'StoreController@deleteOrder');
+    Route::get('/store/checkout', 'StoreController@checkout');
+    Route::get('/store/shipment.modal', 'StoreController@shipmentModal');
+    Route::post('/store/doCheckout', 'StoreController@doCheckout');
+    Route::get('/store/goodimg/{id}', 'StoreController@goodImage');
+    Route::get('/store/good.modal/{id}', 'StoreController@goodModal');
+    Route::get('/pay/checkout.modal/{id}', 'HomeController@checkout');
+    Route::get('/ajax/payWait/{oid}', 'PayController@resultAjax');
+    Route::post('/payInfo', 'PayController@payInfo')->name('payInfo');
+
     Route::get('/keepalive', 'SessionController@keepalive');
 });
 
@@ -251,7 +287,7 @@ Route::group(['domain' => 'static.munpanel.com'], function () {
     Route::get('/pay/invoice', 'HomeController@invoice');
     Route::get('/pay/checkout.modal/{id}', 'HomeController@checkout');
     Route::get('/ajax/payWait/{oid}', 'PayController@resultAjax');
-    Route::post('/info', 'PayController@payInfo')->name('payInfo');
+    Route::post('/payInfo', 'PayController@payInfo')->name('payInfo');
 
     Route::get('/store', 'StoreController@home');
     Route::get('/store/cart', 'StoreController@displayCart');

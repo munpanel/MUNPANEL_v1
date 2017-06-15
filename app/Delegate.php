@@ -20,7 +20,7 @@ class Delegate extends Model
 {
     protected $table='delegate_info';
     protected $primaryKey = 'reg_id';
-    protected $fillable = ['reg_id','conference_id','school_id','status','committee_id','partner_user_id', 'seat_locked'];
+    protected $fillable = ['reg_id','conference_id','school_id','status','committee_id','partner_reg_id', 'seat_locked'];
 
     public function conference() {
         return $this->belongsTo('App\Conference');
@@ -257,71 +257,71 @@ class Delegate extends Model
     public function assignPartnerByName()
     {
         // TODO: 如果委员会为单带，return
-        // TODO: 重写所有的 partnername
-        $this->partner_user_id = null;
-        if (isset($this->partnername))
+        $this->partner_reg_id = null;
+        $partner_name = json_decode($this->reg->reginfo)->conference->partnername;
+        if (!empty($partner_name))
         {
-            $partner_name = $this->partnername;
-            $myname = $this->user->name;
+            $myname = $this->user()->name;
             // TODO: 对于带空格的partnername值，在此if表达式外增加foreach表达式以逐一处理
-            // TODO: 重写以下 1 行
-            $partners = User::where('name', $partner_name);
-            $count = $partners->count();
+            $partners = User::where('name', $partner_name)->get()->pluck(['id']);
+            $partners_reg = Reg::whereIn('user_id', $partners)->where('conference_id', Reg::currentConferenceID())->get();
+            $count = $partners_reg->count();
             if ($count == 0)
             {
-                $notes = "{'reason':'未找到搭档$partner_name" . "的报名记录'}";
+                $notes = "{\"reason\":\"未找到搭档$partner_name" . "的报名记录\"}";
                 $this->reg->addEvent('partner_auto_fail', $notes);
-                return $myname . "&#09;0&#09;搭档姓名$partner_name&#09;未找到搭档的报名记录";
+                return "$myname &#09;0000&#09;搭档姓名$partner_name&#09;未找到搭档的报名记录";
             }
-            $partner = $partners->first();
+            $partner = $partners_reg->first();
             if ($count > 1)
             {
-                foreach ($partners as $partner1)
+                foreach ($partners_reg as $partner1)
                 {
                     if ($partner1->type != 'delegate') continue;                        // 排除非代表搭档
                     if ($partner1->delegate->committee != $this->committee) continue;   // 排除非本委员会搭档
-                    if ($delpartner->status != 'paid' && $delpartner->status != 'oVerified') continue;
+                    if (!in_array($partner1->delegate->status, ['paid', 'oVerified'])) continue;
                     $partner = $partner1;
                     break;
                 }
             }
-            if ($partner->id == $this->user->id)                                 // 排除自我配对
+            if ($partner->id == $this->reg_id)                                 // 排除自我配对
             {
-                $notes = "{'reason':'$myname" . "申报的搭档与报名者本人重合'}";
+                $notes = "{\"reason\":\"$myname" . "申报的搭档与报名者本人重合\"}";
                 $this->reg->addEvent('partner_auto_fail', $notes);
-                return $myname  ."&#09;".$partner->id . "&#09;自我配对";
+                return "$myname &#09;$partner->id &#09;自我配对";
             }
             if ($partner->type != 'delegate') //continue;                        // 排除非代表搭档
             {
-                $notes = "{'reason':'$partner_name" . "并未以代表身份报名'}";
+                $notes = "{\"reason\":\"$partner_name" . "并未以代表身份报名\"}";
                 $this->reg->addEvent('partner_auto_fail', $notes);
-                return $myname  ."&#09;".$partner->id . "&#09;搭档姓名$partner_name&#09;不是代表";
+                return "$myname &#09;$partner->id &#09;搭档姓名$partner_name&#09;不是代表";
             }
             $delpartner = $partner->delegate;
-            if ($delpartner->status != 'paid' && $delpartner->status != 'oVerified')   // 排除未通过审核搭档
+            if (!in_array($delpartner->status, ['paid', 'oVerified']))   // 排除未通过审核搭档
             {
-                $notes = "{'reason':'搭档$partner_name" . "的报名未通过审核'}";
+                $notes = "{\"reason\":\"搭档$partner_name" . "的报名未通过审核\"}";
                 $this->reg->addEvent('partner_auto_fail', $notes);
-                return $myname  ."&#09;".$partner->id . "&#09;搭档姓名$partner_name&#09;未通过审核";
+                return "$myname &#09;$partner->id &#09;搭档姓名$partner_name&#09;未通过审核";
             }
             if ($delpartner->committee != $this->committee) //continue;          // 排除非本委员会搭档
             {
-                $notes = "{'reason':'$partner_name" . "与$myname" . "并非同一委员会'}";
+                $notes = "{\"reason\":\"$partner_name" . "与$myname" . "并非同一委员会\"}";
                 $this->reg->addEvent('partner_auto_fail', $notes);
-                return $myname  ."&#09;".$partner->id ."&#09;搭档姓名$partner_name&#09;不同委员会";
+                return "$myname &#09;$partner->id &#09;搭档姓名$partner_name&#09;不同委员会";
             }
-            if (is_null($delpartner->partnername))                               // 如果对方未填搭档，自动补全
-                $delpartner->partnername = $myname;
-            if ($delpartner->partnername != $myname) //continue;                 // 排除多角搭档
+            $delpartner_name = json_decode($partner->reginfo)->conference->partnername;
+            if (empty($delpartner_name))                               // TODO: 如果对方未填搭档，自动补全
+                $delpartner_name = $myname;
+            if ($delpartner_name != $myname) //continue;                 // 排除多角搭档
             {
-                $notes = "{'reason':'$partner_name" . "申报的搭档并非$myname" . "本人'}";
+                $notes = "{\"reason\":\"$partner_name" . "申报的搭档并非$myname" . "本人\"}";
                 $this->reg->addEvent('partner_auto_fail', $notes);
                 return $myname  ."&#09;".$partner->id . "&#09;搭档姓名$partner_name&#09;多角搭档";
             }
-            $this->partner_user_id = $partner->id;
+            $this->partner_reg_id = $partner->id;
             $this->save();
             $this->reg->addEvent('partner_auto_success', '');
-            $delpartner->partner_user_id = $this->user->id;
+            $delpartner->partner_reg_id = $this->reg_id;
             $delpartner->save();
 //            return $myname  ."&#09;".$partner->id . "&#09;搭档姓名$partner_name&#09;成功";
         }

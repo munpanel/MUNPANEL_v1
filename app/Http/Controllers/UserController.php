@@ -941,6 +941,8 @@ class UserController extends Controller
     public function test(Request $request)
     {
         return '404 not found';
+        $mayaka = Delegate::find(3322);
+        return $mayaka->assignPartnerByName();
         $ret = '';
         $users = User::with('orders')->get();
         foreach($users as $user)

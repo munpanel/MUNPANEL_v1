@@ -135,7 +135,7 @@ $customTable = json_decode(Reg::currentConference()->option('reg_tables'))->regT
 @endif
             <tr>
                 <td width="35%">搭档姓名</td>
-                <td width="65%"><a href="#" id="conference.partnername" data-type="text" data-pk="{{$reg->id??''}}" data-url="{{mp_url('/ot/update/reg/'.$reg->id)??''}}" data-title="conference.partnername" class="editable">{{$regInfo->conference->partnername??''}}</a></td>
+                <td width="65%"><a href="#" id="conference.partnername" data-type="text" data-pk="{{$reg->id??''}}" data-url="{{mp_url('/ot/update/reg/'.$reg->id)??''}}" data-title="conference.partnername" class="editable">{{$regInfo->conference->partnername??''}}</a>{!!(isset($reg->delegate) && isset($reg->delegate->partner_reg_id)) ? '&nbsp;<i class="fa fa-check-circle"></i>' : ''!!}</td>
             </tr>
             <tr>
                 <td width="35%">是否住宿</td>

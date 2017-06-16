@@ -3,6 +3,14 @@
 namespace App\Exceptions;
 
 use Exception;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Symfony\Component\Debug\Exception\FlattenException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
 use Illuminate\Session\TokenMismatchException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
@@ -65,6 +73,7 @@ class Handler extends ExceptionHandler
         } elseif ($e instanceof ValidationException) {
             return $this->convertValidationExceptionToResponse($e, $request);
         }
+        dd($e);
 
         //return $this->prepareResponse($request, $e);
         if (config('app.debug'))

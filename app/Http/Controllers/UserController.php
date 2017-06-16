@@ -941,6 +941,18 @@ class UserController extends Controller
     public function test(Request $request)
     {
         return '404 not found';
+        $new = new Reg;
+        $new->user_id = 25;
+        $new->conference_id = 3;
+        $new->school_id = 152;
+        $new->type = 'teamadmin';
+        $new->enabled = 1;
+        $new->save();
+        $teamadmin = new Teamadmin;
+        $teamadmin->reg_id = $new->id;
+        $teamadmin->school_id = 152;
+        $teamadmin->save();
+        return 'miao';
         $mayaka = Delegate::find(3322);
         return $mayaka->assignPartnerByName();
         $ret = '';

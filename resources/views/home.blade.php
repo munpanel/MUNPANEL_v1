@@ -198,6 +198,7 @@ if (Reg::current()->type == 'delegate' && isset(Reg::current()->delegate))
               <section class="panel clearfix">
                 <div class="panel-body">
                   <div class="clear">
+                    This content is neither created nor endorsed by Console iT.<br>
                     Proudly Powered by MUNPANEL.<br>Copyright {{config('munpanel.copyright_year')}} Console iT.
                     @if(null !== config('munpanel.icp_license'))
                     <br><a href="http://www.miibeian.gov.cn/" title="{{config('munpanel.icp_license')}}" rel="nofollow">{{config('munpanel.icp_license')}}</a>

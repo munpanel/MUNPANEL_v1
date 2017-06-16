@@ -331,6 +331,7 @@ class PortalController extends Controller
         $new->conference_id = $conference_id;
         $new->school_id = $group->id;
         $new->type = 'teamadmin';
+        $new->enabled = 1;
         $new->save();
         $teamadmin = new Teamadmin;
         $teamadmin->reg_id = $new->id;

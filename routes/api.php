@@ -21,6 +21,10 @@ Route::group(['domain' => config('munpanel.payDomain')], function() {
     Route::post('/notify', 'PayController@payNotify')->name('payNotify');
 });
 
+Route::group(['domain' => 'sms.munpanel.com'], function() {
+    Route::get('/sms_received', 'SmsController@autoReplySMS');
+});
+
 $api = app('Dingo\Api\Routing\Router');
 
 $api->version('v1', function ($api) {

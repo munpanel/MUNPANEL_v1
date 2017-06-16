@@ -943,6 +943,64 @@ class UserController extends Controller
         return '404 not found';
         $satoshi = Reg::find(4166);
         return $satoshi->assignRoommateByName();
+        $ret = '';
+        $users = User::with('orders')->get();
+        foreach($users as $user)
+        {
+            if ($user->orders()->where('status', 'unpaid')->count() > 0)
+            {
+                $user->sendSMS('您尚有'.$user->orders()->where('status', 'unpaid')->count().'笔未支付订单，请尽快前往 https://portal.munpanel.com/store/orders 完成支付。您可通过系统中的二维码通过微信或支付宝线上缴费，付款完成自动确认缴费状态；您亦可使用会议指定的其他缴费方式并等待手动确认。感谢您的理解与支持，祝您开会愉快。');
+                $ret .= $user->id.' '.$user->name. ' ' . $user->orders()->where('status', 'unpaid')->count().'<br>';
+            }
+        }
+        return $ret;
+        $dais = Dais::where('status', 'fail')->get();
+        foreach ($dais as $d)
+        {
+            $u = $d->reg;
+            $u->enabled = false;
+            $u->save();
+        }
+        return 'd';
+        $teamadmins = Teamadmin::all();
+        foreach($teamadmins as $teamadmin)
+        {
+            $reg = $teamadmin->reg;
+            if (isset($reg->conference_id) && (!isset($teamadmin->conference_id)))
+            {
+                $teamadmin->conference_id = $reg->conference_id;
+                $teamadmin->save();
+            }
+            if (isset($teamadmin->conference_id) && (!isset($reg->conference_id)))
+            {
+                $reg->conference_id = $teamadmin->conference_id;
+                $reg->save();
+            }
+        }
+        return 'gou';
+        $new = new Reg;
+        $new->user_id = 966;
+        $new->conference_id = null;
+        $new->school_id = 148;
+        $new->type = 'teamadmin';
+        $new->enabled = 1;
+        $new->save();
+        $teamadmin = new Teamadmin;
+        $teamadmin->reg_id = $new->id;
+        $teamadmin->school_id = 148;
+        $teamadmin->save();
+        $new = new Reg;
+        $new->user_id = 966;
+        $new->conference_id = 3;
+        $new->school_id = 148;
+        $new->type = 'teamadmin';
+        $new->enabled = 1;
+        $new->save();
+        $teamadmin = new Teamadmin;
+        $teamadmin->reg_id = $new->id;
+        $teamadmin->school_id = 148;
+        $teamadmin->save();
+        return 'miao';
         $regs = Reg::all();
         foreach ($regs as $reg)
         {

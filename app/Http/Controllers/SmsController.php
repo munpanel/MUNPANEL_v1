@@ -19,6 +19,12 @@ use Illuminate\Http\Request;
 
 class SmsController extends Controller
 {
+    function autoReplySMS(Request $request)
+    {
+        SmsController::send([$request->mobile], '尊敬的用户，感谢您的回信与对 MUNPANEL 的大力支持。然而，此短信并不被我们监听，如您有任何关于会议的问题，请询问会议组委；如您关于系统有任何问题，请联系 support@munpanel.com');
+        return;
+    }
+
     /**
      * Send an SMS message to one/multiple mobile number(s).
      *

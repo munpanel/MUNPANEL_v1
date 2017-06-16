@@ -297,7 +297,7 @@ class Delegate extends Model
                 return "$myname &#09;$partner->id &#09;搭档姓名$partner_name&#09;不是代表";
             }
             $delpartner = $partner->delegate;
-            if (!in_array($delpartner->status, ['paid', 'oVerified']))   // 排除未通过审核搭档
+            if (!in_array($delpartner->status, ['paid', 'oVerified', 'unpaid']))   // 排除未通过审核搭档
             {
                 $notes = "{\"reason\":\"搭档$partner_name" . "的报名未通过审核\"}";
                 $this->reg->addEvent('partner_auto_fail', $notes);

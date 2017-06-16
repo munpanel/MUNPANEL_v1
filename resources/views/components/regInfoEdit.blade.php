@@ -139,11 +139,11 @@ $customTable = json_decode(Reg::currentConference()->option('reg_tables'))->regT
             </tr>
             <tr>
                 <td width="35%">是否住宿</td>
-                <td width="65%"><a href="#" id="reg.accomodate" data-type="select" data-pk="{{$reg->id??''}}" data-url="{{mp_url('/ot/update/reg/'.$reg->id)??''}}" data-title="reg.accomodate" data-value='{{$reg->accomodate??''}}' data-source="[{'value':'true', 'text':'是'},{'value':'false', 'text':'否'}]" class="editable">{{$reg->accomodate ? '是':'否'}}</a></td>
+                <td width="65%"><a href="#" id="reg.accomodate" data-type="select" data-pk="{{$reg->id??''}}" data-url="{{mp_url('/ot/update/reg/'.$reg->id)??''}}" data-title="reg.accomodate" data-value='{{$reg->accomodate??''}}' data-source="[{'value':'1', 'text':'是'},{'value':'0', 'text':'否'}]" class="editable">{{$reg->accomodate ? '是':'否'}}</a></td>
             </tr>
             <tr>
                 <td width="35%">室友姓名</td>
-                <td width="65%"><a href="#" id="conference.roommatename" data-type="text" data-pk="{{$reg->id??''}}" data-url="{{mp_url('/ot/update/reg/'.$reg->id)??''}}" data-title="conference.roommatename" class="editable">{{$regInfo->conference->roommatename??''}}</a></td>
+                <td width="65%"><a href="#" id="conference.roommatename" data-type="text" data-pk="{{$reg->id??''}}" data-url="{{mp_url('/ot/update/reg/'.$reg->id)??''}}" data-title="conference.roommatename" class="editable">{{$regInfo->conference->roommatename??''}}</a>{!!isset($reg->roommate_user_id) ? '&nbsp;<i class="fa fa-check-circle"></i>' : ''!!}</td>
             </tr>
             <tr>
                 <td width="35%">备注</td>

@@ -941,6 +941,8 @@ class UserController extends Controller
     public function test(Request $request)
     {
         return '404 not found';
+        $satoshi = Reg::find(4166);
+        return $satoshi->assignRoommateByName();
         $regs = Reg::all();
         foreach ($regs as $reg)
         {

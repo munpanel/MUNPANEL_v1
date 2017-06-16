@@ -81,7 +81,7 @@ class HomeController extends Controller
         {
             $school = $reg->school;
             //return $del->count();
-            return view('school.home', ['del' => $school->delegates->count(), 'vol' => $school->volunteers->count(), 'obs' => $school->observers->count()]);
+            return view('school.home', ['del' => $school->delegates()->where('conference_id', Reg::currentConferenceID())->count(), 'vol' => $school->volunteers()->where('conference_id', Reg::currentConferenceID())->count(), 'obs' => $school->observers()->where('conference_id', Reg::currentConferenceID())->count()]);
         }
         else if ($type == 'dais' && $reg->specific()->status == 'success')
         {

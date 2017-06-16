@@ -941,6 +941,20 @@ class UserController extends Controller
     public function test(Request $request)
     {
         return '404 not found';
+        $regs = Reg::all();
+        foreach ($regs as $reg)
+        {
+            if (isset($reg->school_id) && $reg->type != 'interviewer')
+            {
+                $specific = $reg->specific();
+                if (is_object($specific))
+                {
+                    $specific->school_id = $reg->school_id;
+                    $specific->save();
+                }
+            }
+        }
+        return 'done';
         $new = new Reg;
         $new->user_id = 25;
         $new->conference_id = 3;
@@ -1623,11 +1637,10 @@ return view('blank',['testContent' => $js, 'convert' => false]);
         $reg->save();
         $specific = $reg->specific();
         if (is_object($specific)) {
+            $specific->school_id = $team->id;
             if ($specific->status == 'sVerified')
-            {
                 $specific->status = 'reg';
-                $specific->save();
-            }
+            $specific->save();
         }
         return back();
     }

@@ -114,6 +114,7 @@ class StoreController extends Controller
             if ($order->status != 'unpaid')
                 return 'Already paid/cancelled.';
             $order->getPaid(Reg::current()->name().' ('.Reg::currentID().') 手动确认', $request->buyer, $request->payment_no, '*'.$request->payment_channel);
+            $order->user->sendSMS(Reg::currentConference()->name.'确认了您金额为'.number_format($order->price, 2).'元的订单('.$order->id.')已缴费，感谢。');
             return 'success';
         }
         return 'Access denied';

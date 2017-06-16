@@ -6,6 +6,7 @@
 namespace App\Http\Controllers;
 use Config;
 use Illuminate\Http\Requests;
+
 class TeegonService extends Controller{
 
     public $base_url;

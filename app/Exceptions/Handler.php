@@ -73,7 +73,6 @@ class Handler extends ExceptionHandler
         } elseif ($e instanceof ValidationException) {
             return $this->convertValidationExceptionToResponse($e, $request);
         }
-        dd($e);
 
         //return $this->prepareResponse($request, $e);
         if (config('app.debug'))

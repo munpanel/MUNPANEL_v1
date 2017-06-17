@@ -13,9 +13,9 @@ $self = ($reg->id == Reg::currentID());
 if ($reg->type == 'delegate')
 {
     $nations = $specific->assignedNations;
+    if ($isOtOrDais)
+        $nations->load('nationgroups');
 }
-if ($isOtOrDais)
-    $nations->load('nationgroups');
 if (empty($active))
     $active = 'info';
 @endphp

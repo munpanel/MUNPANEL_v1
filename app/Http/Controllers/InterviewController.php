@@ -53,6 +53,7 @@ class InterviewController extends Controller
                 return view('error', ['msg' => '此人不是您所在会议的面试官！']);
             $interviews = Interview::where('interviewer_id', $id)->get();
         }
+        $interviews->load('interviewer', 'interviewer.reg', 'interviewer.reg.user', 'interviewer.committee', 'reg', 'reg.user', 'reg.delegate', 'reg.delegate.assignedNations', 'reg.delegate.interviews', 'reg.delegate.nation', 'reg.delegate.committee');
         return view('dais.interviewList', ['interviews' => $interviews, 'iid' => $id]);
     }
 

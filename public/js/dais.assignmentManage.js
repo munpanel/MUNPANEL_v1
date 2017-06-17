@@ -1,6 +1,6 @@
 $(document).ready(function() {
    $('#assignment-table').DataTable({
-        //processing: true,
+        processing: true,
         //serverSide: true,
         ajax: 'ajax/assignments',
         columns: [

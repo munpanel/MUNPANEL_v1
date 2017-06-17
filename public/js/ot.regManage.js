@@ -1,6 +1,6 @@
 $(document).ready(function() {
    $('#registration-table').DataTable({
-        //processing: true,
+        processing: true,
         //serverSide: true,
         ajax: 'ajax/registrations',
         columns: [

@@ -1,6 +1,6 @@
 $(document).ready(function() {
    $('#document-table').DataTable({
-        //processing: true,
+        processing: true,
         //serverSide: true,
         paging: false,
         bFilter: false,

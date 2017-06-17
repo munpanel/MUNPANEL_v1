@@ -1,6 +1,6 @@
 $(document).ready(function() {
    $('#nation-table').DataTable({
-        //processing: true,
+        processing: true,
         //serverSide: true,
         ajax: 'ajax/roleListByDelegate',
         columns: [

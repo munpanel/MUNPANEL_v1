@@ -1,6 +1,6 @@
 $(document).ready(function() {
    $('#committee-table').DataTable({
-        //processing: true,
+        processing: true,
         //serverSide: true,
         ajax: 'ajax/committees',
         columns: [

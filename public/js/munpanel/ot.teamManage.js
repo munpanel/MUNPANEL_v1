@@ -1,6 +1,6 @@
 $(document).ready(function() {
    $('#team-table').DataTable({
-        //processing: true,
+        processing: true,
         //serverSide: true,
         ajax: 'ajax/teammembers',
         columns: [

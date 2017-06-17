@@ -1,6 +1,6 @@
 $(document).ready(function() {
    $('#user-table').DataTable({
-        //processing: true,
+        processing: true,
         //serverSide: true,
         ajax: 'ajax/users',
         columns: [

@@ -1,6 +1,6 @@
 $(document).ready(function() {
    $('#school-table').DataTable({
-        //processing: true,
+        processing: true,
         //serverSide: true,
         ajax: 'ajax/schools',
         columns: [

@@ -60,6 +60,8 @@ class Conference extends Model
 
     public function option($key)
     {
+        if ($this->relationLoaded('options'))
+            return $this->options->where('key', $key)->first()->value;
         if (isset($this->_options[$key]))
             return $this->_options[$key];
         if (is_object($this->options()->where('key', $key)->first()))

@@ -20,7 +20,7 @@ use Illuminate\Database\Eloquent\Model;
 class Reg extends Model
 {
     protected $fillable = ['user_id','conference_id','school_id','type','enabled','gender','reginfo','accomodate','roommate_reg_id'];
-    private static $_current;
+    private static $_current, $_currentConference;
 
     /**
      * The attributes that should be hidden for arrays.
@@ -163,6 +163,11 @@ class Reg extends Model
 
     static public function currentConference()
     {
+        if (!is_null(self::$_currentConference))
+            return self::$_currentConference;
+        self::$_currentConference = Conference::find(Reg::currentConferenceID());
+        self::$_currentConference->load('options');
+        return self::$_currentConference;
         return Conference::find(Reg::currentConferenceID());
     }
 

@@ -434,7 +434,7 @@ class Delegate extends Model
     public function nationName($html = false)
     {
         $explain = false;
-        $nations = $this->assignedNations;
+        $nations = null;
         if (is_object($this->nation))
         {
             if (!$this->seat_locked)
@@ -443,6 +443,7 @@ class Delegate extends Model
                     $result = "<i class='fa fa-unlock' aria-hidden='true'></i><div style='display:none'>未锁定</div>";
                 else
                     $result = '(未锁定)';
+                $nations = $this->assignedNations;
                 if ($nations->count() > 1)
                     $explain = true;
             }
@@ -452,9 +453,10 @@ class Delegate extends Model
         }
         else
         {
+            $nations = $this->assignedNations;
             if ($nations->count() > 0)
             {
-                if ($this->assignedNations->where('status', 'open')->count() > 0)
+                if ($nations->where('status', 'open')->count() > 0)
                     $result = '待选';
                 else
                     $result = '无可选';

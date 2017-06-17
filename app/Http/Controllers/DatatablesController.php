@@ -833,6 +833,8 @@ class DatatablesController extends Controller //To-Do: Permission Check
             ->where('status', 'oVerified');
         })->get(['reg_id', 'school_id', 'nation_id', 'committee_id', 'status']);*/
         $delegates = RoleAllocController::delegates();
+        $delegates->load('delegategroups', 'committee', 'reg', 'reg.user', 'nation', 'interviews');
+        $delegates->where('seat_locked', false)->load('assignedNations');
         foreach($delegates as $delegate)
         {
             if (!$delegate->canAssignSeats())

@@ -74,7 +74,7 @@ class RoleAllocController extends Controller
             }
         }
         if ($assignOptions->ot && $reg->type == 'ot' && $reg->can('assign-roles'))
-            return Delegate::where('conference_id', Reg::currentConferenceID())->get();
+            return Reg::currentConference()->delegates;
         if ($assignOptions->dais && $reg->type == 'dais')
             return $reg->dais->committee->delegates;
         if ($assignOptions->interviewer && $reg->type == 'interviewer')

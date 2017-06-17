@@ -200,16 +200,22 @@ class Delegate extends Model
     }
 
     public function canAssignSeats($nation = null) {
-        switch($this->interviewStatus())
+        if ($this->relationLoaded('interviews'))
+            $interviews = $this->interviews;
+        else
+            $interviews = $this->interviews();
+        switch($this->interviewStatus($interviews->where('retest', true)->count() > 0))
         {
             case 'oVerified':
             case 'interview_passed':
+            case 'interview_exempted':
             case 'interview_retest_assigned':
             case 'interview_retest_arranged':
             case 'interview_retest_passed':
             case 'interview_retest_failed':
             case 'interview_retest_unassigned':
             case 'interview_retest_undecided':
+            case 'interview_retest_exempted':
                 if (Http\Controllers\RoleAllocController::delegates()->contains('reg_id', $this->reg_id))
                 {
                     if (is_object($nation))

@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Model;
 class Conference extends Model
 {
     protected $fillable = ['name', 'fullname', 'date-start', 'date-end', 'description'];
+    private $_options = array();
 
     public function committees()
     {
@@ -59,8 +60,11 @@ class Conference extends Model
 
     public function option($key)
     {
+        if (isset($this->_options[$key]))
+            return $this->_options[$key];
         if (is_object($this->options()->where('key', $key)->first()))
-            return $this->options()->where('key', $key)->first()->value;
+            $this->_options[$key] = $this->options()->where('key', $key)->first()->value;
+        return $this->_options[$key];
         return null;
     }
 }

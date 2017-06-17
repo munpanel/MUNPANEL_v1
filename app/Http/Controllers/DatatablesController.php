@@ -735,6 +735,10 @@ class DatatablesController extends Controller //To-Do: Permission Check
         //$mycommittee = Reg::current()->dais->committee;
         //$nations = Nation::where('committee_id', $mycommittee->id)->get();
         $nations = RoleAllocController::nations();
+        $nations->load('committee');
+        $nations->load('nationgroups');
+        $nations->load('assignedDelegates', 'assignedDelegates.reg', 'assignedDelegates.reg.user');
+        $nations->where('status', 'locked')->load('delegates', 'delegates.reg', 'delegates.reg.user');
         $autosel = false;
         foreach($nations as $nation)
         {

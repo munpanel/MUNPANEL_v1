@@ -66,11 +66,15 @@ class CheckVerification
                         $regs[0]->login(false);
                 }
                 $regid = $request->session()->get('regIdforConference'.$cid.'sudo');
+                Reg::flushCurrent($reg);
+
                 if (isset($regid))
                 {
                     $sudoreg = Reg::find($regid);
                     if (!(is_object($sudoreg) && $reg->can('sudo') && $sudoreg->conference_id == $cid && $sudoreg->enabled))
                         $request->session()->forget('regIdforConference'.$cid.'sudo');
+                    else
+                        Reg::flushCurrent($sudoreg);
                 }
                 $reg = Reg::current();
                 if (!$reg->enabled)

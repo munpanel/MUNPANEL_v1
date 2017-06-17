@@ -20,6 +20,7 @@ use Illuminate\Database\Eloquent\Model;
 class Reg extends Model
 {
     protected $fillable = ['user_id','conference_id','school_id','type','enabled','gender','reginfo','accomodate','roommate_reg_id'];
+    private static $_current;
 
     /**
      * The attributes that should be hidden for arrays.
@@ -123,7 +124,16 @@ class Reg extends Model
 
     static public function current()
     {
+        if (!is_null(self::$_current))
+            return self::$_current;
+        self::$_current = Reg::find(Reg::currentID());
+        return self::$_current;
         return Reg::find(Reg::currentID());
+    }
+
+    static public function flushCurrent($current = null)
+    {
+        self::$_current = $current;
     }
 
     static public function currentID()
@@ -184,11 +194,11 @@ class Reg extends Model
     public function addEvent($type, $content)
     {
         $event = new Event;
-	    $event->eventtype_id = $type;
-	    $event->content = $content;
-	    $event->reg_id = $this->id;
-	    $event->save();
-	    return $event;
+        $event->eventtype_id = $type;
+        $event->content = $content;
+        $event->reg_id = $this->id;
+        $event->save();
+        return $event;
     }
 
     public function currentInterview()
@@ -372,7 +382,7 @@ class Reg extends Model
         $userPrimaryKey = $this->primaryKey;
         $cacheKey = 'roles_for_user_'.$this->$userPrimaryKey;
         if(Cache::getStore() instanceof TaggableStore) {
-            return Cache::tags('reg_role')->remember($cacheKey, Config::get('cache.ttl'), function () {
+            return Cache::tags('reg_role')->remember($cacheKey, Config::get('cache.ttl', 60), function () {
                 return $this->roles()->get();
             });
         }

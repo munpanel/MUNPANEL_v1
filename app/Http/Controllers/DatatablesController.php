@@ -224,7 +224,12 @@ class DatatablesController extends Controller //To-Do: Permission Check
                 $regs = $regs->whereIn('type', ['delegate', 'volunteer', 'observer']);
             if ($user->type == 'teamadmin')
                 $regs = $regs->where('school_id', $user->school_id);
-            $regs = $regs->with(['user' => function($q) {$q->select('name', 'id');}])->get(['id', 'user_id', 'type', 'enabled']);
+            $regs = $regs->with(['user' => function($q) {$q->select('name', 'id');}])->with('school')->get(['id', 'user_id', 'type', 'enabled']);
+            $regs->where('type', 'delegate')->load('delegate', 'delegate.committee', 'delegate.delegategroups', 'delegate.nation', 'delegate.interviews', 'delegate.assignedNations');
+            $regs->where('type', 'volunteer')->load('volunteer');
+            $regs->where('type', 'observer')->load('observer');
+            $regs->where('type', 'dais')->load('dais');
+            $regs->where('type', 'ot')->load('ot');
             foreach ($regs as $reg)
             {
                 switch ($reg->type)

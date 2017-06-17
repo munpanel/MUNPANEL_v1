@@ -11,6 +11,7 @@
 
 namespace App\Http\Controllers;
 
+use Config;
 use App\User;
 use App\Reg;
 use App\Delegate;
@@ -941,6 +942,15 @@ class UserController extends Controller
     public function test(Request $request)
     {
         return '404 not found';
+        $reg1 = Reg::current();
+        $reg1->enabled = false;
+        $reg1->save();
+        $reg2 = Reg::current();
+        return $reg2->enabled;
+        return Config::get('cache.ttl');
+
+        Cache::tags('orders')->put('test', 1, 2);
+        return Cache::tags('orders')->get('test');
         $satoshi = Reg::find(4166);
         return $satoshi->assignRoommateByName();
         $ret = '';

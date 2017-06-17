@@ -88,7 +88,10 @@ class Delegate extends Model
     }
 
     public function interviewStatus($retest = false) {
-        $interview = $this->interviews()->where('retest', $retest)->orderBy('created_at', 'desc')->first();
+        if ($this->relationLoaded('interviews'))
+            $interview = $this->interviews->where('retest', $retest)->sortByDesc('created_at')->first();
+        else
+            $interview = $this->interviews()->where('retest', $retest)->orderBy('created_at', 'desc')->first();
         $status = 'unassigned';
         if (is_object($interview))
         {
@@ -114,19 +117,30 @@ class Delegate extends Model
             return $this->seat_locked?'seat_locked':'seat_selected';
         else
         {
-            $nations = $this->assignedNations();
+            if ($this->relationLoaded('assignedNations'))
+                $nations = $this->assignedNations;
+            else
+                $nations = $this->assignedNations();
             if ( $nations->count() > 0 )
             {
                 if ( $nations->where('status', '=', 'open')->count() > 0 )
                     return 'seat_assigned';
                 return 'seat_unavailable';
             }
-            return $this->interviewStatus($this->interviews()->where('retest', true)->count() > 0);
+            if ($this->relationLoaded('interviews'))
+                $interviews = $this->interviews;
+            else
+                $interviews = $this->interviews();
+            return $this->interviewStatus($interviews->where('retest', true)->count() > 0);
         }
     }
 
     public function interviewText($retest = false) {
-        $count = $this->interviews()->where('retest', $retest)->whereIn('status', ['passed', 'failed'])->count();
+        if ($this->relationLoaded('interviews'))
+            $count = $this->interviews;
+        else
+            $count = $this->interviews();
+        $count = $count->where('retest', $retest)->whereIn('status', ['passed', 'failed'])->count();
         switch($count)
         {
             case 0:

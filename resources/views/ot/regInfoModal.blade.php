@@ -1,13 +1,21 @@
 @php
 $i = 0;
+$user = $reg->user;
+$specific = $reg->specific();
 $regInfo = json_decode($reg->reginfo);
 $isOtOrDais = in_array(Reg::current()->type, ['ot', 'dais', 'interviewer']);
 $handins = $reg->handins->where('confirm', true);
-$events = $reg->events()->orderBy('created_at', 'dsc')->get();
-$notes = $reg->notes()->orderBy('created_at', 'dsc')->get();
-$interviewers = $reg->interviews()->orderBy('created_at', 'dsc')->get();
+$events = $reg->events()->orderBy('created_at', 'dsc')->with('eventtype')->get();
+$notes = $reg->notes()->orderBy('created_at', 'dsc')->with('noter', 'noter.regs', 'noter.regs.delegate', 'noter.regs.delegate.committee', 'noter.regs.volunteer', 'noter.regs.observer', 'noter.regs.dais', 'noter.regs.dais.committee', 'noter.regs.ot', 'noter.regs.interviewer', 'noter.regs.interviewer.committee')->get();
+$interviewers = $reg->interviews()->orderBy('created_at', 'dsc')->with('interviewer', 'interviewer.committee', 'interviewer.reg.user')->get();
 $active = request()->active;
 $self = ($reg->id == Reg::currentID());
+if ($reg->type == 'delegate')
+{
+    $nations = $specific->assignedNations;
+}
+if ($isOtOrDais)
+    $nations->load('nationgroups');
 if (empty($active))
     $active = 'info';
 @endphp
@@ -36,7 +44,7 @@ if (empty($active))
               <div class="col-sm-12 b-r">
               @if ($isOtOrDais)
                 @if ($allRegs->count() > 1)
-                <p>{{$reg->user->name}}在本次会议中共包含以下 {{$allRegs->count()}} 个身份。</p>
+                <p>{{$user->name}}在本次会议中共包含以下 {{$allRegs->count()}} 个身份。</p>
                 <ul>
                   @foreach ($allRegs as $aReg)
 
@@ -44,22 +52,22 @@ if (empty($active))
                   @endforeach
                 </ul>
                 @endif
-                <p>{{$reg->user->name}}以<strong>{{ $reg->regText() }}</strong>身份报名参加本次会议。</p>
+                <p>{{$user->name}}以<strong>{{ $reg->regText() }}</strong>身份报名参加本次会议。</p>
                 <p>报名 ID: {{$reg->id}}
                   @if ($reg->type == 'delegate')
-                  <br>委员会: {{$reg->specific()->committee->name}}<br>代表组: {{$reg->specific()->scopeDelegateGroup()}}
+                  <br>委员会: {{$specific->committee->name}}<br>代表组: {{$specific->scopeDelegateGroup()}}
                   @endif
                   @if (isset($regInfo) && isset($regInfo->reg_at))
                   <br>报名于: {{nicetime($regInfo->reg_at)}}
                   @endif
                   @if ($reg->type == 'delegate')
-                <br>状态: {{$reg->enabled ? $reg->specific()->statusText() : '已禁用'}}</p>
+                <br>状态: {{$reg->enabled ? $specific->statusText() : '已禁用'}}</p>
                 @endif
               @else
-                <p>{{$reg->user->name. ($self ? '，您':'')}}已以<strong>{{ $reg->regText() }}</strong>身份报名参加{{Reg::currentConference()->fullname}}。</p>
+                <p>{{$user->name. ($self ? '，您':'')}}已以<strong>{{ $reg->regText() }}</strong>身份报名参加{{Reg::currentConference()->fullname}}。</p>
               @endif
               @if (isset($regInfo))
-                @if (Reg::current()->type == 'ot' || (Reg::current()->type == 'teamadmin' && in_array($reg->specific()->status, ['reg', 'sVerified'])) || (Reg::currentID() == $reg->id && $reg->status == 'reg'))
+                @if (Reg::current()->type == 'ot' || (Reg::current()->type == 'teamadmin' && in_array($specific->status, ['reg', 'sVerified'])) || (Reg::currentID() == $reg->id && $reg->status == 'reg'))
                   @include('components.regInfoEdit')
                 @else
                   @include('components.regInfoShow')
@@ -194,17 +202,17 @@ if (empty($active))
             <div class="row">
               <div class="col-sm-12 b-r">
               <h3 class="m-t-sm">当前席位</h3>
-              @if (isset($reg->delegate->nation_id))
-              <p>{{$self ?  '您' : '该用户'}}已{{$reg->delegate->seat_locked ? '锁定':'选择'}}席位<strong>{{$reg->delegate->nation->displayName()}}</strong>。
-                @if (!$reg->delegate->seat_locked)
+              @if (isset($specific->nation_id))
+              <p>{{$self ?  '您' : '该用户'}}已{{$specific->seat_locked ? '锁定':'选择'}}席位<strong>{{$specific->nation->displayName()}}</strong>。
+                @if (!$specific->seat_locked)
                 <br>选定席位将在{{$self ? '您' : '该用户'}}选定该席位 72 小时左右自动锁定。
                 @endif
               </p>
               @else
               <p>{{$self ? '您' : '该用户'}}还没有选择任何席位。</p>
               @endif
-              @if ($reg->delegate->assignedNations->count() > 0)
-              @if (!$reg->delegate->seat_locked)
+              @if ($nations->count() > 0)
+              @if (!$specific->seat_locked)
               <h3>可供选择席位列表</h3>
               @unless($self)
               <div class="alert alert-info">您的席位分配仍有一定几率调整，我们仍有可能为您增加席位分配，如其他代表选择了您的可选席位并该席位，您将无法选择该席位。在您选择席位后，您仍可修改您的选择，直到您的席位被锁定。您的席位将在您选定席位后 72 小时左右自动锁定或被提前手动锁定。</div>
@@ -220,12 +228,11 @@ if (empty($active))
                 <td>席位组</td>
                 <td width="45px">保留</td>
                 @endif
-                @if (!$reg->delegate->seat_locked && $self)
+                @if (!$specific->seat_locked && $self)
                 <td width="45px">选择</td>
                 @endif
               </tr>
               @php
-              $nations = $reg->delegate->assignedNations;
               $i = 0;
               @endphp
               @foreach($nations as $nation)
@@ -238,8 +245,8 @@ if (empty($active))
                 @else
                 <td>{{$nation->displayName(true, 2)}}</td>
                 @endif
-                @if (!$reg->delegate->seat_locked && Reg::currentID() == $reg->id)
-                @if ($reg->delegate->nation_id == $nation->id)
+                @if (!$specific->seat_locked && Reg::currentID() == $reg->id)
+                @if ($specific->nation_id == $nation->id)
                 <td><center><input type="radio" name="seatSelect" value="{{$nation->id}}" checked></center></td>
                 @elseif ($nation->status == 'open')
                 <td><center><input type="radio" name="seatSelect" value="{{$nation->id}}"></center></td>
@@ -266,7 +273,6 @@ if (empty($active))
                 @endif
               </tr>
               @php
-              $nations = $reg->delegate->assignedNations;
               $i = 0;
               @endphp
               @foreach($nations as $nation)
@@ -321,7 +327,7 @@ if (empty($active))
                         <div class="timeline-body">
                           {{csrf_field()}}
                           <input type="hidden" name="reg_id" value="{{$reg->id}}">
-                          <textarea name="text" id="add_notes" class="form-control" type="text" data-required="true" data-trigger="change" style="width:100%" placeholder="添加对{{$reg->user->name}}的笔记..." autocomplete="off"></textarea>
+                          <textarea name="text" id="add_notes" class="form-control" type="text" data-required="true" data-trigger="change" style="width:100%" placeholder="添加对{{$user->name}}的笔记..." autocomplete="off"></textarea>
                         </div>
                       </form>
                     </div>

@@ -46,13 +46,13 @@ class Interviewer extends Model
     }
 
     static public function list() {
-        $interviewers = Interviewer::whereNull('committee_id')->get();
+        $interviewers = Interviewer::whereNull('committee_id')->with('reg.user', 'committee', 'interviews')->get();
         $list = array();
         foreach ($interviewers as $interviewer)
         {
             $list['公共'][$interviewer->reg_id] = $interviewer->reg->name(). '（' . $interviewer->interviews->whereIn('status', ['assigned', 'arranged'])->count() . '）';
         }
-        $interviewers = Interviewer::whereNotNull('committee_id')->get();
+        $interviewers = Interviewer::whereNotNull('committee_id')->with('reg.user', 'committee', 'interviews')->get();
         foreach ($interviewers as $interviewer)
         {
             $committee = $interviewer->committee->name;

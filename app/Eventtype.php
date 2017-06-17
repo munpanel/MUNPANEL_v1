@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Eventtype extends Model
 {
+    public $incrementing = false;
     protected $fillable = []; //Not editable. Only maunually alter database and source code
 
     public function events() {

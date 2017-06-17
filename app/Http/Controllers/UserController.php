@@ -949,6 +949,9 @@ class UserController extends Controller
         $new->type = 'unregistered';
         $new->enabled = 1;
         $new->save();
+        $regs = Reg::where('conference_id', 3)->whereIn('type', ['delegate', 'volunteer'])->whereNull('accomodate')->get();
+        foreach ($regs as $reg)
+            $reg->user->sendSMS('由于我们的疏忽，先前未向您询问您的住宿意向及室友意向，烦请您访问 https://bjmun.munpanel.com/ 根据系统提示补填信息，感谢您的理解与配合。[BJMUNSS 2017]');
         $reg1 = Reg::current();
         $reg1->enabled = false;
         $reg1->save();
@@ -1629,9 +1632,16 @@ return view('blank',['testContent' => $js, 'convert' => false]);
             Auth::logout();
             return redirect('/login');
         }
+        if ($request->reg == 'new') {
+            $reg = Reg::current()->regs()->where('enabled', true)->where('conference_id', Reg::currentConferenceID())->where('type', 'unregistered')->first();
+            if (!is_object($reg))
+                $reg = Reg::create(['conference_id' => Reg::currentConferenceID(), 'user_id' => Auth::id(), 'type' => 'unregistered', 'enabled' => true]);
+            $reg->login(true);
+            return redirect('/home');
+        }
         $reg = Reg::findOrFail($request->reg);
         $target = '/home';
-        if ($reg->user_id != Auth::user()->id)
+        if ($reg->user_id != Auth::id())
         {
             if (is_object(Reg::current()))
             {

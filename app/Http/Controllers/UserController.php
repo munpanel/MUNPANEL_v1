@@ -1633,7 +1633,7 @@ return view('blank',['testContent' => $js, 'convert' => false]);
             return redirect('/login');
         }
         if ($request->reg == 'new') {
-            $reg = Reg::current()->regs()->where('enabled', true)->where('conference_id', Reg::currentConferenceID())->where('type', 'unregistered')->first();
+            $reg = Auth::user()->regs()->where('enabled', true)->where('conference_id', Reg::currentConferenceID())->where('type', 'unregistered')->first();
             if (!is_object($reg))
                 $reg = Reg::create(['conference_id' => Reg::currentConferenceID(), 'user_id' => Auth::id(), 'type' => 'unregistered', 'enabled' => true]);
             $reg->login(true);

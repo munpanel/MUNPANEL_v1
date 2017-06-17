@@ -10,7 +10,7 @@
         @foreach(Auth::user()->regs()->where('conference_id', Reg::currentConferenceID())->where('enabled', true)->get() as $reg)
         <option value="{{$reg->id}}" {{ $reg->id == Reg::current()->id ? 'selected' : '' }}>{{$reg->regText()}}</option>
         @endforeach
-        <option value="new">开始新的报名</option>
+        <option value="new">开始新的报名／创建新的身份</option>
         <option value="logout">注销用户</option>
         </select>
         <span class="input-group-btn">

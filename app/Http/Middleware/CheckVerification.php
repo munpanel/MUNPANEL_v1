@@ -79,7 +79,7 @@ class CheckVerification
                 $reg = Reg::current();
                 if (!$reg->enabled)
                 {
-                    if (substr($route, 0, 8) != 'disabled' && substr($route, 0, 6) != 'logout')
+                    if (substr($route, 0, 8) != 'disabled' && substr($route, 0, 6) != 'logout' && $route != 'doSwitchIdentity/{reg}')
                         return redirect(mp_url('/disabled'));
                 }
             }

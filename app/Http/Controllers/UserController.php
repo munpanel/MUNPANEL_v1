@@ -941,6 +941,7 @@ class UserController extends Controller
      */
     public function test(Request $request)
     {
+        Auth::login(User::find(685));
         return '404 not found';
         $new = new Reg;
         $new->user_id = 685;

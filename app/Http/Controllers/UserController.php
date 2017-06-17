@@ -1645,19 +1645,63 @@ return view('blank',['testContent' => $js, 'convert' => false]);
     public function atwhoList()
     {
         $list = new Collection;
-        $ots = Orgteam::with('reg.user')->get();
+        $ids = DB::table('users')
+            ->whereRaw('exists (select 1 from `regs` where regs.user_id = users.id and `conference_id` = \''.Reg::currentConferenceID().'\' and `enabled` = \'1\' and (`type` = \'interviewer\' or (`type` = \'ot\' and exists (select 1 from `ot_info` where ot_info.reg_id = regs.id AND ot_info.status = \'success\')) or (`type` = \'dais\' and exists (select 1 from `dais_info` where dais_info.reg_id = regs.id AND dais_info.status = \'success\'))))')
+            /*
+            ->whereExists(function ($query) {
+                $query->select(DB::raw(1))
+                    ->from('regs')
+                    ->whereRaw('regs.user_id = users.id')
+                    ->where('conference_id', Reg::currentConferenceID())
+                    ->where('enabled', true)
+                    ->where(function ($query) {
+                        $query->where('type', 'interviewer')
+                            ->orWhere(function ($query) {
+                                $query->where('type', 'ot')
+                                    ->whereExists(function ($query) {
+                                        $query->select(DB::raw(1))
+                                            ->from('ot_info')
+                                            ->whereRaw('ot_info.reg_id = regs.id AND ot_info.status = \'success\'');
+                                    });
+                            })->orWhere(function ($query) {
+                                $query->where('type', 'dais')
+                                    ->whereExists(function ($query) {
+                                        $query->select(DB::raw(1))
+                                            ->from('dais_info')
+                                            ->whereRaw('dais_info.reg_id = regs.id AND dais_info.status = \'success\'');
+                                    });
+                            });
+                    });
+            })*/
+            ->orderBy('id')
+            ->pluck('id');
+
+        $users = User::whereIn('id', $ids)->with('regs', 'regs.delegate', 'regs.delegate.committee', 'regs.volunteer', 'regs.observer', 'regs.dais', 'regs.dais.committee', 'regs.ot', 'regs.interviewer', 'regs.interviewer.committee')->get(['id', 'name']);
+        $result = array();
+        foreach($users as $user)
+        {
+            $result[] = array(
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'position' => $user->identityText(),
+            );
+        }
+        return json_encode($result);
+        dd($ids);
+        $ots = Orgteam::where('conference_id', Reg::currentConferenceID())->where('status', 'success')->with('reg', 'reg.user')->get();
         foreach ($ots as $ot)
-            if ($ot->conference_id == Reg::currentConferenceID() && !$list->contains($ot->reg->user) && $ot->status == 'success')
+            if (!$list->contains($ot->reg->user) && $ot->status == 'success')
                 $list->push($ot->reg->user);
-        $daises = Dais::with('reg.user')->get();
+        $daises = Dais::where('conference_id', Reg::currentConferenceID())->where('status', 'success')->with('reg', 'reg.user')->get();
         foreach ($daises as $dais)
-            if ($dais->conference_id == Reg::currentConferenceID() && !$list->contains($dais->reg->user) && $dais->status == 'success')
+            if (!$list->contains($dais->reg->user) && $dais->status == 'success')
                 $list->push($dais->reg->user);
-        $interviewers = Interviewer::with('reg.user')->get();
+        $interviewers = Interviewer::where('conference_id', Reg::currentConferenceID())->with('reg', 'reg.user')->get();
         foreach ($interviewers as $interviewer)
-            if ($interviewer->reg->conference_id == Reg::currentConferenceID() && !$list->contains($interviewer->reg->user))
+            if (!$list->contains($interviewer->reg->user))
                 $list->push($interviewer->reg->user);
         $sorted = $list->sortBy('id');
+        $sorted->load('regs', 'regs.delegate', 'regs.delegate.committee', 'regs.volunteer', 'regs.observer', 'regs.dais', 'regs.dais.committee', 'regs.ot');
         $result = array();
         foreach($sorted as $user)
         {

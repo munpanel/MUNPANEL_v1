@@ -104,7 +104,11 @@ class User extends Authenticatable
     }
 
     public function identityText() {
-        $regs = $this->regs()->where('conference_id', Reg::currentConferenceID())->get();
+        if ($this->relationLoaded('regs'))
+            $regs = $this->regs->where('conference_id', Reg::currentConferenceID());
+        else
+            $regs = $this->regs()->where('conference_id', Reg::currentConferenceID())->get();
+        //$regs = $regs->where('conference_id', Reg::currentConferenceID())->get();
         $result = "";
         $prefix = "";
         foreach ($regs as $reg)

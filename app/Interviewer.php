@@ -23,6 +23,10 @@ class Interviewer extends Model
         return $this->belongsTo('App\reg');
     }
 
+    public function conference() {
+        return $this->belongsTo('App\Conference');
+    }
+
     public function committee() {
         return $this->belongsTo('App\Committee');
     }

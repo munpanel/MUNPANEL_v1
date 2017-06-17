@@ -48,6 +48,11 @@ class Conference extends Model
         return $this->hasMany('App\Dais');
     }
 
+    public function interviewers() 
+    {
+        return $this->hasMany('App\Interviewer');
+    }
+
     public function forms()
     {
         return $this->hasMany('App\Form');

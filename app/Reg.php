@@ -700,6 +700,16 @@ class Reg extends Model
             $price += $orderItem['subtotal'];
             $orderContent[$rowId] = $orderItem;
         }
+        if (count($orderContent) == 0)
+        {
+            $specific = $this->specific();
+            if (is_object($specific))
+            {
+                $specific->status = 'paid';
+                $specific->save();
+            }
+            return;
+        }
         $order = new Order;
         $order->id = date("YmdHis").generateID(6);
         $order->user_id = $this->user_id;

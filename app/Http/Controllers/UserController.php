@@ -942,6 +942,13 @@ class UserController extends Controller
     public function test(Request $request)
     {
         return '404 not found';
+        $new = new Reg;
+        $new->user_id = 685;
+        $new->conference_id = 3;
+        $new->school_id = null;
+        $new->type = 'unregistered';
+        $new->enabled = 1;
+        $new->save();
         $reg1 = Reg::current();
         $reg1->enabled = false;
         $reg1->save();

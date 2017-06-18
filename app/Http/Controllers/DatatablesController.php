@@ -224,7 +224,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
                 $regs = $regs->whereIn('type', ['delegate', 'volunteer', 'observer']);
             if ($user->type == 'teamadmin')
                 $regs = $regs->where('school_id', $user->school_id);
-            $regs = $regs->with(['user' => function($q) {$q->select('name', 'id');}])->with('school')->get(['id', 'user_id', 'type', 'enabled']);
+            $regs = $regs->with(['user' => function($q) {$q->select('name', 'id');}])->with(['school' => function($q) {$q->select('name', 'id');}])->get(['id', 'user_id', 'school_id', 'type', 'enabled', 'reginfo']);
             $regs->where('type', 'delegate')->load('delegate', 'delegate.committee', 'delegate.delegategroups', 'delegate.nation', 'delegate.interviews', 'delegate.assignedNations');
             $regs->where('type', 'volunteer')->load('volunteer');
             $regs->where('type', 'observer')->load('observer');
@@ -295,7 +295,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
                         'id' => $reg->id,
                         'name' => $reg->user->name,
                         'committee' => isset($reg->specific()->committee) ? $reg->specific()->committee->name : (in_array($reg->type, ['dais', 'delegate', 'observer']) ? '未指定' : '不适用'),
-                        'partner' => $type,
+                        'type' => $type,
                         'status' => $status,
                     ]);
                 } else {
@@ -303,9 +303,10 @@ class DatatablesController extends Controller //To-Do: Permission Check
                         'details' => $detail,
                         'id' => $reg->id,
                         'name' => $reg->user->name,
-                        'school' => isset($reg->specific()->delegategroups) ? $reg->specific()->scopeDelegateGroup(true, 5) : '无',
+                        'school' => $reg->schoolName(),
+                        'group' => isset($reg->specific()->delegategroups) ? $reg->specific()->scopeDelegateGroup(true, 3) : '无',
                         'committee' => isset($reg->specific()->committee) ? $reg->specific()->committee->name : (in_array($reg->type, ['dais', 'delegate', 'observer']) ? '未指定' : '不适用'),
-                        'partner' => $type,
+                        'type' => $type,
                         'status' => $status,
                     ]);
                 }

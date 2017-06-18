@@ -7,9 +7,10 @@ $(document).ready(function() {
             {data: 'details', name: 'details', orderable: false},
             {data: 'id', name: 'id', orderable: true},
             {data: 'name', name: 'name', orderable: false},
-            {data: 'partner', name: 'partner', orderable: true},
-            {data: 'committee', name: 'committee', orderable: true},
             {data: 'school', name: 'school', orderable: true},
+            {data: 'type', name: 'type', orderable: true},
+            {data: 'committee', name: 'committee', orderable: true},
+            {data: 'group', name: 'group', orderable: false},
             {data: 'status', name: 'status', orderable: true}
         ],
         fnInitComplete: function(oSettings, json) {

@@ -674,8 +674,22 @@ class Reg extends Model
         else
         {
             $regInfo = json_decode($this->reginfo);
-            return $regInfo->{$keys[0]}->{$keys[1]};
+            if (is_object($regInfo) && is_object($regInfo->{$keys[0]}))
+                return $regInfo->{$keys[0]}->{$keys[1]};
+            else
+                return null;
         }
+    }
+
+    public function schoolName()
+    {
+        $school = $this->school;
+        if (is_object($school))
+            return '(团队) '.$school->name;
+        $school = $this->getInfo('personinfo.school'); 
+        if (isset($school))
+            return '(个人) '.$school;
+        return '无';
     }
 
     public function createConfOrder()

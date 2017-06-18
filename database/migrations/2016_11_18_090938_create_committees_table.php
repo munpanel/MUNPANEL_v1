@@ -32,6 +32,7 @@ class CreateCommitteesTable extends Migration
             $table->enum('topic_sel', ['Topic0', 'Topic1', 'Unchosen']);
             $table->enum('language', ['ChineseS', 'English']);
             $table->string('rule');
+            $table->boolean('is_dual')->default(false);
             $table->integer('capacity')->unsigned();
             $table->integer('father_committee_id')->unsigned()->nullable();
             $table->integer('delegategroup_id')->unsigned()->nullable();

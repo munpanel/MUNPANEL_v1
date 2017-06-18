@@ -12,6 +12,8 @@
 namespace App;
 
 use Illuminate\Cache\TaggableStore;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 use InvalidArgumentException;
@@ -294,17 +296,19 @@ class Reg extends Model
         }
     }
 
-    public function assignRoommateByName()
+    public function assignRoommateByName($option = null)
     {
-        if (!$this->accomodate) return $this->user->name . "&#09;0000&#09;未申请住宿";
+        if ($option == null)
+            $option = json_decode('{"one_empty":"autofill","mf_roommate":"false"}');
+        $myname = $this->user->name;
+        if (!$this->accomodate) return "$myname &#09;0000&#09;未申请住宿";
         $this->roommate_user_id = null;
-        $roommate_name = json_decode($this->reginfo)->conference->roommatename;
+        $roommate_name = $this->getInfo('conference.roommatename');
         if (!empty($roommate_name))
         {
-            $myname = $this->user->name;
             // 对于带空格的roommatename值，在此if表达式外增加foreach表达式以逐一处理
             $roommates = User::where('name', $roommate_name)->get()->pluck(['id']);
-            $roommates_reg = Reg::whereIn('user_id', $roommates)->where('conference_id', Reg::currentConferenceID())->get();
+            $roommates_reg = Reg::whereIn('user_id', $roommates)->where('conference_id', Reg::currentConferenceID())->whereIn('type', ['ot', 'dais', 'delegate', 'observer', 'volunteer'])->get();
             $count = $roommates_reg->count();
             if ($count == 0)
             {
@@ -357,16 +361,28 @@ class Reg extends Model
                 $this->addEvent('roommate_auto_fail', $notes);
                 return "$myname &#09;$roommate->id &#09;室友姓名$roommate_name&#09;未申请住宿";
             }
-            $typedroommate_name = json_decode($roommate->reginfo)->conference->roommatename;
-            if (empty($typedroommate_name))                          // TODO: 如果对方未填室友，自动补全
-                $typedroommate_name = $myname;
+            $typedroommate_name = $roommate->getInfo('conference.roommatename');
+            if (empty($typedroommate_name))                          // 如果对方未填室友，自动补全
+            {
+                if ($option->one_empty == 'autofill')
+                {
+                    $typedroommate_name = $myname;
+                    $roommate->updateInfo('conference.roommatename', $myname);
+                }
+                else
+                {
+                    $notes = "{\"reason\":\"$roommate_name" . "未填写室友姓名\"}";
+                    $this->addEvent('roommate_auto_fail', $notes);
+                    return "$myname &#09;$roommate->id &#09;室友姓名$roommate_name&#09;对方未填写室友姓名";
+                }
+            }
             if ($typedroommate_name != $myname) //continue;}           // 排除多角室友
             {
                 $notes = "{\"reason\":\"$roommate_name" . "申报的室友并非$myname" . "本人\"}";
                 $this->addEvent('roommate_auto_fail', $notes);
                 return "$myname &#09;$roommate->id &#09;室友姓名$roommate_name&#09;多角室友";
             }
-            if ($roommate->gender != $this->gender)                        // 排除男女混宿
+            if (($roommate->gender != $this->gender) && !$option->mf_roommate)                        // 排除男女混宿
             {
                 $notes = "{\"reason\":\"$roommate_name" . "与报名者为异性\"}";
                 $this->addEvent('roommate_auto_fail', $notes);
@@ -377,8 +393,53 @@ class Reg extends Model
             $this->addEvent('roommate_auto_success', '');
             $roommate->roommate_user_id = $this->user->id;
             $roommate->save();
-//            return $myname  ."&#09;".$roommate->id . "&#09;室友姓名$roommate_name&#09;成功";
+            return $myname  ."&#09;".$roommate->id . "&#09;室友姓名$roommate_name&#09;成功";
         }
+    }
+
+    public function assignRoommateByRid($rid, $admin = false)
+    {
+        $reg = Reg::findOrFail($rid);
+        if (!empty($reg->roommate_user_id))
+            return "目标已有室友分配！";
+        $this->roommate_user_id = $reg->user->id;
+        $name = $reg->user->name;
+        $this->save();
+        if ($admin == true)
+            $this->addEvent('roommate_submitted', '{"name":"'.Auth::user()->name."\",\"roommate\":\"$name\"}");
+        else
+            $this->addEvent('roommate_manual_success', '');
+        $reg->roommate_user_id = $this->user->id;
+        $name = $this->user->name;
+        $reg->save();
+        if ($admin == true)
+            $reg->addEvent('roommate_submitted', '{"name":"'.Auth::user()->name."\",\"roommate\":\"$name\"}");
+        else
+            $reg->addEvent('roommate_manual_success', '');
+        return "success";
+    }
+
+    public function assignRoommateByCode($id)
+    {
+        $rid = DB::table('linking_codes')->where('id', $id)->where('type', 'roommate')->pluck('reg_id');
+        if ($rid->count() == 0)
+            return "配对码错误！";
+        $reg = Reg::findOrFail($rid[0]);
+        $result = $reg->assignRoommateByRid($this->id);
+        if ($result == 'success')
+            DB::table('linking_codes')->where('id', $id)->where('type', 'roommate')->delete();
+        return $result;
+    }
+
+    public function generateLinkCode()
+    {
+        $code = generateID(8);
+        if (DB::table('linking_codes')->where('type', 'roommate')->where('reg_id', $this->id)->count() > 0)
+            DB::table('linking_codes')->where('type', 'roommate')->where('reg_id', $this->id)->delete();
+        DB::table('linking_codes')->insert(['id' => $code, 'type' => 'roommate', 'reg_id' => $this->id]);
+        if (DB::table('linking_codes')->where('type', 'partner')->where('reg_id', $this->id)->count() > 0)
+            DB::table('linking_codes')->where('type', 'partner')->where('reg_id', $this->id)->delete();
+        DB::table('linking_codes')->insert(['id' => $code, 'type' => 'partner', 'reg_id' => $this->id]);
     }
 
     //Big block of caching functionality.
@@ -674,7 +735,7 @@ class Reg extends Model
         else
         {
             $regInfo = json_decode($this->reginfo);
-            if (is_object($regInfo) && is_object($regInfo->{$keys[0]}))
+            if (is_object($regInfo) && is_object($regInfo->{$keys[0]}) && isset($regInfo->{$keys[0]}->{$keys[1]}))
                 return $regInfo->{$keys[0]}->{$keys[1]};
             else
                 return null;

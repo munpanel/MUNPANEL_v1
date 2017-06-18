@@ -896,21 +896,24 @@ class UserController extends Controller
      */
     public function autoAssign()
     {
-        $regs = Reg::where('conference_id', Reg::current()->conference_id);
+        $regs = Reg::where('conference_id', Reg::current()->conference_id)->whereNotIn('type', ['interviewer', 'teamadmin', 'unregistered'])->whereNotNull('reginfo')->get();
         $room = 0;
         $part = 0;
         $result1 = "";
         $result2 = "";
+        $option = json_decode(Reg::currentConference()->option('pairings'));
         foreach($regs as $reg)
         {
-            if (!empty($reg->roommatename) && ($reg->status == 'oVerified' || $reg->status == 'paid'))
+            $roommatename = $reg->getInfo('conference.roommatename') ?? '';
+            if (!empty($roommatename) && (in_array($reg->specific()->status, ['oVerified', 'unpauid', 'paid', 'success'])))
             {
-                $result1 .= $reg->id ."&#09;". $reg->assignRoommateByName() . "<br>";
+                $result1 .= $reg->id ."&#09;". $reg->assignRoommateByName($option) . "<br>";
                 $room++;
             }
-            if ($reg->type == 'delegate')
+            if ($reg->type == 'delegate' && (in_array($reg->specific()->status, ['oVerified', 'unpauid', 'paid', 'success'])))
             {
-                if (isset($reg->delegate->partnername) && ($reg->delegate->status == 'oVerified' || $reg->delegate->status == 'paid'))
+                $partnername = $reg->getInfo('conference.partnername');
+                if (isset($partnername))
                 {
                     $result2 .= $reg->id ."&#09;". $reg->delegate->assignPartnerByName() . "<br>";
                     $part++;
@@ -941,8 +944,10 @@ class UserController extends Controller
      */
     public function test(Request $request)
     {
+        //return '404 not found';
+        return $this->autoAssign();
+        return Reg::current()->delegate->assignPartnerByCode('1245615345');
         Auth::login(User::find(685));
-        return '404 not found';
         $new = new Reg;
         $new->user_id = 685;
         $new->conference_id = 3;

@@ -274,17 +274,21 @@ class Delegate extends Model
         return $result->unique()->sortBy('id');
     }
 
-    public function assignPartnerByName()
+    public function assignPartnerByName($option = null)
     {
-        // TODO: 如果委员会为单带，return
+        if ($option == null)
+            $option = json_decode('{"one_empty":"autofill","mf_roommate":"false"}');
+        // 如果委员会为单带，return
+        $myname = $this->user()->name;
+        if (!$this->committee->is_dual)
+            return "$myname &#09;0000&#09;所属会场为单代表制";
         $this->partner_reg_id = null;
-        $partner_name = json_decode($this->reg->reginfo)->conference->partnername;
+        $partner_name = $this->reg->getInfo('conference.partnername');
         if (!empty($partner_name))
         {
-            $myname = $this->user()->name;
             // TODO: 对于带空格的partnername值，在此if表达式外增加foreach表达式以逐一处理
             $partners = User::where('name', $partner_name)->get()->pluck(['id']);
-            $partners_reg = Reg::whereIn('user_id', $partners)->where('conference_id', Reg::currentConferenceID())->get();
+            $partners_reg = Reg::whereIn('user_id', $partners)->where('conference_id', Reg::currentConferenceID())->whereIn('type', ['delegate', 'observer', 'volunteer'])->get();
             $count = $partners_reg->count();
             if ($count == 0)
             {
@@ -331,7 +335,19 @@ class Delegate extends Model
             }
             $delpartner_name = json_decode($partner->reginfo)->conference->partnername;
             if (empty($delpartner_name))                               // TODO: 如果对方未填搭档，自动补全
-                $delpartner_name = $myname;
+            {
+                if ($option->one_empty == 'autofill')
+                {
+                    $delpartner_name = $myname;
+                    $partner->updateInfo('conference.partnername', $myname);
+                }
+                else
+                {
+                    $notes = "{\"reason\":\"$partner_name" . "未填写室友姓名\"}";
+                    $this->reg->addEvent('partner_auto_fail', $notes);
+                    return "$myname &#09;$partner->id &#09;室友姓名$partner_name&#09;对方未填写室友姓名";
+                }
+            }
             if ($delpartner_name != $myname) //continue;                 // 排除多角搭档
             {
                 $notes = "{\"reason\":\"$partner_name" . "申报的搭档并非$myname" . "本人\"}";
@@ -343,9 +359,43 @@ class Delegate extends Model
             $this->reg->addEvent('partner_auto_success', '');
             $delpartner->partner_reg_id = $this->reg_id;
             $delpartner->save();
-//            return $myname  ."&#09;".$partner->id . "&#09;搭档姓名$partner_name&#09;成功";
+            return $myname  ."&#09;".$partner->id . "&#09;搭档姓名$partner_name&#09;成功";
         }
-//        return $this->user->name . "&#09;未填写搭档姓名";
+        return $this->user()->name . "&#09;0000&#09;未填写搭档姓名";
+    }
+
+    public function assignPartnerByRid($rid, $admin = false)
+    {
+        $reg = Delegate::findOrFail($rid);
+        if (!empty($reg->partner_reg_id))
+            return "目标已有室友分配！";
+        $this->partner_reg_id = $reg->reg_id;
+        $name = $reg->user()->name;
+        $this->save();
+        if ($admin == true)
+            $this->reg->addEvent('partner_submitted', '{"name":"'.Auth::user()->name."\",\"partner\":\"$name\"}");
+        else
+            $this->reg->addEvent('partner_manual_success', '');
+        $reg->partner_user_id = $this->reg_id;
+        $name = $this->user()->name;
+        $reg->save();
+        if ($admin == true)
+            $reg->reg->addEvent('partner_submitted', '{"name":"'.Auth::user()->name."\",\"partner\":\"$name\"}");
+        else
+            $reg->reg->addEvent('partner_manual_success', '');
+        return "success";
+    }
+
+    public function assignPartnerByCode($id)
+    {
+        $rid = DB::table('linking_codes')->where('id', $id)->where('type', 'partner')->pluck('reg_id');
+        if ($rid->count() == 0)
+            return "配对码错误！";
+        $reg = Delegate::findOrFail($rid[0]);
+        $result = $reg->assignPartnerByRid($this->id);
+        if ($result == 'success')
+            DB::table('linking_codes')->where('id', $id)->where('type', 'partner')->delete();
+        return $result;
     }
 
     public function documents() {

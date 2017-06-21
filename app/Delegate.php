@@ -343,9 +343,9 @@ class Delegate extends Model
                 }
                 else
                 {
-                    $notes = "{\"reason\":\"$partner_name" . "未填写室友姓名\"}";
+                    $notes = "{\"reason\":\"$partner_name" . "未填写搭档姓名\"}";
                     $this->reg->addEvent('partner_auto_fail', $notes);
-                    return "$myname &#09;$partner->id &#09;室友姓名$partner_name&#09;对方未填写室友姓名";
+                    return "$myname &#09;$partner->id &#09;搭档姓名$partner_name&#09;对方未填写搭档姓名";
                 }
             }
             if ($delpartner_name != $myname) //continue;                 // 排除多角搭档

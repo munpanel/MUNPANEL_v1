@@ -944,9 +944,36 @@ class UserController extends Controller
      */
     public function test(Request $request)
     {
-        //return '404 not found';
+        return '404 not found';
         return $this->autoAssign();
         return Reg::current()->delegate->assignPartnerByCode('1245615345');
+        $ots = Orgteam::where('status', 'oVerified')->where('conference_id', 3)->with('reg')->get();
+        $role = Role::find(3);
+        foreach($ots as $ot)
+        {
+            $ot->status = 'success';
+            $ot->position = '会务团队成员';
+            $ot->save();
+            $ot->reg->attachRole($role);
+        }
+        $ots = Orgteam::where('status', '!=', 'oVerified')->where('status', '!=', 'success')->where('conference_id', 3)->with('reg')->get();
+        foreach($ots as $ot)
+        {
+            $reg = $ot->reg;
+            $reg->enabled = false;
+            $reg->save();
+        }
+        $ret = '';
+        $users = User::with('orders')->get();
+        foreach($users as $user)
+        {
+            if ($user->orders()->where('status', 'unpaid')->count() > 0)
+            {
+                $user->sendSMS('您尚有'.$user->orders()->where('status', 'unpaid')->count().'笔未支付订单，请尽快前往 https://portal.munpanel.com/store/orders 完成支付。推荐使用系统自动生成的二维码通过微信或支付宝线上缴费，付款完成自动确认缴费状态，无需等待；您亦可使用会议指定的其他缴费方式并等待手动确认。感谢您的理解与支持，祝您开会愉快。');
+                $ret .= $user->id.' '.$user->name. ' ' . $user->orders()->where('status', 'unpaid')->count().'<br>';
+            }
+        }
+        return $ret;
         Auth::login(User::find(685));
         $new = new Reg;
         $new->user_id = 685;
@@ -969,17 +996,7 @@ class UserController extends Controller
         return Cache::tags('orders')->get('test');
         $satoshi = Reg::find(4166);
         return $satoshi->assignRoommateByName();
-        $ret = '';
-        $users = User::with('orders')->get();
-        foreach($users as $user)
-        {
-            if ($user->orders()->where('status', 'unpaid')->count() > 0)
-            {
-                $user->sendSMS('您尚有'.$user->orders()->where('status', 'unpaid')->count().'笔未支付订单，请尽快前往 https://portal.munpanel.com/store/orders 完成支付。您可通过系统中的二维码通过微信或支付宝线上缴费，付款完成自动确认缴费状态；您亦可使用会议指定的其他缴费方式并等待手动确认。感谢您的理解与支持，祝您开会愉快。');
-                $ret .= $user->id.' '.$user->name. ' ' . $user->orders()->where('status', 'unpaid')->count().'<br>';
-            }
-        }
-        return $ret;
+
         $dais = Dais::where('status', 'fail')->get();
         foreach ($dais as $d)
         {

@@ -19,9 +19,10 @@ function regStatSingle($committee)
 {
     $capacity = $committee->capacity;
     $counts = $committee->allDelegates()->count();
+    $counts_real = $committee->allDelegates()->whereIn('status', ['sVerified', 'oVerified', 'paid'])->count();
     $result = '<li class="dd-item" data-id="10"><div class="dd-handle">' . $committee->name . '<span class="pull-right">定员: ' . $capacity . '&emsp;';
     if ($counts > $capacity) $result .= '<strong class="text-danger">';
-    $result .= '报名人数: ' . $counts;
+    $result .= '报名人数: ' . $counts_real . '('.$counts.')';
     if ($counts > $capacity) $result .= '</strong>';
     $result .= '</span></div>';
     if ($committee->childCommittees->count() > 0)

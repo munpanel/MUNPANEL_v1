@@ -72,6 +72,9 @@ class HomeController extends Controller
                 'vol' => Reg::currentConference()->volunteers->count(),
                 'obs' => Reg::currentConference()->observers->count(),
                 'del' => Reg::currentConference()->delegates->count(),
+                'vol_real' => Reg::currentConference()->volunteers->whereIn('status', ['sVerified', 'oVerified', 'paid'])->count(),
+                'obs_real' => Reg::currentConference()->observers->whereIn('status', ['sVerified', 'oVerified', 'paid'])->count(),
+                'del_real' => Reg::currentConference()->delegates->whereIn('status', ['sVerified', 'oVerified', 'paid'])->count(),
                 'dais' => Reg::currentConference()->dais->count(),
                 'hasChildComm' => $hasChildComm,
                 'initialModal' => $request->initmodal

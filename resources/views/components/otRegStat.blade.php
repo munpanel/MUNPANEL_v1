@@ -1,5 +1,5 @@
 <div class="panel">
-  <div class="panel-heading">会议报名情况<span class="pull-right">代表总数: {{$del}}</span>
+  <div class="panel-heading">会议报名情况<span class="pull-right">代表总数: {{$del_real}}({{$del}})</span>
     @if ($hasChildComm)
     <button class="btn btn-xs btn-white m-l active" id="nestable-menu" data-toggle="class:show">
       <i class="fa fa-plus text"></i>
@@ -10,6 +10,6 @@
     @endif
   </div>
   <div class="panel-body">
-    {!!regStat($committees, $obs, $vol)!!}
+    {!!regStat($committees, $obs_real.'('.$obs.')', $vol_real.'('.$vol.')')!!}
   </div>
 </div>

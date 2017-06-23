@@ -71,7 +71,8 @@ class Conference extends Model
             return $this->_options[$key];
         if (is_object($this->options()->where('key', $key)->first()))
             $this->_options[$key] = $this->options()->where('key', $key)->first()->value;
-        return $this->_options[$key];
+        if (isset($this->_options[$key]))
+            return $this->_options[$key];
         return null;
     }
 }

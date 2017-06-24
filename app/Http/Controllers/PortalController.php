@@ -318,6 +318,8 @@ class PortalController extends Controller
             $conference = Conference::find($conference_id);
             if (!is_object($conference))
                 return '会议不存在！';
+            if ($conferenece->option('group_disabled'))
+		return 'Team disabled in this conference!';
         } else
             $conference_id = null;
         //if (!in_array($conference->status, ['prep', 'reg']))

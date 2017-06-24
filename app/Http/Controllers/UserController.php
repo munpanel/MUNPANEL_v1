@@ -945,6 +945,7 @@ class UserController extends Controller
     public function test(Request $request)
     {
         return '404 not found';
+        Reg::find(2924)->createConfOrder();
         $ret = '';
         $users = User::with('orders')->get();
         foreach($users as $user)
@@ -1586,6 +1587,8 @@ return view('blank',['testContent' => $js, 'convert' => false]);
      */
     public function verifyTelModal(Request $request, $method, $tel)
     {
+        if (!isset($tel))
+            return view('errorModal', ['msg' => '您输入的手机号码为空，或您的浏览器暂不兼容 intl-tel-input 组件。推荐使用 Google Chrome。']);
         $user = Auth::user();
         $oldTime = $request->session()->get('codeTime');
         $nowTime = time();
@@ -1601,8 +1604,8 @@ return view('blank',['testContent' => $js, 'convert' => false]);
         {
             if (!$user->sendSMS('感谢您使用 MUNPANEL 系统。您的验证码为'.$code.'。'))
                 return view('errorModal', ['msg' => '发送短信出错！请检查您的电话号码是否正确。']);
+            //SmsController::send([$tel], '尊敬的'.$user->name.'，感谢您使用 MUNPANEL 系统。您的验证码为'.$code.'。');
         }
-        //SmsController::send([$tel], '尊敬的'.$user->name.'，感谢您使用 MUNPANEL 系统。您的验证码为'.$code.'。');
         else if ($method == 'call')
         {
             if(!SmsController::call($tel, $code))
@@ -1779,6 +1782,9 @@ return view('blank',['testContent' => $js, 'convert' => false]);
 
     public function doSelectTeam(Request $request)
     {
+        $conf = Reg::currentConference();
+        if ($conf->option('group_disabled'))
+            return 'Team disabled in this conference.';
         $reg = Reg::current();
         $team = School::findOrFail($request->team);
         if (is_object($reg->school))
@@ -1808,9 +1814,12 @@ return view('blank',['testContent' => $js, 'convert' => false]);
             return 'error';
         if (!$team->isAdmin())
             return 'Permission Denied!';
+        $conf = Reg::currentConference();
+        if ($conf->option('group_disabled'))
+            return 'Team disabled in this conference.';
         $newreg = new Reg;
         $newreg->user_id = $reg->user_id;
-        $newreg->conference_id = Reg::currentConferenceID();
+        $newreg->conference_id = $conf->id;
         $newreg->type = 'teamadmin';
         $newreg->enabled = 1;
         $newreg->school_id = $team->id;
@@ -1818,7 +1827,7 @@ return view('blank',['testContent' => $js, 'convert' => false]);
         $teamadmin = new Teamadmin;
         $teamadmin->reg_id = $newreg->id;
         $teamadmin->school_id = $team->id;
-        $teamadmin->conference_id = Reg::currentConferenceID();
+        $teamadmin->conference_id = $conf->id;
         $teamadmin->save();
         return redirect(mp_url('/doSwitchIdentity/'.$newreg->id));
     }

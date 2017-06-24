@@ -65,7 +65,7 @@ Route::group(['domain' => config('munpanel.portalDomain')], function () {
     Route::get('/verifyEmail', 'HomeController@verifyEmail')->name('verifyEmail');
     Route::get('/verifyTel', 'HomeController@verifyTel')->name('verifyTel');
     Route::get('/verifyEmail/{email}/{token}', 'UserController@doVerifyEmail');
-    Route::get('/verifyTel.modal/{method}/{tel}', 'UserController@verifyTelModal');
+    Route::get('/verifyTel.modal/{method}/{tel?}', 'UserController@verifyTelModal');
     Route::post('/verifyTel', 'UserController@doVerifyTel');
     Route::get('/verifyEmail/resend', 'UserController@resendRegMail');
 

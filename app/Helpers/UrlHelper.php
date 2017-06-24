@@ -39,22 +39,22 @@ function cdn_url($url, $update = 0) {
     $url = \Config::get('cdn.prefix').'/'.$url;
     if ($update == 1) { // Do update resources for both Akamai and ChinaNetCenter
         //Akamai
-        $rs_client = new \OpenCloud\Rackspace(\OpenCloud\Rackspace::US_IDENTITY_ENDPOINT, array(
+        /*$rs_client = new \OpenCloud\Rackspace(\OpenCloud\Rackspace::US_IDENTITY_ENDPOINT, array(
             'username' => \Config::get('cdn.rackspace_username'),
             'apiKey'   => \Config::get('cdn.rackspace_key')
         ));
         $rs_service = $rs_client->cdnService();
         $akamai = $rs_service->getService(\Config::get('cdn.rackspace_sid'));
-        $akamai->purgeAssets($url);
+        $akamai->purgeAssets($url);*/
         //ChinaNetCenter
         $qiniu_auth = new \Qiniu\Auth(\Config::get('cdn.qiniu_ak'), \Config::get('cdn.qiniu_sk'));
         $bucketMgr = new \Qiniu\Storage\BucketManager($qiniu_auth);
         $bucketMgr->delete(\Config::get('cdn.qiniu_bucket'), $url);
     }
-    if (geoip(\Request::ip())->iso_code == 'CN') //ChinaNetCenter
+    //if (geoip(\Request::ip())->iso_code == 'CN') //ChinaNetCenter
         $domain = \Config::get('cdn.qiniu_domain');
-    else //Akamai
-        $domain = \Config::get('cdn.rackspace_domain');
+    //else //Akamai
+    //    $domain = \Config::get('cdn.rackspace_domain');
     return 'https://'.$domain.'/'.$url;
 }
 

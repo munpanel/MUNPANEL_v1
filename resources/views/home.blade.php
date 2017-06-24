@@ -112,6 +112,7 @@ if (Reg::current()->type == 'delegate' && isset(Reg::current()->delegate))
               @endif
             </div>
             <div class="col-lg-4">
+              @unless (Reg::currentConference()->option('group_disabled'))
               @if (is_object(Reg::current()->school))
               @if (Reg::current()->school->isAdmin() && (!Reg::current()->school->isAdmin(Reg::currentConferenceID())))
               <section class="panel text-center bg-success dker">
@@ -158,6 +159,7 @@ if (Reg::current()->type == 'delegate' && isset(Reg::current()->delegate))
                   </div>
                </section>
                @endif
+               @endunless
                @if (Auth::user()->orders()->where('conference_id', Reg::currentConferenceID())->where('status', 'unpaid')->count() > 0)
               <section class="panel text-center bg-warning dker">
                   <div class="panel-body">

@@ -5,11 +5,12 @@
             <li class="active"><a href="#choose" class="pay-tabs" data-toggle="tab" aria-expanded="true">请选择支付方式</a></li>
             <li><a href="#" class="pay-tabs tee-tabs" data-toggle="tab" channel="alipay" aria-expanded="false">支付宝</a></li>
             <li><a href="#" class="pay-tabs tee-tabs" data-toggle="tab" channel="wxpay" aria-expanded="false">微信支付</a></li>
+            <li><a href="#jdpay" class="pay-tabs" data-toggle="tab" aria-expanded="false">京东钱包</a></li>
             @php
             $i = 0;
             @endphp
             @foreach($custom as $method)
-            <li><a href="#customMethod_{{$i++}}" class="pay" data-toggle="tab"  aria-expanded="false">{{$method['name']}}</a></li>
+            <li><a href="#customMethod_{{$i++}}" class="pay-tabs" data-toggle="tab"  aria-expanded="false">{{$method['name']}}</a></li>
             @endforeach
           </ul>
         </header>
@@ -18,7 +19,7 @@
           <div class="modal-body">
             <div class="row">
               <div class="col-sm-12 b-r">
-                <div class="alert alert-info"><b>请选择支付方式。如使用微信、支付宝，系统可自动确认缴费状态。</b></div>
+                <div class="alert alert-info"><b>请选择支付方式。如使用微信、支付宝、京东钱包，系统可自动确认缴费状态。</b></div>
               </div>
             </div>
           </div>          
@@ -29,6 +30,17 @@
               <div class="col-sm-12 b-r">
                 <center><div class="alert alert-info"><b>请等待下方二维码加载成功后扫描付款</b></div>
                 <div id="native"></div></center>
+              </div>
+            </div>
+          </div>          
+        </section>
+        <section class="tab-pane" id="jdpay">
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-sm-12 b-r">
+                <center><div class="alert alert-info"><b>请在手机端打开此页面并点击以下按钮</b></div>
+                <button id="jdPayButton" class="btn btn-sm btn-success">点此支付（手机）</button>
+                </center>
               </div>
             </div>
           </div>          
@@ -94,6 +106,18 @@ var client_id = "{{Config::get('teegon.client_id')}}";
         $.ajax({
             url: "{{route('payInfo')}}",
             data: "_token={{ csrf_token() }}&oid={{$id}}&channel="+$(e.target).attr('channel'),
+            method:'post'
+        }).done(tee.charge);
+        if (typeof payajax_start !== undefined)
+        {
+            payajax_start = true;
+            checkStatus();
+        }
+    });
+    $('#jdPayButton').click(function(e) {
+        $.ajax({
+            url: "{{route('payInfo')}}",
+            data: "_token={{ csrf_token() }}&oid={{$id}}&channel=jdh5_pinganpay",
             method:'post'
         }).done(tee.charge);
         if (typeof payajax_start !== undefined)

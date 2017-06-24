@@ -945,6 +945,46 @@ class UserController extends Controller
     public function test(Request $request)
     {
         return '404 not found';
+        if (($handle = fopen("/var/www/munpanel/app/test.csv", "r")) !== FALSE) {
+            $resp = "test";
+            while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+                $reg = Reg::find($data[0]);
+                if ($reg->conference_id == 3)
+                {
+                    $specific = $reg->specific();
+                    if ($specific->status == 'oVerified')
+                    {
+                        $order = $reg->order;
+                        if (is_object($order))
+                        {
+                            if ($order->status != 'unpaid')
+                                $resp .= $data[0].' '.$order->status.'<br>';
+                            else
+                            {
+                                $order->status = 'cancelled';
+                                $order->save();
+                                $reg->order_id = null;
+                                $specific->status = 'sVerified';
+                                $reg->save();
+                                $specific->save();
+                                $resp .= $data[0].' reverted (with order)<br>';
+                            }
+                        } else
+                        {
+                            $specific->status = 'sVerified';
+                            $specific->save();
+                            $resp .= $data[0].' reverted (without order)<br>';
+                        }
+                    }
+                    else
+                        $resp .= $data[0].' not verified '.$specific->status.'<br>';
+                }
+                else
+                    $resp .= $data[0].' not 3<br>';
+            }
+            fclose($handle);
+            return $resp;
+        }
         $ret = '';
         $dels = Delegate::where('seat_locked', true)->with('reg')->get();
         foreach ($dels as $del)

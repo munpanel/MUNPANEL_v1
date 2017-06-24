@@ -621,7 +621,7 @@ class HomeController extends Controller
         $assignment = Assignment::findOrFail($id);
         if (Reg::current()->type != 'ot' && Reg::current()->type != 'dais' && (!$assignment->belongsToDelegate(Reg::currentID())))
             return "ERROR"; //TO-DO: Permission check for ot and dais (for downloading handins)
-        if (Reg::current()->type == 'ot') //To-Do: Dais
+        if (in_array(Reg::current()->type, ['ot', 'dais']))
             $handins = $assignment->handins;
         else if ($assignment->subject_type == 'nation')
             $handin = Handin::where('assignment_id', $id)->where('nation_id', Reg::current()->delegate->nation->id)->orderBy('id', 'desc')->first();
@@ -665,7 +665,7 @@ class HomeController extends Controller
         {
             if (is_null($handin))
                 return "ERROR";
-            return response()->download(storage_path('/app/'.$handin->content));
+            return response()->download(storage_path('/app/'.$handin->content), $assignment->title.' '.$handin->reg->name().'.' . File::extension(storage_path('/app/'.$handin->content)));
         }
         else if ($action == "resubmit")
         {
@@ -697,7 +697,7 @@ class HomeController extends Controller
             $i = 0;
             foreach($handins as $handin)
             {
-                $filename = $handin->user->id . '_' . $handin->user->name . ' ' . date('y-m-d-H-i-s', strtotime($handin->updated_at)) . '.' . File::extension(storage_path('/app/'.$handin->content));
+                $filename = $handin->reg->id . '_' . $handin->reg->name() . ' ' . date('y-m-d-H-i-s', strtotime($handin->updated_at)) . '.' . File::extension(storage_path('/app/'.$handin->content));
                 $zip->addFile(storage_path('app/' . $handin->content), $filename);
                 //Zipper::zip($zippername)->addString($filename, Storage::get($handin->content));
             }
@@ -804,7 +804,7 @@ class HomeController extends Controller
             if ($assignment->subject_type == 'nation')
                 $handin->nation_id = Reg::current()->delegate->nation->id;
             //else
-            $handin->user_id = Reg::currentID();
+            $handin->reg_id = Reg::currentID();
             $handin->content = $request->file->store('assignmentHandins');
             $handin->confirm = true;
             $handin->assignment_id = $id;

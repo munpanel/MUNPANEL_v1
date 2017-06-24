@@ -472,8 +472,8 @@ class DatatablesController extends Controller //To-Do: Permission Check
             }
             else
             {
-                $detailline = '<a href="assignment/'. $assignment->id . '/handins"><i class="fa fa-folder-open"></i></a>';
-                $detailline .= '&nbsp;<a href="assignmentDetails.modal/'. $assignment->id.'"><i class="fa fa-pencil"></i></a>';
+                $detailline = '<a href="assignment/'. $assignment->id . '/export"><i class="fa fa-folder-open"></i></a>';
+                $detailline .= '&nbsp;<a href="assignmentDetails.modal/'. $assignment->id.'" data-toggle="ajaxModal"><i class="fa fa-pencil"></i></a>';
                 $handin = Handin::where('assignment_id', $assignment->id)->count(); //TODO: 构建排除重复提交的查询数字
                 $title = $title."<b class=\"badge bg-danger pull-right\">" . $handin . " 份提交</b>";
             }

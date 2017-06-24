@@ -945,6 +945,17 @@ class UserController extends Controller
     public function test(Request $request)
     {
         return '404 not found';
+        $ret = '';
+        $dels = Delegate::where('seat_locked', true)->with('reg')->get();
+        foreach ($dels as $del)
+        {
+            if (!isset($del->reg->order_id))
+            {
+                $ret .= $del->reg_id.'<br>';
+                $del->reg->createConfOrder();
+            }
+        }
+        return $ret;
         Reg::find(2924)->createConfOrder();
         $ret = '';
         $users = User::with('orders')->get();

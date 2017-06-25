@@ -50,7 +50,7 @@
               </div>
               <div class="col-xs-6">
                 <strong>收款方:</strong>
-                <h4>{{Reg::currentConference()->option('organizer')}}</h4>
+                <h4>{{$order->conference->option('organizer')}}</h4>
                 <p>
                   {!!textWithBr($order->conference->option('store_contact'))!!}
                 </p>

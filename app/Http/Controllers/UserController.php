@@ -930,6 +930,7 @@ class UserController extends Controller
      */
     public function resetReg($force = false)
     {
+        return view('error', ['msg' => '重置功能已被禁用，您可切换身份开启新的报名。']);
         $reg = Reg::current();
         if ($force)
             $reg->specific()->delete();
@@ -944,11 +945,19 @@ class UserController extends Controller
      */
     public function test(Request $request)
     {
-        return '404 not found';
+        //return '404 not found';
         if (($handle = fopen("/var/www/munpanel/app/test.csv", "r")) !== FALSE) {
             $resp = "test";
             while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
                 $reg = Reg::find($data[0]);
+                $reg->type = 'volunteer';
+                $reg->save();
+                $reg->make();
+                $specific = $reg->specific();
+                $specific->status = 'fail';
+                $specific->save();
+                $resp.=$reg->name().'<br>';
+                continue;
                 if ($reg->conference_id == 3)
                 {
                     $specific = $reg->specific();

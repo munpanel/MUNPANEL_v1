@@ -16,6 +16,7 @@ namespace App\Http\Controllers;
 use Config;
 use Twilio;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class SmsController extends Controller
 {
@@ -46,8 +47,10 @@ class SmsController extends Controller
             {
                 //twillio International
                 try {
+                    Log::info('Successfully sent an SMS to '.$mobile. ' using Twillio, message of which is: '. $message);
                     Twilio::message($mobile, $message);
                 } catch (\Exception $e) {
+                    Log::info('Error sending an SMS to '.$mobile. ' using Twillio, message of which is: '. $message);
                     return false;
                 }
 
@@ -73,9 +76,16 @@ class SmsController extends Controller
                 curl_close( $ch );
                 $result = json_decode($res);
                 if (is_null($result))
+                {
+                    Log::info('Error sending an SMS to '.$mobile. ' using luosimao, message of which is: '. $message);
                     return false;
+                }
                 if ($result->error == 0)
+                {
+                    Log::info('Successfully sent an SMS to '.$mobile. ' using luosimao, message of which is: '. $message);
                     return true;
+                }
+                Log::info('Error sending an SMS to '.$mobile. ' using luosimao, message of which is: '. $message);
                 return false;
             }
         } else { // batch send
@@ -121,7 +131,9 @@ class SmsController extends Controller
                     $message->say("Welcome to mengpanle. Your code is ".implode(' ',str_split(session("code"))));
                     $message->say("Thank you.");
                 });
+                Log::info('Successfully called '.$mobile. ' using Twilio, code of which is: '. $code);
             } catch (\Exception $e) {
+                Log::info('Error calling '.$mobile. ' using Twilio, code of which is: '. $code);
                 return false;
             }
         }
@@ -145,9 +157,16 @@ class SmsController extends Controller
             curl_close( $ch );
             $result = json_decode($res);
             if (is_null($result))
+            {
+                Log::info('Error calling '.$mobile. ' using luosimao, code of which is: '. $code);
                 return false;
+            }
             if ($result->error == 0)
+            {
+                Log::info('Successfully called '.$mobile. ' using luosimao, code of which is: '. $code);
                 return true;
+            }
+            Log::info('Error calling '.$mobile. ' using luosimao, code of which is: '. $code);
             return false;
         }
         return true;

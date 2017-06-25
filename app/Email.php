@@ -15,6 +15,7 @@ use App\User;
 use App\Mail\GeneralMail;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
 
 class Email extends Model
 {
@@ -37,6 +38,7 @@ class Email extends Model
         $this->content = '<h1>您好，'.$this->receiverArray['name'].'</h1>'.$this->content;
         //Mail::to('adamxuanyi@163.com', $this->receiverArray['name'])->send(new GeneralMail($this));
         Mail::to($this->receiverArray['address'], $this->receiverArray['name'])->send(new GeneralMail($this));
+        Log::info('Sent an email (ID: '.$this->id.') to '.$this->receiverArray['address'].' '.$this->receiverArray['name']);
     }
 
     public function queue()

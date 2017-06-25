@@ -945,7 +945,24 @@ class UserController extends Controller
      */
     public function test(Request $request)
     {
-        //return '404 not found';
+        return '404 not found';
+        $ret = '';
+        $users = User::with('orders')->get();
+        foreach($users as $user)
+        {
+            $orders = $user->orders->where('status', 'unpaid');
+            if ($orders->count() > 0)
+            {
+                $sum = 0;
+                foreach($orders as $order)
+                {
+                    $sum += $order->price;
+                }
+                $user->sendSMS('您尚有'.$orders->count().'笔未支付订单，共计 '.number_format($sum, 2).' 元，请尽快前往 https://portal.munpanel.com/store/orders 完成支付。推荐使用系统自动生成的二维码通过微信、支付宝或京东支付线上缴费，付款完成自动确认缴费状态，无需等待；您亦可使用会议指定的其他缴费方式并等待手动确认。感谢您的理解与支持，祝您开会愉快。');
+                $ret .= $user->id.' '.$user->name. ' ' . $orders->count().' '.$sum.'<br>';
+            }
+        }
+        return $ret;
         if (($handle = fopen("/var/www/munpanel/app/test.csv", "r")) !== FALSE) {
             $resp = "test";
             while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
@@ -1006,17 +1023,6 @@ class UserController extends Controller
         }
         return $ret;
         Reg::find(2924)->createConfOrder();
-        $ret = '';
-        $users = User::with('orders')->get();
-        foreach($users as $user)
-        {
-            if ($user->orders()->where('status', 'unpaid')->count() > 0)
-            {
-                $user->sendSMS('您尚有'.$user->orders()->where('status', 'unpaid')->count().'笔未支付订单，请尽快前往 https://portal.munpanel.com/store/orders 完成支付。推荐使用系统自动生成的二维码通过微信或支付宝线上缴费，付款完成自动确认缴费状态，无需等待；您亦可使用会议指定的其他缴费方式并等待手动确认。感谢您的理解与支持，祝您开会愉快。');
-                $ret .= $user->id.' '.$user->name. ' ' . $user->orders()->where('status', 'unpaid')->count().'<br>';
-            }
-        }
-        return $ret;
         return $this->autoAssign();
         return Reg::current()->delegate->assignPartnerByCode('1245615345');
         $ots = Orgteam::where('status', 'oVerified')->where('conference_id', 3)->with('reg')->get();

@@ -22,6 +22,7 @@ use App\Conference;
 use App\Reg;
 use App\User;
 use App\Teamadmin;
+use App\Option;
 
 class PortalController extends Controller
 {
@@ -317,7 +318,7 @@ class PortalController extends Controller
             $conference = Conference::find($conference_id);
             if (!is_object($conference))
                 return '会议不存在！';
-            if ($conferenece->option('group_disabled'))
+            if ($conference->option('group_disabled'))
 		return 'Team disabled in this conference!';
         } else
             $conference_id = null;
@@ -338,6 +339,73 @@ class PortalController extends Controller
         $teamadmin->reg_id = $new->id;
         $teamadmin->school_id = $group->id;
         $teamadmin->save();
+        return 'success';
+    }
+
+    public function groupConferences($id)
+    {
+        $school = School::findOrFail($id);
+        if (!$school->isAdmin())
+            return 'error';
+        return view('portal.teamConferences', ['team' => $school]);
+    }
+
+    public function groupConferencesTable($id)
+    {
+        $user = Auth::user();
+        $school = School::findOrFail($id);
+        if ($school->isAdmin())
+        {
+            $result = new Collection;
+            $conferences = Conference::whereHas('options', function ($query) use($school) {
+                $query->where('school_id', $school->id)
+                    ->where('key', 'groupreg_enabled')
+                    ->where('value', 1);
+            })->withCount(['regs' => function ($query) use($school) {
+                $query->where('school_id', $school->id)
+                    ->where('type', '!=', 'unregistered');
+            }])->get();
+            foreach ($conferences as $conference)
+            {
+                $result->push([
+                    'name' => $conference->name,
+                    'count' => $conference->regs_count
+                ]);
+            }
+            return Datatables::of($result)->make(true);
+        }
+    }
+
+    public function groupAddConferenceModal($id)
+    {
+        $group = School::findOrFail($id);
+        if (!$group->isAdmin())
+            return 'error';
+        return view('portal.groupAddConferenceModal', ['group' => $group]);
+    }
+
+    public function groupAddConf(Request $request, $id)
+    {
+        $group = School::findOrFail($id);
+        if (!$group->isAdmin())
+            return 'error';
+        $domain = $request->domain;
+        $conference_id = Cache::tags('domains')->get($domain);
+        if (!isset($conference_id))
+            $conference_id = DB::table('domains')->where('domain', $domain)->value('conference_id');
+        $conference = Conference::find($conference_id);
+        if (!is_object($conference))
+            return '会议不存在！';
+        if ($conference->option('group_disabled'))
+            return 'Team disabled in this conference!';
+        if ($conference->option('groupreg_enabled', $id))
+            return 'Already allowed!';
+        $option = new Option;
+        $option->conference_id = $conference_id;
+        $option->school_id = $id;
+        $option->key = 'groupreg_enabled';
+        $option->value = 1;
+        $option->save();
         return 'success';
     }
 }

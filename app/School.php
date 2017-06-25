@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\Model;
 class School extends Model
 {
     protected $fillable = array('name', 'payment_method');
+    private $_options = array();
 
     /*public function user() {
         return $this->belongsTo('App\User'); //UID=1 <=> Non-Member School
@@ -43,9 +44,9 @@ class School extends Model
         return $this->belongsToMany('App\User');
     }
 
-    public function toPayAmount() {
-        return Auth::user()->school->delegates->where('status', 'oVerified')->count() * 530 + Auth::user()->school->delegates->where('status','oVerified')->where('accomodate', 1)->count() * 510 + Auth::user()->school->volunteers->where('status','oVerified')->where('accomodate', 1)->count() * 510;
-
+    public function options()
+    {
+        return $this->hasMany('App\Option');
     }
 
     public function typeText() {
@@ -75,5 +76,26 @@ class School extends Model
                 return true;
             return false;
         }
+    }
+
+    public function option($key, $conference_id = 0)
+    {
+        if (isset($this->_options[$key][$conference_id]))
+            return $this->_options[$key][$conference_id];
+        if ($this->relationLoaded('options'))
+            $result = $this->options->where('key', $key);
+        else
+            $result = $this->options()->where('key', $key);
+        if ($conference_id != 0)
+            $result = $result->where('conference_id', $conference_id);
+        $result = $result->first();
+        if (is_object($result))
+        {
+            $result = $result->value;
+            $this->_options[$key][$conference_id] = $result;
+        }
+        else
+            return null;
+        return $result;
     }
 }

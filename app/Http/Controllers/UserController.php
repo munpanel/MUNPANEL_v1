@@ -33,6 +33,7 @@ use App\Order;
 use App\Note;
 use App\Nation;
 use App\Teamadmin;
+use App\Option;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -946,6 +947,34 @@ class UserController extends Controller
     public function test(Request $request)
     {
         return '404 not found';
+        $ss = Delegate::whereIn('status', ['sVerified', 'oVerified', 'paid'])->whereNotNull('school_id')->with('reg', 'school')->get();
+        foreach ($ss as $s)
+        {
+            $school = $s->school;
+            if ($school->option('groupreg_enabled', $s->reg->conference_id))
+                continue;
+            $option = new Option;
+            $option->conference_id = $s->reg->conference_id;
+            $option->school_id = $s->school_id;
+            $option->key = 'groupreg_enabled';
+            $option->value = 1;
+            $option->save();
+        }
+        return 'done';
+        $regs = Reg::all();
+        foreach ($regs as $reg)
+        {
+            if (isset($reg->school_id) && $reg->type != 'interviewer')
+            {
+                $specific = $reg->specific();
+                if (is_object($specific))
+                {
+                    $specific->school_id = $reg->school_id;
+                    $specific->save();
+                }
+            }
+        }
+        return 'done';
         $ret = '';
         $users = User::with('orders')->get();
         foreach($users as $user)
@@ -1850,26 +1879,35 @@ return view('blank',['testContent' => $js, 'convert' => false]);
     {
         $conf = Reg::currentConference();
         if ($conf->option('group_disabled'))
-            return 'Team disabled in this conference.';
+            return view('error', ['msg' => 'Team disabled in this conference.']);
+
         $reg = Reg::current();
-        $team = School::findOrFail($request->team);
         if (is_object($reg->school))
-            return 'error';
+            return view('error', ['msg' => 'Already selected a team!']);
+
+        $team = School::find($request->team);
+        if (!is_object($team))
+            return view('error', ['msg' => 'Team does not exist!']);
+
         if (DB::table('school_user')
             ->whereUserId(Reg::current()->user_id)
             ->whereSchoolId($team->id)
             ->count() == 0)
-            return 'Not a Member! Join first.';
-        $reg->school_id = $team->id;
-        $reg->save();
-        $specific = $reg->specific();
-        if (is_object($specific)) {
-            $specific->school_id = $team->id;
-            if ($specific->status == 'sVerified')
-                $specific->status = 'reg';
-            $specific->save();
-        }
-        return back();
+            return view('error', ['msg' => 'Not a member, join first!']);
+
+        if ($conf->option('groupreg_enabled', $team->id)) {
+            $reg->school_id = $team->id;
+            $reg->save();
+            $specific = $reg->specific();
+            if (is_object($specific)) {
+                $specific->school_id = $team->id;
+                if ($specific->status == 'sVerified')
+                    $specific->status = 'reg';
+                $specific->save();
+            }
+            return back();
+        } else
+            return view('error', ['msg' => 'Team has not allowed group registration in this conference yet. Please ask your team admins to enable it.']);
     }
 
     public function createTeamAdmin()

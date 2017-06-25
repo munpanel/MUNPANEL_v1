@@ -121,30 +121,29 @@ class PortalController extends Controller
         $code = $request->code;
         $team = School::where('joinCode', $code)->first();
         if (!is_object($team))
-            return 'Wrong Code... Please double-check it.';
+            return view('error', ['msg' => 'Wrong Code... Please double-check it.']);
         if (isset($request->reg_id))
         {
             $reg = Reg::find($request->reg_id);
-            if ($reg->user_id == Auth::id() && is_null($reg->school_id))
+            if ($reg->user_id == Auth::id() && is_null($reg->school_id) && $team->option('groupreg_enabled', Reg::currentConferenceID()))
             {
                 $reg->school_id = $team->id;
                 $reg->save();
                 $specific = $reg->specific();
                 if (is_object($specific)) {
-                    if ($reg->specific()->status == 'sVerified')
-                    {
-                        $specific = $reg->specific();
+                    $specific->school_id = $team->id;
+                    if ($specific->status == 'sVerified')
                         $specific->status = 'reg';
-                        $specific->save();
-                    }
+                    $specific->save();
                 }
-            }
+            } else
+                return view('error', ['msg' => 'Code valid. However, your team has not allowed group registration in this conference yet. Please ask your team admins to enable it. You haven\'t joined this team. If you do want to join, join using portal.']);
         }
         if (DB::table('school_user')
             ->whereUserId(Auth::id())
             ->whereSchoolId($team->id)
             ->count() > 0)
-            return 'Already Member!';
+            return view('error', ['msg' => 'Already Member!']);
         $team->users()->attach(Auth::id());
         return back(); 
     }

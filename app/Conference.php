@@ -63,18 +63,21 @@ class Conference extends Model
         return $this->hasMany('App\Option');
     }
 
-    public function option($key)
+    public function option($key, $school_id = 0)
     {
-        if (isset($this->_options[$key]))
-            return $this->_options[$key];
+        if (isset($this->_options[$key][$school_id]))
+            return $this->_options[$key][$school_id];
         if ($this->relationLoaded('options'))
-            $result = $this->options->where('key', $key)->first();
+            $result = $this->options->where('key', $key);
         else
-            $result = $this->options()->where('key', $key)->first();
+            $result = $this->options()->where('key', $key);
+        if ($school_id != 0)
+            $result = $result->where('school_id', $school_id);
+        $result = $result->first();
         if (is_object($result))
         {
             $result = $result->value;
-            $this->_options[$key] = $result;
+            $this->_options[$key][$school_id] = $result;
         }
         else
             return null;

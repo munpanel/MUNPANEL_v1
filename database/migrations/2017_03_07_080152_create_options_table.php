@@ -24,11 +24,13 @@ class CreateOptionsTable extends Migration
     {
         Schema::create('options', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('conference_id')->unsigned();
+            $table->integer('conference_id')->unsigned()->nullable();
+            $table->integer('school_id')->unsigned()->nullable();
             $table->string('key');
             $table->text('value');
             $table->timestamps();
             $table->foreign('conference_id')->references('id')->on('conferences')->onDelete('cascade');
+            $table->foreign('school_id')->references('id')->on('schools')->onDelete('cascade');
         });
     }
 

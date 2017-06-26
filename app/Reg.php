@@ -434,12 +434,18 @@ class Reg extends Model
     public function generateLinkCode()
     {
         $code = generateID(8);
-        if (DB::table('linking_codes')->where('type', 'roommate')->where('reg_id', $this->id)->count() > 0)
-            DB::table('linking_codes')->where('type', 'roommate')->where('reg_id', $this->id)->delete();
-        DB::table('linking_codes')->insert(['id' => $code, 'type' => 'roommate', 'reg_id' => $this->id]);
-        if (DB::table('linking_codes')->where('type', 'partner')->where('reg_id', $this->id)->count() > 0)
-            DB::table('linking_codes')->where('type', 'partner')->where('reg_id', $this->id)->delete();
-        DB::table('linking_codes')->insert(['id' => $code, 'type' => 'partner', 'reg_id' => $this->id]);
+        if ($this->accomodate)
+        {
+            if (DB::table('linking_codes')->where('type', 'roommate')->where('reg_id', $this->id)->count() > 0)
+                DB::table('linking_codes')->where('type', 'roommate')->where('reg_id', $this->id)->delete();
+            DB::table('linking_codes')->insert(['id' => $code, 'type' => 'roommate', 'reg_id' => $this->id]);
+        }
+        if (isset($this->delegate) && $this->delegate->committee->is_dual)
+        {
+            if (DB::table('linking_codes')->where('type', 'partner')->where('reg_id', $this->id)->count() > 0)
+                DB::table('linking_codes')->where('type', 'partner')->where('reg_id', $this->id)->delete();
+            DB::table('linking_codes')->insert(['id' => $code, 'type' => 'partner', 'reg_id' => $this->id]);
+        }
     }
 
     //Big block of caching functionality.

@@ -940,7 +940,32 @@ class UserController extends Controller
         $reg->save();
         return redirect('/home');
     }
+    
+    /**
+     * phpdoc 以后再写
+     */     
+    public function pairAction(Request $request)
+    {
+        
+    }
 
+    /**
+     * phpdoc 以后再写
+     */     
+    public function generatePaircode(Request $request)
+    {
+        
+    }
+    
+    /**
+     * phpdoc 以后再写
+     */     
+    public function deletePaircode($code)
+    {
+        DB::table('linking_codes')->where('id', $code)->delete();
+        return '配对码已删除';
+    }
+    
     /**
      * A function to write some temporary code.
      */

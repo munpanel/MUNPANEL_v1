@@ -25,7 +25,7 @@ $(document).ready(function() {
                             //if (receivedData != "success")
                             //    alert(receivedData);
                             //location.reload();
-                            $.snackbar({content: data});
+                            $.snackbar({content: receivedData});
                             $('#delegate-table').dataTable().fnReloadAjax(undefined, undefined, true);
                             $('#nation-table').dataTable().fnReloadAjax(undefined, undefined, true);
                         }

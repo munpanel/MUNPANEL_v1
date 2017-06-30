@@ -200,6 +200,7 @@ class RoleAllocController extends Controller
         //$delegate->nation_id = $nation->id;
         if (!$delegate->canAssignSeats($nation))
             return false;
+//            return false;
         /*if ($delegate->committee_id != $nation->committee_id)
             return false;
         if ($delegate->assignedNations->count() >= $max && $max != -1)
@@ -280,6 +281,7 @@ class RoleAllocController extends Controller
             $nation = new Nation;
             $nation->name = 'New Nation';
             $nation->committee_id = Reg::current()->dais->committee_id;
+            $nation->conference_id = Reg::currentConferenceID();
             $nation->conpetence = 1;
             $nation->veto_power = 0;
             $nation->save();
@@ -438,7 +440,7 @@ class RoleAllocController extends Controller
                 $delegate->partner->assignedNations()->sync($request->seats);
                 $delegate->partner->reg->addEvent('role_altered', '{"name":"'.Reg::current()->name().'"}');
             }
-            if (!$delegate->assignedNations->contains($delegate->nation_id))
+            if (isset($delegate->nation_id) && (!$delegate->assignedNations->contains($delegate->nation_id)))
             {
                 $nation = $delegate->nation;
                 $nation->status = 'open';

@@ -112,6 +112,7 @@ Route::group(['domain' => config('munpanel.portalDomain')], function () {
     Route::get('/pay/checkout.modal/{id}', 'HomeController@checkout');
     Route::get('/ajax/payWait/{oid}', 'PayController@resultAjax');
     Route::post('/payInfo', 'PayController@payInfo')->name('payInfo');
+    Route::post('/mpPayInfo', 'PayController@mpPayInfo')->name('mpPayInfo');
 
     Route::get('/keepalive', 'SessionController@keepalive');
 });
@@ -292,6 +293,7 @@ Route::group(['domain' => 'static.munpanel.com'], function () {
     Route::get('/pay/checkout.modal/{id}', 'HomeController@checkout');
     Route::get('/ajax/payWait/{oid}', 'PayController@resultAjax');
     Route::post('/payInfo', 'PayController@payInfo')->name('payInfo');
+    Route::post('/mpPayInfo', 'PayController@mpPayInfo')->name('mpPayInfo');
 
     Route::get('/store', 'StoreController@home');
     Route::get('/store/cart', 'StoreController@displayCart');

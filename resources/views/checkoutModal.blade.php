@@ -3,9 +3,10 @@
 <header class="header bg-dark bg-gradient">
           <ul class="nav nav-tabs">
             <li class="active"><a href="#choose" class="pay-tabs" data-toggle="tab" aria-expanded="true">请选择支付方式</a></li>
-            <li><a href="#" class="pay-tabs tee-tabs" data-toggle="tab" channel="alipay" aria-expanded="false">支付宝</a></li>
+            <!--li><a href="#" class="pay-tabs tee-tabs" data-toggle="tab" channel="alipay" aria-expanded="false">支付宝</a></li>
             <li><a href="#" class="pay-tabs tee-tabs" data-toggle="tab" channel="wxpay" aria-expanded="false">微信支付</a></li>
-            <li><a href="#jdpay" class="pay-tabs" data-toggle="tab" aria-expanded="false">京东钱包</a></li>
+            <li><a href="#jdpay" class="pay-tabs" data-toggle="tab" aria-expanded="false">京东钱包</a></li-->
+            <li><a href="#mppay" class="pay-tabs" data-toggle="tab"  aria-expanded="false">MUNPANEL Pay (BETA)</a></li>
             @php
             $i = 0;
             @endphp
@@ -19,12 +20,12 @@
           <div class="modal-body">
             <div class="row">
               <div class="col-sm-12 b-r">
-                <div class="alert alert-info"><b>请选择支付方式。如使用微信、支付宝、京东钱包，系统可自动确认缴费状态。</b></div>
+                <div class="alert alert-info"><b>请选择支付方式。推荐使用 MUNPANEL Pay 线上缴费渠道，目前支持支付宝。付款完成后，系统可自动确认缴费状态。</b></div>
               </div>
             </div>
           </div>          
         </section> 
-        <section class="tab-pane" id="pay">
+        <!--section class="tab-pane" id="pay">
           <div class="modal-body">
             <div class="row">
               <div class="col-sm-12 b-r">
@@ -41,6 +42,18 @@
                 <center><div class="alert alert-info"><b>请在手机端打开此页面并点击以下按钮</b></div>
                 <button id="jdPayButton" class="btn btn-sm btn-success">点此支付（手机）</button>
                 </center>
+              </div>
+            </div>
+          </div>          
+        </section-->
+        <section class="tab-pane" id="mppay">
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-sm-12 b-r">
+                <div class="alert alert-info"><b>使用此通道线上缴费，系统自动确认缴费状态。</b></div>
+                <div>
+                <button id="mpPayButton" class="btn btn-sm btn-success">点此付款</button>
+                </div>
               </div>
             </div>
           </div>          
@@ -61,16 +74,18 @@
                 </div>
               </div>
             </div>
-          </div>          
+          </div>
         </section>
         @endforeach
       </div><!-- /.modal-content -->
 </div>
+{{--
 <script>
 var TEE_API_URL= "{{Config::get('teegon.api_url')}}";
 var client_id = "{{Config::get('teegon.client_id')}}";
 </script>
 <script src="{{Config::get('teegon.site_url')}}jslib/t-charging.min.js"></script>
+--}}
 <script>
     function checkStatus() {
        $.ajax({  
@@ -99,6 +114,7 @@ var client_id = "{{Config::get('teegon.client_id')}}";
         }  
        });  
     }
+    {{--
     $('.tee-tabs').click(function(e) {
         $('#native').empty();
         $('.tab-pane').toggleClass('active', false);
@@ -120,6 +136,21 @@ var client_id = "{{Config::get('teegon.client_id')}}";
             data: "_token={{ csrf_token() }}&oid={{$id}}&channel=jdh5_pinganpay",
             method:'post'
         }).done(tee.charge);
+        if (typeof payajax_start !== undefined)
+        {
+            payajax_start = true;
+            checkStatus();
+        }
+    });
+    --}}
+    $('#mpPayButton').click(function(e) {
+        $.ajax({
+            url: "{{route('mpPayInfo')}}",
+            data: "_token={{ csrf_token() }}&oid={{$id}}",
+            method:'post'
+        }).done(function(data) {
+            window.location = data;
+        });
         if (typeof payajax_start !== undefined)
         {
             payajax_start = true;

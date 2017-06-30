@@ -18,7 +18,7 @@ use Illuminate\Http\Request;
 //})->middleware('auth:api');
 
 Route::group(['domain' => config('munpanel.payDomain')], function() {
-    Route::post('/notify', 'PayController@payNotify')->name('payNotify');
+    Route::any('/notify', 'PayController@payNotify')->name('payNotify');
 });
 
 Route::group(['domain' => 'sms.munpanel.com'], function() {

@@ -947,6 +947,7 @@ class UserController extends Controller
     public function test(Request $request)
     {
         return '404 not found';
+        Reg::find(3885)->createConfOrder();
         $ss = Delegate::whereIn('status', ['sVerified', 'oVerified', 'paid'])->whereNotNull('school_id')->with('reg', 'school')->get();
         foreach ($ss as $s)
         {

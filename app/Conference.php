@@ -88,4 +88,13 @@ class Conference extends Model
             return null;
         return $result;
     }
+    
+    public function isAutopaired()
+    {
+        if (Delegate::where('conference_id', $this->id)->whereNotNull('partner_reg_id')->count() > 0)
+            return true;
+        if (Reg::where('conference_id', $this->id)->whereNotNull('roommate_user_id')->count() > 0)
+            return true;
+        return false;
+    }
 }

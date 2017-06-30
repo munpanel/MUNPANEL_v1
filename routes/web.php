@@ -212,6 +212,10 @@ Route::group(['domain' => 'static.munpanel.com'], function () {
     Route::post('/saveRegDel', 'UserController@regSaveDel');
     Route::post('/saveRegVol', 'UserController@regSaveVol');
     Route::post('/saveRegObs', 'UserController@regSaveObs');
+    
+    Route::post('/doPair', 'UserController@pairAction');
+    Route::post('/genPairCode', 'UserController@generatePaircode');
+    Route::get('/deletePaircode/{code}', 'UserController@deletePaircode');
 
     Route::get('/ecosocEasterEgg.modal', 'HomeController@ecosocEasterEggModal');
     Route::get('/regNotVerified.modal', 'HomeController@regNotVerifiedModal');

@@ -27,6 +27,7 @@ class CreateGoodsTable extends Migration
             $table->integer('conference_id')->unsigned()->nullable();
             $table->string('name');
             $table->string('image');
+            $table->string('options');
             $table->boolean('enabled')->default(false);
             $table->double('price');
             $table->integer('remains'); //-1 for unlimited

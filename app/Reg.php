@@ -816,6 +816,6 @@ class Reg extends Model
         $order->save();
         $this->order_id = $order->id;
         $this->save();
-        $this->user->sendSMS('感谢您报名'.$conf->name.'，系统已为您创建您的报名费用订单（ID: '.$order->id.'），共计'.number_format($order->price, 2).'元，烦请您尽快访问 https://portal.munpanel.com/store/orders 付款。您可通过系统中的二维码通过微信或支付宝线上缴费，付款完成自动确认缴费状态；您亦可使用会议指定的其他缴费方式并等待手动确认。感谢您的支持与配合，祝您开会愉快。');
+        $this->user->sendSMS('感谢您报名'.$conf->name.'，系统已为您创建您的报名费用订单（ID: '.$order->id.'），共计'.number_format($order->price, 2).'元，烦请您尽快访问 https://portal.munpanel.com/store/orders 付款。您可通过系统中的二维码通过 MUNPANEL Pay (beta) 支付宝线上缴费，付款完成自动确认缴费状态；您亦可使用会议指定的其他缴费方式并等待手动确认。感谢您的支持与配合，祝您开会愉快。');
     }
 }

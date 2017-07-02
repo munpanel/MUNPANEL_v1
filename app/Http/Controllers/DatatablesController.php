@@ -616,8 +616,25 @@ class DatatablesController extends Controller //To-Do: Permission Check
             if ($remain == 0) $command = '<p class="text-muted">已售罄</p>';
             else
             {
-                $command = '<form class="form-inline" action="'.mp_url('/store/cart/add/'.$good->id).'" method="post">
-                      <span>数量： </span><div id="MySpinner" class="spinner input-group shop-spinner" data-min="1" data-max="'.$remain.'">'.
+                $options_config = json_decode($good->options, true);
+                $command = '<form class="form-inline" action="'.mp_url('/store/cart/add/'.$good->id).'" method="post">';
+                if (is_array($options_config))
+                {
+                    foreach ($options_config as $name => $option)
+                    {
+                        $values = $option['values'];
+                        if (is_array($values))
+                        {
+                            $command .= '<span>' . $option['display_name'] . '： </span><select name="'.$name.'" class="form-control m-b">';
+                            foreach ($values as $val_key => $val_name)
+                            {
+                                $command .= '<option value="'.$val_key.'">'.$val_name.'</option>';
+                            }
+                            $command .= '</select><br>';
+                        }
+                    }
+                }
+                $command .= '<span>数量： </span><div id="MySpinner" class="spinner input-group shop-spinner" data-min="1" data-max="'.$remain.'">'.
                       csrf_field().'
                       <input type="text" class="form-control spinner-input" value="1" name="num" maxlength="2">
                       <div class="btn-group btn-group-vertical input-group-btn">

@@ -53,7 +53,16 @@ class StoreController extends Controller
      */
     public function addCart(Request $request, $id)
     {
-        Cart::instance('conf_'.Reg::currentConferenceID())->add(Good::findOrFail($id), $request->num);
+        $good = Good::findOrFail($id);
+        $options_config = json_decode($good->options, true);
+        $options = array();
+        if (is_array($options_config)) {
+            foreach ($options_config as $name => $option)
+            {
+                $options[$name] = $request->$name;
+            }
+        }
+        Cart::instance('conf_'.Reg::currentConferenceID())->add(Good::findOrFail($id), $request->num, $options);
         return redirect(mp_url('/store/cart')); //TODO: 添加操作成功提示
     }
 

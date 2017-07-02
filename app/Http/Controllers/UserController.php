@@ -972,6 +972,18 @@ class UserController extends Controller
     public function test(Request $request)
     {
         return '404 not found';
+        $regs = Reg::where('conference_id', 2)->where('type', 'delegate')->with('delegate')->get();
+        $ret = '';
+        foreach ($regs as $reg)
+        {
+            $delegate = $reg->delegate;
+            if ($delegate->status == 'oVerified' && (!isset($reg->order_id)))
+            {
+                $reg->createConfOrder();
+                $ret .= $reg->id . '<br>';
+            }
+        }
+        return $ret;
         Reg::find(3885)->createConfOrder();
         $ss = Delegate::whereIn('status', ['sVerified', 'oVerified', 'paid'])->whereNotNull('school_id')->with('reg', 'school')->get();
         foreach ($ss as $s)

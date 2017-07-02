@@ -24,7 +24,20 @@ class Good extends Model implements Buyable
     }
 
     public function getBuyableDescription($options = null){
-        return $this->name;
+        $append = '';
+        $prefix = '';
+        if (is_array($options))
+        {
+            $options_config = json_decode($this->options, true);
+            $append = '(';
+            foreach($options as $key => $value)
+            {
+                $append .= $prefix . $options_config[$key]['values'][$value];
+                $prefix = ', ';
+            }
+            $append .= ')';
+        }
+        return $this->name . $append;
     }
 
     public function getBuyablePrice($options = null){

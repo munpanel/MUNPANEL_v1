@@ -431,16 +431,16 @@ class Reg extends Model
         return $result;
     }
 
-    public function generateLinkCode()
+    public function generateLinkCode($roommate = true, $partner = true)
     {
         $code = generateID(8);
-        if ($this->accomodate)
+        if ($this->accomodate && $roommate)
         {
             if (DB::table('linking_codes')->where('type', 'roommate')->where('reg_id', $this->id)->count() > 0)
                 DB::table('linking_codes')->where('type', 'roommate')->where('reg_id', $this->id)->delete();
             DB::table('linking_codes')->insert(['id' => $code, 'type' => 'roommate', 'reg_id' => $this->id]);
         }
-        if (isset($this->delegate) && $this->delegate->committee->is_dual)
+        if (isset($this->delegate) && $this->delegate->committee->is_dual && $partner)
         {
             if (DB::table('linking_codes')->where('type', 'partner')->where('reg_id', $this->id)->count() > 0)
                 DB::table('linking_codes')->where('type', 'partner')->where('reg_id', $this->id)->delete();

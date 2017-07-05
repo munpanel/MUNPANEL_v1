@@ -31,10 +31,12 @@ if ($isroommate)
                     <div class="form-group">
                       <label class="m-r-sm">请选择配对类型</label>
                       <div class="btn-group" data-toggle="buttons">
-                        <label class="btn btn-sm btn-white">
+                        @if (Reg::current()->type == 'delegate')
+                        <label class="btn btn-sm btn-white{{Reg::current()->delegate->committee->is_dual ? '' : ' disabled'}}">
                           <input name="partner" id="partner" type="checkbox"><i class="fa fa-users"></i> 搭档
                         </label>
-                        <label class="btn btn-sm btn-white">
+                        @endif
+                        <label class="btn btn-sm btn-white{{Reg::current()->accomodate ? '' : ' disabled'}}">
                           <input name="roommate" id="roommate" type="checkbox"><i class="fa fa-bed"></i> 室友
                         </label>
                       </div>
@@ -50,7 +52,7 @@ if ($isroommate)
           <div class="modal-body">
             <div class="row">
               <div class="col-sm-12 b-r">
-                @if (isset($mycode))
+                @if (!empty($mycode))
                 <div class="form-group">
                   <label>我的配对码</label>
                   <p>您的配对码为：</p>
@@ -67,16 +69,18 @@ if ($isroommate)
                   <p>您还没有生成配对码。<br>
                   请选择您希望配对的类型，并点击“生成配对码”按钮。</p>
                 </div>
-                <form method="post" action="{{mp_url('/doPair')}}">
+                <form method="post" action="{{mp_url('/genPaircode')}}">
                   {{csrf_field()}}
                   <input type="hidden" name="reg_id" value="{{Reg::currentID()}}">
                   <div class="form-group">
                     <label class="m-r-sm">请选择配对码类型</label>
                     <div class="btn-group" data-toggle="buttons">
-                      <label class="btn btn-sm btn-white">
+                      @if (Reg::current()->type == 'delegate')
+                      <label class="btn btn-sm btn-white{{Reg::current()->delegate->committee->is_dual ? '' : ' disabled'}}">
                         <input name="partner" id="partner" type="checkbox"><i class="fa fa-users"></i> 搭档
                       </label>
-                      <label class="btn btn-sm btn-white">
+                      @endif
+                      <label class="btn btn-sm btn-white{{Reg::current()->accomodate ? '' : ' disabled'}}">
                         <input name="roommate" id="roommate" type="checkbox"><i class="fa fa-bed"></i> 室友
                       </label>
                     </div>

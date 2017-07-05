@@ -28,6 +28,7 @@ use App\Email;
 use App\Reg;
 use App\Order;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Config;
@@ -1051,6 +1052,24 @@ class HomeController extends Controller
     public function regNotVerifiedModal()
     {
         return view('regNotVerifiedModal');
+    }
+
+    /**
+     * 
+     */
+    public function pairingModal()
+    {
+        // TODO: 校验 ddl 有效性！
+        $roommate = $partner = false;
+        $mycode = '';
+        $codes = DB::table('linking_codes')->where('reg_id', Reg::currentID())->get();
+        foreach ($codes as $code)
+        {
+            if ($code->type == 'roommate') $roommate = true;
+            if ($code->type == 'partner') $partner = true;
+            $mycode = $code->id;
+        }
+        return view('paircodeModal', ['mycode' => $mycode, 'ispartner' => $partner, 'isroommate' => $roommate]);
     }
 
     /**

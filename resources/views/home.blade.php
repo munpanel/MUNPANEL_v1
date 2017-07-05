@@ -196,13 +196,13 @@ if (Reg::current()->type == 'delegate' && isset(Reg::current()->delegate))
               <section class="panel bg-primary dker">
                   <div class="panel-body">
                     <h4 class="text-uc">搭档 / 室友配对设置</h4>
-                    <p>{{Reg::currentConference()->name}} 已根据您的报名信息将您的搭档和 / 或室友进行配对。如果您的配对不成功、配对结果与报名不符或需要修改配对，请点击下方的按钮进行操作。</p>
+                    <p>{{Reg::currentConference()->name}} 已根据您的报名信息将您的搭档和 / 或室友进行配对。如果您的配对不成功、配对结果与报名不符或需要变更配对，请点击下方的按钮进行操作。</p>
                     <p>
                     @if (Reg::current()->type == 'delegate')
                       您的搭档：{{Reg::current()->delegate->committee->is_dual ? (isset(Reg::current()->delegate->partner_reg_id) ? Reg::find(Reg::current()->delegate->partner_reg_id)->name() : '无') : '会场为单代表制'}}<br>
                     @endif
                     您的室友：{{Reg::current()->accomodate ? (isset(Reg::current()->roommate_user_id) ? Reg::find(Reg::current()->roommate_user_id)->name() : '无') : '未申请住宿'}}</p>
-                    <a href="{{ mp_url('/store/orders') }}" class="btn btn-info" data-toggle="ajaxModal">变更我的配对</a>
+                    <a href="{{ mp_url('/paircode.modal') }}" class="btn btn-info" data-toggle="ajaxModal">变更我的配对</a>
                   </div>
                </section>
                @endif

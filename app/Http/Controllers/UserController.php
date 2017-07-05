@@ -954,7 +954,12 @@ class UserController extends Controller
      */     
     public function generatePaircode(Request $request)
     {
-        
+        if (!isset($request->partner) && !isset($request->roommate))
+            return '请选择配对码类型！';
+        $reg = Reg::findOrFail($request->reg_id);
+        $reg->generateLinkCode(isset($request->roommate), isset($request->partner));
+        return 'success';
+        return json_encode($request->all());
     }
     
     /**

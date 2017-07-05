@@ -214,7 +214,7 @@ Route::group(['domain' => 'static.munpanel.com'], function () {
     Route::post('/saveRegObs', 'UserController@regSaveObs');
     
     Route::post('/doPair', 'UserController@pairAction');
-    Route::post('/genPairCode', 'UserController@generatePaircode');
+    Route::post('/genPaircode', 'UserController@generatePaircode');
     Route::get('/deletePaircode/{code}', 'UserController@deletePaircode');
 
     Route::get('/ecosocEasterEgg.modal', 'HomeController@ecosocEasterEggModal');
@@ -222,6 +222,7 @@ Route::group(['domain' => 'static.munpanel.com'], function () {
     Route::get('/resetReg/{force?}', 'UserController@resetReg');
     Route::get('/setAccomodation.modal', 'HomeController@setAccomodationModal');
     Route::post('/setAccomodate', 'UserController@setAccomodation');
+    Route::get('/paircode.modal', 'HomeController@pairingModal');
 
     Route::get('/roleList', 'HomeController@roleList');
     Route::get('/roleAlloc', 'HomeController@roleAlloc');

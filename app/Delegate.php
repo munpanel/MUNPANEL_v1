@@ -254,12 +254,15 @@ class Delegate extends Model
                 }
             }
         }
-        $assignments = $this->committee->assignments;
-        if (isset($assignments))
-        {
-            foreach ($assignments as $assignment)
-                $result->push($assignment);
-        }
+        $committee = $this->committee;
+        do {
+            $assignments = $committee->assignments;
+            if (isset($assignments))
+            {
+                foreach ($assignments as $assignment)
+                    $result->push($assignment);
+            }
+        } while(is_object($committee = $committee->parentCommittee));
         $delegategroups = $this->delegategroups;
         if (isset($delegategroups))
         {

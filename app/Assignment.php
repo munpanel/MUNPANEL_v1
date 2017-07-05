@@ -84,6 +84,9 @@ class Assignment extends Model
     
     public function belongsToDelegate($uid) 
     {
+        $delegate = Delegate::find($uid);
+        if (!is_object($delegate))
+            return false;
         if (isset($this->nationgroups))
         {
             $nationgroups = $this->nationgroups;
@@ -98,13 +101,12 @@ class Assignment extends Model
                 if ($delegategroup->hasDelegate($uid))
                     return true;
         }
-        if (isset($this->committees))
-        {
-            $committees = $this->committees;
-            foreach ($committees as $committee)
-                if ($committee->hasDelegate($uid))
-                    return true;
-        }
+        $committees = $this->committees()->pluck('id');
+        $committee = $delegate->committee;
+        do {
+            if ($committees->contains($committee->id))
+                return true;
+        } while(is_object($committee = $committee->parentCommittee));
         return false;
     }
 	

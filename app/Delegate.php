@@ -379,7 +379,7 @@ class Delegate extends Model
             $this->reg->addEvent('partner_submitted', '{"name":"'.Auth::user()->name."\",\"partner\":\"$name\"}");
         else
             $this->reg->addEvent('partner_manual_success', '');
-        $reg->partner_user_id = $this->reg_id;
+        $reg->partner_reg_id = $this->reg_id;
         $name = $this->user()->name;
         $reg->save();
         if ($admin == true)
@@ -395,7 +395,22 @@ class Delegate extends Model
         if ($rid->count() == 0)
             return "配对码错误！";
         $reg = Delegate::findOrFail($rid[0]);
-        $result = $reg->assignPartnerByRid($this->id);
+        if ($reg->partner_reg_id == $this->reg->id)
+            return "您已与目标配对！";
+        if (!empty($reg->partner_reg_id) || !empty($this->partner_reg_id))
+        {
+            $partners_reg = Delegate::whereIn('reg_id', [$reg->partner_reg_id, $this->partner_reg_id])->get();
+            foreach ($partners_reg as $partner)
+            {
+                $partner->partner_reg_id = null;
+                $partner->save();
+            }
+            $reg->partner_reg_id = null;
+            $reg->save();
+            $this->partner_reg_id = null;
+            $this->save();
+        }
+        $result = $reg->assignPartnerByRid($this->reg_id);
         if ($result == 'success')
             DB::table('linking_codes')->where('id', $id)->where('type', 'partner')->delete();
         return $result;

@@ -425,6 +425,21 @@ class Reg extends Model
         if ($rid->count() == 0)
             return "配对码错误！";
         $reg = Reg::findOrFail($rid[0]);
+        if ($reg->roommate_user_id == $this->user->id)
+            return "您已与目标配对！";
+        if (!empty($reg->roommate_user_id) || !empty($this->roommate_user_id))
+        {
+            $roommates_reg = Reg::whereIn('user_id', [$reg->roommate_user_id, $this->roommate_user_id])->where('conference_id', Reg::currentConferenceID())->whereIn('type', ['ot', 'dais', 'delegate', 'observer', 'volunteer'])->whereNotNull('roommate_user_id')->get();
+            foreach ($roommates_reg as $roommate)
+            {
+                $roommate->roommate_user_id = null;
+                $roommate->save();
+            }
+            $reg->roommate_user_id = null;
+            $reg->save();
+            $this->roommate_user_id = null;
+            $this->save();
+        }
         $result = $reg->assignRoommateByRid($this->id);
         if ($result == 'success')
             DB::table('linking_codes')->where('id', $id)->where('type', 'roommate')->delete();

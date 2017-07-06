@@ -201,7 +201,7 @@ if (Reg::current()->type == 'delegate' && isset(Reg::current()->delegate))
                     @if (Reg::current()->type == 'delegate')
                       您的搭档：{{Reg::current()->delegate->committee->is_dual ? (isset(Reg::current()->delegate->partner_reg_id) ? Reg::find(Reg::current()->delegate->partner_reg_id)->name() : '无') : '会场为单代表制'}}<br>
                     @endif
-                    您的室友：{{Reg::current()->accomodate ? (isset(Reg::current()->roommate_user_id) ? Reg::find(Reg::current()->roommate_user_id)->name() : '无') : '未申请住宿'}}</p>
+                    您的室友：{{Reg::current()->accomodate ? (isset(Reg::current()->roommate_user_id) ? App\User::find(Reg::current()->roommate_user_id)->name : '无') : '未申请住宿'}}</p>
                     <a href="{{ mp_url('/paircode.modal') }}" class="btn btn-info" data-toggle="ajaxModal">变更我的配对</a>
                   </div>
                </section>

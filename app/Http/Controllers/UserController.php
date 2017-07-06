@@ -946,7 +946,18 @@ class UserController extends Controller
      */     
     public function pairAction(Request $request)
     {
-        
+        if (!isset($request->partner) && !isset($request->roommate))
+            return '请选择配对类型！';
+        $result1 = "";
+        $reg = Reg::current();
+        if (isset($request->roommate))
+            $result1 = "roommate ".$reg->assignRoommateByCode($request->code);
+        if (isset($request->partner) && $reg->type == 'delegate')
+        {
+            if (!empty($result1)) $result1 .= "<br>";
+            $result1 .= "partner ".$reg->delegate->assignPartnerByCode($request->code);
+        }
+        return $result1;
     }
 
     /**

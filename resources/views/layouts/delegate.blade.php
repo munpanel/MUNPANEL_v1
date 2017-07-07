@@ -4,7 +4,7 @@
                   <span>Home</span>
                 </a>
               </li>
-              @if (Reg::current()->type != 'unregistered')
+              @if (is_object(Reg::current()) && Reg::current()->type != 'unregistered')
               <!--li class="@yield('invoice_active')">
                 <a href="{{ mp_url('/pay/invoice') }}">
                   <i class="fa fa-money"></i>

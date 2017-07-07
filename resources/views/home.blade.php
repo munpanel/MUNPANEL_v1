@@ -14,6 +14,7 @@ if (Reg::current()->type == 'delegate' && isset(Reg::current()->delegate))
     @if ((!Auth::user()->verified()) || (Reg::currentConference()->status == 'reg' && Reg::current()->type == 'unregistered') || (!Reg::selectConfirmed()) || (!Reg::current()->enabled) || (null!==(Reg::current()->specific()) && Reg::current()->specific()->status == 'fail') || ($hasRegAssignment) || (Reg::current()->type != 'unregistered' && is_null(Reg::current()->specific())) || (!isset(Reg::current()->accomodate)))
     <script src="{{cdn_url('/js/reg.firsttime.js')}}"></script>
     @endif
+    <!--TODO script src="{{cdn_url('/js/fuckadblock.js')}}"></script-->
 @endpush
 @push('css')
     <link href="{{cdn_url('/js/fuelux/fuelux.css')}}" rel="stylesheet">
@@ -110,6 +111,10 @@ if (Reg::current()->type == 'delegate' && isset(Reg::current()->delegate))
                 </aside>
               </section>
               @endif
+              <section class="panel dker">
+                    <p>The following content is sponsored by Google based on machine learning algorithm. Neither Console iT nor the conference endorses it.</p>
+                    @include('layouts.adsense')
+               </section>
             </div>
             <div class="col-lg-4">
               @unless (Reg::currentConference()->option('group_disabled'))

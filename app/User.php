@@ -101,7 +101,7 @@ class User extends Authenticatable
         if ($count == 0)
             return "无任何身份";
         if ($count == 1)
-            return $regs[0]->regText();
+            return $regs->first()->regText();
         $result =  "<a style='cursor: pointer;' class='details-popover' data-html='1' data-placement='right' data-trigger='click' data-original-title='".$this->name."' data-toggle='popover' data-content='".$this->identityText()."'>".$count."项身份</a>";
         return $result;
     }

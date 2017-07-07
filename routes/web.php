@@ -129,9 +129,7 @@ Route::group(['domain' => 'static.munpanel.com'], function () {
         return redirect(secure_url('home'));
     });
     
-    Route::get('/login', function () {
-        return redirect(secure_url('home'));
-    });
+    Route::get('/login', 'HomeController@loginRedirect');
 
     Route::get('500', function()
     {

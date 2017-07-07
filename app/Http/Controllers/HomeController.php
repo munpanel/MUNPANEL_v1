@@ -45,7 +45,12 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth', ['except' => 'index']);
+    }
+
+    public function loginRedirect()
+    {
+        return redirect(mp_url('/home'));
     }
 
     /**
@@ -57,6 +62,8 @@ class HomeController extends Controller
     {
         $activep['home'] = true;
         $reg = Reg::current();
+        if (!is_object($reg))
+            return view('guesthome');
         $type = $reg->type;
         $committees = Reg::currentConference()->committees;
         $hasChildComm = false;

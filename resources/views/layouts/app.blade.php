@@ -9,7 +9,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     @if (Reg::currentConferenceID() != 0)
-    <title>{{Reg::currentConference()->name}} {{Reg::current()->user->id != Auth::id() ? '(sudo mode)' : ''}} | MUNPANEL{{config('app.debug')?' CONFIDENTIAL':''}}</title>
+    <title>{{Reg::currentConference()->name}} {{is_object(Reg::current()) && Reg::current()->user->id != Auth::id() ? '(sudo mode)' : ''}} | MUNPANEL{{config('app.debug')?' CONFIDENTIAL':''}}</title>
     @else
     <title>MUNPANEL{{config('app.debug')?' CONFIDENTIAL':''}}</title>
     @endif
@@ -67,7 +67,7 @@
           <div class="bg-success nav-user hidden-xs pos-rlt">
             <div class="nav-avatar pos-rlt">
               <a href="#" class="thumb-sm avatar animated rollIn" data-toggle="dropdown">
-                <img src="{{ 'https://www.gravatar.com/avatar/' . md5( strtolower( trim( Auth::user()->email ) ) ) . '?d='.mp_url('images/avatar.png').'&s=320' }}" alt="" class="">
+                <img src="{{ 'https://www.gravatar.com/avatar/' . md5( strtolower( trim( Auth::check() ? Auth::user()->email : 'support@munpanel.com' ) ) ) . '?d='.mp_url('images/avatar.png').'&s=320' }}" alt="" class="">
                 <span class="caret caret-white"></span>
                 @if (config('app.debug'))
                 CONFIDENTIAL
@@ -92,6 +92,7 @@
                   <a href="help.html">Help</a>
                 </li-->
                 <li>
+                  @if (is_object(Reg::current()))
                   @if (Reg::currentConferenceID() == 0)
                   <a href="{{ mp_url('/changePwd.modal') }}" data-toggle="ajaxModal">修改密码</a>
                   @elseif (Reg::current()->user_id == Auth::id())
@@ -100,12 +101,17 @@
                   @else
                   <a href="{{mp_url('/selectIdentityModal')}}" data-toggle="ajaxModal">切换身份(退出SUDO)</a>
                   @endif
+                  @else
+                  <a href="{{ mp_url('/login') }}">登录</a>
+                  @endif
                   <a href="{{ mp_url('/help.html') }}">帮助</a>
                   <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">注销</a>
                 </li>
               </ul>
               <div class="visible-xs m-t m-b">
+                @if (Auth::check())
                 <a href="#" class="h3">{{ is_object(Reg::current())?Reg::current()->name():Auth::user()->name }}</a>
+                @endif
               </div>
             </div>
             <!--div class="nav-msg">
@@ -173,18 +179,18 @@
               @endif
                 @if (Reg::currentConferenceID() == 0)
                 @include('layouts.portal')
-                @elseif (Reg::current()->type == 'teamadmin')
+                @elseif (is_object(Reg::current()) && Reg::current()->type == 'teamadmin')
                 @include('layouts.school')
-                @elseif (Reg::current()->type == 'ot')
+                @elseif (is_object(Reg::current()) && Reg::current()->type == 'ot')
                 @include('layouts.ot')
-                @elseif (Reg::current()->type == 'dais')
+                @elseif (is_object(Reg::current()) && Reg::current()->type == 'dais')
                 @include('layouts.dais')
-                @elseif (Reg::current()->type == 'interviewer')
+                @elseif (is_object(Reg::current()) && Reg::current()->type == 'interviewer')
                 @include('layouts.interviewer')
                 @else
                 @include('layouts.delegate')
                 @endif
-                @if (Reg::currentConferenceID() != 0 && Reg::current()->type != 'teamadmin')
+                @if (Reg::currentConferenceID() != 0 && is_object(Reg::current()) && Reg::current()->type != 'teamadmin')
                   @foreach(Auth::user()->regs->where('conference_id', Reg::currentConferenceID())->where('enabled', true) as $reg)
                   @if ($reg->type == 'teamadmin')
                   <li class="@yield('interview_active')">

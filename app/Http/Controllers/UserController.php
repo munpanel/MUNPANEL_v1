@@ -895,14 +895,14 @@ class UserController extends Controller
      *
      * @return string paring result
      */
-    public function autoAssign()
+    public function autoAssign(Request $request)
     {
         $regs = Reg::where('conference_id', Reg::current()->conference_id)->whereNotIn('type', ['interviewer', 'teamadmin', 'unregistered'])->whereNotNull('reginfo')->get();
         $room = 0;
         $part = 0;
         $result1 = "";
         $result2 = "";
-        $option = json_decode(Reg::currentConference()->option('pairings'));
+        $option = (object)$request->all();
         foreach($regs as $reg)
         {
             $roommatename = $reg->getInfo('conference.roommatename') ?? '';

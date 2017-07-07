@@ -222,6 +222,7 @@ Route::group(['domain' => 'static.munpanel.com'], function () {
     Route::post('/setAccomodate', 'UserController@setAccomodation');
     Route::get('/paircode.modal', 'HomeController@pairingModal');
     Route::post('/doPair', 'UserController@pairAction');
+    Route::post('/doAutoAssign', 'UserController@autoAssign');
 
     Route::get('/roleList', 'HomeController@roleList');
     Route::get('/roleAlloc', 'HomeController@roleAlloc');

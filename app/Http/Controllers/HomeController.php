@@ -1084,6 +1084,35 @@ class HomeController extends Controller
      */
     public function blank()
     {
+        if (Reg::currentConferenceID() == 3 && Reg::current()->type == 'ot')
+        {
+            $html = '<form id="autoAssignForm" class="m-b-sm" action="'.mp_url('/doAutoAssign').'" method="post">'.csrf_field().'
+  <input type="hidden" name="cid" value="'.Reg::currentConferenceID().'">
+  <div class="form-group pull-in clearfix">
+    <label>配对对方未填搭档 / 室友信息时，自动配对的操作</label>
+    <select name="one_empty" class="form-control" data-required="true">
+      <option value="" selected="">请选择</option>
+      <option value="autofill">自动配对，并填充对方信息</option>
+      <option value="fail">不自动配对</option>
+    </select>
+  </div>
+  <div class="form-group pull-in clearfix">
+    <label>允许男女混宿 *</label>
+    <div class="btn-group" data-toggle="buttons">
+      <label class="btn btn-sm btn-info" onclick="$(\'input#true\').checked = true;">
+        <input name="mf_roommate" id="true" type="radio" value="true"> <i class="fa fa-check text-active"></i> 是
+      </label>
+      <label class="btn btn-sm btn-success" onclick="$(\'input#false\').checked = true;">
+        <input name="mf_roommate" id="false" type="radio" value="false" data-required="true"> <i class="fa fa-check text-active"></i> 否
+      </label>
+    </div>
+  </div>
+  <div class="form-group pull-in clearfix">
+    <button type="submit" class="btn btn-success pull-right text-uc m-t-n-xs"><strong>执行</strong></button>
+  </div>  
+</form>';
+            return view('blank', ['testContent' => $html, 'convert' => true]);
+        }
         $html = '<a href="groupMember/1352/admin.modal" data-toggle="ajaxModal">fuck i can\'t access test server</a>';
         return view('blank', ['testContent' => $html, 'convert' => true]);
         $i = 12;

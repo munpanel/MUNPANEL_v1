@@ -302,7 +302,7 @@ class Delegate extends Model
             foreach ($partners_reg as $partner1)
             {
                 if ($partner1->type != 'delegate') continue;                        // 排除非代表搭档
-                if ($partner1->delegate->committee != $this->committee) continue;   // 排除非本委员会搭档
+                if ($partner1->delegate->committee_id != $this->committee_id) continue;   // 排除非本委员会搭档
                 if (!in_array($partner1->delegate->status, ['paid', 'oVerified'])) continue;
                 if (is_object($partner))
                 {
@@ -339,7 +339,7 @@ class Delegate extends Model
                 $this->reg->addEvent('partner_auto_fail', $notes);
                 return "$myname &#09;$partner->id &#09;搭档姓名$partner_name&#09;未缴费";
             }
-            if ($delpartner->committee != $this->committee) //continue;          // 排除非本委员会搭档
+            if ($delpartner->committee_id != $this->committee_id) //continue;          // 排除非本委员会搭档
             {
                 $notes = "{\"reason\":\"$partner_name" . "与$myname" . "并非同一委员会\"}";
                 $this->reg->addEvent('partner_auto_fail', $notes);
@@ -380,7 +380,9 @@ class Delegate extends Model
     {
         $reg = Delegate::findOrFail($rid);
         if (!empty($reg->partner_reg_id))
-            return "目标已有室友分配！";
+            return "目标已有搭档分配！";
+        if ($reg->committee_id != $this->committee_id)
+            return "目标与本人并不在同一委员会！";
         $this->partner_reg_id = $reg->reg_id;
         $name = $reg->user()->name;
         $this->save();

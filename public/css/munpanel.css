@@ -271,3 +271,7 @@ fieldset[mp-disabled] .btn-danger.active {
     margin-top:7px;
     margin-bottom:7px;
 }
+
+.no-padding {
+    padding: 0px;
+}

@@ -304,7 +304,7 @@ class Delegate extends Model
                 if ($partner1->type != 'delegate') continue;                        // 排除非代表搭档
                 if ($partner1->delegate->committee != $this->committee) continue;   // 排除非本委员会搭档
                 if (!in_array($partner1->delegate->status, ['paid', 'oVerified'])) continue;
-                if (is_object($partner)
+                if (is_object($partner))
                 {
                     $notes = "{\"reason\":\"存在多个符合条件的$partner_name" . "以代表身份报名\"}";
                     $this->reg->addEvent('partner_auto_fail', $notes);

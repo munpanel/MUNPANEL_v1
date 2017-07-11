@@ -1,3 +1,6 @@
+@php
+$mppay = Reg::currentConferenceID() != 2;
+@endphp
 <div class="modal-dialog">
       <div class="modal-content">
 <header class="header bg-dark bg-gradient">
@@ -6,7 +9,9 @@
             <!--li><a href="#" class="pay-tabs tee-tabs" data-toggle="tab" channel="alipay" aria-expanded="false">支付宝</a></li>
             <li><a href="#" class="pay-tabs tee-tabs" data-toggle="tab" channel="wxpay" aria-expanded="false">微信支付</a></li>
             <li><a href="#jdpay" class="pay-tabs" data-toggle="tab" aria-expanded="false">京东钱包</a></li-->
+            @if ($mppay)
             <li><a href="#mppay" class="pay-tabs" data-toggle="tab"  aria-expanded="false">MUNPANEL Pay (BETA)</a></li>
+            @endif
             @php
             $i = 0;
             @endphp
@@ -20,7 +25,7 @@
           <div class="modal-body">
             <div class="row">
               <div class="col-sm-12 b-r">
-                <div class="alert alert-info"><b>请选择支付方式。推荐使用 MUNPANEL Pay 线上缴费渠道，目前支持支付宝。付款完成后，系统可自动确认缴费状态。</b></div>
+                <div class="alert alert-info"><b>请选择支付方式。{{$mppay ? '推荐使用 MUNPANEL Pay 线上缴费渠道，目前支持支付宝。付款完成后，系统可自动确认缴费状态。':''}}</b></div>
               </div>
             </div>
           </div>          

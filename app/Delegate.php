@@ -280,7 +280,7 @@ class Delegate extends Model
     public function assignPartnerByName($option = null)
     {
         if ($option == null)
-            $option = json_decode('{"one_empty":"autofill","mf_roommate":"false"}');
+            $option = json_decode('{"one_empty":"autofill","mf_roommate":"false","status_required":"oVerified"}');
         // 如果委员会为单带，return
         $myname = $this->user()->name;
         if (!$this->committee->is_dual)
@@ -299,18 +299,21 @@ class Delegate extends Model
                 $this->reg->addEvent('partner_auto_fail', $notes);
                 return "$myname &#09;0000&#09;搭档姓名$partner_name&#09;未找到搭档的报名记录";
             }
-            $partner = $partners_reg->first();
-            if ($count > 1)
+            foreach ($partners_reg as $partner1)
             {
-                foreach ($partners_reg as $partner1)
+                if ($partner1->type != 'delegate') continue;                        // 排除非代表搭档
+                if ($partner1->delegate->committee != $this->committee) continue;   // 排除非本委员会搭档
+                if (!in_array($partner1->delegate->status, ['paid', 'oVerified'])) continue;
+                if (is_object($partner)
                 {
-                    if ($partner1->type != 'delegate') continue;                        // 排除非代表搭档
-                    if ($partner1->delegate->committee != $this->committee) continue;   // 排除非本委员会搭档
-                    if (!in_array($partner1->delegate->status, ['paid', 'oVerified'])) continue;
-                    $partner = $partner1;
-                    break;
+                    $notes = "{\"reason\":\"存在多个符合条件的$partner_name" . "以代表身份报名\"}";
+                    $this->reg->addEvent('partner_auto_fail', $notes);
+                    return "$myname &#09;$partner->id &#09;搭档姓名$partner_name&#09;同名同姓无法配对";
                 }
+                $partner = $partner1;
             }
+            if (!is_object($partner))
+                $partner = $partners_reg->first();
             if ($partner->id == $this->reg_id)                                 // 排除自我配对
             {
                 $notes = "{\"reason\":\"$myname" . "申报的搭档与报名者本人重合\"}";
@@ -324,11 +327,17 @@ class Delegate extends Model
                 return "$myname &#09;$partner->id &#09;搭档姓名$partner_name&#09;不是代表";
             }
             $delpartner = $partner->delegate;
-            if (!in_array($delpartner->status, ['paid', 'oVerified', 'unpaid']))   // 排除未通过审核搭档
+            if ($option->status_required == 'oVerified' && !in_array($delpartner->status, ['paid', 'oVerified', 'unpaid']))   // 排除未通过审核搭档
             {
                 $notes = "{\"reason\":\"搭档$partner_name" . "的报名未通过审核\"}";
                 $this->reg->addEvent('partner_auto_fail', $notes);
                 return "$myname &#09;$partner->id &#09;搭档姓名$partner_name&#09;未通过审核";
+            }
+            if ($option->status_required == 'paid' && $delpartner->status!='paid')   // 排除未通过审核搭档
+            {
+                $notes = "{\"reason\":\"搭档$partner_name" . "的报名未通过审核\"}";
+                $this->reg->addEvent('partner_auto_fail', $notes);
+                return "$myname &#09;$partner->id &#09;搭档姓名$partner_name&#09;未缴费";
             }
             if ($delpartner->committee != $this->committee) //continue;          // 排除非本委员会搭档
             {

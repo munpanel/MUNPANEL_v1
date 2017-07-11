@@ -34,6 +34,7 @@ use App\Note;
 use App\Nation;
 use App\Teamadmin;
 use App\Option;
+use App\Nationgroup;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -988,6 +989,15 @@ class UserController extends Controller
     public function test(Request $request)
     {
         return '404 not found';
+        $nationgroup = New Nationgroup;
+        $nationgroup->name = '裁军委席位';
+        $nationgroup->display_name = '共同均衡裁军谈判会议 全体席位';
+        $nationgroup->save();
+        $nations = Nation::where('committee_id', 12)->get();
+        foreach ($nations as $nation)
+        {
+            $nationgroup->nations()->attach($nation);
+        }
         $regs = Reg::where('conference_id', 2)->where('type', 'delegate')->with('delegate')->get();
         $ret = '';
         foreach ($regs as $reg)

@@ -277,6 +277,7 @@ class FormController extends Controller
             // 排除 _token 和 handin
             if (in_array($key, ['_token', 'handin', 'form', 'language'])) continue;
             $item = $questions[$key - 1];
+            $thisWithScore = $withScore && isset($item->answer);
             $html .= $nl;
             $html .= '<div class="form-group"><table><tbody><tr><td valign="top"><span class="badge form-assignment text-xs">'.++$i.'</span></td><td>&nbsp;</td><td>'.$item->title.'</td></tr></tbody></table>';
             if (empty($value))
@@ -289,13 +290,13 @@ class FormController extends Controller
             {
                 case 'single_choice':
                     $text = $item->options[$value - 1]->text;
-                    $html .= '<div class="m-l-lg'.($withScore ? ($value == $item->answer ? ' text-success' : ' text-danger') : '').'">'.$text.'</div>';
-                    if ($withScore && !empty($item->answer) && $value != $item->answer)
+                    $html .= '<div class="m-l-lg'.($thisWithScore ? ($value == $item->answer ? ' text-success' : ' text-danger') : '').'">'.$text.'</div>';
+                    if ($thisWithScore && !empty($item->answer) && $value != $item->answer)
                         $html .= '<div class="m-l-lg text-primary">正确答案: ' . $item->options[$item->answer - 1]->text . '</div>';
                 break;
                 case 'yes_or_no':
-                    $html .= '<div class="m-l-lg'.($withScore ? ($value == $item->answer ? ' text-success' : ' text-danger') : '').'">' . ($value == 'true' ? '正确' : '错误') . '</div>';
-                    if ($withScore && !empty($item->answer) && $value != $item->answer)
+                    $html .= '<div class="m-l-lg'.($thisWithScore ? ($value == $item->answer ? ' text-success' : ' text-danger') : '').'">' . ($value == 'true' ? '正确' : '错误') . '</div>';
+                    if ($thisWithScore && !empty($item->answer) && $value != $item->answer)
                         $html .= '<div class="m-l-lg text-primary">正确答案: ' . ($item->answer == 'true' ? '正确' : '错误') .  '</div>';
                 break;
                 case 'mult_choice':
@@ -303,7 +304,7 @@ class FormController extends Controller
                     foreach ($value as $val)
                     {
                         $text = $item->options[$val - 1]->text;
-                        $html .= '<div class="m-l-lg '.($withScore ? (in_array($val, $item->answer) ? ' text-success' : ' text-danger') : '').'">'.$text.'</div>';
+                        $html .= '<div class="m-l-lg '.($thisWithScore ? (in_array($val, $item->answer) ? ' text-success' : ' text-danger') : '').'">'.$text.'</div>';
                     }
                     if (!empty($corrected))
                     {
@@ -322,15 +323,15 @@ class FormController extends Controller
                     foreach ($value as $val)
                     {
                         $text = $item->options[$val - 1]->text;
-                        $html .= '<div class="m-l-lg'.($withScore ? ($val == $item->answer[$n++] ? ' text-success' : ' text-danger') : '').'">'.$text.'</div>';
+                        $html .= '<div class="m-l-lg'.($thisWithScore ? ($val == $item->answer[$n++] ? ' text-success' : ' text-danger') : '').'">'.$text.'</div>';
                     }
-                    if ($withScore && !empty($item->answer))
+                    if ($thisWithScore && !empty($item->answer))
                         $html .= '<div class="m-l-lg text-primary">正确答案: ' .json_encode($item->answer). '</div>';
                 break;
                 case 'fill_in':
                 case 'text_field':
-                    $html .= '<div class="m-l-lg"'.(($withScore && !empty($item->answer) && (strcmp($value, $item->answer) == 0)) ? ' text-success' : '').'>' . nl2br($value) . '</div>';
-                    if ($withScore && !empty($item->answer))
+                    $html .= '<div class="m-l-lg"'.(($thisWithScore && !empty($item->answer) && (strcmp($value, $item->answer) == 0)) ? ' text-success' : '').'>' . nl2br($value) . '</div>';
+                    if ($thisWithScore && !empty($item->answer))
                         $html .= '<div class="m-l-lg text-primary">正确答案: ' .$item->answer. '</div>';
                 break;
             }

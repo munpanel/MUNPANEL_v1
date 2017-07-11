@@ -1087,6 +1087,23 @@ class HomeController extends Controller
         if (Reg::currentConferenceID() == 3 && Reg::current()->type == 'ot')
         {
             $html = '<form id="autoAssignForm" class="m-b-sm" action="'.mp_url('/doAutoAssign').'" method="post">'.csrf_field().'
+  <div class="form-group pull-in clearfix">
+    <label>匹配类型</label>
+    <select name="pair_type" class="form-control" data-required="true">
+      <option value="no" selected="">请选择</option>
+      <option value="roommate">室友</option>
+      <option value="partner">搭档</option>
+      <option value="both">室友和搭档</option>
+    </select>
+  </div>
+  <div class="form-group pull-in clearfix">
+    <label>匹配状态要求</label>
+    <select name="pair_type" class="form-control" data-required="true">
+      <option value="" selected="">请选择</option>
+      <option value="oVerified">通过组织团队审核</option>
+      <option value="paid">已缴费</option>
+    </select>
+  </div>
   <input type="hidden" name="cid" value="'.Reg::currentConferenceID().'">
   <div class="form-group pull-in clearfix">
     <label>配对对方未填搭档 / 室友信息时，自动配对的操作</label>

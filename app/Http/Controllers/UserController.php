@@ -904,15 +904,18 @@ class UserController extends Controller
         $result1 = "";
         $result2 = "";
         $option = (object)$request->all();
+        $isroommate = !empty($request->roommate);
+        $ispartner = !empty($request->partner);
         foreach($regs as $reg)
         {
-            $roommatename = $reg->getInfo('conference.roommatename') ?? '';
-            if (!empty($roommatename) && (in_array($reg->specific()->status, ['oVerified', 'unpauid', 'paid', 'success'])))
+            if ($isroommate)
+                $roommatename = $reg->getInfo('conference.roommatename') ?? '';
+            if ($isroommate && !empty($roommatename) && (in_array($reg->specific()->status, ['oVerified', 'unpaid', 'paid', 'success'])))
             {
                 $result1 .= $reg->id ."&#09;". $reg->assignRoommateByName($option) . "<br>";
                 $room++;
             }
-            if ($reg->type == 'delegate' && (in_array($reg->specific()->status, ['oVerified', 'unpauid', 'paid', 'success'])))
+            if ($ispartner && $reg->type == 'delegate' && (in_array($reg->specific()->status, ['oVerified', 'unpaid', 'paid', 'success'])))
             {
                 $partnername = $reg->getInfo('conference.partnername');
                 if (isset($partnername))

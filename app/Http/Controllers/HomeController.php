@@ -1110,7 +1110,7 @@ class HomeController extends Controller
   </div>
   <div class="form-group pull-in clearfix">
     <label>匹配状态要求</label>
-    <select name="pair_type" class="form-control" data-required="true">
+    <select name="status_required" class="form-control" data-required="true">
       <option value="" selected="">请选择</option>
       <option value="oVerified">通过组织团队审核</option>
       <option value="paid">已缴费</option>

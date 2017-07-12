@@ -421,6 +421,8 @@ class Reg extends Model
 
     public function assignRoommateByCode($id)
     {
+        if ($this->confernece->option('roommate_paired') != 2)
+            return "当前不允许执行配对操作！"
         $rid = DB::table('linking_codes')->where('id', $id)->where('type', 'roommate')->pluck('reg_id');
         if ($rid->count() == 0)
             return "配对码错误！";

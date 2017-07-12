@@ -91,14 +91,14 @@ class Conference extends Model
     
     public function isPartnerAutopaired()
     {
-        if (Delegate::where('conference_id', $this->id)->whereNotNull('partner_reg_id')->count() > 0)
+        if ($this->option('partner_paired') > 0)
             return true;
         return false;
     }
 
     public function isRoommateAutopaired()
     {
-        if (Reg::where('conference_id', $this->id)->whereNotNull('roommate_user_id')->count() > 0)
+        if ($this->option('roommate_paired') > 0)
             return true;
         return false;
     }

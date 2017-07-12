@@ -325,9 +325,9 @@ class Reg extends Model
                 if (($roommate1->gender != $this->gender) && !$option->mf_roommate) continue;
                 if (is_object($roommate))
                 {
-                    $notes = "{\"reason\":\"存在多个符合条件的$roommate_name" . "以可作为室友\"}";
+                    $notes = "{\"reason\":\"存在多个符合条件的$roommate_name" . "报名并申请住宿\"}";
                     $this->addEvent('roommate_auto_fail', $notes);
-                    return "$myname &#09;$roommate->id &#09;搭档姓名$roommate_name&#09;同名同姓无法配对";
+                    return "$myname &#09;0000 &#09;室友姓名$roommate_name&#09;同名同姓无法配对";
                 }
                 $roommate = $roommate1;
             }
@@ -356,6 +356,12 @@ class Reg extends Model
             }
             */
             $typedroommate = $roommate->specific();
+            if (!$roommate->accomodate)                                    // 排除对方未申请住宿
+            {
+                $notes = "{\"reason\":\"$roommate_name" . "未申请住宿\"}";
+                $this->addEvent('roommate_auto_fail', $notes);
+                return "$myname &#09;$roommate->id &#09;室友姓名$roommate_name&#09;未申请住宿";
+            }
             if ($option->status_required == 'oVerified' && !in_array($typedroommate->status, ['unpaid', 'paid', 'oVerified']))   // 排除未通过审核室友
             {
                 $notes = "{\"reason\":\"室友$roommate_name" . "的报名仍未通过审核\"}";
@@ -367,12 +373,6 @@ class Reg extends Model
                 $notes = "{\"reason\":\"室友$roommate_name" . "未缴费\"}";
                 $this->addEvent('roommate_auto_fail', $notes);
                 return "$myname&#09;$roommate->id &#09;室友姓名$roommate_name&#09;未缴费";
-            }
-            if (!$roommate->accomodate)                                    // 排除对方未申请住宿
-            {
-                $notes = "{\"reason\":\"$roommate_name" . "未申请住宿\"}";
-                $this->addEvent('roommate_auto_fail', $notes);
-                return "$myname &#09;$roommate->id &#09;室友姓名$roommate_name&#09;未申请住宿";
             }
             $typedroommate_name = $roommate->getInfo('conference.roommatename');
             if (empty($typedroommate_name))                          // 如果对方未填室友，自动补全

@@ -317,14 +317,17 @@ class Reg extends Model
                 return "$myname &#09;0000&#09;室友姓名$roommate_name&#09;未找到室友的报名记录";
             }
             $roommate = $roommates_reg->first();
-            if ($count > 1)
+            foreach ($roommates_reg as $roommate1)
             {
-                foreach ($roommates_reg as $roommate1)
+                if ($roommate1->type == 'unregistered') continue;                    // 排除未注册室友
+                if (is_object($roommate))
                 {
-                    if ($roommate1->type == 'unregistered') continue;                    // 排除未注册室友
-                    $roommate = $roommate1;
-                    break;
+                    $notes = "{\"reason\":\"存在多个符合条件的$roommate_name" . "报名并申请住宿\"}";
+                    $this->addEvent('roommate_auto_fail', $notes);
+                    return "$myname &#09;0000 &#09;室友姓名$roommate_name&#09;同名同姓无法配对";
                 }
+                $roommate = $roommate1;
+                break;
             }
             if ($roommate->user_id == $this->user->id)                               // 排除自我配对
             {
@@ -349,17 +352,23 @@ class Reg extends Model
             }
             */
             $typedroommate = $roommate->specific();
-            if (!in_array($typedroommate->status, ['unpaid', 'paid', 'oVerified']))   // 排除未通过审核室友
-            {
-                $notes = "{\"reason\":\"室友$roommate_name" . "的报名仍未通过审核\"}";
-                $this->addEvent('roommate_auto_fail', $notes);
-                return "$myname&#09;$roommate->id &#09;室友姓名$roommate_name&#09;未通过审核";
-            }
             if (!$roommate->accomodate)                                    // 排除对方未申请住宿
             {
                 $notes = "{\"reason\":\"$roommate_name" . "未申请住宿\"}";
                 $this->addEvent('roommate_auto_fail', $notes);
                 return "$myname &#09;$roommate->id &#09;室友姓名$roommate_name&#09;未申请住宿";
+            }
+            if ($option->status_required == 'oVerified' && !in_array($typedroommate->status, ['unpaid', 'paid', 'oVerified']))   // 排除未通过审核室友
+            {
+                $notes = "{\"reason\":\"室友$roommate_name" . "的报名仍未通过审核\"}";
+                $this->addEvent('roommate_auto_fail', $notes);
+                return "$myname&#09;$roommate->id &#09;室友姓名$roommate_name&#09;未通过审核";
+            }
+            if ($option->status_required == 'paid' && $typedroommate->status!='paid')   // 排除未通过审核室友
+            {
+                $notes = "{\"reason\":\"室友$roommate_name" . "的报名仍未缴费\"}";
+                $this->reg->addEvent('roommate_auto_fail', $notes);
+                return "$myname &#09;$roommate->id &#09;室友姓名$roommate_name&#09;未缴费";
             }
             $typedroommate_name = $roommate->getInfo('conference.roommatename');
             if (empty($typedroommate_name))                          // 如果对方未填室友，自动补全

@@ -308,7 +308,7 @@ class Delegate extends Model
                 {
                     $notes = "{\"reason\":\"存在多个符合条件的$partner_name" . "以代表身份报名\"}";
                     $this->reg->addEvent('partner_auto_fail', $notes);
-                    return "$myname &#09;$partner->id &#09;搭档姓名$partner_name&#09;同名同姓无法配对";
+                    return "$myname &#09;0000 &#09;搭档姓名$partner_name&#09;同名同姓无法配对";
                 }
                 $partner = $partner1;
             }
@@ -335,7 +335,7 @@ class Delegate extends Model
             }
             if ($option->status_required == 'paid' && $delpartner->status!='paid')   // 排除未通过审核搭档
             {
-                $notes = "{\"reason\":\"搭档$partner_name" . "的报名未通过审核\"}";
+                $notes = "{\"reason\":\"搭档$partner_name" . "未缴费\"}";
                 $this->reg->addEvent('partner_auto_fail', $notes);
                 return "$myname &#09;$partner->id &#09;搭档姓名$partner_name&#09;未缴费";
             }

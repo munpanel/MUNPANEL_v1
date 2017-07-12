@@ -14,7 +14,7 @@
     <title>MUNPANEL{{config('app.debug')?' CONFIDENTIAL':''}}</title>
     @endif
     <meta name="keywords" content="MUNPANEL,MUN,Model UN,Model United Nations,United Nations,UN,PANEL,模联,模拟联合国">
-    <meta name="copyright" content="Proudly Powered and Copyrighted by {{config('munpanel.copyright_year')}} MUNPANEL. A Product of Console iT.">
+    <meta name="copyright" content="Proudly Powered and Copyrighted by {{config('munpanel.copyright_year')}} MUNPANEL.">
     <meta name="generator" content="MUNPANEL System">
     <meta name="author" content="Adam Yi">
 
@@ -32,6 +32,7 @@
     <link rel="stylesheet" href="{{cdn_url('/css/app.css')}}" rel="stylesheet" />
     @stack('css')
     <link rel="stylesheet" href="{{cdn_url('/css/munpanel.css')}}" type="text/css" />
+    <link rel="stylesheet" href="{{mp_url('/css/maia.footer.css')}}" type="text/css" />
 
     <!-- Scripts -->
     <script>
@@ -211,15 +212,15 @@
               </ul>
           </nav>
           <!-- / nav -->
-          <!-- note -->
+          {{--<!-- note -->
           <div class="bg-primary wrapper hidden-vertical animated fadeInUp text-sm">
               <!--a href="#" data-dismiss="alert" class="pull-right m-r-n-sm m-t-n-sm"><i class="fa fa-times"></i></a-->
-              Proudly Powered and Copyrighted by {{config('munpanel.copyright_year')}} MUNPANEL. A Product of Console iT.
+              Proudly Powered and Copyrighted by {{config('munpanel.copyright_year')}} MUNPANEL.
               @if(null !== config('munpanel.icp_license'))
               &nbsp;{{config('munpanel.icp_license')}}
               @endif
           </div>
-          <!-- / note -->
+          <!-- / note -->--}}
           </div>
         </section>
         <footer class="footer bg-gradient hidden-xs">
@@ -241,6 +242,46 @@
     </section>
     <!-- /.vbox -->
   </section>
+  <div class="maia-footer" id="maia-footer">
+  {{--<div id="maia-footer-local">
+  <div class="maia-aux">
+  <div class="policy-footer-sitemap">
+  <div class="maia-cols">
+  <div class="maia-col-3">
+  <h3>Our legal policies</h3>
+  <ul>
+  <li>Privacy Policy
+  </li><li><a href="../../policies/terms/">Terms of Service</a>
+  </li><li><a href="../../policies/faq/">FAQ</a></li></ul></div>
+  <div class="maia-col-3">
+  <h3>More information</h3>
+  <ul>
+  <li><a href="../../policies/technologies/">Technologies and Principles</a>
+  </li><li><a href="../../policies/technologies/ads/">Advertising</a>
+  </li><li><a href="../../policies/technologies/cookies/">How Google uses cookies</a>
+  </li><li><a href="../../policies/technologies/pattern-recognition/">How Google uses pattern recognition</a>
+  </li><li><a href="../../policies/technologies/location-data/">Types of location data used by Google</a></li></ul></div>
+  <div class="maia-col-3" id="more-information-continued">
+  <ul>
+  <li><a href="../../policies/technologies/wallet/">How Google Wallet uses credit card numbers</a>
+  </li><li><a href="../../policies/technologies/voice/">How Google Voice works</a>
+  </li><li><a href="../../policies/privacy/partners/">How Google uses data when you use our partners' sites or apps</a></li></ul></div>
+  <div class="maia-col-3">
+  <h3>Additional resources</h3>
+  <ul>
+  <li><a href="https://myaccount.google.com?hl=en">My Account</a>
+  </li><li><a href="../../safetycenter/families/start/">Google Safety Center</a>
+  </li><li><a href="../../policies/technologies/product-privacy/">Google Product Privacy Guide</a>
+  </li><li><a href="https://privacy.google.com?hl=en">Your privacy, security, and controls</a></li></ul></div></div></div></div></div>--}}
+  <div id="maia-footer-global">
+  <div class="maia-aux">
+  <div style="color:#aaa"><ul>This site is proudly powered by MUNPANEL, who neither created nor endorses this content.</ul></div>
+  <div><div class="maia-right">{{config('munpanel.icp_license')}}</div>
+  <div class="maia-left"><ul>
+  <li><a href="https://www.munpanel.com/">MUNPANEL</a>
+  </li><li><a href="https://mp.weixin.qq.com/s/oqL2cA5dSa6PpwCj1RpSnQ">About MUNPANEL</a>
+  </li><!--li><a href="https://www.munpanel.com/privacy/">Privacy</a>
+  </li><li><a href="https://www.munpanel.com/terms/">Terms</a></li--></ul></div></div></div></div></div>
   <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;"> {{ csrf_field() }} </form>
   <script src="{{cdn_url('/js/jquery.min.js')}}"></script>
   <!-- Bootstrap -->

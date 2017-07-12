@@ -7,7 +7,7 @@
         <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">  
         <meta name="keywords" content="MUNPANEL,MUN,Model UN,Model United Nations,United Nations,UN,PANEL,模联,模拟联合国">
         <meta name="description" content="MUNPANEL is not merely a Model UN system - it is a platform that connects people, clubs, and conferences.">
-        <meta name="copyright" content="Proudly Powered and Copyrighted by {{config('munpanel.copyright_year')}} MUNPANEL. A Product of Console iT.">
+        <meta name="copyright" content="Proudly Powered and Copyrighted by {{config('munpanel.copyright_year')}} MUNPANEL.">
         <meta name="generator" content="MUNPANEL System">
         <meta name="author" content="Adam Yi">
         <link href="{{cdn_url('css/style.css')}}" rel="stylesheet">  
@@ -96,7 +96,7 @@
             <a href="#"><span class="glyph-item mega icon-social-dribbble" aria-hidden="true"></span></a>
         </p-->
            
-        Copyright © {{config('munpanel.copyright_year')}} MUNPANEL.<br/>A Product of Console iT, Developed by Adam Yi
+        Copyright © {{config('munpanel.copyright_year')}} MUNPANEL.<br/>Developed by Adam Yi
         @if(null !== config('munpanel.icp_license'))
         <br/><a href="http://www.miibeian.gov.cn/" title="{{config('munpanel.icp_license')}}" rel="nofollow">{{config('munpanel.icp_license')}}</a>
         @endif

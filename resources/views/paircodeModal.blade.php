@@ -31,12 +31,12 @@ if ($isroommate)
                     <div class="form-group">
                       <label class="m-r-sm">请选择配对类型</label>
                       <div class="btn-group" data-toggle="buttons">
-                        @if (Reg::currentConference()->isPartnerAutopaired() && Reg::current()->type == 'delegate')
+                        @if (Reg::currentConference()->option('partner_paired') == 2 && Reg::current()->type == 'delegate')
                         <label class="btn btn-sm btn-white{{Reg::current()->delegate->committee->is_dual ? '' : ' disabled'}}">
                           <input name="partner" id="partner" type="checkbox"><i class="fa fa-users"></i> 搭档
                         </label>
                         @endif
-                        @if (Reg::currentConference()->isRoommateAutopaired())
+                        @if (Reg::currentConference()->option('roommate_paired') == 2)
                         <label class="btn btn-sm btn-white{{Reg::current()->accomodate ? '' : ' disabled'}}">
                           <input name="roommate" id="roommate" type="checkbox"><i class="fa fa-bed"></i> 室友
                         </label>
@@ -77,12 +77,12 @@ if ($isroommate)
                   <div class="form-group">
                     <label class="m-r-sm">请选择配对码类型</label>
                     <div class="btn-group" data-toggle="buttons">
-                      @if (Reg::currentConference()->isPartnerAutopaired() && Reg::current()->type == 'delegate')
+                      @if (Reg::currentConference()->option('partner_paired') == 2 && Reg::current()->type == 'delegate')
                       <label class="btn btn-sm btn-white{{Reg::current()->delegate->committee->is_dual ? '' : ' disabled'}}">
                         <input name="partner" id="partner" type="checkbox"><i class="fa fa-users"></i> 搭档
                       </label>
                       @endif
-                      @if (Reg::currentConference()->isRoommateAutopaired())
+                      @if (Reg::currentConference()->option('roommate_paired') == 2)
                       <label class="btn btn-sm btn-white{{Reg::current()->accomodate ? '' : ' disabled'}}">
                         <input name="roommate" id="roommate" type="checkbox"><i class="fa fa-bed"></i> 室友
                       </label>

@@ -197,7 +197,7 @@ if (Reg::current()->type == 'delegate' && isset(Reg::current()->delegate))
                  @endif
                 </footer>
               </section>              
-               @if (Reg::currentConference()->isRoommateAutopaired() || Reg::currentConference()->isPartnerAutopaired())
+               @if (Reg::currentConference()->isRoommateAutopaired() || Reg::currentConference()->isPartnerAutopaired() && Reg::current()->specific()->status == 'paid')
               <section class="panel bg-primary dker">
                   <div class="panel-body">
                     <h4 class="text-uc">搭档 / 室友配对设置</h4>
@@ -209,7 +209,9 @@ if (Reg::current()->type == 'delegate' && isset(Reg::current()->delegate))
                     @if (Reg::currentConference()->isRoommateAutopaired())
                     您的室友：{{Reg::current()->accomodate ? (isset(Reg::current()->roommate_user_id) ? App\User::find(Reg::current()->roommate_user_id)->name : '无') : '未申请住宿'}}</p>
                     @endif
+                    @if (Reg::currentConference()->option('roommate_paired') == 2 || Reg::currentConference()->option('partner_paired') == 2)
                     <a href="{{ mp_url('/paircode.modal') }}" class="btn btn-info" data-toggle="ajaxModal">变更我的配对</a>
+                    @endif
                   </div>
                </section>
                @endif

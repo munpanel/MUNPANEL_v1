@@ -403,7 +403,7 @@ class Delegate extends Model
     public function assignPartnerByCode($id)
     {
         if ($this->confernece->option('partner_paired') != 2)
-            return "当前不允许执行配对操作！"
+            return "当前不允许执行搭档配对操作！";
         $rid = DB::table('linking_codes')->where('id', $id)->where('type', 'partner')->pluck('reg_id');
         if ($rid->count() == 0)
             return "配对码错误！";

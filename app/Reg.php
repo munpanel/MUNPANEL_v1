@@ -299,7 +299,7 @@ class Reg extends Model
     public function assignRoommateByName($option = null)
     {
         if ($option == null)
-            $option = json_decode('{"one_empty":"autofill","mf_roommate":"false"}');
+            $option = json_decode('{"one_empty":"autofill","mf_roommate":"false","status_required":"oVerified"}');
         $myname = $this->user->name;
         if (!$this->accomodate) return "$myname &#09;0000&#09;未申请住宿";
         $this->roommate_user_id = null;
@@ -316,16 +316,23 @@ class Reg extends Model
                 $this->addEvent('roommate_auto_fail', $notes);
                 return "$myname &#09;0000&#09;室友姓名$roommate_name&#09;未找到室友的报名记录";
             }
-            $roommate = $roommates_reg->first();
-            if ($count > 1)
+            $roommate = null;
+            foreach ($roommates_reg as $roommate1)
             {
-                foreach ($roommates_reg as $roommate1)
+                if ($roommate1->type == 'unregistered') continue;                    // 排除未注册室友
+                if ($roommate1->type == 'interviewer') continue; //temp fix as interviewer does not have status at present...
+                if (!in_array($roommate1->specific()->status, ['paid', 'oVerified'])) continue;
+                if (($roommate1->gender != $this->gender) && !$option->mf_roommate) continue;
+                if (is_object($roommate))
                 {
-                    if ($roommate1->type == 'unregistered') continue;                    // 排除未注册室友
-                    $roommate = $roommate1;
-                    break;
+                    $notes = "{\"reason\":\"存在多个符合条件的$roommate_name" . "以可作为室友\"}";
+                    $this->addEvent('roommate_auto_fail', $notes);
+                    return "$myname &#09;$roommate->id &#09;搭档姓名$roommate_name&#09;同名同姓无法配对";
                 }
+                $roommate = $roommate1;
             }
+            if (!is_object($roommate))
+                $roommate = $roommates_reg->first();
             if ($roommate->user_id == $this->user->id)                               // 排除自我配对
             {
                 $notes = "{\"reason\":\"$myname" . "申报的室友与报名者本人重合\"}";
@@ -349,11 +356,17 @@ class Reg extends Model
             }
             */
             $typedroommate = $roommate->specific();
-            if (!in_array($typedroommate->status, ['unpaid', 'paid', 'oVerified']))   // 排除未通过审核室友
+            if ($option->status_required == 'oVerified' && !in_array($typedroommate->status, ['unpaid', 'paid', 'oVerified']))   // 排除未通过审核室友
             {
                 $notes = "{\"reason\":\"室友$roommate_name" . "的报名仍未通过审核\"}";
                 $this->addEvent('roommate_auto_fail', $notes);
                 return "$myname&#09;$roommate->id &#09;室友姓名$roommate_name&#09;未通过审核";
+            }
+            if ($option->status_required == 'paid' && $typedroommate->status != 'paid')   // 排除未缴费室友
+            {
+                $notes = "{\"reason\":\"室友$roommate_name" . "未缴费\"}";
+                $this->addEvent('roommate_auto_fail', $notes);
+                return "$myname&#09;$roommate->id &#09;室友姓名$roommate_name&#09;未缴费";
             }
             if (!$roommate->accomodate)                                    // 排除对方未申请住宿
             {
@@ -421,8 +434,8 @@ class Reg extends Model
 
     public function assignRoommateByCode($id)
     {
-        if ($this->confernece->option('roommate_paired') != 2)
-            return "当前不允许执行配对操作！"
+        if ($this->conference->option('roommate_paired') != 2)
+            return "当前不允许执行室友配对操作！";
         $rid = DB::table('linking_codes')->where('id', $id)->where('type', 'roommate')->pluck('reg_id');
         if ($rid->count() == 0)
             return "配对码错误！";

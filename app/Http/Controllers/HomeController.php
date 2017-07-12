@@ -1094,7 +1094,7 @@ class HomeController extends Controller
                       <label class="btn btn-sm btn-white">
                         <input name="partner" id="partner" type="checkbox"><i class="fa fa-users"></i> 搭档
                       </label>
-                      <label class="btn btn-sm btn-white>
+                      <label class="btn btn-sm btn-white">
                         <input name="roommate" id="roommate" type="checkbox"><i class="fa fa-bed"></i> 室友
                       </label>
                     </div>

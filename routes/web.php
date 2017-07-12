@@ -15,6 +15,10 @@ Route::group(['domain' => config('munpanel.landingDomain')], function () {
     Route::get('/', function () {
         return view('landing');
     })->name('landing');
+    Route::get('/maintenance', function() {
+        $data = json_decode(file_get_contents($this->app->storagePath().'/framework/down'), true);
+        return $data['message'];
+    })->name('maintenance');
 });
 
 Route::group(['domain' => config('munpanel.payDomain')], function() {

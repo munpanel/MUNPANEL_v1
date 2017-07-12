@@ -10,6 +10,7 @@ use Symfony\Component\Debug\Exception\FlattenException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Illuminate\Foundation\Http\Exceptions\MaintenanceModeException;
 
 use Illuminate\Session\TokenMismatchException;
 use Illuminate\Auth\AuthenticationException;
@@ -63,6 +64,9 @@ class Handler extends ExceptionHandler
         }
         if ($exception instanceof ModelNotFoundException){
             return redirect()->back()->withInput()->with('notice_msg', '404 Not Found');
+        }
+        if ($exception instanceof MaintenanceModeException) {
+            dd($exception);
         }
         $e = $this->prepareException($exception);
 

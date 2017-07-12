@@ -47,7 +47,7 @@ animation-fill-mode: forwards;}
   <h4>{{$amount}} 元</h4>
   </div>
  <div id="footer" style="text-align: center;color: #999;padding: 3.5em 0 3em;">
- Copyright © {{config('munpanel.copyright_year')}} MUNPANEL.<br>A Product of Console iT, Developed by Adam Yi
+ Copyright © {{config('munpanel.copyright_year')}} MUNPANEL.<br>Developed by Adam Yi
  <div class="clearfix"></div>
  </div>
 </body>

@@ -46,7 +46,7 @@
 <div class="stripe no-padding-bottom numbered-stripe">
     <div class="fixed wrapper">
                 <!--div class="hexagon"></div-->
-                <h2><b>MUNPANEL Real-Time Chat</b> <small>让模联更美好。Powered by Console iT.</small></h2>
+                <h2><b>MUNPANEL Real-Time Chat</b> <small>让模联更美好。</small></h2>
     </div>
 </div>
 
@@ -72,7 +72,7 @@
 
         </div>
     </div>
-    <center>Copyright {{config('munpanel.copyright_year')}} MUNPANEL, a Product of Console iT<br>Developed by Adam Yi</center>
+    <center>Copyright {{config('munpanel.copyright_year')}} MUNPANEL<br>Developed by Adam Yi</center>
 </section>
 
 <script id="chat_message_template" type="text/template">

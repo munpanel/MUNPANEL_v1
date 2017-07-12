@@ -102,7 +102,7 @@
               <section class="panel clearfix">
                 <div class="panel-body">
                   <div class="clear">
-                    Proudly Powered by MUNPANEL.<br>Copyright {{config('munpanel.copyright_year')}} Console iT.
+                    Proudly Powered by MUNPANEL.<br>Copyright {{config('munpanel.copyright_year')}} MUNPANEL.
                     @if(null !== config('munpanel.icp_license'))
                     <br><a href="http://www.miibeian.gov.cn/" title="{{config('munpanel.icp_license')}}" rel="nofollow">{{config('munpanel.icp_license')}}</a>
                     @endif

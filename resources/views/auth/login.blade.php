@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <meta name="keywords" content="MUNPANEL,MUN,Model UN,Model United Nations,United Nations,UN,PANEL,模联,模拟联合国">
   <meta name="description" content="Sign in to your MUNPANEL account.">
-  <meta name="copyright" content="Proudly Powered and Copyrighted by {{config('munpanel.copyright_year')}} MUNPANEL. A Product of Console iT.">
+  <meta name="copyright" content="Proudly Powered and Copyrighted by {{config('munpanel.copyright_year')}} MUNPANEL.">
   <meta name="generator" content="MUNPANEL System">
   <meta name="author" content="Adam Yi">
   <link rel="stylesheet" href="{{cdn_url('css/bootstrap.css')}}" type="text/css" />

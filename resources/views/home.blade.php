@@ -112,7 +112,7 @@ if (Reg::current()->type == 'delegate' && isset(Reg::current()->delegate))
               </section>
               @endif
               <section class="panel dker">
-                    <p>The following content is sponsored by Google based on machine learning algorithm. Neither Console iT nor the conference endorses it.</p>
+                    <p>The following content is sponsored by Google based on machine learning algorithm. Neither MUNPANEL nor the conference endorses it.</p>
                     @include('layouts.adsense')
                </section>
             </div>
@@ -219,8 +219,8 @@ if (Reg::current()->type == 'delegate' && isset(Reg::current()->delegate))
               <section class="panel clearfix">
                 <div class="panel-body">
                   <div class="clear">
-                    This content is neither created nor endorsed by Console iT.<br>
-                    Proudly Powered by MUNPANEL.<br>Copyright {{config('munpanel.copyright_year')}} Console iT.
+                    This content is neither created nor endorsed by MUNPANEL.<br>
+                    Proudly Powered by MUNPANEL.<br>Copyright {{config('munpanel.copyright_year')}} MUNPANEL.
                     @if(null !== config('munpanel.icp_license'))
                     <br><a href="http://www.miibeian.gov.cn/" title="{{config('munpanel.icp_license')}}" rel="nofollow">{{config('munpanel.icp_license')}}</a>
                     @endif

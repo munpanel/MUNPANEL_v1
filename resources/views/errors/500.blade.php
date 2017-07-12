@@ -73,7 +73,7 @@
                     </script>
                 @endunless
                 <br/><br/>{!!isset($sentryID)?"We are already notified and are already working on it.<br/>":""!!}If you have any more concerns, feel free to reach us at <a href="mailto:support@munpanel.com">support@munpanel.com</a><br/>
-                Powered by MUNPANEL, a Product of Console iT. Developed by Adam Yi.
+                Powered by MUNPANEL. Developed by Adam Yi.
               @if(null !== config('munpanel.icp_license'))
               <br/><br/><a href="http://www.miibeian.gov.cn/" title="{{config('munpanel.icp_license')}}" rel="nofollow">{{config('munpanel.icp_license')}}</a>
               @endif

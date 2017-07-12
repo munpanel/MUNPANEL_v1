@@ -1,0 +1,71 @@
+#maia-footer {
+    margin: 0 -15px
+}
+
+.maia-aux:after {
+    clear: both;
+    content: " ";
+    display: block;
+    height: 0;
+    visibility: hidden
+}
+
+.maia-aux {
+    margin: auto;
+    max-width: 978px
+}
+
+.maia-left {
+    float: left;
+}
+
+.maia-right {
+    float:right;
+}
+
+#maia-footer {
+    background: #f5f5f5;
+    clear: both;
+}
+
+#maia-footer-global,#maia-footer-local {
+    padding: 10px 15px
+}
+
+#maia-footer-global {
+    border-top: 1px solid #eee;
+    font-size: 11px;
+    line-height: 2.19;
+    list-style: none;
+}
+
+#maia-footer-global ul {
+    margin: 0
+}
+
+#maia-footer-global li {
+    display: inline;
+}
+
+#maia-footer-global li+li:before {
+    content: "·";
+    padding: 0 3px
+}
+
+* html #maia-footer-global li {
+    margin: 0 13px 0 0
+}
+
+*+html #maia-footer-global li {
+    margin: 0 13px 0 0
+}
+
+*+[dir=rtl] #maia-footer-global li {
+    margin: 0 0 0 13px
+}
+
+#maia-footer-local {
+    background: #f9f9f9;
+    border-top: 1px solid #f5f5f5;
+    min-height: 24px
+}

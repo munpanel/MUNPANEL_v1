@@ -1087,6 +1087,18 @@ class HomeController extends Controller
         if (Reg::currentConferenceID() == 3 && Reg::current()->type == 'ot')
         {
             $html = '<form id="autoAssignForm" class="m-b-sm" action="'.mp_url('/doAutoAssign').'" method="post">'.csrf_field().'
+  <input type="hidden" name="cid" value="'.Reg::currentConferenceID().'">
+                  <div class="form-group pull_in clearfix">
+                    <label class="m-r-sm">请选择配对类型</label>
+                    <div class="btn-group" data-toggle="buttons">
+                      <label class="btn btn-sm btn-white">
+                        <input name="partner" id="partner" type="checkbox"><i class="fa fa-users"></i> 搭档
+                      </label>
+                      <label class="btn btn-sm btn-white>
+                        <input name="roommate" id="roommate" type="checkbox"><i class="fa fa-bed"></i> 室友
+                      </label>
+                    </div>
+                  </div>
   <div class="form-group pull-in clearfix">
     <label>匹配类型</label>
     <select name="pair_type" class="form-control" data-required="true">
@@ -1104,7 +1116,6 @@ class HomeController extends Controller
       <option value="paid">已缴费</option>
     </select>
   </div>
-  <input type="hidden" name="cid" value="'.Reg::currentConferenceID().'">
   <div class="form-group pull-in clearfix">
     <label>配对对方未填搭档 / 室友信息时，自动配对的操作</label>
     <select name="one_empty" class="form-control" data-required="true">

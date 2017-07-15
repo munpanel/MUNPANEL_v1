@@ -299,6 +299,7 @@ class Delegate extends Model
                 $this->reg->addEvent('partner_auto_fail', $notes);
                 return "$myname &#09;0000&#09;搭档姓名$partner_name&#09;未找到搭档的报名记录";
             }
+            $partner = null;
             foreach ($partners_reg as $partner1)
             {
                 if ($partner1->type != 'delegate') continue;                        // 排除非代表搭档
@@ -402,7 +403,7 @@ class Delegate extends Model
 
     public function assignPartnerByCode($id)
     {
-        if ($this->confernece->option('partner_paired') != 2)
+        if ($this->conference->option('partner_paired') != 2)
             return "当前不允许执行搭档配对操作！";
         $rid = DB::table('linking_codes')->where('id', $id)->where('type', 'partner')->pluck('reg_id');
         if ($rid->count() == 0)

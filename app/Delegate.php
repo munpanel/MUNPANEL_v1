@@ -87,7 +87,15 @@ class Delegate extends Model
         }
     }
 
-    public function interviewStatus($retest = false) {
+    public function interviewStatus($retest = 'default') {
+        if ($retest == 'default')
+        {
+            if ($this->relationLoaded('interviews'))
+                $interviews = $this->interviews;
+            else
+                $interviews = $this->interviews();
+            $retest = ($interviews->where('retest', true)->count() > 0);
+        }
         if ($this->relationLoaded('interviews'))
             $interview = $this->interviews->where('retest', $retest)->sortByDesc('created_at')->first();
         else

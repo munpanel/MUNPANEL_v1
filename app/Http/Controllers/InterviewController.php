@@ -179,7 +179,8 @@ class InterviewController extends Controller
     {
         //To-Do: permission check
         $reg = Reg::findOrFail($id);
-        if (!in_array($reg->specific()->realStatus(), ['interview_unassigned', 'interview_passed', 'interview_failed', 'interview_retest_unassigned', 'interview_retest_passed', 'interview_retest_failed']))
+        $specific = $reg->specific();
+        if (!in_array($specific->interviewStatus(), ['interview_unassigned', 'interview_passed', 'interview_failed', 'interview_retest_unassigned', 'interview_retest_passed', 'interview_retest_failed']))
             return '已分配面试！';//return view('error', ['msg' => '此代表已被分配面试，不能执行该操作！']);
         $interviewer = Interviewer::findOrFail($request->interviewer);
         if (!empty($request->moveCommittee) && $reg->delegate->committee_id != $interviewer->committee_id && isset($interviewer->committee_id))
@@ -212,7 +213,7 @@ class InterviewController extends Controller
     {
         //To-Do: permission check
         $reg = Reg::findOrFail($id);
-        if ($reg->specific()->realStatus() != 'interview_unassigned')
+        if ($reg->specific()->interviewStatus() != 'interview_unassigned')
             return '已分配面试！';//return view('error', ['msg' => '此代表已被分配面试，不能执行该操作！']);
         $interviewer = Interviewer::findOrFail($request->interviewer);
         $interview = new Interview;

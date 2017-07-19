@@ -461,6 +461,22 @@ class Reg extends Model
         return $result;
     }
 
+    public function getRandomRoommate($option)
+    {
+        $roommates = Reg::where('conference_id', $this->conference_id)->where('id', '!=', $this->id)->where('gender', $this->gender)->get();
+        if ($option->priority == 'school')
+            $roommates = $roommates->where('school_id', $this->school_id);
+        //if ($option->priority == 'committee' && $reg->type == 'delegate')
+        //    TODO: 获取同委员会代表
+        if ($roommates->count() == 0)
+            return '找不到符合条件的未分配室友！'
+        $roommate = $roommates->random();
+        $result = $this->assignRoommateByRid($roommate->id, true);
+        if ($result == 'success')
+            DB::table('linking_codes')->where('reg_id', $this->id)->where('type', 'roommate')->delete();
+        return $result;
+    }
+
     public function generateLinkCode($roommate = true, $partner = true)
     {
         $code = generateID(8);

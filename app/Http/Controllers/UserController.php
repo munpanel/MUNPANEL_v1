@@ -525,6 +525,20 @@ class UserController extends Controller
         $specific->committee_id = $request->committee;
         $specific->save();
         $reg->addEvent('committee_moved', '{"name":"'.Reg::current()->name().'", "committee":"'.Committee::findOrFail($request->committee)->display_name.'"}');
+        if (isset($request->partner) && isset($specific->partner))
+        {
+            $partner = $specific->partner;
+            if ($request->partner == 'moveall' && $committee->is_dual)
+            {
+                $partner->committee_id = $request->committee;
+                $partner->save();
+                $reg->addEvent('committee_moved', '{"name":"'.Reg::current()->name().'", "committee":"'.Committee::findOrFail($request->committee)->display_name.'"}');
+                return '已成功变更委员会，并将搭档所属委员会一并变更';
+            }
+            $partner->partner_reg_id = null;
+            $specific->partner_reg_id = null;
+            return '已成功变更委员会，并解除搭档配对';
+        }
         //return redirect('/regManage?initialReg='.$request->id);
         return 'success';
     }

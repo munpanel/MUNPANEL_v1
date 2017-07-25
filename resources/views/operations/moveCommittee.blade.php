@@ -13,14 +13,24 @@
                     <p>请选择您希望将{{$reg->user->name}}变更的目标委员会。</p>
 
                 <div class="form-group">
+                  <label>目标委员会</label>
                   <select id="" name="committee" class="form-control" data-required="true">
-                    <option value="" selected="">请选择</option>';
+                    <option value="" selected="">请选择</option>
                 @foreach (Reg::currentConference()->committees as $committee)
                     <option value="{{$committee->id}}">{{$committee->display_name}}</option>
                 @endforeach
                 </select></div>
+                @if (!empty($reg->delegate->partner_reg_id))
+                <div class="form-group">
+                  <label>对已配对搭档的操作</label>
+                  <select id="" name="partner" class="form-control" data-required="true">
+                    <option value="" selected="">请选择</option>
+                    <option value="moveall">将搭档同时转移至目标委员会</option>
+                    <option value="unpair">解除搭档配对</option>
+                </select></div>
+                @endif
                    <button name="submit" type="submit" class="btn btn-success" onclick="loader(this)">变更委员会</button>
-                   <button name="cancel" type="button" class="btn btn-link" onclick="$('#doAssign').hide(); $('#interviewOpSelect').show();">取消</button>
+                   <button name="cancel" type="button" class="btn btn-link" onclick="$('#ot_changecmt_confirm').hide(); $('#ot_changecmt').show();">取消</button>
                    </form>
 
                 </div>

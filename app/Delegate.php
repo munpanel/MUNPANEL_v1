@@ -465,6 +465,20 @@ class Delegate extends Model
         return $result;
     }
 
+    public function getRandomPartner($option)
+    {
+        $partners = Delegate::where('committee_id', $this->committee_id)->where('reg_id', '!=', $this->reg_id)->get();
+        if ($option->priority == 'school')
+            $partners = $partners->where('school_id', $this->school_id);
+        if ($partners->count() == 0)
+            return '找不到符合条件的未分配搭档！'
+        $partner = $partners->random();
+        $result = $this->assignPartnerByRid($partner->reg_id, true);
+        if ($result == 'success')
+            DB::table('linking_codes')->where('reg_id', $this->reg_id)->where('type', 'partner')->delete();
+        return $result;
+    }
+
     public function documents() {
         $result = new Collection;
         if (isset($this->nation))

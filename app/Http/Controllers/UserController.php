@@ -525,6 +525,20 @@ class UserController extends Controller
         $specific->committee_id = $request->committee;
         $specific->save();
         $reg->addEvent('committee_moved', '{"name":"'.Reg::current()->name().'", "committee":"'.Committee::findOrFail($request->committee)->display_name.'"}');
+        if (isset($request->partner) && isset($specific->partner))
+        {
+            $partner = $specific->partner;
+            if ($request->partner == 'moveall' && $committee->is_dual)
+            {
+                $partner->committee_id = $request->committee;
+                $partner->save();
+                $reg->addEvent('committee_moved', '{"name":"'.Reg::current()->name().'", "committee":"'.Committee::findOrFail($request->committee)->display_name.'"}');
+                return '已成功变更委员会，并将搭档所属委员会一并变更';
+            }
+            $partner->partner_reg_id = null;
+            $specific->partner_reg_id = null;
+            return '已成功变更委员会，并解除搭档配对';
+        }
         //return redirect('/regManage?initialReg='.$request->id);
         return 'success';
     }
@@ -945,6 +959,38 @@ class UserController extends Controller
         return "えるの室友配对遍历了$room" . "行记录<br>$result1<br>えるの搭档配对遍历了$part" . "行记录<br>$result2";
     }
 
+    public function randomAssign()
+    {
+        $regs = Reg::where('conference_id', Reg::current()->conference_id)->whereNotIn('type', ['interviewer', 'teamadmin', 'unregistered'])->whereNotNull('reginfo')->where('accomodate', true)->whereNull('roommate_user_id')->get();
+        $committees = Committee::where('conference_id', Reg::current()->conference_id)->where('is_dual', true)->get->pluck(['id']);
+        $delegates = Delegate::where('conference_id', Reg::current()->conference_id)->whereIn('committee_id', $committees)->whereNull('partner_reg_id')->get();
+        $room = 0;
+        $part = 0;
+        $result1 = "";
+        $result2 = "";
+        $option = (object)$request->all();
+        $isroommate = !empty($request->roommate);
+        $ispartner = !empty($request->partner);
+        foreach ($regs as $reg)
+        {
+            if (!empty($reg->roommate_user_id)) continue;
+            $result = $reg->getRandomRoommate($option);
+            if ($result == 'success')
+                $result = $reg->roommate->id . '&#09;' . $reg->roommate->user->name . '&#09; 室友已分配';
+            $result1 .= $reg->id ."&#09;". $reg->user->name . '&#09;'. $result . "<br>";
+            $room++;
+        }
+        foreach ($delegates as $del)
+        {
+            if (!empty($del->partner_user_id)) continue;
+            $result = $del->getRandomPartner($option);
+            if ($result == 'success')
+                $result = $del->partner->reg_id . '&#09;' . $del->partner->reg->user->name . '&#09; 搭档已分配';
+            $result2 .= $del->reg_id ."&#09;". $del->reg->user->name . '&#09;'. $result . "<br>";
+            $part++;
+        }
+        return "えるの室友随机分配遍历了$room" . "行记录<br>$result1<br>えるの搭档随机分配遍历了$part" . "行记录<br>$result2";
+    }
     /**
      * Reset my registration to avoid ecosoc easteregg or after being rejected
      *

@@ -753,10 +753,12 @@ class DatatablesController extends Controller //To-Do: Permission Check
         //$mycommittee = Reg::current()->dais->committee;
         //$nations = Nation::where('committee_id', $mycommittee->id)->get();
         $nations = RoleAllocController::nations();
-        $nations->load('committee');
-        $nations->load('nationgroups');
-        $nations->load('assignedDelegates', 'assignedDelegates.reg', 'assignedDelegates.reg.user');
-        $nations->where('status', 'locked')->load('delegates', 'delegates.reg', 'delegates.reg.user');
+        if (method_exists($nations, 'load')) {
+            $nations->load('committee');
+            $nations->load('nationgroups');
+            $nations->load('assignedDelegates', 'assignedDelegates.reg', 'assignedDelegates.reg.user');
+            $nations->where('status', 'locked')->load('delegates', 'delegates.reg', 'delegates.reg.user');
+        }
         $autosel = false;
         foreach($nations as $nation)
         {
@@ -764,7 +766,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
             $delnames = '无';
             //$command = '<a href="' . mp_url('/dais/freeNation/' . $nation->id) . '" class="btn btn-xs btn-white';
             $command = '<button class="btn btn-xs btn-success freeButton" nation-id="' . $nation->id . '"type="button"';
-            if ($nation->status == 'locked')
+            if ($nation->status != 'open')
             {
                 $select .= ' disabled="disabled"';
                 $delnames = $nation->scopeDelegate();
@@ -784,7 +786,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
                     $autosel = true;
                 }
             }
-            if ($nation->locked)
+            if ($nation->status == 'locked')
             {
                 $select .= ' disabled="disabled"';
                 $command .= ' disabled';
@@ -851,14 +853,16 @@ class DatatablesController extends Controller //To-Do: Permission Check
             ->where('status', 'oVerified');
         })->get(['reg_id', 'school_id', 'nation_id', 'committee_id', 'status']);*/
         $delegates = RoleAllocController::delegates();
-        $delegates->load('delegategroups', 'committee', 'reg', 'reg.user', 'nation', 'interviews');
-        $delegates->where('seat_locked', false)->load('assignedNations');
+        if (method_exists($delegates, "load")) {
+            $delegates->load('delegategroups', 'committee', 'reg', 'reg.user', 'nation', 'interviews');
+            $delegates->where('seat_locked', false)->load('assignedNations');
+        }
         foreach($delegates as $delegate)
         {
             if (!$delegate->canAssignSeats())
                 continue;
             $name = $delegate->reg->user->name;
-            $name .= ' ('.($delegate->delegategroups->count() > 0 ? $delegate->scopeDelegateGroup(true, 0, true) . ', ' : '').$delegate->statusText().')';
+            $name .= ' ('.($delegate->delegategroups->count() > 0 ? $delegate->scopeDelegateGroup(true, 0, true) . ', ' : '').$delegate->statusText().',搭档'.(is_object($delegate->partner)?$delegate->partner->reg->user->name : '无').')';
             if ($delegate->seat_locked)
                 $command = '已锁定';
             else {
@@ -869,7 +873,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
                         break;
                     case 1:
                         $command = isset($delegate->nation) ? '<a href="'.mp_url('/dais/removeSeat/'.$delegate->reg->id).'" class="btn btn-xs btn-white" type="button">移出席位</a>'
-                                                            : '<button class="btn btn-xs btn-success addButton" del-id="' . $delegate->reg->id . '"type="button">移入席位</button>';
+                                                            : '<button class="btn btn-xs btn-success addButton" del-id="' . $delegate->reg->id . '"type="button" onclick="loader(this)">移入席位</button>';
                         break;
                     default:
                         $command = '';

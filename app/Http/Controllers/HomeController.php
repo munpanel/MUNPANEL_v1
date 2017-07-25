@@ -451,6 +451,7 @@ class HomeController extends Controller
                 {
                     if ($reg->delegate->status != 'fail') $operations[] = 'moveCommittee';
                     if ($reg->delegate->status != 'fail' && Reg::currentConference()->delegategroups->count() > 0) $operations[] = 'setDelgroup';
+                    if ($reg->delegate->status == 'paid') $operations[] = 'pairChange';
                 }
             } else if ($reg->specific()->status == 'sVerified')
                 $operations[] = 'oVerification';

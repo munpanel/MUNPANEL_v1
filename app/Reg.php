@@ -412,9 +412,13 @@ class Reg extends Model
 
     public function assignRoommateByRid($rid, $admin = false)
     {
+        if ($admin)
+            return '功能未实现';
         $reg = Reg::findOrFail($rid);
         if (!empty($reg->roommate_user_id))
-            return "目标已有室友分配！";
+        {
+           return "目标已有室友分配！";
+        }
         $this->roommate_user_id = $reg->user->id;
         $name = $reg->user->name;
         $this->save();

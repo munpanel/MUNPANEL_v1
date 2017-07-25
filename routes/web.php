@@ -269,6 +269,7 @@ Route::group(['domain' => 'static.munpanel.com'], function () {
     Route::get('/ot/daisregInfo.modal/{id}', 'HomeController@daisregInfoModal');
     Route::post('/ot/setDelgroup', 'UserController@setDelgroup');
     Route::post('/ot/changeCommittee', 'UserController@setCommittee');
+    Route::post('/ot/changePairing', 'UserController@setPairing');
     Route::post('/ot/updateSeat', 'RoleAllocController@updateSeat');
     Route::get('/ot/seatLock/{id}', 'RoleAllocController@lockSeat');
     Route::get('/ot/seatUnLock/{id}', 'RoleAllocController@unlockSeat');

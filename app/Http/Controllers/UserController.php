@@ -529,6 +529,17 @@ class UserController extends Controller
         return 'success';
     }
 
+    public function setPairing(Request $request)
+    {
+        if (Reg::current()->type != 'ot')
+            return "您无权执行该操作！";
+        $reg = Reg::findOrFail($request->reg_id);
+        if ($request->type == 'partner')
+            return $reg->delegate->assignPartnerByRid($request->other_id, true);
+        else if ($request->type == 'roommate')
+            return $reg->assignRoommateByRid($request->other_id, true);
+    }
+
     /**
      * set delegate group for a single delegate.
      *
@@ -910,15 +921,21 @@ class UserController extends Controller
         {
             if ($isroommate)
                 $roommatename = $reg->getInfo('conference.roommatename') ?? '';
-            if ($isroommate && !empty($roommatename) && (in_array($reg->specific()->status, ['oVerified', 'unpaid', 'paid', 'success'])))
+            $specific = $reg->specific();
+            if ($isroommate && !empty($roommatename) && (in_array($specific->status, ['oVerified', 'unpaid', 'paid', 'success'])))
             {
+                $roommate_id = $reg->roommate_user_id;
+                if (!isset($roommate_id))
+                {
                 $result1 .= $reg->id ."&#09;". $reg->assignRoommateByName($option) . "<br>";
                 $room++;
+                }
             }
-            if ($ispartner && $reg->type == 'delegate' && (in_array($reg->specific()->status, ['oVerified', 'unpaid', 'paid', 'success'])))
+            if ($ispartner && $reg->type == 'delegate' && (in_array($specific->status, ['oVerified', 'unpaid', 'paid', 'success'])))
             {
                 $partnername = $reg->getInfo('conference.partnername');
-                if (isset($partnername))
+                $partner_id = $reg->specific()->partner_reg_id;
+                if (!isset($partner_id))
                 {
                     $result2 .= $reg->id ."&#09;". $reg->delegate->assignPartnerByName() . "<br>";
                     $part++;
@@ -991,7 +1008,63 @@ class UserController extends Controller
      */
     public function test(Request $request)
     {
+        return "404";
+        $delegates = Delegate::where('conference_id', 3)->with(['partner', 'partner.reg.user', 'reg.user'])->where('status', 'paid')->get();
+        foreach ($delegates as $delegate)
+        {
+            echo $delegate->reg_id.','.$delegate->reg->name().','.$delegate->reg->getInfo('personinfo.typeDocument').','.$delegate->reg->getInfo('personinfo.sfz').'<br>';
+        }
+        echo "VOLUNTEER<br>";
+        $volunteers = Volunteer::where('conference_id', 3)->with('reg.user')->where('status', 'paid')->get();
+        foreach ($volunteers as $volunteer)
+        {
+            echo $volunteer->reg_id.','.$volunteer->reg->name().','.$volunteer->reg->getInfo('personinfo.typeDocument').','.$volunteer->reg->getInfo('personinfo.sfz').'<br>';
+        }
+        return "end";
+        foreach ($delegates as $delegate)
+        {
+            echo $delegate->reg_id .','. $delegate->reg->user->name.',';
+            $partner_id = $delegate->partner_reg_id;
+            $partner = $delegate->partner;
+            if (!is_object($partner))
+            {
+                if (!is_null($partner_id))
+                    echo 'Wrong ID<br>';
+                else
+                    echo 'No Partner<br>';
+                continue;
+            }
+            echo $partner->reg_id.','.$partner->reg->user->name;
+            if ($partner->conference_id != 3)
+                echo ',Wrong Confernece';
+            if ($partner->committee_id != $delegate->committee_id)
+                echo ',Committee Mismatch';
+            if ($partner->status != 'paid')
+            {
+                $delegate->partner_reg_id = null;
+                $delegate->save();
+                echo ',unpaid';
+            }
+            if ($partner->partner_reg_id != $delegate->reg_id)
+            {
+                $delegate->partner_reg_id = null;
+                $delegate->save();
+                echo ',unpaired pair';
+            }
+            echo '<br>';
+        }
+
         return '404 not found';
+        if (($handle = fopen("/var/www/munpanel/app/test.csv", "r")) !== FALSE) {
+            $resp = "test";
+            while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+                $delegate = Delegate::find($data[0]);
+                $delegate->partner_reg_id = $data[1];
+                $delegate->save();
+            }
+            fclose($handle);
+            return $resp;
+        }
         $nationgroup = New Nationgroup;
         $nationgroup->name = '裁军委席位';
         $nationgroup->display_name = '共同均衡裁军谈判会议 全体席位';

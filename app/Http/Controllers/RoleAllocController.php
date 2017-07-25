@@ -140,15 +140,22 @@ class RoleAllocController extends Controller
      */
     public function removeDelegate($id)
     {
-        $user = User::findOrFail($id);
-        $delegate = $user->delegate;
+        $delegate = Delegate::findOrFail($id);
+        $nation = $delegate->nation;
         $delegate->nation_id = null;
+        $delegate->seat_locked = false;
         $delegate->save();
-        if (isset($delegate->partner_user_id))
+        $partner = $delegate->partner;
+        if (is_object($partner))
         {
-            $partner = $delegate->partner->delegate;
             $partner->nation_id = null;
+            $partner->seat_locked = false;
             $partner->save();
+        }
+        if (is_object($nation))
+        {
+            $nation->status = 'open';
+            $nation->save();
         }
         return redirect(mp_url('/roleAlloc'));
     }
@@ -205,6 +212,7 @@ class RoleAllocController extends Controller
             return false;
         if ($delegate->assignedNations->count() >= $max && $max != -1)
             return false;*/
+        $ret = true;
         $max = $nation->committee->maxAssignList;
         if ($max == 1)
         {
@@ -213,11 +221,15 @@ class RoleAllocController extends Controller
         }
         else if (!$delegate->assignedNations->contains($nation))
             $delegate->assignedNations()->attach($nation->id);
-        if ($partner && isset($delegate->partner_user_id))
+        if ($partner)
+            $partner = $delegate->partner;
+        if (is_object($partner))
         {
             $partner = $delegate->partner;
-            return RoleAllocController::addAssign($partner, $nation, false);
+            $ret = RoleAllocController::addAssign($partner, $nation, false);
         }
+        if ($max == 1)
+            RoleAllocController::lockSeat($delegate->reg_id);
         $delegate->reg->addEvent('role_assigned', '{"name":"'.Reg::current()->name().'", "role":"'.$nation->displayName(true, 2).'"}');
         return true;
     }
@@ -460,7 +472,7 @@ class RoleAllocController extends Controller
         return 'success';
     }
 
-    public function lockSeat($id)
+    public static function lockSeat($id)
     {
         $delegate = Delegate::findOrFail($id);
         if (!$delegate->canAssignSeats())
@@ -484,8 +496,9 @@ class RoleAllocController extends Controller
                 $partnerReg->createConfOrder();
         }
         //$delegate->nation->setLock();
-        $delegate->nation->status = 'locked';
-        $delegate->nation->save();
+        $nation = $delegate->nation;
+        $nation->status = 'locked';
+        $nation->save();
         if ((!isset($reg->order_id)) && Reg::currentConference()->option('reg_order_create_time') == 'seatLock' && isset($reg->accomodate))
             $reg->createConfOrder();
         return 'success';

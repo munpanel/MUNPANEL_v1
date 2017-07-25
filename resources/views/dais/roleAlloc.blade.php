@@ -103,7 +103,7 @@
                 <div class="col-sm-6">
                   <section class="panel">
                     <header class="panel-heading">
-                  <a href="{{mp_url('/dais/nationDetails.modal/new')}}" class="btn btn-xs btn-white details-modal pull-right">添加席位</a>
+                  <a href="{{mp_url('/dais/nationDetails.modal/new')}}" class="btn btn-xs btn-white details-modal pull-right" data-toggle="ajaxModal">添加席位</a>
                   {{--
                   @if ($emptyNations > 0)
                     <span class="pull-right">&nbsp;</span><span class="badge bg-warning pull-right">{{$emptyNations}} 个空席位</span>

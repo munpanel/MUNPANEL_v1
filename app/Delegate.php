@@ -15,6 +15,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use App\Document;
+use Illuminate\Support\Facades\Auth;
 
 class Delegate extends Model
 {
@@ -88,6 +89,9 @@ class Delegate extends Model
     }
 
     public function interviewStatus($retest = 'default') {
+        $enabled = $this->conference->option('interview_enabled');
+        if (!(isset($enabled) && $enabled))
+            return 'oVerified';
         if ($retest == 'default')
         {
             if ($this->relationLoaded('interviews'))
@@ -212,38 +216,45 @@ class Delegate extends Model
             $interviews = $this->interviews;
         else
             $interviews = $this->interviews();
-        switch($this->interviewStatus($interviews->where('retest', true)->count() > 0))
-        {
-            case 'oVerified':
-            case 'interview_passed':
-            case 'interview_exempted':
-            case 'interview_retest_assigned':
-            case 'interview_retest_arranged':
-            case 'interview_retest_passed':
-            case 'interview_retest_failed':
-            case 'interview_retest_unassigned':
-            case 'interview_retest_undecided':
-            case 'interview_retest_exempted':
-                if (Http\Controllers\RoleAllocController::delegates()->contains('reg_id', $this->reg_id))
-                {
-                    if (is_object($nation))
-                    {
-                        if ($nation->conference_id != $this->conference_id)
-                            return false;
-                        //if ($nation->locked)
-                        if ($nation->status == 'locked')
-                            return false;
-                        $max = $nation->committee->maxAssignList;
-                        if ($this->assignedNations->count() >= $max && $max != -1)
-                            return false;
-                        if (Reg::current()->type == 'dais' && $nation->committee_id != $this->committee_id)
-                            return false;
-                    }
-                    return true;
-                }
-            default:
-                return false;
+        $result = $this->conference->option('interview_enabled');
+        if (isset($result) && $result) {
+            switch($this->interviewStatus($interviews->where('retest', true)->count() > 0))
+            {
+                case 'oVerified':
+                case 'interview_passed':
+                case 'interview_exempted':
+                case 'interview_retest_assigned':
+                case 'interview_retest_arranged':
+                case 'interview_retest_passed':
+                case 'interview_retest_failed':
+                case 'interview_retest_unassigned':
+                case 'interview_retest_undecided':
+                case 'interview_retest_exempted':
+
+                default:
+                 return false;
+            }
         }
+        else if ($this->status != 'paid')
+            return false;
+        if (Http\Controllers\RoleAllocController::delegates()->contains('reg_id', $this->reg_id))
+        {
+            if (is_object($nation))
+            {
+                if ($nation->conference_id != $this->conference_id)
+                    dd(1);//return false;
+                //if ($nation->locked)
+                if ($nation->status == 'locked')
+                    dd(2);//return false;
+                $max = $nation->committee->maxAssignList;
+                if ($this->assignedNations->count() >= $max && $max != -1)
+                    dd(3);//return false;
+                if (Reg::current()->type == 'dais' && $nation->committee_id != $this->committee_id)
+                    dd(4);//return false;
+            }
+            return true;
+        }
+        return false;
     }
 
     public function assignments() {
@@ -388,10 +399,26 @@ class Delegate extends Model
     public function assignPartnerByRid($rid, $admin = false)
     {
         $reg = Delegate::findOrFail($rid);
-        if (!empty($reg->partner_reg_id))
-            return "目标已有搭档分配！";
         if ($reg->committee_id != $this->committee_id)
             return "目标与本人并不在同一委员会！";
+        if (is_object($this->partner)) {
+            $tmp = $this->partner;
+            if ($tmp->partner_reg_id == $reg->id) {
+                $tmp->partner_reg_id = null;
+                $tmp->save();
+            }
+        }
+        if (!empty($reg->partner_reg_id)) {
+            if ($admin) {
+                $tmp = $reg->partner;
+                if ($tmp->partner_reg_id == $reg->id) {
+                    $tmp->partner_reg_id = null;
+                    $tmp->save();
+                }
+            }
+            else
+                return "目标已有搭档分配！";
+        }
         $this->partner_reg_id = $reg->reg_id;
         $name = $reg->user()->name;
         $this->save();

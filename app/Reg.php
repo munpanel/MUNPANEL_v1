@@ -473,7 +473,7 @@ class Reg extends Model
         //if ($option->priority == 'committee' && $reg->type == 'delegate')
         //    TODO: 获取同委员会代表
         if ($roommates->count() == 0)
-            return '找不到符合条件的未分配室友！'
+            return '找不到符合条件的未分配室友！';
         $roommate = $roommates->random();
         $result = $this->assignRoommateByRid($roommate->id, true);
         if ($result == 'success')

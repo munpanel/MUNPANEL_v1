@@ -471,7 +471,7 @@ class Delegate extends Model
         if ($option->priority == 'school')
             $partners = $partners->where('school_id', $this->school_id);
         if ($partners->count() == 0)
-            return '找不到符合条件的未分配搭档！'
+            return '找不到符合条件的未分配搭档！';
         $partner = $partners->random();
         $result = $this->assignPartnerByRid($partner->reg_id, true);
         if ($result == 'success')

@@ -462,7 +462,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
                     $handin = Handin::where('assignment_id', $assignment->id)->where('nation_id', Reg::current()->delegate->nation->id)->first();
                 else if ($assignment->subject_type == 'partner')
                 {
-                    if (isset(Reg::current()->delegate->partner)) $handin = Handin::where('assignment_id', $assignment->id)->where('user_id', Reg::current()->delegate->partner->id)->orderBy('id', 'desc')->first();
+                    if (is_object(Reg::current()->delegate->partner)) $handin = Handin::where('assignment_id', $assignment->id)->where('reg_id', Reg::current()->delegate->partner_reg_id)->orderBy('id', 'desc')->first();
                     if (!isset($handin)) $handin = Handin::where('assignment_id', $assignment->id)->where('reg_id', Reg::current()->id)->orderBy('id', 'desc')->first();
                 }
                 else

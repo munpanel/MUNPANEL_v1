@@ -180,6 +180,7 @@ Route::group(['domain' => 'static.munpanel.com'], function () {
     Route::get('/documents', 'HomeController@documentsList');
     Route::get('/document/{id}/{action?}', 'HomeController@document');
     Route::get('/documentDetails.modal/{id}', 'HomeController@documentDetailsModal');
+    Route::post('/document/upload', 'HomeController@uploadDocument');
 
     Route::get('/pages', function() {
         return view('notavailable');

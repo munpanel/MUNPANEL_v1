@@ -937,23 +937,43 @@ class HomeController extends Controller
      * @param int $id the ID of the document
      * @return \Illuminate\Http\Response
      */
-    public function documentDetailsModal($id)
+    public function documentDetailsModal(Request $request, $id)
     {
         //To-Do: permission check
-        if ($id == 'new')
+        if ($id == 'new' && !empty($request->file))
         {
             $count = Document::where('conference_id', Reg::currentConferenceID())->where('title', 'like', 'New Document%')->count();
             $document = new Document;
             $document->title = 'New document';
             if ($count > 0) $document->name .= ' ' . $count;
             $document->description = '请在此输入对该学术文件的描述';
-            $document->path = 'default/no-docs.pdf';
+            $document->path = $request->file->store('documents');
             $document->conference_id = Reg::currentConferenceID();
             $document->save();
         }
         else
             $document = Document::findOrFail($id);
         return view('documentDetailsModal', ['document' => $document]);
+    }
+
+    /**
+     * Upload new document.
+     *
+     * @param int $id the ID of the document
+     * @return \Illuminate\Http\Response
+     */
+    public function documentUpload(Request $request)
+    {
+        //To-Do: permission check
+        $count = Document::where('conference_id', Reg::currentConferenceID())->where('title', 'like', 'New Document%')->count();
+        $document = new Document;
+        $document->title = 'New document';
+        if ($count > 0) $document->name .= ' ' . $count;
+        $document->description = '请在此输入对该学术文件的描述';
+        $document->path = $request->file->store('documents');
+        $document->conference_id = Reg::currentConferenceID();
+        $document->save();
+        return $document->id;
     }
 
     /**

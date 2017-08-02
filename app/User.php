@@ -116,6 +116,15 @@ class User extends Authenticatable
         $prefix = "";
         foreach ($regs as $reg)
         {
+            if ($reg->type == 'unregistered')
+                continue;
+            $specific = $reg->specific();
+            if (is_object($specific)) {
+                if (isset($specific->status)) {
+                    if ($specific->status != 'paid' && $specific->status != 'success')
+                        continue;
+                }
+            }
             $result .= $prefix.$reg->regText();
             $prefix = "、";
         }

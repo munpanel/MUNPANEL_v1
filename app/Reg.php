@@ -21,7 +21,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Reg extends Model
 {
-    protected $fillable = ['user_id','conference_id','school_id','type','enabled','gender','reginfo','accomodate','roommate_reg_id'];
+    protected $fillable = ['user_id','conference_id','school_id','type','enabled','gender','reginfo','accomodate','roommate_user_id'];
     private static $_current, $_currentConference;
 
     /**
@@ -96,7 +96,7 @@ class Reg extends Model
     }
 
     public function roommate() {
-        return $this->belongsTo('App\User', 'roommate_reg_id');
+        return $this->belongsTo('App\User', 'roommate_user_id');
     }
 
     public function interviews()
@@ -465,17 +465,60 @@ class Reg extends Model
         return $result;
     }
 
+    //TODO: make this not recursive
+    public function getRandomRoommateWithPriority($priorities, $i, $roommates) {
+        $thisroommates = clone $roommates;
+        if ($i != -1) {
+            $priority = $priorities[$i];
+            switch ($priority) {
+                case 'school':
+                    $thisroommates = $thisroommates->where('school_id', $this->school_id);
+                    break;
+                case 'partner':
+                    if ($this->type == 'delegate') {
+                        $thisroommates = $thisroommates->whereExists(function ($query) {
+                        $query->select(DB::raw(1))
+                                ->from('delegate_info')
+                                ->whereRaw('delegate_info.reg_id = reg.id AND delegate_info.partner_reg_id = ' + $this->reg_id);
+                        });
+                    }
+                    break;
+                case 'committee':
+                    if ($this->type == 'delegate') {
+                        $thisroommates = $thisroommates->whereExists(function ($query) {
+                        $query->select(DB::raw(1))
+                                ->from('delegate_info')
+                                ->whereRaw('delegate_info.reg_id = reg.id AND delegate_info.committee_id = ' + $this->delegate->committee_id);
+                        });
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+        for ($j = $i + 1 ; $j < count($priorities) ; $j++) {
+            //echo 'S'.$i.' '.$j.' '.$thisroommates->count().'<br>';
+            $res = $this->getRandomRoommateWithPriority($priorities, $j, $thisroommates);
+            if ($res != -1)
+                return $res;
+        }
+        //echo 'E'.$i.' '.$roommates->count().'<br>';
+        $thisroommates = $thisroommates->get();
+        foreach ($thisroommates as $roommate) {
+            if ($roommate->specific()->status != 'paid')
+                continue;
+            return $roommate->id;
+        }
+        return -1;
+    }
+
     public function getRandomRoommate($option)
     {
-        $roommates = Reg::where('conference_id', $this->conference_id)->where('id', '!=', $this->id)->where('gender', $this->gender)->get();
-        if ($option->priority == 'school')
-            $roommates = $roommates->where('school_id', $this->school_id);
-        //if ($option->priority == 'committee' && $reg->type == 'delegate')
-        //    TODO: 获取同委员会代表
-        if ($roommates->count() == 0)
+        $priorities = json_decode($option->priorities, true);
+        $roommate_id = $this->getRandomRoommateWithPriority($priorities, -1, Reg::where('conference_id', Reg::currentConferenceID())->where('id', '!=', $this->id)->whereNull('roommate_user_id')->where('gender', $this->gender)->whereIn('type', ['volunteer', 'delegate'])->where('accomodate', true));
+        if ($roommate_id == -1)
             return '找不到符合条件的未分配室友！';
-        $roommate = $roommates->random();
-        $result = $this->assignRoommateByRid($roommate->id, true);
+        $result = $this->assignRoommateByRid($roommate_id, false);
         if ($result == 'success')
             DB::table('linking_codes')->where('reg_id', $this->id)->where('type', 'roommate')->delete();
         return $result;

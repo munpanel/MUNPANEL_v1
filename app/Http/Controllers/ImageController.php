@@ -182,7 +182,7 @@ class ImageController extends Controller
         $w = $img->getImageWidth() / 2;
         if (!$blank)
         {
-            ImageController::addText($img, $draw, $w, 605, "BJMUNC 2017\n" . $title, 12, '#FFFFFF', 'PingHeiLight.ttf', 'DINPRORegular.otf');
+            ImageController::addText($img, $draw, $w, 605, "BJMUNSS 2017\n" . $title, 12, '#FFFFFF', 'PingHeiLight.ttf', 'DINPRORegular.otf');
             ImageController::addText($img, $draw, $w, 953, $role, 24, '#FFFFFF', 'PingFang Heavy.ttf', 'MyriadSetProSemibold.ttf', true);
             ImageController::addText($img, $draw, $w, 1105, $name, 21, '#000000', 'PingFang Bold.ttf', 'MyriadSetProSemibold.ttf');
             ImageController::addText($img, $draw, $w, 1175, $school, 12, '#000000', 'PingFang Regular.ttf', 'MyriadProLight.otf');
@@ -217,6 +217,7 @@ class ImageController extends Controller
      *
      * @param int $cid the ID of the committee of which delegates' badge images are generated
      * @return string generating results
+     */
     public function committeeBadge($cid)
     {
         //$committee = Committee::findOrFail($cid);

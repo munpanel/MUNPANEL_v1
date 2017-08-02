@@ -4,7 +4,7 @@
                     <p>该代表已配对搭档<strong>{{$reg->delegate->partner->reg->user->name}}</strong>。</p>
                     @endif
                     @if (is_object($reg->roommate))
-                    <p>该代表已配对室友<strong>{{$reg->roommate->user->name}}</strong>。</p>
+                    <p>该代表已配对室友<strong>{{$reg->roommate->name}}</strong>。</p>
                     @endif
                     <button name="doLock" type="button" class="btn btn-info" onclick="$('#ot_changepair').hide(); $('#ot_changepair_confirm').show();">开始</button>
                 </div>

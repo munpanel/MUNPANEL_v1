@@ -26,18 +26,23 @@ class CardController extends Controller
      */
     public function generateCardsDelegates()
     {
-        $delegates = Delegate::where('status', 'paid')->get();
+        $delegates = Delegate::where('status', 'paid')->where('conference_id', 3)->get();
         foreach ($delegates as $delegate)
         {
-            if ($delegate->committee->is_allocated && $delegate->cards()->count() == 0)
+            if ($delegate->cards()->count() == 0)
             {
                 $card = new Card;
                 //$card->id = uniqid();
                 $card->id = generateID();
-                $card->user_id = $delegate->user_id;
+                $card->reg_id = $delegate->reg_id;
                 $card->template = 'Delegate';
-                $card->name = $delegate->user->name;
-                $card->school = $delegate->school->name;
+                $card->name = $delegate->reg->user->name;
+                $card->school = is_object($delegate->school)?$delegate->school->name:$delegate->reg->getInfo('personinfo.school');
+                if (!is_object($delegate->nation))
+                {
+                    echo $delegate->reg_id.' '.$delegate->committee->name.'<br>';
+                    continue;
+                }
                 $card->role = $delegate->nation->name;
                 $card->title = $delegate->committee->name;
                 $card->save();
@@ -52,16 +57,16 @@ class CardController extends Controller
      */
     public function generateCardsDais()
     {
-        $dais = Dais::all();
+        $dais = Dais::where('status', 'success')->where('conference_id', 3)->get();
         foreach ($dais as $d)
         {
             $card = new Card;
             $card->id = generateID();
-            $card->user_id = $d->user_id;
+            $card->reg_id = $d->reg_id;
             $card->template = 'Dais';
-            $card->name = $d->user->name;
-            $card->school = $d->school->name;
-            $card->role = $d->committee->language == 'English' ? 'Dais':'主席';
+            $card->name = $d->reg->user->name;
+            $card->school = $d->reg->getInfo('personinfo.school');
+            $card->role = $d->position; //$d->committee->language == 'English' ? 'Dais':'主席';
             $card->title = $d->committee->name;
             $card->save();
         }
@@ -74,15 +79,15 @@ class CardController extends Controller
      */
     public function generateCardsVolunteers()
     {
-        $volunteers = Volunteer::where('status', 'paid')->get();
+        $volunteers = Volunteer::where('status', 'paid')->where('conference_id', 3)->get();
         foreach ($volunteers as $d)
         {
             $card = new Card;
             $card->id = generateID();
-            $card->user_id = $d->user_id;
+            $card->reg_id = $d->reg_id;
             $card->template = 'Volunteer';
-            $card->name = $d->user->name;
-            $card->school = $d->school->name;
+            $card->name = $d->reg->user->name;
+            $card->school = is_object($d->school)?$d->school->name:$d->reg->getInfo('personinfo.school');
             $card->role = '志愿者';
             $card->title = 'Volunteer';
             $card->save();
@@ -157,7 +162,7 @@ class CardController extends Controller
                 }
                 $card = new Card;
                 $card->id = generateID();
-                $card->user_id = $data[0];
+                //$card->reg_id = $data[0];
                 $card->template = $data[1];
                 $card->title = $data[2];
                 $card->name = $data[3];

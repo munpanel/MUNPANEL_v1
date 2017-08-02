@@ -959,10 +959,10 @@ class UserController extends Controller
         return "えるの室友配对遍历了$room" . "行记录<br>$result1<br>えるの搭档配对遍历了$part" . "行记录<br>$result2";
     }
 
-    public function randomAssign()
+    public function randomAssign(Request $request)
     {
-        $regs = Reg::where('conference_id', Reg::current()->conference_id)->whereNotIn('type', ['interviewer', 'teamadmin', 'unregistered'])->whereNotNull('reginfo')->where('accomodate', true)->whereNull('roommate_user_id')->get();
-        $committees = Committee::where('conference_id', Reg::current()->conference_id)->where('is_dual', true)->get->pluck(['id']);
+        $regs = Reg::where('conference_id', Reg::current()->conference_id)->whereIn('type', ['delegate', 'volunteer'])->where('accomodate', true)->whereNull('roommate_user_id')->get();
+        $committees = Committee::where('conference_id', Reg::current()->conference_id)->where('is_dual', true)->get()->pluck(['id']);
         $delegates = Delegate::where('conference_id', Reg::current()->conference_id)->whereIn('committee_id', $committees)->whereNull('partner_reg_id')->get();
         $room = 0;
         $part = 0;
@@ -971,15 +971,20 @@ class UserController extends Controller
         $option = (object)$request->all();
         $isroommate = !empty($request->roommate);
         $ispartner = !empty($request->partner);
+        if ($isroommate) {
         foreach ($regs as $reg)
         {
+            $reg = $reg->fresh();
             if (!empty($reg->roommate_user_id)) continue;
+            if ($reg->specific()->status != 'paid') continue;
             $result = $reg->getRandomRoommate($option);
             if ($result == 'success')
-                $result = $reg->roommate->id . '&#09;' . $reg->roommate->user->name . '&#09; 室友已分配';
+                $result = $reg->roommate->id . '&#09;' . $reg->roommate->name . '&#09; 室友已分配';
             $result1 .= $reg->id ."&#09;". $reg->user->name . '&#09;'. $result . "<br>";
             $room++;
         }
+        }
+        if ($ispartner) {
         foreach ($delegates as $del)
         {
             if (!empty($del->partner_user_id)) continue;
@@ -988,6 +993,7 @@ class UserController extends Controller
                 $result = $del->partner->reg_id . '&#09;' . $del->partner->reg->user->name . '&#09; 搭档已分配';
             $result2 .= $del->reg_id ."&#09;". $del->reg->user->name . '&#09;'. $result . "<br>";
             $part++;
+        }
         }
         return "えるの室友随机分配遍历了$room" . "行记录<br>$result1<br>えるの搭档随机分配遍历了$part" . "行记录<br>$result2";
     }
@@ -1054,6 +1060,71 @@ class UserController extends Controller
      */
     public function test(Request $request)
     {
+        return "404";
+        //return UserController::randomAssign($request);
+        $reg = Reg::find(3136);
+        $reg->accomodate = false;
+        $reg->save();
+        $regs = Reg::where('conference_id', 3)->where('accomodate', true)->whereIn('type', ['delegate', 'volunteer'])->get();
+        foreach ($regs as $reg) {
+            if ($reg->specific()->status != 'paid')
+                continue;
+            if (empty($reg->roommate_user_id)) {
+               echo $reg->user->name.",".$reg->user->identityText().",无室友,无室友<br>";
+               continue;
+            }
+            $room_regs = $regs->where('user_id', $reg->roommate_user_id);
+            /*$r = false;
+            foreach ($room_regs as $room) {
+                if ($room->specific()->status == 'paid') {
+                    $r = true;break;}
+            }
+            if (!$r) {
+                echo $reg->id.",".$reg->user->name.",".$reg->type."<br>";
+                $reg->roommate_user_id = null;
+                $reg->save();
+            }*/
+            echo $reg->user->name.",".$reg->user->identityText().",".$reg->roommate->name.",".$reg->roommate->identityText()."<br>";
+        }
+        return "done";
+        $delegates = Delegate::where('conference_id', 3)->with(['partner', 'partner.reg.user', 'reg.user'])->where('status', 'paid')->get();
+        foreach ($delegates as $delegate)
+        {
+            if ($delegate->reg->accomodate == false)
+                continue;
+            if (!isset($delegate->reg->roommate_user_id))
+                continue;
+            if (Reg::where('user_id', $delegate->reg->roommate_user_id)->where('conference_id', 3)->where('type', "delegate")->count() > 0)
+                continue;
+            $reg = Reg::where('user_id', $delegate->reg->roommate_user_id)->where('conference_id', 3)->first();
+            if ($reg->roommate_user_id != $delegate->reg->user_id) {
+                echo $delegate->reg_id.' '.$reg->user_id." mis<br>";
+            }
+            //echo $delegate->reg_id.' '.$delegate->reg->roommate_user_id.'<br>';
+        }
+        $volunteers = Volunteer::where('conference_id', 3)->with('reg.user')->where('status', 'paid')->get();
+        foreach ($volunteers as $volunteer)
+        {
+            if ($volunteer->reg->accomodate == false)
+                continue;
+            if (!isset($volunteer->reg->roommate_user_id))
+                continue;
+            if (Reg::where('user_id', $volunteer->reg->roommate_user_id)->where('conference_id', 3)->where('type', "volunteer")->count() > 0)
+                continue;
+            $reg = Reg::where('user_id', $volunteer->reg->roommate_user_id)->where('conference_id', 3)->first();
+            if ($reg->roommate_user_id != $volunteer->reg->user_id) {
+                echo $volunteer->reg_id.' '.$reg->user_id." mis<br>";
+            }
+            //echo $volunteer->reg_id.' '.$volunteer->reg->roommate_user_id.'<br>';
+        }
+        return "done";
+        echo "VOLUNTEER<br>";
+        $volunteers = Volunteer::where('conference_id', 3)->with('reg.user')->where('status', 'paid')->get();
+        foreach ($volunteers as $volunteer)
+        {
+            echo $volunteer->reg_id.','.$volunteer->reg->name().','.$volunteer->reg->getInfo('personinfo.typeDocument').','.$volunteer->reg->getInfo('personinfo.sfz').'<br>';
+        }
+        return "end";
         return "404";
         $delegates = Delegate::where('conference_id', 3)->with(['partner', 'partner.reg.user', 'reg.user'])->where('status', 'paid')->get();
         foreach ($delegates as $delegate)

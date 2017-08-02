@@ -68,7 +68,7 @@ class Delegate extends Model
     }
 
     public function cards() {
-        return $this->hasMany('App\Card', 'user_id');
+        return $this->hasMany('App\Card', 'reg_id');
     }
 
     public function partner() {

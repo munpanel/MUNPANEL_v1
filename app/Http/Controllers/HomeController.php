@@ -538,6 +538,34 @@ class HomeController extends Controller
     }
 
     /**
+     * Show the assignment details modal.
+     *
+     * @param int $id ID of assignment queried
+     * @return \Illuminate\Http\Response
+     */
+    public function assignmentDetailsModal($id)
+    {
+        //if (!Reg::current()->can('edit-assignments'))
+        //    return "Error";
+        if ($id == 'new')
+        {
+            $count = Assignment::where('conference_id', Reg::currentConferenceID())->where('title', 'like', 'New Assignment%')->count();
+            $assignment = new Assignment;
+            $assignment->title = 'New Assignment';
+            if ($count > 0) $assignment->name .= ' ' . $count;
+            $assignment->subject_type = 'individual';
+            $assignment->handin_type = 'upload';
+            $assignment->description = '请在此输入对该学术作业的描述';
+            $assignment->deadline = strtotime(date('Y-m-d H:i:s'));
+            $assignment->conference_id = Reg::currentConferenceID();
+            $assignment->save();
+        }
+        else
+            $assignment = Assignment::findOrFail($id);
+        return view('ot.assignmentDetailsModal', ['assignment' => $assignment]);
+    }
+
+    /**
      * (Deprecated) Show the invoice of the user for registration.
      * This function will be replaced by the more general Order class
      * in the future.
@@ -914,8 +942,10 @@ class HomeController extends Controller
         //To-Do: permission check
         if ($id == 'new')
         {
+            $count = Document::where('conference_id', Reg::currentConferenceID())->where('title', 'like', 'New Document%')->count();
             $document = new Document;
             $document->title = 'New document';
+            if ($count > 0) $document->name .= ' ' . $count;
             $document->description = '请在此输入对该学术文件的描述';
             $document->path = 'default/no-docs.pdf';
             $document->conference_id = Reg::currentConferenceID();

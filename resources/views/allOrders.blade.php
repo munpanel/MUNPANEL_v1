@@ -10,19 +10,14 @@
                 <strong>付款人:</strong>
                 <h4>{{$user->name}}</h4>
                 <p>
-                  @if (is_object($user->specific()) && is_object($user->specific()->school))
-                  {{$user->specific()->school->name}}<br>
-                  @endif
-                  @if (is_object($user->specific()) && isset($user->specific()->tel))
-                  Phone: {{$user->specific()->tel}}<br>
-                  @endif
+                  Phone: {{$user->tel}}<br>
                   Email: {{$user->email}}<br>
                 </p>
               </div>
             </div>
           </div>
           @foreach($orders as $order)
-          <div class="line"></div>
+          <div class="line">---------------</div>
           <a href="{{mp_url('/shipOrder/'.$order->id)}}" class="btn btn-sm btn-info pull-right">发货</a>
           <h4>订单编号 {{$order->id}}</h4>
           <p class="m-t m-b">

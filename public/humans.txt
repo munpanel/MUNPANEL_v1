@@ -11,13 +11,7 @@
         From: Beijing, China
 
 /* THANKS */
-        Founder of Console iT: Jiazhao Xu
-        From: Pasadena, California, United States
-
         Special Support: Beijing Model United Nations Association for High School Students
         URL: https://bjmun.org
-
-        Special Support: RO Model United Nations
-        URL: https://romun.net
 
         Original UI Design: @Flatfull

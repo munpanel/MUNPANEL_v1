@@ -18,8 +18,8 @@ class Card extends Model
     public $incrementing = false;
     public $guarded = [];
 
-    public function user() {
-        return $this->belongsTo('App\User');
+    public function reg() {
+        return $this->belongsTo('App\Reg');
     }
 
 }

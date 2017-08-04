@@ -30,7 +30,7 @@ class StoreController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        //$this->middleware('auth');
     }
 
     /**
@@ -281,8 +281,8 @@ class StoreController extends Controller
         if (is_numeric($id))
             $user = User::find($id);
         else
-            $user = Card::findOrFail($id)->user;
-        $orders = $user->orders->where('status', 'paid');
+            $user = Card::findOrFail($id)->reg->user;
+        $orders = $user->orders->where('status', 'paid')->where('conference_id', 3);
         //$orders = Order::where('status', 'paid')->where('shipment_method', 'mail')->get();
         return view('allOrders', ['user' => $user, 'orders' => $orders]);
     }

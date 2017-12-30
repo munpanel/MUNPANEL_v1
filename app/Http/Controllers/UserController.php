@@ -51,7 +51,7 @@ class UserController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth', ['except' => 'test']);
     }
 
     /**
@@ -1060,6 +1060,11 @@ class UserController extends Controller
      */
     public function test(Request $request)
     {
+        $users = User::all();
+        foreach ($users as $index => $value)
+        {
+            echo $index.'<br>';
+        }
         return "404";
         //return UserController::randomAssign($request);
         $reg = Reg::find(3136);

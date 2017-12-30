@@ -4,6 +4,11 @@
     <script src="{{cdn_url('js/charts/easypiechart/jquery.easy-pie-chart.js')}}"></script>
     <script src="{{cdn_url('/js/fuelux/fuelux.js')}}"></script>
     <script src="{{cdn_url('/js/datepicker/bootstrap-datepicker.js')}}"></script>
+  <script>
+                var $modal = $('<div class="modal" id="ajaxModal"><div class="modal-body"><div class="modal-dialog"><div class="modal-content"><div class="modal-body"><center><div class="row"><div class="col-sm-12 b-r"><div class="alert alert-warning"><b>The 2017 yearly report is released!</b></div><a id="confirmButton" href="/munpanel2017.pdf" class="btn btn-sm btn-success text-uc m-t-n-xs m-r-xs">Check it out~</a></div></div></center></div></div></div></div></div>');
+                $('body').append($modal);
+                $modal.modal();
+  </script>
 @endpush
 @push('css')
     <link href="{{cdn_url('/js/fuelux/fuelux.css')}}" rel="stylesheet">

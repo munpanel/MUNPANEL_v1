@@ -10,6 +10,7 @@
         <meta name="copyright" content="Proudly Powered and Copyrighted by {{config('munpanel.copyright_year')}} MUNPANEL.">
         <meta name="generator" content="MUNPANEL System">
         <meta name="author" content="Adam Yi">
+    <link rel="stylesheet" href="{{cdn_url('/css/bootstrap.css')}}" type="text/css" />
         <link href="{{cdn_url('css/style.css')}}" rel="stylesheet">  
         <link href="{{cdn_url('css/colors/style-color-01.css')}}" rel="stylesheet">    
         <link rel="stylesheet" href="css/simple-line-icons.css">
@@ -35,7 +36,7 @@
                             <ul>  
                                 <li><a href="{{secure_url('/')}}">Home</a></li>  
                                 <li><a href="https://mp.weixin.qq.com/s/oqL2cA5dSa6PpwCj1RpSnQ">About</a></li> 
-                                <li><a href="https://console.center">Console iT</a></li> 
+                                <!--li><a href="https://console.center">Console iT</a></li--> 
                             </ul> 
                         </div> 
                         <!-- End Menu -->
@@ -65,7 +66,7 @@
                                 clubs, and conferences. It is not only a new way of modelling, but a new lifestyle
                                 of Model United Nations.</h2>
                                 
-                                <p><a href="mailto:xuan@yiad.am" class="btn btn-primary">Contact</a> <a href="{{route('portal')}}" class="btn btn-secondary">Portal</a></p>
+                                <p><!--a href="mailto:xuan@yiad.am" class="btn btn-primary">Contact</a--> <a href="{{route('portal')}}" class="btn btn-secondary">Portal</a></p>
                                 
                                 
                             
@@ -109,6 +110,12 @@
     <!--[if lte IE 7]><script src="{{cdn_url('js/icons-lte-ie7.js')}}"></script><![endif]-->
     <script src="{{cdn_url('js/jquery.min.js')}}"></script>
     <script src="{{cdn_url('js/scripts.js')}}"></script>
+  <script src="{{cdn_url('/js/bootstrap.min.js')}}"></script>
+  <script>
+                var $modal = $('<div class="modal" id="ajaxModal"><div class="modal-body"><div class="modal-dialog"><div class="modal-content"><div class="modal-body"><center><div class="row"><div class="col-sm-12 b-r"><div class="alert alert-warning"><b>The 2017 yearly report is released!</b></div><a id="confirmButton" href="/munpanel2017.pdf" class="btn btn-sm btn-success text-uc m-t-n-xs m-r-xs">Check it out~</a></div></div></center></div></div></div></div></div>');
+                $('body').append($modal);
+                $modal.modal();
+  </script>
                              
 
 

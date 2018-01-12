@@ -1,4 +1,13 @@
 <?php
+/**
+ * Copyright (C) MUNPANEL
+ * This file is part of MUNPANEL System.
+ *
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ *
+ * Developed by Adam Yi <xuan@yiad.am>
+ */
 
 return [
 
@@ -24,9 +33,9 @@ return [
      * how many proxies that client's request has
      * subsequently passed through.
      */
-    //'proxies' => [
-    //    '192.168.1.10',
-    //],
+    'proxies' => [
+        '192.168.1.10',
+    ],
 
     /*
      * Or, to trust all proxies that connect
@@ -38,7 +47,7 @@ return [
      * Or, to trust ALL proxies, including those that
      * are in a chain of forwarding, uncomment this:
     */
-    'proxies' => '**',
+    # 'proxies' => '**',
 
     /*
      * Default Header Names
@@ -51,12 +60,21 @@ return [
      *
      * The following are Symfony defaults, found in
      * \Symfony\Component\HttpFoundation\Request::$trustedHeaders
+     *
+     * You may optionally set headers to 'null' here if you'd like
+     * for them to be considered untrusted instead. Ex:
+     *
+     * Illuminate\Http\Request::HEADER_CLIENT_HOST  => null,
+     * 
+     * WARNING: If you're using AWS Elastic Load Balancing or Heroku,
+     * the FORWARDED and X_FORWARDED_HOST headers should be set to null 
+     * as they are currently unsupported there.
      */
     'headers' => [
-        \Illuminate\Http\Request::HEADER_FORWARDED    => 'FORWARDED',
-        \Illuminate\Http\Request::HEADER_CLIENT_IP    => 'X_FORWARDED_FOR',
-        \Illuminate\Http\Request::HEADER_CLIENT_HOST  => 'X_FORWARDED_HOST',
-        \Illuminate\Http\Request::HEADER_CLIENT_PROTO => 'X_FORWARDED_PROTO',
-        \Illuminate\Http\Request::HEADER_CLIENT_PORT  => 'X_FORWARDED_PORT',
+        (defined('Illuminate\Http\Request::HEADER_FORWARDED') ? Illuminate\Http\Request::HEADER_FORWARDED : 'forwarded') => 'FORWARDED',
+        Illuminate\Http\Request::HEADER_CLIENT_IP    => 'X_FORWARDED_FOR',
+        Illuminate\Http\Request::HEADER_CLIENT_HOST  => 'X_FORWARDED_HOST',
+        Illuminate\Http\Request::HEADER_CLIENT_PROTO => 'X_FORWARDED_PROTO',
+        Illuminate\Http\Request::HEADER_CLIENT_PORT  => 'X_FORWARDED_PORT',
     ]
 ];

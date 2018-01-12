@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (C) Console iT
+ * Copyright (C) MUNPANEL
  * This file is part of MUNPANEL System.
  *
  * Unauthorized copying of this file, via any medium is strictly prohibited
@@ -200,10 +200,9 @@ return [
         Maatwebsite\Excel\ExcelServiceProvider::class,
         PragmaRX\Google2FA\Vendor\Laravel\ServiceProvider::class,
         Sentry\SentryLaravel\SentryLaravelServiceProvider::class,
-        Vinkla\Pusher\PusherServiceProvider::class,
+        Pusher\Laravel\PusherServiceProvider::class,
         Yajra\Datatables\DatatablesServiceProvider::class,
         App\Providers\EntrustServiceProvider::class,
-        Fideloper\Proxy\TrustedProxyServiceProvider::class,
         Torann\GeoIP\GeoIPServiceProvider::class,
 
     ],
@@ -247,6 +246,7 @@ return [
         'Mail' => Illuminate\Support\Facades\Mail::class,
         'Notification' => Illuminate\Support\Facades\Notification::class,
         'Password' => Illuminate\Support\Facades\Password::class,
+        'Pusher' => Pusher\Laravel\Facades\Pusher::class,
         'Queue' => Illuminate\Support\Facades\Queue::class,
         'Redirect' => Illuminate\Support\Facades\Redirect::class,
         'Redis' => Illuminate\Support\Facades\Redis::class,

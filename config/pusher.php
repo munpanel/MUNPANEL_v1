@@ -1,12 +1,12 @@
 <?php
-
-/*
- * This file is part of Laravel Pusher.
+/**
+ * Copyright (C) MUNPANEL
+ * This file is part of MUNPANEL System.
  *
- * (c) Vincent Klaiber <hello@vinkla.com>
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
  *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
+ * Developed by Adam Yi <xuan@yiad.am>
  */
 
 declare(strict_types=1);

@@ -24,12 +24,7 @@ class Handler extends ExceptionHandler
      * @var array
      */
     protected $dontReport = [
-        \Illuminate\Auth\AuthenticationException::class,
-        \Illuminate\Auth\Access\AuthorizationException::class,
-        \Symfony\Component\HttpKernel\Exception\HttpException::class,
-        \Illuminate\Database\Eloquent\ModelNotFoundException::class,
-        \Illuminate\Session\TokenMismatchException::class,
-        \Illuminate\Validation\ValidationException::class,
+        // put additional non-reporting exception types here.
     ];
 
     private $sentryID;
@@ -44,7 +39,7 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $exception)
     {
-        if ((!config('app.debug')) && $this->shouldReport($exception)) { //Sentry for production
+        if (app()->bound('sentry') && (!config('app.debug')) && $this->shouldReport($exception)) { //Sentry for production
             $this->sentryID = app('sentry')->captureException($exception);
         }
         parent::report($exception);
@@ -100,10 +95,8 @@ class Handler extends ExceptionHandler
      */
     protected function unauthenticated($request, AuthenticationException $exception)
     {
-        if ($request->expectsJson()) {
-            return response()->json(['error' => 'Unauthenticated.'], 401);
-        }
-
-        return redirect()->guest(route('login'));
+        return $request->expectsJson()
+                    ? response()->json(['error' => 'Unauthenticated.'], 401)
+                    : redirect()->guest(route('login'));
     }
 }

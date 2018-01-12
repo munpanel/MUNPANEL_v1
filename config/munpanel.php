@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (C) Console iT
+ * Copyright (C) MUNPANEL
  * This file is part of MUNPANEL System.
  *
  * Unauthorized copying of this file, via any medium is strictly prohibited
@@ -10,7 +10,7 @@
  */
 
 return [
-    'copyright_year' => '2016-2017',
+    'copyright_year' => '2016-2018',
     'registration_enabled' => env('MP_REGISTRATION_ENABLED', true),
     'registration_school_changable' => env('MP_REGISTRATION_SCHOOL_CHANGABLE', true),
     'store_checkout' => env('MP_STORE_CHECKOUT', true),

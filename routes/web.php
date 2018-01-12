@@ -1,4 +1,13 @@
 <?php
+/**
+ * Copyright (C) MUNPANEL
+ * This file is part of MUNPANEL System.
+ *
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ *
+ * Developed by Adam Yi <xuan@yiad.am>
+ */
 
 /*
 |--------------------------------------------------------------------------
@@ -353,7 +362,7 @@ Route::group(['domain' => 'static.munpanel.com'], function () {
     Route::post('/chat/message', 'ChatController@postMessage');
 
     Route::get('/bridge', function() {
-        Vinkla\Pusher\Facades\Pusher::trigger('my-channel', 'my-event', ['message' => 'gou']);
+        Pusher::trigger('my-channel', 'my-event', ['message' => 'gou']);
 
 
         return view('home');

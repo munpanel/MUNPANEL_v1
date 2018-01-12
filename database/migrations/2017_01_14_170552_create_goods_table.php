@@ -1,6 +1,6 @@
 <?php
 /**
-* Copyright (C) Console iT
+* Copyright (C) MUNPANEL
 * This file is part of MUNPANEL System.
 *
 * Unauthorized copying of this file, via any medium is strictly prohibited

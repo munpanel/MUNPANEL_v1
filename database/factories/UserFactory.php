@@ -1,23 +1,26 @@
 <?php
+/**
+ * Copyright (C) MUNPANEL
+ * This file is part of MUNPANEL System.
+ *
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ *
+ * Developed by Adam Yi <xuan@yiad.am>
+ */
 
 use Faker\Generator as Faker;
 
-/*
-|--------------------------------------------------------------------------
-| Model Factories
-|--------------------------------------------------------------------------
-|
-| This directory should contain each of the model factory definitions for
-| your application. Factories provide a convenient way to generate new
-| model instances for testing / seeding your application's database.
-|
-*/
-
 $factory->define(App\User::class, function (Faker $faker) {
+    static $password;
+
     return [
         'name' => $faker->name,
         'email' => $faker->unique()->safeEmail,
-        'password' => '$2y$10$TKh8H1.PfQx37YgCzwiKb.KjNyWgaHb9cbcoQgdIVFlYg7B77UdFm', // secret
+        'tel' => $faker->unique()->phoneNUmber,
+        'password' => $password ?: $password = bcrypt('testpassword'),
+        'emailVerificationToken' => $faker->optional($weight = 0.1, $default = 'success')->lexify('????????????????'),
+        'telVerifications' => $faker->optional($weight = 0.1, $default = -1)->numberBetween(0, 15),
         'remember_token' => str_random(10),
     ];
 });

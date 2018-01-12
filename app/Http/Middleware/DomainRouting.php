@@ -32,7 +32,7 @@ class DomainRouting
         {
             if (is_null(config('munpanel.conference_id'))) //we may route all domains to one conference for debugging and developing.
             {
-                $domain = $_SERVER['HTTP_HOST'];
+                $domain = explode(':',$_SERVER['HTTP_HOST'])[0];
                 $conference_id = Cache::tags('domains')->get($domain);
                 if (!isset($conference_id))
                 {

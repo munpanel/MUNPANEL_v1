@@ -20,7 +20,8 @@ return [
     'mailapi_key' => env('MP_MAILAPI_KEY', 'api@yiad.am'),
     'mailapi_secret' => env('MP_MAILAPI_SECRET', ''),
     'icp_license' => env('MP_ICPLICENSE', ''),
-    'landingDomain' => env('MP_LANDINGDOMAIN', 'www.munpanel.com'),
-    'portalDomain' => env('MP_PORTALDOMAIN', 'portal.munpanel.com'),
-    'payDomain' => env('MP_PAYDOMAIN', 'pay.munpanel.com')
+    'landingDomain' => env('MP_SUBDOMAIN_LANDING', 'www') . env('MP_MAIN_DOMAIN', '.munpanel.com'),
+    'portalDomain' => env('MP_SUBDOMAIN_PORTAL', 'portal') . env('MP_MAIN_DOMAIN', '.munpanel.com'),
+    'payDomain' => env('MP_SUBDOMAIN_PAY', 'pay') . env('MP_MAIN_DOMAIN', '.munpanel.com'),
+    'mainDomain' => env('MP_MAIN_DOMAIN', '.munpanel.com'),
 ];

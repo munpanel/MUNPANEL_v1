@@ -29,7 +29,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        \URL::forceScheme('https'); 
+        if (env('APP_ENV') === 'prod') {
+            \URL::forceScheme('https'); 
+        }
         $pusher = $this->app->make('pusher');
         $pusher->set_logger( new LaravelLoggerProxy() );
     }

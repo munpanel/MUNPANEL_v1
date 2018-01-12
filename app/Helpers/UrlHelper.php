@@ -10,11 +10,10 @@
  */
 
 /**
- *
+ * Return URL based on environment.
  */
 function mp_url($url) {
-    return secure_url($url);
-    return url($url);
+    return env('APP_ENV') === 'prod' ? secure_url($url) : url($url);
 }
 
 //update 0: default, 1: update, 2: don't update

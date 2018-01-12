@@ -47,8 +47,12 @@ class SmsController extends Controller
             {
                 //twillio International
                 try {
-                    Log::info('Successfully sent an SMS to '.$mobile. ' using Twillio, message of which is: '. $message);
-                    Twilio::message($mobile, $message);
+                    if (env('APP_ENV') === 'dev') {
+                        Log::info('Twillio: in dev mode. Not sending message to '.$mobile. ': '. $message);
+                    } else {
+                        Twilio::message($mobile, $message);
+                        Log::info('Successfully sent an SMS to '.$mobile. ' using Twillio, message of which is: '. $message);
+                    }
                 } catch (\Exception $e) {
                     Log::info('Error sending an SMS to '.$mobile. ' using Twillio, message of which is: '. $message);
                     return false;
@@ -58,8 +62,46 @@ class SmsController extends Controller
             else
             {
                 //luosimao Chinese
+                if (env('APP_ENV') === 'dev') {
+                    Log::info('Luosimao: in dev mode. Not sending message to '.$mobile. ': '. $message);
+                } else {
+                    $ch = curl_init();
+                    curl_setopt($ch, CURLOPT_URL, "http://sms-api.luosimao.com/v1/send.json");
+
+                    curl_setopt($ch, CURLOPT_HTTP_VERSION  , CURL_HTTP_VERSION_1_0 );
+                    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 8);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+                    curl_setopt($ch, CURLOPT_HEADER, FALSE);
+
+                    curl_setopt($ch, CURLOPT_HTTPAUTH , CURLAUTH_BASIC);
+                    curl_setopt($ch, CURLOPT_USERPWD  , 'api:key-'.Config::get('luosimao.key_sms'));
+
+                    curl_setopt($ch, CURLOPT_POST, TRUE);
+                    curl_setopt($ch, CURLOPT_POSTFIELDS, array('mobile' => $mobile, 'message' => $message .'【MUNPANEL】'));
+
+                    $res = curl_exec( $ch );
+                    curl_close( $ch );
+                    $result = json_decode($res);
+                    if (is_null($result))
+                    {
+                        Log::info('Error sending an SMS to '.$mobile. ' using luosimao, message of which is: '. $message);
+                        return false;
+                    }
+                    if ($result->error == 0)
+                    {
+                        Log::info('Successfully sent an SMS to '.$mobile. ' using luosimao, message of which is: '. $message);
+                        return true;
+                    }
+                    Log::info('Error sending an SMS to '.$mobile. ' using luosimao, message of which is: '. $message);
+                    return false;
+                }
+            }
+        } else { // batch send
+            if (env('APP_ENV') === 'dev') {
+                Log::info('Luosimao: in dev mode. Not sending message to '.implode(',', $mobileList). ': '. $message);
+            } else {
                 $ch = curl_init();
-                curl_setopt($ch, CURLOPT_URL, "http://sms-api.luosimao.com/v1/send.json");
+                curl_setopt($ch, CURLOPT_URL, "http://sms-api.luosimao.com/v1/send_batch.json");
 
                 curl_setopt($ch, CURLOPT_HTTP_VERSION  , CURL_HTTP_VERSION_1_0 );
                 curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 8);
@@ -70,41 +112,11 @@ class SmsController extends Controller
                 curl_setopt($ch, CURLOPT_USERPWD  , 'api:key-'.Config::get('luosimao.key_sms'));
 
                 curl_setopt($ch, CURLOPT_POST, TRUE);
-                curl_setopt($ch, CURLOPT_POSTFIELDS, array('mobile' => $mobile, 'message' => $message .'【MUNPANEL】'));
+                curl_setopt($ch, CURLOPT_POSTFIELDS, array('mobilei_list' => implode(',', $mobileList), 'message' => $message .'【MUNPANEL】'));
 
                 $res = curl_exec( $ch );
                 curl_close( $ch );
-                $result = json_decode($res);
-                if (is_null($result))
-                {
-                    Log::info('Error sending an SMS to '.$mobile. ' using luosimao, message of which is: '. $message);
-                    return false;
-                }
-                if ($result->error == 0)
-                {
-                    Log::info('Successfully sent an SMS to '.$mobile. ' using luosimao, message of which is: '. $message);
-                    return true;
-                }
-                Log::info('Error sending an SMS to '.$mobile. ' using luosimao, message of which is: '. $message);
-                return false;
             }
-        } else { // batch send
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, "http://sms-api.luosimao.com/v1/send_batch.json");
-
-            curl_setopt($ch, CURLOPT_HTTP_VERSION  , CURL_HTTP_VERSION_1_0 );
-            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 8);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-            curl_setopt($ch, CURLOPT_HEADER, FALSE);
-
-            curl_setopt($ch, CURLOPT_HTTPAUTH , CURLAUTH_BASIC);
-            curl_setopt($ch, CURLOPT_USERPWD  , 'api:key-'.Config::get('luosimao.key_sms'));
-
-            curl_setopt($ch, CURLOPT_POST, TRUE);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, array('mobilei_list' => implode(',', $mobileList), 'message' => $message .'【MUNPANEL】'));
-
-            $res = curl_exec( $ch );
-            curl_close( $ch );
         }
         return true;
     }
@@ -125,13 +137,17 @@ class SmsController extends Controller
         if ($mobile[0] == '+')
         {
             try {
-                Twilio::call($mobile, function($message) {
-                    $message->say("Welcome to mengpanle. Your code is ".implode(' ',str_split(session("code"))));
-                    $message->pause(["length" => "1"]);
-                    $message->say("Welcome to mengpanle. Your code is ".implode(' ',str_split(session("code"))));
-                    $message->say("Thank you.");
-                });
-                Log::info('Successfully called '.$mobile. ' using Twilio, code of which is: '. $code);
+                if (env('APP_ENV') === 'dev') {
+                    Log::info('Twilio: in dev mode. Not calling '.$mobile. ' with code '. $code);
+                } else {
+                    Twilio::call($mobile, function($message) {
+                        $message->say("Welcome to mengpanle. Your code is ".implode(' ',str_split(session("code"))));
+                        $message->pause(["length" => "1"]);
+                        $message->say("Welcome to mengpanle. Your code is ".implode(' ',str_split(session("code"))));
+                        $message->say("Thank you.");
+                    });
+                    Log::info('Successfully called '.$mobile. ' using Twilio, code of which is: '. $code);
+                }
             } catch (\Exception $e) {
                 Log::info('Error calling '.$mobile. ' using Twilio, code of which is: '. $code);
                 return false;
@@ -139,35 +155,39 @@ class SmsController extends Controller
         }
         else
         {
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, "http://voice-api.luosimao.com/v1/verify.json");
+            if (env('APP_ENV') === 'dev') {
+                Log::info('Luosimao: in dev mode. Not calling '.$mobile. ' with code '. $code);
+            } else {
+                $ch = curl_init();
+                curl_setopt($ch, CURLOPT_URL, "http://voice-api.luosimao.com/v1/verify.json");
 
-            curl_setopt($ch, CURLOPT_HTTP_VERSION  , CURL_HTTP_VERSION_1_0 );
-            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 30);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-            curl_setopt($ch, CURLOPT_HEADER, FALSE);
+                curl_setopt($ch, CURLOPT_HTTP_VERSION  , CURL_HTTP_VERSION_1_0 );
+                curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 30);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+                curl_setopt($ch, CURLOPT_HEADER, FALSE);
 
-            curl_setopt($ch, CURLOPT_HTTPAUTH , CURLAUTH_BASIC);
-            curl_setopt($ch, CURLOPT_USERPWD  , 'api:key-'.Config::get('luosimao.key_call'));
+                curl_setopt($ch, CURLOPT_HTTPAUTH , CURLAUTH_BASIC);
+                curl_setopt($ch, CURLOPT_USERPWD  , 'api:key-'.Config::get('luosimao.key_call'));
 
-            curl_setopt($ch, CURLOPT_POST, TRUE);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, array('mobile' => $mobile,'code' => $code));
+                curl_setopt($ch, CURLOPT_POST, TRUE);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, array('mobile' => $mobile,'code' => $code));
 
-            $res = curl_exec( $ch );
-            curl_close( $ch );
-            $result = json_decode($res);
-            if (is_null($result))
-            {
+                $res = curl_exec( $ch );
+                curl_close( $ch );
+                $result = json_decode($res);
+                if (is_null($result))
+                {
+                    Log::info('Error calling '.$mobile. ' using luosimao, code of which is: '. $code);
+                    return false;
+                }
+                if ($result->error == 0)
+                {
+                    Log::info('Successfully called '.$mobile. ' using luosimao, code of which is: '. $code);
+                    return true;
+                }
                 Log::info('Error calling '.$mobile. ' using luosimao, code of which is: '. $code);
                 return false;
             }
-            if ($result->error == 0)
-            {
-                Log::info('Successfully called '.$mobile. ' using luosimao, code of which is: '. $code);
-                return true;
-            }
-            Log::info('Error calling '.$mobile. ' using luosimao, code of which is: '. $code);
-            return false;
         }
         return true;
     }

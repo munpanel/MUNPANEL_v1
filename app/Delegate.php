@@ -526,7 +526,7 @@ class Delegate extends Model
         return $result->unique()->sortBy('id');
     }
 
-    public function scopeDelegateGroup($useShortName = false, $maxDisplay = 0, $html = false)
+    public function delegateGroupScope($useShortName = false, $maxDisplay = 0, $html = false)
     {
         $prefix = '';
         $scope = '';

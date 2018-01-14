@@ -61,13 +61,13 @@ class RoleAllocController extends Controller
         $reg = Reg::current();
         $assignOptions = json_decode(Reg::currentConference()->option('seat_assigners'));
         if (!is_object($assignOptions))
-            return collect();
+            return eloquent_collect();
         if ($assignOptions->overrule)
         {
             $assignCommittees = $reg->assignCommittees;
             if (in_array($reg->type, ['ot', 'dais', 'interviewer']) && $assignCommittees->isNotEmpty())
             {
-                $result = collect();
+                $result = eloquent_collect();
                 foreach ($assignCommittees as $committee)
                     $result = $result->merge($committee->delegates);
                 return $result;
@@ -89,7 +89,7 @@ class RoleAllocController extends Controller
                 });
             })->get();
         }
-        return collect();
+        return eloquent_collect();
     }
 
     public static function nations()
@@ -97,13 +97,13 @@ class RoleAllocController extends Controller
         $reg = Reg::current();
         $assignOptions = json_decode(Reg::currentConference()->option('seat_assigners'));
         if (!is_object($assignOptions))
-            return collect();
+            return eloquent_collect();
         if ($assignOptions->overrule)
         {
             $assignCommittees = $reg->assignCommittees;
             if (in_array($reg->type, ['ot', 'dais', 'interviewer']) && $assignCommittees->isNotEmpty())
             {
-                $result = collect();
+                $result = eloquent_collect();
                 foreach ($assignCommittees as $committee)
                     $result = $result->merge($committee->nations);
                 return $result;
@@ -129,7 +129,7 @@ class RoleAllocController extends Controller
                 });
             })->get();
         }
-        return collect();
+        return eloquent_collect();
     }
 
     /**

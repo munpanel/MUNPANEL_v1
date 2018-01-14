@@ -1,5 +1,6 @@
+{{-- TODO: Use REST API and JS to render interviews (scroll to load more), otherwise it's too slow for browser (and blade template) to render --}}
 @php
-$canInterview = Auth::user()->regs->where('conference_id', Reg::currentConferenceID())->where('type', 'interviewer')->where('enabled', true)->count();
+$interviewer = Reg::currentUser()->regs->where('conference_id', Reg::currentConferenceID())->where('type', 'interviewer')->where('enabled', true)->first();
 @endphp
 @extends('layouts.app')
 @section('interview_active', 'active')
@@ -26,28 +27,22 @@ $('.readmore').readmore({
   <header class="header b-b bg-white">
     @if ($iid == -1)
       <p>{{Reg::currentConference()->name}} 的所有面试</p>
-    @elseif ($iid == 0)
-      <p>您的面试队列</p>
     @else
-      <p>{{Reg::find($iid)->user->name}}的面试队列</p>
+      <p>{{$iname}}的面试队列</p>
     @endif
     @permission('view-all-interviews')
     <div class="btn-group pull-right">
       <button class="btn btn-white btn-sm dropdown-toggle" aria-expanded="false" data-toggle="dropdown"><i class="fa fa-eye"></i> 查看 <span class="caret"></span></button>
       <ul class="dropdown-menu">
         <li><a href="{{mp_url('/findInterviewer.modal')}}" data-toggle="ajaxModal">查看面试官的队列...</a></li>
-        @if ($iid != -1 || $canInterview > 0)
+        @if ($iid != -1 || is_object($interviewer))
         <li class="divider"></li>
-        @endif
         @if ($iid != -1)
         <li><a href="{{mp_url('/interviews/-1')}}">查看所有面试</a></li>
         @endif
-        @if ($iid != 0)
-        @foreach(Auth::user()->regs->where('conference_id', Reg::currentConferenceID())->where('enabled', true) as $reg)
-        @if ($reg->type == 'interviewer')
-        <li><a href="{{mp_url('/doSwitchIdentity/'.$reg->id)}}">查看我的面试</a></li>
+        @if ($iid != 0 && is_object($interviewer))
+        <li><a href="{{mp_url('/doSwitchIdentity/'.$interviewer->id)}}">查看我的面试</a></li>
         @endif
-        @endforeach
         @endif
       </ul>
     </div>
@@ -62,7 +57,7 @@ $('.readmore').readmore({
       @if ($iid == -1)
       <p>本次会议并没有任何面试安排。</p>
       @else
-      <p>{{$iid != 0 ? Reg::find($iid)->user->name : '您'}}的面试队列空空如也。</p>
+      <p>{{$iname}}的面试队列空空如也。</p>
       @endif
     </div>
     @else
@@ -86,7 +81,7 @@ $('.readmore').readmore({
               @if ($iid == -1)
               <p>本次会议目前没有未安排的面试。</p>
               @else
-              <p>{{$iid != 0 ? Reg::find($iid)->user->name : '您'}}没有未安排的面试。</p>
+              <p>{{$iname}}没有未安排的面试。</p>
               @endif
             @endif
           </div>
@@ -114,7 +109,7 @@ $('.readmore').readmore({
               @if ($iid == -1)
               <p>本次会议目前没有未完成的面试。</p>
               @else
-              <p>{{$iid != 0 ? Reg::find($iid)->user->name : '您'}}没有未完成的面试。</p>
+              <p>{{$iname}}没有未完成的面试。</p>
               @endif
             @endif
           </div>
@@ -139,7 +134,7 @@ $('.readmore').readmore({
               @if ($iid == -1)
               <p>本次会议目前没有已完成的面试。</p>
               @else
-              <p>{{$iid != 0 ? Reg::find($iid)->user->name : '您'}}没有已完成的面试。</p>
+              <p>{{$iname}}没有已完成的面试。</p>
               @endif
             @endif
           </div>

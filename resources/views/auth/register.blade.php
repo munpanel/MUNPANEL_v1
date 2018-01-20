@@ -3,8 +3,13 @@
 <head>
   <meta charset="utf-8" />
   <title>Registration | MUNPANEL</title>
-  <link rel="icon" href="{{cdn_url('/images/favicon.ico')}}" type="image/x-icon" />
-  <link rel="shortcut icon" href="{{cdn_url('/images/favicon.ico')}}" type="image/x-icon" />
+  <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <meta name="theme-color" content="#5dcff3">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <meta name="keywords" content="MUNPANEL,MUN,Model UN,Model United Nations,United Nations,UN,PANEL,模联,模拟联合国">
   <meta name="description" content="Register a MUNPANEL account.">

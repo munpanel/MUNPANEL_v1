@@ -38,7 +38,7 @@ class Nation extends Model
         return $this->belongstoMany('App\Nationgroup', 'nationgroup_nation');
     }
 
-    public function scopeDelegate($withBizCard = false)
+    public function delegateScope($withBizCard = false)
     {
         $prefix = '';
         $scope = '';
@@ -60,7 +60,7 @@ class Nation extends Model
         return '无';
     }
 
-    public function scopeAssignedDelegate($withBizCard = false)
+    public function assignedDelegateScope($withBizCard = false)
     {
         $prefix = '';
         $scope = '';

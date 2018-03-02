@@ -18,13 +18,15 @@
 function regStatSingle($committee)
 {
     $capacity = $committee->capacity;
-    $counts = $committee->allDelegates()->count();
-    $counts_real = $committee->allDelegates()->whereIn('status', ['sVerified', 'oVerified', 'paid'])->count();
+    $counts = $committee->allDelegatesQuery()->count();
+    $counts_real = $committee->allDelegatesQuery()->whereIn('status', ['sVerified', 'oVerified', 'paid'])->count();
     $result = '<li class="dd-item" data-id="10"><div class="dd-handle">' . $committee->name . '<span class="pull-right">定员: ' . $capacity . '&emsp;';
     if ($counts > $capacity) $result .= '<strong class="text-danger">';
     $result .= '报名人数: ' . $counts_real . '('.$counts.')';
     if ($counts > $capacity) $result .= '</strong>';
     $result .= '</span></div>';
+    return $result;
+
     if ($committee->childCommittees->count() > 0)
     {
         $result .= '<ol class="dd-list">';
@@ -33,6 +35,21 @@ function regStatSingle($committee)
         $result .= '</ol>';
     }
     $result .= '</li>';
+    return $result;
+}
+
+function regStatSingleChildren($committee_id, $allCommittees, $children) {
+    if (empty($children[$committee_id]))
+        return "";
+
+    $result = '<ol class="dd-list">';
+    foreach ($children[$committee_id] as $child_id) {
+        $result .= $allCommittees[$child_id];
+        $result .= regStatSingleChildren($child_id, $allCommittees, $children);
+        $result .= '</li>';
+    }
+    $result .= '</ol>';
+
     return $result;
 }
 
@@ -48,13 +65,18 @@ function regStat($committees, $obs, $vol)
 {
     $result = '<div class="dd" id="nestable2"><ol class="dd-list">';
     if ($committees->count() > 0)
-    foreach ($committees as $committee)
-    {
-        if (empty($committee->parentCommittee))
-        {
-            $resultSingle = regStatSingle($committee);
-            $result .= $resultSingle;
+        foreach($committees as $committee) {
+            $res[$committee->id] = regStatSingle($committee);
+            if (empty($committee->father_committee_id))
+                $root[] = $committee->id;
+            else
+                $child[$committee->father_committee_id][] = $committee->id;
         }
+    foreach ($root as $cid)
+    {
+        $result .= $res[$cid];
+        $result .= regStatSingleChildren($cid, $res, $child);
+        $result .= '</li>';
     }
     $result .= '<li class="dd-item" data-id="98"><div class="dd-handle">观察员<span class="pull-right">报名人数: ' . $obs . '</span></div></li>';
     $result .= '<li class="dd-item" data-id="99"><div class="dd-handle">志愿者<span class="pull-right">报名人数: ' . $vol . '</span></div></li>';

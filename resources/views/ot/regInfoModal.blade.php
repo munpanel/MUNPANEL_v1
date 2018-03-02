@@ -55,7 +55,7 @@ if (empty($active))
                 <p>{{$user->name}}以<strong>{{ $reg->regText() }}</strong>身份报名参加本次会议。</p>
                 <p>报名 ID: {{$reg->id}}
                   @if ($reg->type == 'delegate')
-                  <br>委员会: {{$specific->committee->name}}<br>代表组: {{$specific->scopeDelegateGroup()}}
+                  <br>委员会: {{$specific->committee->name}}<br>代表组: {{$specific->delegateGroupScope()}}
                   @endif
                   @if (isset($regInfo) && isset($regInfo->reg_at))
                   <br>报名于: {{nicetime($regInfo->reg_at)}}

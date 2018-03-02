@@ -225,7 +225,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
             if ($user->type == 'teamadmin')
                 $regs = $regs->where('school_id', $user->school_id);
             $regs = $regs->with(['user' => function($q) {$q->select('name', 'id');}])->with(['school' => function($q) {$q->select('name', 'id');}])->get(['id', 'user_id', 'school_id', 'type', 'enabled', 'reginfo']);
-            $regs->where('type', 'delegate')->load('delegate', 'delegate.committee', 'delegate.delegategroups', 'delegate.nation', 'delegate.interviews', 'delegate.assignedNations');
+            $regs->where('type', 'delegate')->load('delegate', 'delegate.committee', 'delegate.delegategroups', 'delegate.nation', 'delegate.interviews', 'delegate.assignedNations', 'delegate.conference');
             $regs->where('type', 'volunteer')->load('volunteer');
             $regs->where('type', 'observer')->load('observer');
             $regs->where('type', 'dais')->load('dais');
@@ -304,7 +304,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
                         'id' => $reg->id,
                         'name' => $reg->user->name,
                         'school' => $reg->schoolName(),
-                        'group' => isset($reg->specific()->delegategroups) ? $reg->specific()->scopeDelegateGroup(true, 3) : '无',
+                        'group' => isset($reg->specific()->delegategroups) ? $reg->specific()->delegateGroupScope(true, 3) : '无',
                         'committee' => isset($reg->specific()->committee) ? $reg->specific()->committee->name : (in_array($reg->type, ['dais', 'delegate', 'observer']) ? '未指定' : '不适用'),
                         'type' => $type,
                         'status' => $status,
@@ -433,7 +433,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
                 'id' => $committee->id,
                 'bt' => $committee->father_committee_id,
                 'name' => $committee->name,
-                'dqc' => $committee->allDelegates()->count() . ' / ' . $committee->capacity
+                'dqc' => $committee->allDelegatesQuery()->count() . ' / ' . $committee->capacity
             ]);
         }
         return Datatables::of($result)->make(true);
@@ -498,23 +498,24 @@ class DatatablesController extends Controller //To-Do: Permission Check
         $result = new Collection;
         if (Reg::current()->type == 'ot')
         {
-            $committees = Committee::where('conference_id', Reg::currentConferenceID())->get()->pluck(['id']);
-            $nations = Nation::whereIn('committee_id', $committees)->get();
+            $committees = Committee::where('conference_id', Reg::currentConferenceID())->get();
+            $nations = Nation::whereIn('committee_id', $committees->pluck('id'))->with(['delegates', 'delegates.reg:id,user_id', 'delegates.reg.user:id,name', 'nationgroups:id,name'])->get();
             foreach($nations as $nation)
             {
                 $result->push([
                     'details' => '<a href="dais/nationDetails.modal/'. $nation->id .'" data-toggle="ajaxModal" id="'. $nation->id .'" class="details-modal"><i class="fa fa-search-plus"></i></a>',
                     'id' => $nation->id,
-                    'committee' => $nation->committee->name,
+                    'committee' => $committees->firstWhere('id', $nation->committee_id)->name,
                     'name' => $nation->displayName(true, 0),
                     'conpetence' => $nation->conpetence,
                     'veto_power' => $nation->veto_power ? '是' : '否',
                     'nationgroup' => $nation->scopeNationGroup(true, 5),
-                    'delegate' => $nation->scopeDelegate(),
+                    'delegate' => $nation->delegateScope(),
 
                 ]);
             }
         } else {
+            return "error";
             $nations = Reg::current()->specific()->committee->nations;
             foreach($nations as $nation)
             {
@@ -532,7 +533,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
                     //'conpetence' => $nation->conpetence,
                     //'veto_power' => $nation->veto_power ? '是' : '否',
                     'nationgroup' => $nation->scopeNationGroup(true, 5),
-                    'delegate' => $nation->scopeDelegate(true),
+                    'delegate' => $nation->delegateScope(true),
 
                 ]);
             }
@@ -753,12 +754,10 @@ class DatatablesController extends Controller //To-Do: Permission Check
         //$mycommittee = Reg::current()->dais->committee;
         //$nations = Nation::where('committee_id', $mycommittee->id)->get();
         $nations = RoleAllocController::nations();
-        if (method_exists($nations, 'load')) {
-            $nations->load('committee');
-            $nations->load('nationgroups');
-            $nations->load('assignedDelegates', 'assignedDelegates.reg', 'assignedDelegates.reg.user');
-            $nations->where('status', 'locked')->load('delegates', 'delegates.reg', 'delegates.reg.user');
-        }
+        $nations->load('committee');
+        $nations->load('nationgroups');
+        $nations->load('assignedDelegates', 'assignedDelegates.reg', 'assignedDelegates.reg.user');
+        $nations->where('status', 'locked')->load('delegates', 'delegates.reg', 'delegates.reg.user');
         $autosel = false;
         foreach($nations as $nation)
         {
@@ -769,7 +768,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
             if ($nation->status != 'open')
             {
                 $select .= ' disabled="disabled"';
-                $delnames = $nation->scopeDelegate();
+                $delnames = $nation->delegateScope();
             }
             else
             {
@@ -777,7 +776,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
                     $command .= ' disabled';
                 else
                 {
-                    $delnames = $nation->scopeAssignedDelegate();
+                    $delnames = $nation->assignedDelegateScope();
                     $command .= ' onclick="loader(this)"';
                 }
                 if (!$autosel)
@@ -810,7 +809,7 @@ class DatatablesController extends Controller //To-Do: Permission Check
                     break;
                 case 'locked':
                     $delnames = "<i class='fa fa-lock' aria-hidden='true'></i> ".$delnames;
-                    $delnames =  "<a style='cursor: pointer;' class='details-popover' data-html='1' data-placement='right' data-trigger='click' data-original-title='原可选此席位的代表列表' data-toggle='popover' data-content='".$nation->scopeAssignedDelegate()."'>".$delnames."</a>";
+                    $delnames =  "<a style='cursor: pointer;' class='details-popover' data-html='1' data-placement='right' data-trigger='click' data-original-title='原可选此席位的代表列表' data-toggle='popover' data-content='".$nation->assignedDelegateScope()."'>".$delnames."</a>";
                     break;
                 case 'open':
                     $delnames = "<i class='fa fa-unlock' aria-hidden='true'></i> ".$delnames;
@@ -853,16 +852,14 @@ class DatatablesController extends Controller //To-Do: Permission Check
             ->where('status', 'oVerified');
         })->get(['reg_id', 'school_id', 'nation_id', 'committee_id', 'status']);*/
         $delegates = RoleAllocController::delegates();
-        if (method_exists($delegates, "load")) {
-            $delegates->load('delegategroups', 'committee', 'reg', 'reg.user', 'nation', 'interviews');
-            $delegates->where('seat_locked', false)->load('assignedNations');
-        }
+        $delegates->load('delegategroups', 'committee', 'reg', 'reg.user', 'nation', 'interviews', 'conference');
+        $delegates->where('seat_locked', false)->load('assignedNations');
         foreach($delegates as $delegate)
         {
             if (!$delegate->canAssignSeats())
                 continue;
             $name = $delegate->reg->user->name;
-            $name .= ' ('.($delegate->delegategroups->count() > 0 ? $delegate->scopeDelegateGroup(true, 0, true) . ', ' : '').$delegate->statusText().',搭档'.(is_object($delegate->partner)?$delegate->partner->reg->user->name : '无').')';
+            $name .= ' ('.($delegate->delegategroups->count() > 0 ? $delegate->delegateGroupScope(true, 0, true) . ', ' : '').$delegate->statusText().',搭档'.(is_object($delegate->partner)?$delegate->partner->reg->user->name : '无').')';
             if ($delegate->seat_locked)
                 $command = '已锁定';
             else {

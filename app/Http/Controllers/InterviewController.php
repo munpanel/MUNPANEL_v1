@@ -42,8 +42,10 @@ class InterviewController extends Controller
                 return view('error', ['msg' => '您没有权限进行该操作！']);
             $interviews = Interview::where('conference_id', Reg::currentConferenceID())->get();
         }
-        elseif ($id == 0 || $id == Reg::currentID())
+        elseif ($id == 0 || $id == Reg::currentID()) {
             $interviews = Interview::where('interviewer_id', Reg::currentID())->get();
+            $iname = '您';
+        }
         else
         {
             if (!Reg::current()->can('view-all-interviews'))
@@ -52,9 +54,13 @@ class InterviewController extends Controller
             if (is_null($reg))
                 return view('error', ['msg' => '此人不是您所在会议的面试官！']);
             $interviews = Interview::where('interviewer_id', $id)->get();
+            $iname = $reg->reg->name();
         }
-        $interviews->load('interviewer', 'interviewer.reg', 'interviewer.reg.user', 'interviewer.committee', 'reg', 'reg.user', 'reg.delegate', 'reg.delegate.assignedNations', 'reg.delegate.interviews', 'reg.delegate.nation', 'reg.delegate.committee');
-        return view('dais.interviewList', ['interviews' => $interviews, 'iid' => $id]);
+        $interviews->load('interviewer', 'interviewer.reg', 'interviewer.reg.user', 'interviewer.committee', 'reg', 'reg.user', 'reg.delegate', 'reg.delegate.assignedNations', 'reg.delegate.interviews', 'reg.delegate.nation', 'reg.delegate.committee', 'reg.delegate.conference');
+        if (isset($iname))
+            return view('dais.interviewList', ['interviews' => $interviews, 'iid' => $id, 'iname' => $iname]);
+        else
+            return view('dais.interviewList', ['interviews' => $interviews, 'iid' => $id]);
     }
 
     public function interview(Request $request, $id, $action)

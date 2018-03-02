@@ -423,14 +423,14 @@ class Reg extends Model
         $name = $reg->user->name;
         $this->save();
         if ($admin == true)
-            $this->addEvent('roommate_submitted', '{"name":"'.Auth::user()->name."\",\"roommate\":\"$name\"}");
+            $this->addEvent('roommate_submitted', '{"name":"'.Reg::currentUser()->name."\",\"roommate\":\"$name\"}");
         else
             $this->addEvent('roommate_manual_success', '');
         $reg->roommate_user_id = $this->user->id;
         $name = $this->user->name;
         $reg->save();
         if ($admin == true)
-            $reg->addEvent('roommate_submitted', '{"name":"'.Auth::user()->name."\",\"roommate\":\"$name\"}");
+            $reg->addEvent('roommate_submitted', '{"name":"'.Reg::currentUser()->name."\",\"roommate\":\"$name\"}");
         else
             $reg->addEvent('roommate_manual_success', '');
         return "success";

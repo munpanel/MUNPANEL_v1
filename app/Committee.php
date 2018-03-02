@@ -14,6 +14,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cache;
 
 class Committee extends Model
 {
@@ -23,14 +24,27 @@ class Committee extends Model
         return $this->hasMany('App\Delegate');
     }
     
-    public function allDelegates()
+    public function allDelegatesQuery()
     {
-        //TODO: nested tree
-        $coms = Committee::where('id', $this->id)->orWhere('father_committee_id', $this->id)->get(['id']);
-        $e = [];
-        foreach ($coms as $com) array_push($e, $com->id);
-        $result = Delegate::whereIn('committee_id', $e)->get(); 
-        return $result;
+
+        $coms = $this->allCommittees(['id']);
+        return Delegate::whereIn('committee_id', $coms->pluck('id')); 
+    }
+
+    public function allCommittees($columns = ['*'])
+    {
+        return Cache::remember('allCommitees_'.$this->id.'_'.implode($columns, '_'), 10, function () use ($columns)  {
+            if (!in_array('id', $columns) || in_array('*', $columns)) {
+                array_push($columns, 'id');
+            }
+            $coms = eloquent_collect([$this]);
+            $sub_coms = Committee::where('father_committee_id', $this->id)->get($columns);
+            while ($sub_coms->count() > 0) {
+                $coms = $coms->merge($sub_coms);
+                $sub_coms = Committee::whereIn('father_committee_id', $sub_coms->pluck('id'))->get($columns);
+            }
+            return $coms;
+        });
     }
 
     public function nations() {

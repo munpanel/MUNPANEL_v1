@@ -83,9 +83,9 @@ function otregStat($cid)
 function interviewStat($cid, $rid = 0)
 {
     $interviewsc = $unarranged = $unfinished = $exempted = $cancelled = $success = 0;
-    $interviews = Interview::where('conference_id', $cid)->get();
     if ($rid == -1)
     {
+        $interviews = Interview::where('conference_id', $cid)->get(['id', 'status']);
         $interviewsc = $interviews->groupBy('reg_id')->count();
         $unarranged = $interviews->where('status', 'assigned')->groupBy('reg_id')->count();
         $unfinished = $interviews->where('status', 'arranged')->groupBy('reg_id')->count();
@@ -96,7 +96,7 @@ function interviewStat($cid, $rid = 0)
     else
     {
         if ($rid == 0) $rid = Reg::currentID();
-        $interviews = Interview::where('conference_id', $cid)->where('interviewer_id', $rid)->get();
+        $interviews = Interview::where('conference_id', $cid)->where('interviewer_id', $rid)->get(['id', 'status']);
         $interviewsc = $interviews->count();
         $unarranged = $interviews->where('status', 'assigned')->count();
         $unfinished = $interviews->where('status', 'arranged')->count();

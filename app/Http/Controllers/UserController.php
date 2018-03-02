@@ -1060,6 +1060,7 @@ class UserController extends Controller
      */
     public function test(Request $request)
     {
+        return opcache_get_status();
         $users = User::all();
         foreach ($users as $index => $value)
         {

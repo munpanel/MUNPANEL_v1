@@ -34,7 +34,7 @@ class CheckVerification
         {
             $route = $request->route()->uri;
             ///*
-            if (substr($route, 0, 6) != 'verify' && $route != 'logout') {
+            if (substr($route, 0, 6) != 'verify' && $route != 'logout' && $request->getHost() != "static.munpanel.com") {
                 if ($user->emailVerificationToken != 'success')
                     return redirect()->guest(route('verifyEmail'));
                 if ($user->telVerifications != -1) //3/2/1: tries left; -1: activated

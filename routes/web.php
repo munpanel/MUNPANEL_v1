@@ -134,6 +134,8 @@ Route::group(['domain' => 'static.munpanel.com'], function () {
     Route::get('/', function () {
         return "MUNPANEL static caching service provided by Akamai and ChinaNetCenter (网宿科技)";
     });
+    Route::get('/showEmail/{id}', 'EmailController@showEmail');
+    Route::get('/emailLogo.png', 'EmailController@emailLogo');
 });
 
 
@@ -157,8 +159,6 @@ Route::group(['domain' => 'static.munpanel.com'], function () {
     Route::get('/aboutDebug', 'HomeController@aboutDebug');
     Route::get('/aboutSudo', 'HomeController@aboutSUDO');
 
-    Route::get('/showEmail/{id}', 'EmailController@showEmail');
-    Route::get('/emailLogo.png', 'EmailController@emailLogo');
     //Route::get('/sendDaisResult', 'EmailController@sendDaisResult');
     Route::get('/resendMail/{id}', 'EmailController@resend');
     //Route::get('/daisBJMUN', 'EmailController@daisBJMUN');

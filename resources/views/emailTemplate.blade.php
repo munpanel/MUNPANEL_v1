@@ -110,11 +110,11 @@
 </head>
 <body>
 @if(!isset($webView) && !isset($fromHuman))
-<div class="extra">完整HTML版邮件请见：{{mp_url('/showEmail/'.$id)}}</div>
+<div class="extra">完整HTML版邮件请见：https://static.munpanel.com/showEmail/{{$id}}</div>
 @endif
 <div class="container">
   <div class="header">
-    <img src="{{mp_url('/emailLogo.png?'.$id)}}">
+    <img src="https://static.munpanel.com/emailLogo.png?{{$id}}">
   </div>
   <div class="body">
     <p>{!!$content!!}</p>
@@ -122,11 +122,11 @@
     <div class="footer">
       <a href="https://www.munpanel.com">MUNPANEL</a>
       &middot;
-      <a href="https://kb.bjmun.org/console-lite/">Console Lite</a>
+      <a href="https://git.yiad.am">Open Source</a>
       &middot;
-      <a href="https://bjmun.org/console-it/client">Console iT Client</a>
+      <a href="https://github.com/MUNPANEL">GitHub</a>
       &middot;
-      <a href="https://munl.ink">MUNLink</a>
+      <a href="https://static.munpanel.com/terms/">Terms</a>{{--TODO: implement this.--}}
     </div>
   </div>
 </div>
